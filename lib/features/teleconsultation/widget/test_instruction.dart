@@ -2,6 +2,7 @@ import 'package:ausa/common/enums/test_status.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/gradients.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/teleconsultation/widget/instruction_card_scrollable.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
@@ -29,7 +30,7 @@ class _TestInstructionState extends State<TestInstruction> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if(widget.controller.currentTestStatus == TestStatus.ready){
+      if (widget.controller.currentTestStatus == TestStatus.ready) {
         isDetailed = false;
       }
       if (!isDetailed) {
@@ -39,14 +40,17 @@ class _TestInstructionState extends State<TestInstruction> {
             Positioned(
               bottom: 0,
               left: 0,
-              child: widget.controller.currentTestStatus == TestStatus.ready?ReadyInstructionContainer():SecondaryInstructionContainer(
-                controller: widget.controller,
-                onShowMore: (bool isShowMore) {
-                  setState(() {
-                    isDetailed = isShowMore;
-                  });
-                },
-              ),
+              child:
+                  widget.controller.currentTestStatus == TestStatus.ready
+                      ? ReadyInstructionContainer()
+                      : SecondaryInstructionContainer(
+                        controller: widget.controller,
+                        onShowMore: (bool isShowMore) {
+                          setState(() {
+                            isDetailed = isShowMore;
+                          });
+                        },
+                      ),
             ),
           ],
         );
@@ -59,13 +63,16 @@ class _TestInstructionState extends State<TestInstruction> {
                   Expanded(flex: 1, child: SizedBox()),
                   Expanded(
                     flex: 5,
-                    child: InstructionCardScrollable(
-                      test: widget.controller.currentTest!,
-                      onShowLess: (bool isShowLess) {
-                        setState(() {
-                          isDetailed = !isShowLess;
-                        });
-                      },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 16, bottom: 16),
+                      child: InstructionCardScrollable(
+                        test: widget.controller.currentTest!,
+                        onShowLess: (bool isShowLess) {
+                          setState(() {
+                            isDetailed = !isShowLess;
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -88,7 +95,7 @@ class ReadyInstructionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(40),
       margin: EdgeInsets.all(16),
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -98,16 +105,22 @@ class ReadyInstructionContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        spacing: 16,
+        spacing: 10,
         children: [
           Text(
             'Your are all set',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500,color: Colors.white),
+            style: AppTypography.body(fontWeight: FontWeight.w600, color: Colors.white),
           ),
-          Text(
-            'Start your test by clicking Start Test',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal,color: Colors.white),
+          RichText(
+            text: TextSpan(
+              style: AppTypography.body(color: Colors.white),
+              children: [
+                TextSpan(text: 'Test starting automatically in 3'),
+                TextSpan(text: '\nseconds.'),
+              ],
+            ),
           ),
         ],
       ),
@@ -142,11 +155,11 @@ class SecondaryInstructionContainer extends StatelessWidget {
         children: [
           Text(
             'Instruction',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: AppTypography.body(fontWeight: FontWeight.w600),
           ),
           Text(
             controller.currentTest!.instruction!,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+            style: AppTypography.body(),
           ),
           TextButton(
             onPressed: () {
@@ -154,11 +167,7 @@ class SecondaryInstructionContainer extends StatelessWidget {
             },
             child: Text(
               'Show more',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-                color: Color(0xFF2978FB),
-              ),
+              style: AppTypography.callout(color: Color(0xFF2978FB)),
             ),
           ),
         ],

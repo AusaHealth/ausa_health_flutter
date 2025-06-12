@@ -35,13 +35,16 @@ class _TestInProgressState extends State<TestInProgress> {
               });
             },),
           ),
-          Expanded(child: isCompleted ? SizedBox() : Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              AusaButton(text: "Stop Test", onPressed: () {
-                widget.controller.cancelTest();
-              }),
-            ],
+          Expanded(child: isCompleted ? SizedBox() : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AusaButton(text: "Stop Test", onPressed: () {
+                  widget.controller.cancelTest();
+                }),
+              ],
+            ),
           )),
         ],
       ),

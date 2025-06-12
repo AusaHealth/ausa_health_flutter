@@ -1,6 +1,8 @@
 import 'package:ausa/common/model/user.dart';
 import 'package:ausa/common/widget/containers.dart';
+import 'package:ausa/common/widget/app_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:ausa/constants/typography.dart';
 
 class DoctorInfo extends StatelessWidget {
   final User doctor;
@@ -8,18 +10,28 @@ class DoctorInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlurContainer(child: Row(
-            mainAxisSize: MainAxisSize.min,
+    return BlurContainer(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppIcons.doctorIcon(size: IconSize.large),
+          const SizedBox(width: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.person),
-              const SizedBox(width: 8),
-              Column(
-                children: [
-                  Text(doctor.name),
-                  Text(doctor.specialization),
-                ],
+              Text(
+                doctor.name,
+                style: AppTypography.headline(color: Color(0xFF5A749E)),
+              ),
+              Text(
+                doctor.specialization,
+                style: AppTypography.callout(color: Color(0xFF5A749E)),
               ),
             ],
-          ));
+          ),
+        ],
+      ),
+    );
   }
 }

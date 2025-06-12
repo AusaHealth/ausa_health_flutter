@@ -1,14 +1,21 @@
 import 'dart:async';
 import 'package:ausa/common/model/test.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:ausa/constants/typography.dart';
 
 class InstructionCardScrollable extends StatefulWidget {
   final Test test;
   final Function(bool) onShowLess;
-  const InstructionCardScrollable({super.key, required this.test, required this.onShowLess});
+  const InstructionCardScrollable({
+    super.key,
+    required this.test,
+    required this.onShowLess,
+  });
 
   @override
-  State<InstructionCardScrollable> createState() => _InstructionCardScrollableState();
+  State<InstructionCardScrollable> createState() =>
+      _InstructionCardScrollableState();
 }
 
 class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
@@ -26,9 +33,16 @@ class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
   void _startAutoPlay() {
     _autoPlayTimer = Timer.periodic(const Duration(seconds: 6), (_) {
       if (_currentPage < widget.test.instructions!.length - 1) {
-        _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
       } else {
-        _pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+        _pageController.animateToPage(
+          0,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
       }
     });
   }
@@ -47,6 +61,7 @@ class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -55,9 +70,9 @@ class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             "Instructions",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: AppTypography.body(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 12),
 
@@ -72,12 +87,12 @@ class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
               itemBuilder: (context, index) {
                 final step = instructions[index];
                 return Center(
-                      child: Image.asset(
-                        step.image,
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        fit: BoxFit.contain,
-                      ),
-                    );
+                  child: Image.asset(
+                    step.image,
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    fit: BoxFit.contain,
+                  ),
+                );
               },
             ),
           ),
@@ -91,26 +106,26 @@ class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
             children: [
               Expanded(
                 child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            child: PageView.builder(
-                controller: _pageController,
-                itemCount: instructions.length,
-                onPageChanged: (index) {
-                  setState(() => _currentPage = index);
-                },
-                itemBuilder: (context, index) {
-                  return Text(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: instructions.length,
+                    onPageChanged: (index) {
+                      setState(() => _currentPage = index);
+                    },
+                    itemBuilder: (context, index) {
+                      return Text(
                         "Step ${index + 1}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                       );
-                },
-                            ),
-                          ),
+                    },
+                  ),
+                ),
               ),
-                 
+
               Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -144,20 +159,25 @@ class _InstructionCardScrollableState extends State<InstructionCardScrollable> {
               },
               itemBuilder: (context, index) {
                 final step = instructions[index];
-                return 
-                    Text(
-                      step.content,
-                      style: const TextStyle(fontSize: 14, color: Colors.black87),
-                    );
+                return Text(
+                  step.content,
+                  style: AppTypography.body(),
+                );
               },
             ),
           ),
 
           const SizedBox(height: 16),
 
-          TextButton(onPressed: () {
-            widget.onShowLess(true);
-          }, child: Text('Show less', style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0xFF2978FB)),)),
+          TextButton(
+            onPressed: () {
+              widget.onShowLess(true);
+            },
+            child: Text(
+              'Show less',
+              style:  AppTypography.callout(color: Color(0xFF2978FB)),
+            ),
+          ),
         ],
       ),
     );

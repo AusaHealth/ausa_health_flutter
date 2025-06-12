@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:ausa/constants/color.dart';
@@ -23,8 +24,11 @@ class TestComingUpDialog extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text('Test Coming Up'),
-          Text(controller.currentTest!.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              Text(
+                'Test Coming Up',
+                style: AppTypography.callout(),
+                ),
+            Text(controller.currentTest!.name, style: AppTypography.largeTitle()),
             ],
           ),
           Image.asset(controller.currentTest!.image),
