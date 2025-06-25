@@ -38,6 +38,7 @@ dependencies:
   percent_indicator: ^4.2.3
   flutter_svg: ^2.1.0
   google_fonts: ^6.1.0
+  flutter_keyboard_visibility: ^6.0.0
 
 dev_dependencies:
   flutter_test:

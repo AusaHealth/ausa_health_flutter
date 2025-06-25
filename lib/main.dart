@@ -1,3 +1,4 @@
+import 'package:ausa/features/settings/page/settings_wifi_page.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:ausa/features/teleconsultation/page/base_teleconsultation_page.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: BaseTeleconsultationPage(),
+      home: SettingsWifiPage(),
     );
   }
 }
