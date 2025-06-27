@@ -22,10 +22,30 @@ class _SettingsWifiPageState extends State<SettingsWifiPage> {
   int selectedTab = 0;
 
   final List<NetworkInfo> initialNetworks = [
-    NetworkInfo(name: 'DIRECT_37129t4bg937', isSecure: true, isConnected: false, signalStrength: 4),
-    NetworkInfo(name: 'Mercy Housing Resident', isSecure: true, isConnected: true, signalStrength: 3),
-    NetworkInfo(name: 'Jian Zhing Primary Care', isSecure: false, isConnected: false, signalStrength: 2),
-    NetworkInfo(name: 'Other...', isSecure: false, isConnected: false, signalStrength: 1),
+    NetworkInfo(
+      name: 'DIRECT_37129t4bg937',
+      isSecure: true,
+      isConnected: false,
+      signalStrength: 4,
+    ),
+    NetworkInfo(
+      name: 'Mercy Housing Resident',
+      isSecure: true,
+      isConnected: true,
+      signalStrength: 3,
+    ),
+    NetworkInfo(
+      name: 'Jian Zhing Primary Care',
+      isSecure: false,
+      isConnected: false,
+      signalStrength: 2,
+    ),
+    NetworkInfo(
+      name: 'Other...',
+      isSecure: false,
+      isConnected: false,
+      signalStrength: 1,
+    ),
   ];
 
   @override
@@ -54,52 +74,69 @@ class _SettingsWifiPageState extends State<SettingsWifiPage> {
                 ),
                 const SizedBox(height: 16),
                 Expanded(
-                  child: selectedTab == 0
-                      ? Obx(() => SettingsNetworkList(
-                            networks: controller.networks,
-                            selectedIndex: controller.selectedNetworkIndex.value,
-                            onTileTap: controller.onNetworkTap,
-                          ))
-                      : Container(
-                          color: Colors.white,
-                          child: const Center(
-                            child: Text('Other tab content'),
+                  child:
+                      selectedTab == 0
+                          ? Obx(
+                            () => SettingsNetworkList(
+                              networks: controller.networks,
+                              selectedIndex:
+                                  controller.selectedNetworkIndex.value,
+                              onTileTap: controller.onNetworkTap,
+                            ),
+                          )
+                          : Container(
+                            color: Colors.white,
+                            child: const Center(
+                              child: Text('Other tab content'),
+                            ),
                           ),
-                        ),
                 ),
               ],
             ),
             // Password modal
-            Obx(() => controller.showPasswordSheet.value
-                ? WifiPasswordModal(
-                    networkName: controller.networks[controller.selectedNetworkIndex.value!].name,
-                    onSubmit: (password) {
-                      controller.submitPassword(password);
-                    },
-                    onClose: () {
-                      controller.showPasswordSheet.value = false;
-                    },
-                  )
-                : const SizedBox.shrink()),
+            Obx(
+              () =>
+                  controller.showPasswordSheet.value
+                      ? WifiPasswordModal(
+                        networkName:
+                            controller
+                                .networks[controller
+                                    .selectedNetworkIndex
+                                    .value!]
+                                .name,
+                        onSubmit: (password) {
+                          controller.submitPassword(password);
+                        },
+                        onClose: () {
+                          controller.showPasswordSheet.value = false;
+                        },
+                      )
+                      : const SizedBox.shrink(),
+            ),
             // Connecting popup
-            Obx(() => controller.isConnecting.value
-                ? WifiPopup(
-                    type: WifiPopupType.connecting,
-                  )
-                : const SizedBox.shrink()),
+            Obx(
+              () =>
+                  controller.isConnecting.value
+                      ? WifiPopup(type: WifiPopupType.connecting)
+                      : const SizedBox.shrink(),
+            ),
             // Connected popup
-            Obx(() => controller.showConnectedPopup.value
-                ? WifiPopup(
-                    type: WifiPopupType.connected,
-                  )
-                : const SizedBox.shrink()),
+            Obx(
+              () =>
+                  controller.showConnectedPopup.value
+                      ? WifiPopup(type: WifiPopupType.connected)
+                      : const SizedBox.shrink(),
+            ),
             // Wrong password popup
-            Obx(() => controller.showWrongPasswordPopup.value
-                ? WifiPopup(
-                    type: WifiPopupType.wrongPassword,
-                    onClose: controller.closeWrongPasswordPopup,
-                  )
-                : const SizedBox.shrink()),
+            Obx(
+              () =>
+                  controller.showWrongPasswordPopup.value
+                      ? WifiPopup(
+                        type: WifiPopupType.wrongPassword,
+                        onClose: controller.closeWrongPasswordPopup,
+                      )
+                      : const SizedBox.shrink(),
+            ),
           ],
         ),
       ),
