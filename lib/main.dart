@@ -1,12 +1,12 @@
-import 'package:ausa/features/profile/page/profile_page.dart';
-import 'package:ausa/features/settings/page/settings_wifi_page.dart';
+import 'package:ausa/features/appointments/controller/appointments_controller.dart';
+import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
-import 'package:ausa/features/teleconsultation/page/base_teleconsultation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
   Get.put(TeleconsultationController());
+  Get.put(AppointmentsController());
 
   runApp(
     MaterialApp(
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ProfilePage(),
+      home: AppointmentSchedulingPage(),
     );
   }
 }
