@@ -10,14 +10,26 @@ class SuccessPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black54,
+      color: const Color(0xFF0E2457).withOpacity(0.8),
       child: Center(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 40),
-          padding: const EdgeInsets.all(40),
+          width: 500,
+          margin: const EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(20),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF4F7EFF), Color(0xFF2B5CE6)],
+            ),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -28,34 +40,41 @@ class SuccessPopup extends StatelessWidget {
                 child: GestureDetector(
                   onTap: onClose,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(8),
                     child: const Icon(
                       Icons.close,
                       color: Colors.white,
-                      size: 24,
+                      size: 20,
                     ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
-              // Success icon
+              // Success icon with glow effect
               Container(
-                width: 80,
-                height: 80,
-                decoration: const BoxDecoration(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                    ),
+                  ],
                 ),
                 child: const Icon(
                   Icons.check,
-                  color: AppColors.primaryColor,
-                  size: 40,
+                  color: Color(0xFF2B5CE6),
+                  size: 50,
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
               // Success text
               Text(
@@ -73,13 +92,13 @@ class SuccessPopup extends StatelessWidget {
               Text(
                 'You will be reminded about this\nappointment before the scheduled time.',
                 style: AppTypography.body(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withOpacity(0.95),
                   fontWeight: FontWeight.w400,
-                ),
+                ).copyWith(height: 1.4),
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 8),
             ],
           ),
         ),

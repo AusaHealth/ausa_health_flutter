@@ -1,14 +1,19 @@
+import 'dart:ui';
+
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:ausa/features/appointments/widget/appointment_card_widget.dart';
 import 'package:ausa/features/appointments/widget/calendar_view_widget.dart';
+import 'package:ausa/features/appointments/widget/cancel_appointment_dialog.dart';
+import 'package:ausa/features/appointments/widget/discard_changes_dialog.dart';
 import 'package:ausa/features/appointments/widget/no_appointments_widget.dart';
 import 'package:ausa/features/appointments/widget/step_indicator.dart';
 import 'package:ausa/features/appointments/widget/success_popup.dart';
 import 'package:ausa/features/appointments/widget/time_slots_grid.dart';
 import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -45,6 +50,30 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       ? SuccessPopup(onClose: controller.closeSuccessPopup)
                       : const SizedBox.shrink(),
             ),
+
+            // Discard changes dialog overlay
+            Obx(
+              () =>
+                  controller.showDiscardDialog
+                      ? DiscardChangesDialog(
+                        onDiscard: controller.discardChanges,
+                        onKeepEditing: controller.hideDiscardChangesDialog,
+                      )
+                      : const SizedBox.shrink(),
+            ),
+
+            // Cancel appointment dialog overlay
+            Obx(
+              () =>
+                  controller.showCancelDialog &&
+                          controller.editingAppointment != null
+                      ? CancelAppointmentDialog(
+                        appointment: controller.editingAppointment!,
+                        onCancel: controller.cancelAppointment,
+                        onKeep: controller.hideCancelAppointmentDialog,
+                      )
+                      : const SizedBox.shrink(),
+            ),
           ],
         ),
       ),
@@ -67,7 +96,10 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 },
               );
             } else {
-              return _buildAppointmentsList(controller.appointments);
+              return _buildAppointmentsList(
+                controller.appointments,
+                controller,
+              );
             }
           }),
         ),
@@ -77,18 +109,25 @@ class AppointmentSchedulingPage extends StatelessWidget {
 
   Widget _buildAppointmentsHeader(AppointmentsController controller) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: Row(
         children: [
           // Back button
           GestureDetector(
-            onTap: controller.goBackToScheduling,
+            onTap: () => controller.goBackToScheduling(),
             child: Container(
-              padding: const EdgeInsets.all(8),
-              child: const Icon(
-                Icons.arrow_back,
-                color: Colors.black87,
-                size: 24,
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black87,
+                  size: 16,
+                ),
               ),
             ),
           ),
@@ -96,62 +135,46 @@ class AppointmentSchedulingPage extends StatelessWidget {
           const SizedBox(width: 16),
 
           // Title
-          Text(
-            'Scheduled appointments',
-            style: AppTypography.title1(fontWeight: FontWeight.w600),
-          ),
-
-          const Spacer(),
-
-          // WiFi settings link (when offline)
-          Text(
-            'Offline, but scheduled appointments? Check ',
-            style: AppTypography.callout(
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              // TODO: Navigate to WiFi settings
-            },
-            child: Text(
-              'W-Fi Settings',
-              style: AppTypography.callout(
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
+          Text('Scheduled appointments', style: AppTypography.headline()),
         ],
       ),
     );
   }
 
-  Widget _buildAppointmentsList(List<Appointment> appointments) {
+  Widget _buildAppointmentsList(
+    List<Appointment> appointments,
+    AppointmentsController controller,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(24),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.2,
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.5),
+
+          borderRadius: BorderRadius.circular(32),
         ),
-        itemCount: appointments.length,
-        itemBuilder: (context, index) {
-          final appointment = appointments[index];
-          return AppointmentCardWidget(
-            appointment: appointment,
-            onEdit: () {
-              // TODO: Edit appointment
-            },
-            onShowFullSymptoms: () {
-              // TODO: Show full symptoms
-            },
-          );
-        },
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.9,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          itemCount: appointments.length,
+          itemBuilder: (context, index) {
+            final appointment = appointments[index];
+            return AppointmentCardWidget(
+              appointment: appointment,
+              onEdit: () {
+                controller.startEditingAppointment(appointment);
+              },
+              onShowFullSymptoms: () {
+                // TODO: Show full symptoms
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -165,18 +188,31 @@ class AppointmentSchedulingPage extends StatelessWidget {
         // Main content
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left card
-                Expanded(flex: 1, child: _buildLeftCard(controller)),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: const Color.fromRGBO(222, 222, 222, 0.5),
+                backgroundBlendMode: BlendMode.srcOver,
+              ),
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Left card
+                      Expanded(flex: 4, child: _buildLeftCard(controller)),
 
-                const SizedBox(width: 24),
+                      const SizedBox(width: 24),
 
-                // Right card
-                Expanded(flex: 1, child: _buildRightCard(controller)),
-              ],
+                      // Right card
+                      Expanded(flex: 2, child: _buildRightCard(controller)),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -192,77 +228,17 @@ class AppointmentSchedulingPage extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           child: Row(
             children: [
-              StepIndicator(currentStep: controller.currentStep),
-              const Spacer(),
-              GestureDetector(
-                onTap: controller.toggleViewMode,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 16,
-                        color: AppColors.primaryColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Scheduled Appointments',
-                        style: AppTypography.callout(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        // Selected date/time display
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              Text(
-                controller.selectedTimeSlot?.dateTime.toString().split(
-                      ' ',
-                    )[0] ??
-                    '',
-                style: AppTypography.headline(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(width: 8),
-              Container(width: 1, height: 16, color: Colors.grey[300]),
-              const SizedBox(width: 8),
-              Text(
-                controller.selectedTimeSlot?.formattedTime ?? '',
-                style: AppTypography.headline(fontWeight: FontWeight.w600),
+              StepIndicator(
+                currentStep: controller.currentStep,
+                onBackPressed: controller.handleBackPressed,
               ),
               const Spacer(),
-              GestureDetector(
-                onTap: controller.goBackToStep1,
-                child: Text(
-                  'Change',
-                  style: AppTypography.body(
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+              SecondaryButton(
+                text: 'Scheduled Appointments',
+                onPressed: controller.toggleViewMode,
+                icon: Icons.calendar_today,
+                iconSize: 16,
+                height: 40,
               ),
             ],
           ),
@@ -270,73 +246,143 @@ class AppointmentSchedulingPage extends StatelessWidget {
 
         // Full screen symptoms entry
         Expanded(
-          child: Container(
-            margin: const EdgeInsets.all(24),
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Any symptoms you want to share?',
-                  style: AppTypography.headline(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[600],
-                  ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(46),
+              ),
+              width: double.infinity,
+              height: double.infinity,
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(36),
                 ),
-
-                const SizedBox(height: 24),
-
-                // Text input area
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[50],
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey[200]!),
-                    ),
-                    child: Obx(
-                      () => TextField(
-                        controller: TextEditingController(
-                          text: controller.symptomsText,
-                        ),
-                        onChanged: controller.updateSymptomsText,
-                        maxLines: null,
-                        expands: true,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Type...',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                        style: AppTypography.body(),
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Voice input and finish button
-                Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      width: 350,
+                      padding: const EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: BorderRadius.circular(42),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20),
+                          Text(
+                            controller.selectedTimeSlot?.dateTime
+                                    .toString()
+                                    .split(' ')[0] ??
+                                '',
+                            style: AppTypography.body(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 1,
+                            height: 16,
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            controller.selectedTimeSlot?.formattedTime ?? '',
+                            style: AppTypography.body(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const Spacer(),
+                          SecondaryButton(
+                            text: 'Change',
+                            onPressed: controller.goBackToStep1,
+                            iconSize: 16,
+                            height: 40,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Text(
+                      'Any symptoms you want to share?',
+                      style: AppTypography.body(),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Text input area with voice input at bottom
                     Expanded(
-                      child: Obx(
-                        () => VoiceInputWidget(
-                          isRecording: controller.isRecording,
-                          onToggleRecording: controller.startRecording,
-                          onClear: controller.clearSymptomsText,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey[200]!),
+                        ),
+                        child: Column(
+                          children: [
+                            // Text input area
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  16,
+                                  16,
+                                  16,
+                                  0,
+                                ),
+                                child: Obx(
+                                  () => TextField(
+                                    controller: TextEditingController(
+                                      text: controller.symptomsText,
+                                    ),
+                                    onChanged: controller.updateSymptomsText,
+                                    maxLines: null,
+                                    expands: true,
+                                    textAlignVertical: TextAlignVertical.top,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Type...',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
+                                    style: AppTypography.body(),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // Voice input at bottom of container
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Obx(
+                                () => VoiceInputWidget(
+                                  isRecording: controller.isRecording,
+                                  onToggleRecording: controller.startRecording,
+                                  onClear: controller.clearSymptomsText,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Obx(() => _buildFlexibleFinishButton(controller)),
+
+                    const SizedBox(height: 24),
+
+                    // Finish button
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Obx(() => _buildFinishButton(controller)),
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -346,68 +392,93 @@ class AppointmentSchedulingPage extends StatelessWidget {
 
   Widget _buildHeader(AppointmentsController controller) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: Obx(() {
         if (controller.isMonthView) {
-          return StepIndicator(currentStep: controller.currentStep);
+          return Row(
+            children: [
+              StepIndicator(
+                currentStep: controller.currentStep,
+                onBackPressed: controller.handleBackPressed,
+              ),
+              const Spacer(),
+              if (controller.isEditMode) ...[
+                // Cancel appointment button in edit mode
+                SecondaryButton(
+                  text: 'Cancel this appointment',
+                  onPressed: controller.showCancelAppointmentDialog,
+                  icon: Icons.cancel_outlined,
+                  iconSize: 16,
+                  height: 40,
+                  textColor: const Color(0xFFFF8C00),
+                ),
+              ] else ...[
+                // Scheduled appointments button in normal mode
+                SecondaryButton(
+                  text: 'Scheduled Appointments',
+                  onPressed: controller.toggleViewMode,
+                  icon: Icons.calendar_today,
+                  iconSize: 16,
+                  height: 40,
+                ),
+              ],
+            ],
+          );
         } else {
           return Row(
             children: [
               // Back button
               GestureDetector(
-                onTap: () => Navigator.of(Get.context!).pop(),
+                onTap: controller.handleBackPressed,
                 child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.black87,
-                    size: 24,
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.black87,
+                      size: 16,
+                    ),
                   ),
                 ),
               ),
 
               const SizedBox(width: 16),
 
-              // Title
+              // Title - changes based on edit mode
               Text(
-                'Connect with care team',
-                style: AppTypography.title1(fontWeight: FontWeight.w600),
+                controller.isEditMode
+                    ? 'Edit Appointment'
+                    : 'Connect with care team',
+                style: AppTypography.headline(),
               ),
 
               const Spacer(),
 
-              // Scheduled appointments button
-              GestureDetector(
-                onTap: controller.toggleViewMode,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 16,
-                        color: AppColors.primaryColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Scheduled Appointments',
-                        style: AppTypography.callout(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
+              if (controller.isEditMode) ...[
+                // Cancel appointment button in edit mode
+                SecondaryButton(
+                  text: 'Cancel this appointment',
+                  onPressed: controller.showCancelAppointmentDialog,
+                  icon: Icons.cancel_outlined,
+                  iconSize: 16,
+                  height: 40,
+                  textColor: const Color(0xFFFF8C00),
                 ),
-              ),
+              ] else ...[
+                // Scheduled appointments button in normal mode
+                SecondaryButton(
+                  text: 'Scheduled Appointments',
+                  onPressed: controller.toggleViewMode,
+                  icon: Icons.calendar_today,
+                  iconSize: 16,
+                  height: 30,
+                ),
+              ],
             ],
           );
         }
@@ -419,7 +490,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(40),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -446,7 +517,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(40),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -457,16 +528,36 @@ class AppointmentSchedulingPage extends StatelessWidget {
       ),
       child: Obx(() {
         if (controller.isMonthView) {
-          return TimeSlotsGrid(
-            timeSlots: controller.availableTimeSlots,
-            selectedTimeSlot: controller.selectedTimeSlot,
-            onTimeSlotSelected: (timeSlot) {
-              controller.selectTimeSlot(timeSlot);
-              // Auto navigate to step 2 after selecting time slot
-              Future.delayed(const Duration(milliseconds: 300), () {
-                controller.goToStep2();
-              });
-            },
+          return Column(
+            children: [
+              // Time slots grid
+              Expanded(
+                child: TimeSlotsGrid(
+                  timeSlots: controller.availableTimeSlots,
+                  selectedTimeSlot: controller.selectedTimeSlot,
+                  onTimeSlotSelected: (timeSlot) {
+                    controller.selectTimeSlot(timeSlot);
+                    // Remove automatic navigation to step 2
+                  },
+                ),
+              ),
+
+              // Enter Symptoms button
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: PrimaryButton(
+                  text: 'Enter Symptoms',
+                  onPressed:
+                      controller.selectedTimeSlot != null
+                          ? controller.goToStep2
+                          : null,
+                  isEnabled: controller.selectedTimeSlot != null,
+                  width: double.infinity,
+                  height: 56,
+                  borderRadius: 32,
+                ),
+              ),
+            ],
           );
         } else {
           return _buildSymptomsCard(controller);
@@ -477,7 +568,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
 
   Widget _buildDateTimeSelectionCard(AppointmentsController controller) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -485,55 +576,25 @@ class AppointmentSchedulingPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Select Date',
-                style: AppTypography.headline(fontWeight: FontWeight.w600),
-              ),
-              GestureDetector(
-                onTap: controller.toggleMonthView,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.calendar_view_month,
-                        size: 16,
-                        color: AppColors.primaryColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Month View',
-                        style: AppTypography.callout(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              Text('Select Date', style: AppTypography.body()),
+              TertiaryButton(
+                text: 'Month View',
+                onPressed: controller.toggleMonthView,
+                icon: Icons.calendar_view_month,
+                textColor: AppColors.primaryColor,
+                iconColor: AppColors.primaryColor,
               ),
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 14),
 
           // Week view dates
           _buildWeekView(controller),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: 20),
 
-          Text(
-            'Select Time Slot',
-            style: AppTypography.headline(fontWeight: FontWeight.w600),
-          ),
+          Text('Select Time Slot', style: AppTypography.body()),
 
           const SizedBox(height: 16),
 
@@ -543,9 +604,10 @@ class AppointmentSchedulingPage extends StatelessWidget {
               () => GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  childAspectRatio: 2.2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
+                  mainAxisExtent:
+                      47, // Adjusted to accommodate default button height + spacing
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 15,
                 ),
                 itemCount: controller.availableTimeSlots.length,
                 itemBuilder: (context, index) {
@@ -553,45 +615,16 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   final isSelected =
                       controller.selectedTimeSlot?.id == timeSlot.id;
 
-                  return GestureDetector(
-                    onTap:
-                        timeSlot.isAvailable
-                            ? () => controller.selectTimeSlot(timeSlot)
-                            : null,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color:
-                            isSelected
-                                ? const Color(0xFF1B1B3B)
-                                : timeSlot.isAvailable
-                                ? AppColors.primaryColor.withOpacity(0.1)
-                                : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color:
-                              isSelected
-                                  ? const Color(0xFF1B1B3B)
-                                  : timeSlot.isAvailable
-                                  ? AppColors.primaryColor.withOpacity(0.3)
-                                  : Colors.grey[300]!,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          timeSlot.formattedTime,
-                          style: AppTypography.callout(
-                            color:
-                                isSelected
-                                    ? Colors.white
-                                    : timeSlot.isAvailable
-                                    ? AppColors.primaryColor
-                                    : Colors.grey[400],
-                            fontWeight:
-                                isSelected ? FontWeight.w600 : FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
+                  return SelectionButton(
+                    key: ValueKey('${timeSlot.id}_$isSelected'),
+                    text: timeSlot.formattedTime,
+                    initialSelected: isSelected,
+                    isEnabled: timeSlot.isAvailable,
+                    onSelectionChanged: (selected) {
+                      if (selected) {
+                        controller.selectTimeSlot(timeSlot);
+                      }
+                    },
                   );
                 },
               ),
@@ -615,6 +648,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     });
 
     return Row(
+      spacing: 20,
       children:
           weekDates.map((dateInfo) {
             final date = dateInfo['date'] as DateTime;
@@ -624,35 +658,43 @@ class AppointmentSchedulingPage extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => controller.selectDate(date),
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  // margin: const EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
                     color:
                         isSelected
                             ? const Color(0xFF1B1B3B)
-                            : Colors.transparent,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color:
-                          isSelected
-                              ? const Color(0xFF1B1B3B)
-                              : Colors.grey[300]!,
-                    ),
+                            : const Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        spreadRadius: 4,
+                        blurRadius: 7,
+                        offset: const Offset(2, 4),
+                      ),
+                    ],
                   ),
                   child: Column(
                     children: [
                       Text(
                         dateInfo['month'] as String,
                         style: AppTypography.callout(
-                          color: isSelected ? Colors.white : Colors.grey[600],
+                          color:
+                              isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF666666),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         dateInfo['day'] as String,
-                        style: AppTypography.title2(
-                          color: isSelected ? Colors.white : Colors.black87,
+                        style: AppTypography.headline(
+                          color: isSelected ? Colors.white : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -667,132 +709,81 @@ class AppointmentSchedulingPage extends StatelessWidget {
 
   Widget _buildSymptomsCard(AppointmentsController controller) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Anything you want to share?',
-            style: AppTypography.headline(
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[700],
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // Text input area
+          // Text input area with voice input at bottom
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[200]!),
+                borderRadius: BorderRadius.circular(32),
+                // border: Border.all(color: Colors.grey[200]!),
               ),
-              child: Obx(
-                () => TextField(
-                  controller: TextEditingController(
-                    text: controller.symptomsText,
+              child: Column(
+                children: [
+                  // Text input area
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      child: Obx(
+                        () => TextField(
+                          controller: TextEditingController(
+                            text: controller.symptomsText,
+                          ),
+                          onChanged: controller.updateSymptomsText,
+                          maxLines: null,
+                          expands: true,
+                          textAlignVertical: TextAlignVertical.top,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Anything you want to share?',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          style: AppTypography.body(),
+                        ),
+                      ),
+                    ),
                   ),
-                  onChanged: controller.updateSymptomsText,
-                  maxLines: null,
-                  expands: true,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Type...',
-                    hintStyle: TextStyle(color: Colors.grey),
+
+                  // Voice input at bottom of container
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      // border: Border(top: BorderSide(color: Colors.grey[200]!)),
+                    ),
+                    child: Obx(
+                      () => VoiceInputWidget(
+                        isRecording: controller.isRecording,
+                        onToggleRecording: controller.startRecording,
+                        onClear: controller.clearSymptomsText,
+                      ),
+                    ),
                   ),
-                  style: AppTypography.body(),
-                ),
+                ],
               ),
             ),
           ),
 
           const SizedBox(height: 24),
-
-          // Voice input
-          Obx(
-            () => VoiceInputWidget(
-              isRecording: controller.isRecording,
-              onToggleRecording: controller.startRecording,
-              onClear: controller.clearSymptomsText,
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
           // Finish button
-          Obx(() => _buildFinishButton(controller)),
+          Center(child: Obx(() => _buildFinishButton(controller))),
         ],
       ),
     );
   }
 
   Widget _buildFinishButton(AppointmentsController controller) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: controller.canFinish ? controller.scheduleAppointment : null,
-        style: ElevatedButton.styleFrom(
-          backgroundColor:
-              controller.canFinish ? AppColors.primaryColor : Colors.grey[300],
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 0,
-        ),
-        child:
-            controller.isLoading
-                ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-                : Text(
-                  'Finish',
-                  style: AppTypography.body(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-      ),
-    );
-  }
-
-  Widget _buildFlexibleFinishButton(AppointmentsController controller) {
-    return ElevatedButton(
+    return PrimaryButton(
+      text: 'Finish',
       onPressed: controller.canFinish ? controller.scheduleAppointment : null,
-      style: ElevatedButton.styleFrom(
-        backgroundColor:
-            controller.canFinish ? AppColors.primaryColor : Colors.grey[300],
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 0,
-      ),
-      child:
-          controller.isLoading
-              ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-              : Text(
-                'Finish',
-                style: AppTypography.body(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+      isLoading: controller.isLoading,
+      isEnabled: controller.canFinish,
+      width: 100,
+      height: 56,
+      borderRadius: 32,
     );
   }
 

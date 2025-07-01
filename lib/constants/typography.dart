@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'design_scale.dart';
 
 /// Typography class containing text styles for the application
 /// Based on the defined text styles:
@@ -9,12 +10,17 @@ import 'package:google_fonts/google_fonts.dart';
 /// - Headline (40px)
 /// - Body (32px)
 /// - Callout (24px)
- 
-/// Font size ratio used to scale all typography
-const double _fontSizeRatio = 0.5;
 
 class AppTypography {
-  /// Large Title - 64px
+  // Base font sizes
+  static const double _baseLargeTitle = 64;
+  static const double _baseTitle1 = 56;
+  static const double _baseTitle2 = 48;
+  static const double _baseHeadline = 40;
+  static const double _baseBody = 32;
+  static const double _baseCallout = 24;
+
+  /// Large Title - 64px base
   static TextStyle largeTitle({
     Color? color,
     FontWeight fontWeight = FontWeight.w600,
@@ -22,7 +28,7 @@ class AppTypography {
     TextDecoration? decoration,
   }) {
     return GoogleFonts.inter(
-      fontSize: 64 * _fontSizeRatio,
+      fontSize: DesignScaleManager.scaleValue(_baseLargeTitle),
       fontWeight: fontWeight,
       color: color ?? Colors.black,
       height: height,
@@ -30,7 +36,7 @@ class AppTypography {
     );
   }
 
-  /// Title 1 - 56px
+  /// Title 1 - 56px base
   static TextStyle title1({
     Color? color,
     FontWeight fontWeight = FontWeight.w600,
@@ -38,7 +44,7 @@ class AppTypography {
     TextDecoration? decoration,
   }) {
     return GoogleFonts.inter(
-      fontSize: 56 * _fontSizeRatio,
+      fontSize: DesignScaleManager.scaleValue(_baseTitle1),
       fontWeight: fontWeight,
       color: color ?? Colors.black,
       height: height,
@@ -46,7 +52,7 @@ class AppTypography {
     );
   }
 
-  /// Title 2 - 48px
+  /// Title 2 - 48px base
   static TextStyle title2({
     Color? color,
     FontWeight fontWeight = FontWeight.w600,
@@ -54,7 +60,7 @@ class AppTypography {
     TextDecoration? decoration,
   }) {
     return GoogleFonts.inter(
-      fontSize: 48 * _fontSizeRatio,
+      fontSize: DesignScaleManager.scaleValue(_baseTitle2),
       fontWeight: fontWeight,
       color: color ?? Colors.black,
       height: height,
@@ -62,7 +68,7 @@ class AppTypography {
     );
   }
 
-  /// Headline - 40px
+  /// Headline - 40px base
   static TextStyle headline({
     Color? color,
     FontWeight fontWeight = FontWeight.w600,
@@ -70,7 +76,7 @@ class AppTypography {
     TextDecoration? decoration,
   }) {
     return GoogleFonts.inter(
-      fontSize: 40 * _fontSizeRatio,
+      fontSize: DesignScaleManager.scaleValue(_baseHeadline),
       fontWeight: fontWeight,
       color: color ?? Colors.black,
       height: height,
@@ -78,7 +84,7 @@ class AppTypography {
     );
   }
 
-  /// Body - 32px
+  /// Body - 32px base
   static TextStyle body({
     Color? color,
     FontWeight fontWeight = FontWeight.w400,
@@ -86,7 +92,7 @@ class AppTypography {
     TextDecoration? decoration,
   }) {
     return GoogleFonts.inter(
-      fontSize: 32 * _fontSizeRatio,
+      fontSize: DesignScaleManager.scaleValue(_baseBody),
       fontWeight: fontWeight,
       color: color ?? Colors.black,
       height: height,
@@ -94,7 +100,7 @@ class AppTypography {
     );
   }
 
-  /// Callout - 24px
+  /// Callout - 24px base
   static TextStyle callout({
     Color? color,
     FontWeight fontWeight = FontWeight.w400,
@@ -102,7 +108,7 @@ class AppTypography {
     TextDecoration? decoration,
   }) {
     return GoogleFonts.inter(
-      fontSize: 24 * _fontSizeRatio,
+      fontSize: DesignScaleManager.scaleValue(_baseCallout),
       fontWeight: fontWeight,
       color: color ?? Colors.black,
       height: height,

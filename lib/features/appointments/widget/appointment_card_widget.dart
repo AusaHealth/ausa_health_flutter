@@ -18,10 +18,10 @@ class AppointmentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(36),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(52),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -32,88 +32,116 @@ class AppointmentCardWidget extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Status and edit button
+          // Top section with time and status/edit button
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildStatusChip(appointment.status),
+              // Time display with icon
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(26),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 20,
+                      color: AppColors.primaryColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      appointment.formattedTime,
+                      style: AppTypography.body(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const Spacer(),
+
               if (onEdit != null)
                 GestureDetector(
                   onTap: onEdit,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
-                    child: Icon(Icons.edit, color: Colors.grey[600], size: 16),
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.edit_outlined,
+                      color: AppColors.primaryColor,
+                      size: 24,
+                    ),
                   ),
                 ),
             ],
           ),
 
-          const SizedBox(height: 16),
-
-          // Date and time
-          Text(
-            appointment.formattedDate,
-            style: AppTypography.headline(fontWeight: FontWeight.w600),
-          ),
-
-          const SizedBox(height: 4),
-
-          Text(
-            appointment.formattedTime,
-            style: AppTypography.headline(fontWeight: FontWeight.w600),
-          ),
-
-          const SizedBox(height: 12),
-
-          // Doctor info
-          Text(
-            'With ${appointment.doctorName}',
-            style: AppTypography.body(
-              color: Colors.grey[700],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // Symptoms
-          Text(
-            'Symptoms',
-            style: AppTypography.callout(
-              color: Colors.grey[500],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-
-          const SizedBox(height: 4),
-
-          Expanded(
-            child: Text(
-              appointment.symptoms,
-              style: AppTypography.body(
-                color: Colors.black87,
-                fontWeight: FontWeight.w400,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Date
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    appointment.formattedDate,
+                    style: AppTypography.headline(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+                  _buildStatusChip(appointment.status),
+                ],
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
 
-          const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
-          // Read more link
-          if (onShowFullSymptoms != null)
-            GestureDetector(
-              onTap: onShowFullSymptoms,
-              child: Text(
-                'Read more',
-                style: AppTypography.callout(
-                  color: AppColors.primaryColor,
+              // Doctor info
+              Text(
+                'with ${appointment.doctorName}',
+                style: AppTypography.headline(
+                  color: Colors.black,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-            ),
+            ],
+          ),
+
+          Row(
+            children: [
+              Text(
+                'Symptoms: ',
+                style: AppTypography.body(
+                  color: Colors.grey[600],
+                ),
+              ),
+              Text(
+                _getTruncatedSymptoms(appointment.symptoms),
+                style: AppTypography.body(
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(width: 4),
+              if (_shouldShowReadMore(appointment.symptoms))
+                GestureDetector(
+                  onTap: onShowFullSymptoms,
+                  child: Text(
+                    'read more',
+                    style: AppTypography.body(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -123,31 +151,27 @@ class AppointmentCardWidget extends StatelessWidget {
     Color chipColor;
     Color textColor;
     String text;
-    IconData icon;
 
     switch (status) {
       case AppointmentStatus.confirmed:
-        chipColor = Colors.green.withOpacity(0.1);
-        textColor = Colors.green;
+        chipColor = const Color(0xFFE8F5E8);
+        textColor = const Color(0xFF2E7D32);
         text = 'Appointment Confirmed';
-        icon = Icons.check_circle;
         break;
       case AppointmentStatus.pending:
-        chipColor = Colors.orange.withOpacity(0.1);
-        textColor = Colors.orange;
+        chipColor = const Color(0xFFFFF3E0);
+        textColor = const Color(0xFFE65100);
         text = 'Not confirmed';
-        icon = Icons.access_time;
         break;
       case AppointmentStatus.cancelled:
         chipColor = Colors.red.withOpacity(0.1);
         textColor = Colors.red;
         text = 'Cancelled';
-        icon = Icons.cancel;
         break;
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: chipColor,
         borderRadius: BorderRadius.circular(12),
@@ -155,8 +179,6 @@ class AppointmentCardWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: textColor),
-          const SizedBox(width: 4),
           Text(
             text,
             style: AppTypography.callout(
@@ -167,5 +189,18 @@ class AppointmentCardWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getTruncatedSymptoms(String symptoms) {
+    const maxLength = 20; // Adjust based on your needs
+    if (symptoms.length <= maxLength) {
+      return symptoms;
+    }
+    return symptoms.substring(0, maxLength);
+  }
+
+  bool _shouldShowReadMore(String symptoms) {
+    const maxLength = 25;
+    return symptoms.length > maxLength;
   }
 }

@@ -2,33 +2,22 @@ import 'package:ausa/features/appointments/controller/appointments_controller.da
 import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Set full screen mode
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+    overlays: [],
+  );
+  
   Get.put(TeleconsultationController());
   Get.put(AppointmentsController());
 
-  runApp(
-    MaterialApp(
-      home: Builder(
-        builder: (context) {
-          final width = MediaQuery.of(context).size.width;
-          return Container(
-            color: Colors.grey[200],
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: 1200,
-                  maxWidth: width <= 1920 ? width : 1920,
-                ),
-                child: MyApp(),
-              ),
-            ),
-          );
-        },
-      ),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,8 +27,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Ausa Health',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+          ),
+        ),
       ),
       home: AppointmentSchedulingPage(),
     );

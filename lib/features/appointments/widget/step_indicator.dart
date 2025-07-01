@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class StepIndicator extends StatelessWidget {
   final int currentStep;
   final int totalSteps;
+  final VoidCallback? onBackPressed;
 
   const StepIndicator({
     super.key,
     required this.currentStep,
     this.totalSteps = 2,
+    this.onBackPressed,
   });
 
   @override
@@ -18,26 +20,28 @@ class StepIndicator extends StatelessWidget {
       children: [
         // Back button
         GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
+          onTap: onBackPressed ?? () => Navigator.of(context).pop(),
           child: Container(
-            padding: const EdgeInsets.all(8),
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-              size: 24,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.black87,
+                size: 16,
+              ),
             ),
           ),
         ),
+
         const SizedBox(width: 16),
 
         // Title
-        Text(
-          'Pick another date',
-          style: AppTypography.headline(
-            color: Colors.black87,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        Text('Pick another date', style: AppTypography.headline()),
 
         const SizedBox(width: 24),
 
@@ -48,64 +52,57 @@ class StepIndicator extends StatelessWidget {
             final isActive = stepNumber == currentStep;
             final isCompleted = stepNumber < currentStep;
 
-            return Container(
-              margin: const EdgeInsets.only(right: 8),
-              child: Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+            return Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color:
+                        isActive
+                            ? const Color(0xFFFFFFFF)
+                            : isCompleted
+                            ? AppColors.primaryColor
+                            : Color(0xFFFFFFFF),
+                    border: Border.all(
                       color:
                           isActive
                               ? const Color(0xFFFF8A00)
                               : isCompleted
                               ? AppColors.primaryColor
-                              : Colors.grey[300],
-                      border: Border.all(
-                        color:
-                            isActive
-                                ? const Color(0xFFFF8A00)
-                                : isCompleted
-                                ? AppColors.primaryColor
-                                : Colors.grey[300]!,
-                        width: 2,
-                      ),
-                    ),
-                    child: Center(
-                      child:
-                          isCompleted
-                              ? const Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 16,
-                              )
-                              : Text(
-                                stepNumber.toString(),
-                                style: TextStyle(
-                                  color:
-                                      isActive
-                                          ? Colors.white
-                                          : Colors.grey[600],
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                              ),
+                              : Color(0xFFFFFFFF),
+                      width: 1,
                     ),
                   ),
-                  if (index < totalSteps - 1)
-                    Container(
-                      width: 20,
-                      height: 2,
-                      color:
-                          isCompleted
-                              ? AppColors.primaryColor
-                              : Colors.grey[300],
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                    ),
-                ],
-              ),
+                  child: Center(
+                    child:
+                        isCompleted
+                            ? const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 16,
+                            )
+                            : Text(
+                              stepNumber.toString(),
+                              style: AppTypography.body(
+                                color:
+                                    isActive
+                                        ? Color(0xFFFF8A00)
+                                        : Color(0xFFFF8A00),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                  ),
+                ),
+                if (index < totalSteps - 1)
+                  Container(
+                    width: 20,
+                    height: 2,
+                    color:
+                        isCompleted ? AppColors.primaryColor : Colors.grey[300],
+                  ),
+              ],
             );
           }),
         ),

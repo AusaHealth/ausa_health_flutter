@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
@@ -43,38 +44,14 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
             children: [
               Text(
                 'Select Date',
-                style: AppTypography.headline(fontWeight: FontWeight.w600),
+                style: AppTypography.body(),
               ),
-              GestureDetector(
-                onTap: widget.onBackToWeekView,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.calendar_view_week,
-                        size: 16,
-                        color: AppColors.primaryColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Back to week view',
-                        style: AppTypography.callout(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                TertiaryButton(
+                text: 'Back to week view',
+                onPressed: widget.onBackToWeekView,
+                icon: Icons.calendar_view_month,
+                textColor: AppColors.primaryColor,
+                iconColor: AppColors.primaryColor,
               ),
             ],
           ),
@@ -194,7 +171,16 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
       nextMonthDay++;
     }
 
-    return GridView.count(crossAxisCount: 7, children: days);
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 7,
+        childAspectRatio: 1.9,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
+      ),
+      itemCount: days.length,
+      itemBuilder: (context, index) => days[index],
+    );
   }
 
   Widget _buildDayCell(
@@ -211,31 +197,36 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
     return GestureDetector(
       onTap:
           isCurrentMonth && !isPast ? () => widget.onDateSelected(date) : null,
-      child: Container(
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color:
-              isSelected
-                  ? const Color(0xFF1B1B3B)
-                  : isToday
-                  ? AppColors.primaryColor.withOpacity(0.1)
-                  : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-        ),
+      child: SizedBox(
         child: Center(
-          child: Text(
-            day.toString(),
-            style: AppTypography.body(
+          child: Container(
+            height: 44,
+            width: 44,
+            decoration: BoxDecoration(
               color:
                   isSelected
-                      ? Colors.white
-                      : !isCurrentMonth || isPast
-                      ? Colors.grey[400]
+                      ? const Color(0xFF1B1B3B)
                       : isToday
-                      ? AppColors.primaryColor
-                      : Colors.black87,
-              fontWeight:
-                  isSelected || isToday ? FontWeight.w600 : FontWeight.w400,
+                      ? AppColors.primaryColor.withOpacity(0.1)
+                      : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                day.toString(),
+                style: AppTypography.body(
+                  color:
+                      isSelected
+                          ? Colors.white
+                          : !isCurrentMonth || isPast
+                          ? Colors.grey[400]
+                          : isToday
+                          ? AppColors.primaryColor
+                          : Colors.black87,
+                  fontWeight:
+                      isSelected || isToday ? FontWeight.w600 : FontWeight.w400,
+                ),
+              ),
             ),
           ),
         ),
