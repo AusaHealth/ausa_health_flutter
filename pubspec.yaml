@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.1.0
   google_fonts: ^6.1.0
   flutter_keyboard_visibility: ^6.0.0
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/icons/profile_icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
