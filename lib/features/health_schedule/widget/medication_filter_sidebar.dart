@@ -15,33 +15,44 @@ class MedicationFilterSidebar extends StatelessWidget {
       child: Obx(() {
         final filters = controller.dynamicMedicationFilters;
 
-        return SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.lg,
-            AppSpacing.sm,
-            AppSpacing.lg,
-            AppSpacing.lg,
-          ),
-          child: Column(
-            children:
-                filters.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final filterName = entry.value;
-                  final isFirst = index == 0;
-                  final isLast = index == filters.length - 1;
+        return ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.transparent,
+                Colors.black,
+                Colors.black,
+                Colors.black,
+              ],
+              stops: [0.0, 0.025, 0.95, 1.0],
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.dstIn,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              children:
+                  filters.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final filterName = entry.value;
+                    final isFirst = index == 0;
+                    final isLast = index == filters.length - 1;
 
-                  return Column(
-                    children: [
-                      if (index > 0) SizedBox(height: AppSpacing.md),
-                      _buildFilterButton(
-                        filterName,
-                        index,
-                        isFirst: isFirst,
-                        isLast: isLast,
-                      ),
-                    ],
-                  );
-                }).toList(),
+                    return Column(
+                      children: [
+                        if (index > 0) SizedBox(height: AppSpacing.md),
+                        _buildFilterButton(
+                          filterName,
+                          index,
+                          isFirst: isFirst,
+                          isLast: isLast,
+                        ),
+                      ],
+                    );
+                  }).toList(),
+            ),
           ),
         );
       }),
@@ -54,7 +65,7 @@ class MedicationFilterSidebar extends StatelessWidget {
     bool isFirst = false,
     bool isLast = false,
   }) {
-    final isSelected = controller.selectedMedicationFilter.value == index;
+    final isSelected = controller.selectedMedicationFilter == index;
 
     // Determine border radius based on position
     BorderRadius borderRadius;

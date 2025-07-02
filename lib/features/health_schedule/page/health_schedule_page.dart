@@ -42,7 +42,7 @@ class HealthSchedulePage extends StatelessWidget {
                           // Left sidebar with filters
                           Obx(
                             () =>
-                                controller.currentTabIndex.value == 0
+                                controller.currentTabIndex == 0
                                     ? TimeFilterSidebar(controller: controller)
                                     : MedicationFilterSidebar(
                                       controller: controller,
@@ -67,8 +67,35 @@ class HealthSchedulePage extends StatelessWidget {
                                   SizedBox(height: AppSpacing.lg),
 
                                   // Edit meal times button (only for routine tab)
-                                  if (controller.currentTabIndex.value == 0)
-                                    _buildEditMealTimesButton(controller),
+                                  controller.currentTabIndex == 0
+                                      ? _buildEditMealTimesButton(controller)
+                                      : Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: AppSpacing.md,
+                                            vertical: AppSpacing.sm,
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.transparent,
+                                                size: 16,
+                                              ),
+                                              SizedBox(width: AppSpacing.md),
+                                              Text(
+                                                'Meal Times',
+                                                style: AppTypography.callout(
+                                                  color: Colors.transparent,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
 
                                   SizedBox(height: AppSpacing.lg),
 
@@ -76,7 +103,7 @@ class HealthSchedulePage extends StatelessWidget {
                                   Expanded(
                                     child: Obx(
                                       () =>
-                                          controller.currentTabIndex.value == 0
+                                          controller.currentTabIndex == 0
                                               ? _buildTimelineContent(
                                                 controller,
                                               )
@@ -159,7 +186,7 @@ class HealthSchedulePage extends StatelessWidget {
               controller.tabs.asMap().entries.map((entry) {
                 final index = entry.key;
                 final tab = entry.value;
-                final isSelected = controller.currentTabIndex.value == index;
+                final isSelected = controller.currentTabIndex == index;
 
                 return GestureDetector(
                   onTap: () => controller.switchTab(index),
@@ -179,7 +206,9 @@ class HealthSchedulePage extends StatelessWidget {
                                 ],
                                 begin: Alignment(-0.5, 0.5),
                                 end: Alignment(1.5, -0.5),
-                                transform: GradientRotation(136 * 3.14159 / 180),
+                                transform: GradientRotation(
+                                  136 * 3.14159 / 180,
+                                ),
                               )
                               : null,
                       color: isSelected ? null : Colors.white,
@@ -205,17 +234,21 @@ class HealthSchedulePage extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                         Container(
+                        Container(
                           width: 26,
                           height: 26,
                           decoration: BoxDecoration(
-                            color: isSelected ? Color(0xFF155AF7) : Colors.transparent,
+                            color:
+                                isSelected
+                                    ? Color(0xFF155AF7)
+                                    : Colors.transparent,
                             shape: BoxShape.circle,
                           ),
                           child: Center(
                             child: Icon(
                               index == 0 ? Icons.person : Icons.medication,
-                              color: isSelected ? Colors.white : Colors.grey[600],
+                              color:
+                                  isSelected ? Colors.white : Colors.grey[600],
                               size: 18,
                             ),
                           ),
@@ -284,16 +317,54 @@ class HealthSchedulePage extends StatelessWidget {
         );
       }
 
-      return SingleChildScrollView(
-        child: Column(
-          children:
-              filteredSlots.map((timeSlot) {
-                return TimeSlotWidget(
-                  timeSlot: timeSlot,
-                  controller: controller,
-                );
-              }).toList(),
-        ),
+      return Stack(
+        children: [
+          // Dashed line positioned on the left
+          Positioned(
+            left: 20,
+            top: 2,
+            bottom: 0,
+            child: Container(
+              width: 2,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final dashHeight = 3.0;
+                  final dashSpace = 6.0;
+                  final dashCount =
+                      (constraints.maxHeight / (dashHeight + dashSpace))
+                          .floor();
+
+                  return Column(
+                    children: List.generate(dashCount, (index) {
+                      return Container(
+                        width: 2,
+                        height: dashHeight,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          // borderRadius: BorderRadius.circular(1),
+                        ),
+                        margin: EdgeInsets.only(bottom: dashSpace),
+                      );
+                    }),
+                  );
+                },
+              ),
+            ),
+          ),
+
+          // Original content
+          SingleChildScrollView(
+            child: Column(
+              children:
+                  filteredSlots.map((timeSlot) {
+                    return TimeSlotWidget(
+                      timeSlot: timeSlot,
+                      controller: controller,
+                    );
+                  }).toList(),
+            ),
+          ),
+        ],
       );
     });
   }

@@ -5,17 +5,26 @@ import '../model/health_time_slot.dart';
 import '../page/meal_times_page.dart';
 
 class HealthScheduleController extends GetxController {
-  // Observable state
-  final RxInt currentTabIndex = 0.obs; // 0: Routine, 1: Medication
-  final RxInt selectedTimeFilter =
+  // Private observable state
+  final RxInt _currentTabIndex = 0.obs; // 0: Routine, 1: Medication
+  final RxInt _selectedTimeFilter =
       0.obs; // 0: All day, 1: Morning, 2: Afternoon, 3: Evening
-  final RxInt selectedMedicationFilter =
-      0.obs; // 0: All, 1: Hypertension, 2: Type II Diabetes, 3: Hyperlipidemia
-  final RxList<HealthTimeSlot> timeSlots = <HealthTimeSlot>[].obs;
-  final RxList<HealthActivity> allActivities = <HealthActivity>[].obs;
-  final RxList<HealthActivity> medications = <HealthActivity>[].obs;
-  final RxBool showFloatingCTA = false.obs;
-  final RxString floatingCTAText = ''.obs;
+  final RxInt _selectedMedicationFilter = 0.obs;
+  final RxList<HealthTimeSlot> _timeSlots = <HealthTimeSlot>[].obs;
+  final RxList<HealthActivity> _allActivities = <HealthActivity>[].obs;
+  final RxList<HealthActivity> _medications = <HealthActivity>[].obs;
+  final RxBool _showFloatingCTA = false.obs;
+  final RxString _floatingCTAText = ''.obs;
+
+  // Public getters
+  int get currentTabIndex => _currentTabIndex.value;
+  int get selectedTimeFilter => _selectedTimeFilter.value;
+  int get selectedMedicationFilter => _selectedMedicationFilter.value;
+  List<HealthTimeSlot> get timeSlots => _timeSlots;
+  List<HealthActivity> get allActivities => _allActivities;
+  List<HealthActivity> get medications => _medications;
+  bool get showFloatingCTA => _showFloatingCTA.value;
+  String get floatingCTAText => _floatingCTAText.value;
 
   // Tab names
   final List<String> tabs = ['Routine', 'Medication'];
@@ -43,32 +52,50 @@ class HealthScheduleController extends GetxController {
     _checkForPendingTests();
   }
 
+  // Private update methods
+  void _updateCurrentTabIndex(int index) => _currentTabIndex.value = index;
+  void _updateSelectedTimeFilter(int index) =>
+      _selectedTimeFilter.value = index;
+  void _updateSelectedMedicationFilter(int index) =>
+      _selectedMedicationFilter.value = index;
+  void _updateTimeSlots(List<HealthTimeSlot> slots) =>
+      _timeSlots.assignAll(slots);
+  void _updateAllActivities(List<HealthActivity> activities) =>
+      _allActivities.assignAll(activities);
+  void _updateMedications(List<HealthActivity> meds) =>
+      _medications.assignAll(meds);
+  void _updateShowFloatingCTA(bool show) => _showFloatingCTA.value = show;
+  void _updateFloatingCTAText(String text) => _floatingCTAText.value = text;
+  void _updateActivityAtIndex(int index, HealthActivity activity) =>
+      _allActivities[index] = activity;
+
+  // Public action methods
   void switchTab(int index) {
-    currentTabIndex.value = index;
+    _updateCurrentTabIndex(index);
   }
 
   void setTimeFilter(int index) {
-    selectedTimeFilter.value = index;
+    _updateSelectedTimeFilter(index);
   }
 
   void setMedicationFilter(int index) {
-    selectedMedicationFilter.value = index;
+    _updateSelectedMedicationFilter(index);
   }
 
   void setMedicationFilterSafe(int index) {
     final maxIndex = dynamicMedicationFilters.length - 1;
     if (index >= 0 && index <= maxIndex) {
-      selectedMedicationFilter.value = index;
+      _updateSelectedMedicationFilter(index);
     } else {
       // Reset to "All" if index is out of bounds
-      selectedMedicationFilter.value = 0;
+      _updateSelectedMedicationFilter(0);
     }
   }
 
   List<HealthTimeSlot> get filteredTimeSlots {
-    if (selectedTimeFilter.value == 0) {
+    if (_selectedTimeFilter.value == 0) {
       // All day - show all slots
-      return timeSlots;
+      return _timeSlots;
     }
 
     final filterMap = {
@@ -77,72 +104,74 @@ class HealthScheduleController extends GetxController {
       3: TimeOfDay.evening,
     };
 
-    final selectedTimeOfDay = filterMap[selectedTimeFilter.value];
-    if (selectedTimeOfDay == null) return timeSlots;
+    final selectedTimeOfDay = filterMap[_selectedTimeFilter.value];
+    if (selectedTimeOfDay == null) return _timeSlots;
 
-    return timeSlots
+    return _timeSlots
         .where((slot) => slot.timeOfDay == selectedTimeOfDay)
         .toList();
   }
 
   List<HealthActivity> get filteredActivities {
-    if (currentTabIndex.value == 0) {
+    if (_currentTabIndex.value == 0) {
       // Routine tab - show all non-medication activities
-      return allActivities
+      return _allActivities
           .where((activity) => activity.type != HealthActivityType.medication)
           .toList();
     } else {
       // Medication tab - show only medication activities
-      return allActivities
+      return _allActivities
           .where((activity) => activity.type == HealthActivityType.medication)
           .toList();
     }
   }
 
   List<HealthActivity> get filteredMedications {
-    if (selectedMedicationFilter.value == 0) {
+    if (_selectedMedicationFilter.value == 0) {
       // All - show all medications
-      return medications;
+      return _medications;
     }
 
     // Get the dynamic filter list and selected condition
     final filters = dynamicMedicationFilters;
 
     // Ensure the selected index is within bounds
-    if (selectedMedicationFilter.value >= filters.length) {
-      return medications;
+    if (_selectedMedicationFilter.value >= filters.length) {
+      return _medications;
     }
 
-    final selectedCondition = filters[selectedMedicationFilter.value];
+    final selectedCondition = filters[_selectedMedicationFilter.value];
 
     // Filter medications by the selected condition
-    return medications
+    return _medications
         .where((medication) => medication.condition == selectedCondition)
         .toList();
   }
 
   void completeActivity(String activityId) {
-    final activityIndex = allActivities.indexWhere(
+    final activityIndex = _allActivities.indexWhere(
       (activity) => activity.id == activityId,
     );
     if (activityIndex != -1) {
-      allActivities[activityIndex] = allActivities[activityIndex].copyWith(
+      final updatedActivity = _allActivities[activityIndex].copyWith(
         isCompleted: true,
         completedAt: DateTime.now(),
       );
+      _updateActivityAtIndex(activityIndex, updatedActivity);
       _checkForPendingTests();
     }
   }
 
   void undoCompleteActivity(String activityId) {
-    final activityIndex = allActivities.indexWhere(
+    final activityIndex = _allActivities.indexWhere(
       (activity) => activity.id == activityId,
     );
     if (activityIndex != -1) {
-      allActivities[activityIndex] = allActivities[activityIndex].copyWith(
+      final updatedActivity = _allActivities[activityIndex].copyWith(
         isCompleted: false,
         completedAt: null,
       );
+      _updateActivityAtIndex(activityIndex, updatedActivity);
       _checkForPendingTests();
     }
   }
@@ -159,7 +188,7 @@ class HealthScheduleController extends GetxController {
 
   void onActivityCTA(String activityId) {
     // Handle individual activity CTA actions
-    final activity = allActivities.firstWhere(
+    final activity = _allActivities.firstWhere(
       (activity) => activity.id == activityId,
       orElse: () => throw Exception('Activity not found'),
     );
@@ -201,7 +230,7 @@ class HealthScheduleController extends GetxController {
   void _checkForPendingTests() {
     // Check if there are any pending blood sugar tests
     final pendingBloodSugarTests =
-        allActivities
+        _allActivities
             .where(
               (activity) =>
                   activity.type == HealthActivityType.bloodSugarCheck &&
@@ -210,11 +239,11 @@ class HealthScheduleController extends GetxController {
             .toList();
 
     if (pendingBloodSugarTests.isNotEmpty) {
-      showFloatingCTA.value = true;
-      floatingCTAText.value = 'Take Glucose Test';
+      _updateShowFloatingCTA(true);
+      _updateFloatingCTAText('Take Glucose Test');
     } else {
-      showFloatingCTA.value = false;
-      floatingCTAText.value = '';
+      _updateShowFloatingCTA(false);
+      _updateFloatingCTAText('');
     }
   }
 
@@ -228,6 +257,13 @@ class HealthScheduleController extends GetxController {
         type: HealthActivityType.bloodPressureCheck,
         targetRange: '<130/80 mm Hg',
         condition: 'Hypertension',
+      ),
+      HealthActivity(
+        id: 'bg_morning_before',
+        title: 'Check asd Glucose',
+        type: HealthActivityType.bloodPressureCheck,
+        targetRange: '<130/80 mm Hg',
+        // condition: 'Hypertension',
       ),
       HealthActivity(
         id: 'lisinopril_morning',
@@ -411,6 +447,7 @@ class HealthScheduleController extends GetxController {
         mealTiming: MealTiming.beforeBreakfast,
         activities: [
           mockActivities.firstWhere((a) => a.id == 'bp_morning_before'),
+          mockActivities.firstWhere((a) => a.id == 'bg_morning_before'),
           mockActivities.firstWhere((a) => a.id == 'lisinopril_morning'),
         ],
       ),
@@ -476,16 +513,16 @@ class HealthScheduleController extends GetxController {
       ),
     ];
 
-    allActivities.assignAll(mockActivities);
-    medications.assignAll(mockMedications);
-    timeSlots.assignAll(mockTimeSlots);
+    _updateAllActivities(mockActivities);
+    _updateMedications(mockMedications);
+    _updateTimeSlots(mockTimeSlots);
   }
 
   // Dynamic medication filters based on actual patient conditions
   List<String> get dynamicMedicationFilters {
     // Get unique conditions from medications
     final conditions =
-        medications
+        _medications
             .map((med) => med.condition)
             .where((condition) => condition != null)
             .cast<String>()

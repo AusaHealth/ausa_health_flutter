@@ -2,22 +2,25 @@ import 'dart:ui';
 
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
+import 'package:ausa/features/appointments/controller/appointment_edit_controller.dart';
+import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:ausa/features/appointments/widget/calendar_view_widget.dart';
+import 'package:ausa/features/appointments/widget/cancel_appointment_dialog.dart';
+import 'package:ausa/features/appointments/widget/discard_changes_dialog.dart';
 import 'package:ausa/features/appointments/widget/step_indicator.dart';
-import 'package:ausa/features/appointments/widget/success_popup.dart';
 import 'package:ausa/features/appointments/widget/time_slots_grid.dart';
 import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AppointmentSchedulingPage extends StatelessWidget {
-  const AppointmentSchedulingPage({super.key});
+class AppointmentEditPage extends StatelessWidget {
+  const AppointmentEditPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AppointmentSchedulingController());
+    final appointment = Get.arguments as Appointment;
+    final controller = Get.put(AppointmentEditController(appointment));
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
@@ -32,11 +35,26 @@ class AppointmentSchedulingPage extends StatelessWidget {
               }
             }),
 
-            // Success popup overlay
+            // Discard changes dialog overlay
             Obx(
               () =>
-                  controller.showSuccessPopup
-                      ? SuccessPopup(onClose: controller.closeSuccessPopup)
+                  controller.showDiscardDialog
+                      ? DiscardChangesDialog(
+                        onDiscard: controller.discardChanges,
+                        onKeepEditing: controller.hideDiscardChangesDialog,
+                      )
+                      : const SizedBox.shrink(),
+            ),
+
+            // Cancel appointment dialog overlay
+            Obx(
+              () =>
+                  controller.showCancelDialog
+                      ? CancelAppointmentDialog(
+                        appointment: controller.appointment,
+                        onCancel: controller.cancelAppointment,
+                        onKeep: controller.hideCancelAppointmentDialog,
+                      )
                       : const SizedBox.shrink(),
             ),
           ],
@@ -45,7 +63,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMainLayout(AppointmentSchedulingController controller) {
+  Widget _buildMainLayout(AppointmentEditController controller) {
     return Column(
       children: [
         _buildHeader(controller),
@@ -79,7 +97,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStep2Layout(AppointmentSchedulingController controller) {
+  Widget _buildStep2Layout(AppointmentEditController controller) {
     return Column(
       children: [
         Padding(
@@ -92,11 +110,12 @@ class AppointmentSchedulingPage extends StatelessWidget {
               ),
               const Spacer(),
               SecondaryButton(
-                text: 'Scheduled Appointments',
-                onPressed: controller.navigateToScheduledAppointments,
-                icon: Icons.calendar_today,
+                text: 'Cancel this appointment',
+                onPressed: controller.showCancelAppointmentDialog,
+                icon: Icons.cancel_outlined,
                 iconSize: 16,
                 height: 40,
+                textColor: const Color(0xFFFF8C00),
               ),
             ],
           ),
@@ -236,7 +255,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(AppointmentSchedulingController controller) {
+  Widget _buildHeader(AppointmentEditController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: Obx(() {
@@ -249,11 +268,12 @@ class AppointmentSchedulingPage extends StatelessWidget {
               ),
               const Spacer(),
               SecondaryButton(
-                text: 'Scheduled Appointments',
-                onPressed: controller.navigateToScheduledAppointments,
-                icon: Icons.calendar_today,
+                text: 'Cancel this appointment',
+                onPressed: controller.showCancelAppointmentDialog,
+                icon: Icons.cancel_outlined,
                 iconSize: 16,
                 height: 40,
+                textColor: const Color(0xFFFF8C00),
               ),
             ],
           );
@@ -279,14 +299,15 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              Text('Connect with care team', style: AppTypography.headline()),
+              Text('Edit Appointment', style: AppTypography.headline()),
               const Spacer(),
               SecondaryButton(
-                text: 'Scheduled Appointments',
-                onPressed: controller.navigateToScheduledAppointments,
-                icon: Icons.calendar_today,
+                text: 'Cancel this appointment',
+                onPressed: controller.showCancelAppointmentDialog,
+                icon: Icons.cancel_outlined,
                 iconSize: 16,
-                height: 30,
+                height: 40,
+                textColor: const Color(0xFFFF8C00),
               ),
             ],
           );
@@ -295,7 +316,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLeftCard(AppointmentSchedulingController controller) {
+  Widget _buildLeftCard(AppointmentEditController controller) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -322,7 +343,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRightCard(AppointmentSchedulingController controller) {
+  Widget _buildRightCard(AppointmentEditController controller) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -369,9 +390,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDateTimeSelectionCard(
-    AppointmentSchedulingController controller,
-  ) {
+  Widget _buildDateTimeSelectionCard(AppointmentEditController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 22),
       child: Column(
@@ -430,7 +449,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildWeekView(AppointmentSchedulingController controller) {
+  Widget _buildWeekView(AppointmentEditController controller) {
     final today = DateTime.now();
     final weekDates = List.generate(6, (index) {
       final date = today.add(Duration(days: index));
@@ -501,7 +520,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSymptomsCard(AppointmentSchedulingController controller) {
+  Widget _buildSymptomsCard(AppointmentEditController controller) {
     return Container(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -559,10 +578,10 @@ class AppointmentSchedulingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFinishButton(AppointmentSchedulingController controller) {
+  Widget _buildFinishButton(AppointmentEditController controller) {
     return PrimaryButton(
-      text: 'Finish',
-      onPressed: controller.canFinish ? controller.scheduleAppointment : null,
+      text: 'Update',
+      onPressed: controller.canFinish ? controller.updateAppointment : null,
       isLoading: controller.isLoading,
       isEnabled: controller.canFinish,
       width: 100,

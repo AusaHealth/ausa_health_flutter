@@ -17,6 +17,63 @@ class Appointment {
     this.doctorImageUrl,
   });
 
+  // Serialization methods
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'dateTime': dateTime.toIso8601String(),
+      'doctorName': doctorName,
+      'doctorType': doctorType,
+      'symptoms': symptoms,
+      'status': status.name,
+      'doctorImageUrl': doctorImageUrl,
+    };
+  }
+
+  factory Appointment.fromJson(Map<String, dynamic> json) {
+    return Appointment(
+      id: json['id'] as String,
+      dateTime: DateTime.parse(json['dateTime'] as String),
+      doctorName: json['doctorName'] as String,
+      doctorType: json['doctorType'] as String,
+      symptoms: json['symptoms'] as String,
+      status: AppointmentStatus.values.firstWhere(
+        (e) => e.name == json['status'],
+        orElse: () => AppointmentStatus.pending,
+      ),
+      doctorImageUrl: json['doctorImageUrl'] as String?,
+    );
+  }
+
+  // Copy method for updates
+  Appointment copyWith({
+    String? id,
+    DateTime? dateTime,
+    String? doctorName,
+    String? doctorType,
+    String? symptoms,
+    AppointmentStatus? status,
+    String? doctorImageUrl,
+  }) {
+    return Appointment(
+      id: id ?? this.id,
+      dateTime: dateTime ?? this.dateTime,
+      doctorName: doctorName ?? this.doctorName,
+      doctorType: doctorType ?? this.doctorType,
+      symptoms: symptoms ?? this.symptoms,
+      status: status ?? this.status,
+      doctorImageUrl: doctorImageUrl ?? this.doctorImageUrl,
+    );
+  }
+
+  // Validation
+  bool get isValid {
+    return id.isNotEmpty &&
+        doctorName.isNotEmpty &&
+        doctorType.isNotEmpty &&
+        symptoms.trim().isNotEmpty;
+  }
+
   String get formattedDate {
     final months = [
       'January',
@@ -55,6 +112,21 @@ class Appointment {
       'Sunday',
     ];
     return days[weekday - 1];
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Appointment &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() {
+    return 'Appointment{id: $id, dateTime: $dateTime, doctorName: $doctorName, symptoms: $symptoms}';
   }
 }
 

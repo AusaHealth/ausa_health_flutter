@@ -148,23 +148,18 @@ class AppointmentCardWidget extends StatelessWidget {
   }
 
   Widget _buildStatusChip(AppointmentStatus status) {
-    Color chipColor;
     Color textColor;
     String text;
-
     switch (status) {
       case AppointmentStatus.confirmed:
-        chipColor = const Color(0xFFE8F5E8);
         textColor = const Color(0xFF2E7D32);
         text = 'Appointment Confirmed';
         break;
       case AppointmentStatus.pending:
-        chipColor = const Color(0xFFFFF3E0);
         textColor = const Color(0xFFE65100);
         text = 'Not confirmed';
         break;
       case AppointmentStatus.cancelled:
-        chipColor = Colors.red.withOpacity(0.1);
         textColor = Colors.red;
         text = 'Cancelled';
         break;
@@ -173,7 +168,6 @@ class AppointmentCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: chipColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -192,7 +186,7 @@ class AppointmentCardWidget extends StatelessWidget {
   }
 
   String _getTruncatedSymptoms(String symptoms) {
-    const maxLength = 20; // Adjust based on your needs
+    const maxLength = 21; // Adjust based on your needs
     if (symptoms.length <= maxLength) {
       return symptoms;
     }
@@ -200,7 +194,7 @@ class AppointmentCardWidget extends StatelessWidget {
   }
 
   bool _shouldShowReadMore(String symptoms) {
-    const maxLength = 25;
+    const maxLength = 21;
     return symptoms.length > maxLength;
   }
 }

@@ -125,7 +125,7 @@ class MealTimesPage extends StatelessWidget {
               controller.meals.asMap().entries.map((entry) {
                 final index = entry.key;
                 final meal = entry.value;
-                final isSelected = controller.selectedMealIndex.value == index;
+                final isSelected = controller.selectedMealIndex == index;
                 final isFirst = index == 0;
                 final isLast = index == controller.meals.length - 1;
 
@@ -154,7 +154,7 @@ class MealTimesPage extends StatelessWidget {
     bool isFirst = false,
     bool isLast = false,
   }) {
-    final isSelected = controller.selectedMealIndex.value == index;
+    final isSelected = controller.selectedMealIndex == index;
 
     // Determine border radius based on position
     BorderRadius borderRadius;
@@ -264,11 +264,11 @@ class MealTimesPage extends StatelessWidget {
   String _getCurrentMealTime(MealTimesController controller, int index) {
     switch (index) {
       case 0:
-        return controller.breakfastTime.value;
+        return controller.breakfastTime;
       case 1:
-        return controller.lunchTime.value;
+        return controller.lunchTime;
       case 2:
-        return controller.dinnerTime.value;
+        return controller.dinnerTime;
       default:
         return '';
     }
@@ -352,7 +352,7 @@ class MealTimesPage extends StatelessWidget {
   }
 
   Widget _buildPeriodColumn(MealTimesController controller) {
-    final mealIndex = controller.selectedMealIndex.value;
+    final mealIndex = controller.selectedMealIndex;
 
     // Get the fixed period for breakfast/lunch or available periods for dinner
     List<String> items;
@@ -467,18 +467,20 @@ class MealTimesPage extends StatelessWidget {
             left: 0,
             right: 0,
             height: 100,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white.withOpacity(0.9),
-                    Colors.white.withOpacity(0.6),
-                    Colors.white.withOpacity(0.3),
-                    Colors.white.withOpacity(0.0),
-                  ],
-                  stops: [0.0, 0.3, 0.7, 1.0],
+            child: IgnorePointer(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.9),
+                      Colors.white.withOpacity(0.6),
+                      Colors.white.withOpacity(0.3),
+                      Colors.white.withOpacity(0.0),
+                    ],
+                    stops: [0.0, 0.3, 0.7, 1.0],
+                  ),
                 ),
               ),
             ),
@@ -490,18 +492,20 @@ class MealTimesPage extends StatelessWidget {
             left: 0,
             right: 0,
             height: 200,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.white.withOpacity(0.9),
-                    Colors.white.withOpacity(0.6),
-                    Colors.white.withOpacity(0.3),
-                    Colors.white.withOpacity(0.0),
-                  ],
-                  stops: [0.0, 0.3, 0.7, 1.0],
+            child: IgnorePointer(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.9),
+                      Colors.white.withOpacity(0.6),
+                      Colors.white.withOpacity(0.3),
+                      Colors.white.withOpacity(0.0),
+                    ],
+                    stops: [0.0, 0.3, 0.7, 1.0],
+                  ),
                 ),
               ),
             ),

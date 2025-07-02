@@ -21,119 +21,122 @@ class HealthActivityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Activity icon
-          Icon(_getActivityIcon(), size: 20, color: Colors.grey[600]),
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.xl),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Activity icon
+            Icon(_getActivityIcon(), size: 20, color: Colors.grey[600]),
 
-          SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
 
-          // Activity content
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title
-                Text(
-                  activity.title,
-                  style: AppTypography.body(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
-                ),
-
-                // Target range or dosage
-                if (activity.targetRange != null ||
-                    activity.dosage != null) ...[
-                  SizedBox(height: AppSpacing.xs),
+            // Activity content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
                   Text(
-                    activity.targetRange ??
-                        (activity.dosage != null
-                            ? 'Dosage: ${activity.dosage}'
-                            : ''),
-                    style: AppTypography.callout(
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.normal,
+                    activity.title,
+                    style: AppTypography.body(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
                     ),
                   ),
-                ],
 
-                // Description
-                if (activity.description != null) ...[
-                  SizedBox(height: AppSpacing.xs),
-                  Text(
-                    activity.description!,
-                    style: AppTypography.callout(
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.normal,
+                  // Target range or dosage
+                  if (activity.targetRange != null ||
+                      activity.dosage != null) ...[
+                    SizedBox(height: AppSpacing.xs),
+                    Text(
+                      activity.targetRange ??
+                          (activity.dosage != null
+                              ? 'Dosage: ${activity.dosage}'
+                              : ''),
+                      style: AppTypography.callout(
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                  ),
+                  ],
+
+                  // Description
+                  if (activity.description != null) ...[
+                    SizedBox(height: AppSpacing.xs),
+                    Text(
+                      activity.description!,
+                      style: AppTypography.callout(
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
 
-          SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
 
-          // Condition tag and action button
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Condition tag
-              if (activity.condition != null)
-                ConditionTagWidget(condition: activity.condition!),
+            // Condition tag and action button
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Condition tag
+                if (activity.condition != null)
+                  ConditionTagWidget(condition: activity.condition!),
 
-              if (activity.condition != null &&
-                  (onComplete != null || activity.ctaText != null))
-                SizedBox(height: AppSpacing.sm),
+                if (activity.condition != null &&
+                    (onComplete != null || activity.ctaText != null))
+                  SizedBox(height: AppSpacing.sm),
 
-              // CTA Button
-              if (activity.ctaText != null && onCTA != null)
-                GestureDetector(
-                  onTap: onCTA,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xl,
-                      vertical: AppSpacing.md,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primaryColor.withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          activity.ctaText!,
-                          style: AppTypography.callout(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-
-                        if (activity.ctaIcon != null) ...[
-                          SizedBox(width: AppSpacing.md),
-                          Icon(
-                            activity.ctaIcon!,
-                            color: Colors.white,
-                            size: 16,
+                // CTA Button
+                if (activity.ctaText != null && onCTA != null)
+                  GestureDetector(
+                    onTap: onCTA,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.md,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(AppRadius.full),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primaryColor.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
                           ),
                         ],
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            activity.ctaText!,
+                            style: AppTypography.callout(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+
+                          if (activity.ctaIcon != null) ...[
+                            SizedBox(width: AppSpacing.md),
+                            Icon(
+                              activity.ctaIcon!,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

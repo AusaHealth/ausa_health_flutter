@@ -54,7 +54,7 @@ class TimeFilterSidebar extends StatelessWidget {
     bool isFirst = false,
     bool isLast = false,
   }) {
-    final isSelected = controller.selectedTimeFilter.value == index;
+    final isSelected = controller.selectedTimeFilter == index;
 
     // Determine border radius based on position
     BorderRadius borderRadius;
