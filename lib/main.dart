@@ -12,30 +12,15 @@ void main() {
   Get.put(OnboardingController());
 
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Builder(
-        builder: (context) {
-          final width = MediaQuery.of(context).size.width;
-          return Container(
-            color: Colors.grey[200],
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight:
-                      width <= Dimensions.onboardingContainerHeight
-                          ? width
-                          : Dimensions.onboardingContainerHeight,
-                  maxWidth:
-                      width <= Dimensions.onboardingContainerWidth
-                          ? width
-                          : Dimensions.onboardingContainerWidth,
-                ),
-                child: MyApp(),
-              ),
-            ),
-          );
-        },
+    Container(
+      alignment: Alignment.center,
+      color: Colors.grey[200],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: Dimensions.onboardingContainerWidth,
+          maxHeight: Dimensions.onboardingContainerHeight,
+        ),
+        child: MyApp(),
       ),
     ),
   );
@@ -52,7 +37,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ProfilePage(),
+      home: SplashPage(),
     );
   }
 }
