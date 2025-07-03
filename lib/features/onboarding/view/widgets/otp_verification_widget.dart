@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class OtpVerificationWidget extends StatefulWidget {
-  const OtpVerificationWidget({Key? key}) : super(key: key);
+  const OtpVerificationWidget({super.key});
 
   @override
   State<OtpVerificationWidget> createState() => _OtpVerificationWidgetState();
