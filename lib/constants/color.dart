@@ -12,4 +12,5 @@ class AppColors {
   static const Color selectionButtonActive = Color(0xFF091227);
   static const Color selectionButtonActiveText = Color(0xFFF0F9FF);
   static const Color selectionButtonText = Color(0xFF155EEF);
+
 }

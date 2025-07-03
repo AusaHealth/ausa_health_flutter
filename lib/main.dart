@@ -7,6 +7,7 @@ import 'package:ausa/features/appointments/service/appointment_service.dart';
 import 'package:ausa/features/health_schedule/controller/meal_times_controller.dart';
 import 'package:ausa/features/health_schedule/page/health_schedule_page.dart';
 import 'package:ausa/features/health_schedule/page/meal_times_page.dart';
+import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +36,7 @@ void _initializeDependencies() {
   Get.put(TeleconsultationController(), permanent: true);
   Get.put(AppointmentsController(), permanent: true);
 
-  // Note: Other controllers (AppointmentSchedulingController, AppointmentEditController, MealTimesController)
+  // Note: Other controllers (AppointmentSchedulingController, AppointmentEditController, MealTimesController, VitalsHistoryController)
   // are created on-demand when their respective pages are accessed
 }
 
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       // Define routes for better navigation management
-      initialRoute: '/health-schedule',
+      initialRoute: '/vitals-history',
       getPages: [
         GetPage(
           name: '/appointments/schedule',
@@ -85,6 +86,11 @@ class MyApp extends StatelessWidget {
           binding: BindingsBuilder(() {
             Get.lazyPut(() => MealTimesController());
           }),
+        ),
+        GetPage(
+          name: '/vitals-history',
+          page: () => const VitalsHistoryPage(),
+          // VitalsHistoryController is created in the page with Get.put()
         ),
       ],
       // Fallback for unknown routes
