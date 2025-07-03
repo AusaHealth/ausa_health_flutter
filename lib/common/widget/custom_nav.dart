@@ -27,7 +27,7 @@ class CustomNav extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color(0xFF091227),
             ),

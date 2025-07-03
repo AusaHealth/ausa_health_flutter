@@ -2,7 +2,7 @@ import 'package:ausa/features/settings/model/network_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/wifi_controller.dart';
-import '../widget/settings_header.dart';
+import '../../../common/widget/settings_header.dart';
 import '../widget/settings_nav.dart';
 import '../widget/settings_tabs.dart';
 import '../widget/settings_network_list.dart';
@@ -64,7 +64,7 @@ class _SettingsWifiPageState extends State<SettingsWifiPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SettingsHeader(),
+                const CustomHeader(),
                 const SizedBox(height: 8),
                 SettingsNav(),
                 const SizedBox(height: 8),

@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 /// - Headline (40px)
 /// - Body (32px)
 /// - Callout (24px)
- 
+
 /// Font size ratio used to scale all typography
 const double _fontSizeRatio = 0.5;
 
@@ -109,14 +109,4 @@ class AppTypography {
       decoration: decoration,
     );
   }
-
-  /// Example usage:
-  /// ```
-  /// Text(
-  ///   'Hello World',
-  ///   style: AppTypography.largeTitle(
-  ///     color: AppColors.primaryColor,
-  ///   ),
-  /// )
-  /// ```
 }

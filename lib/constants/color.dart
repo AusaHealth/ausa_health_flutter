@@ -7,4 +7,5 @@ class AppColors {
   static const Color dialogShadowColor = Color(0x03194BCC);
   static const Color primaryDarkColor = Color(0xFF00267E);
   static const Color primaryLightColor = Color(0xFF0049F5);
+  static const Color splashBackground = Color(0xFFF0F0F0);
 }
