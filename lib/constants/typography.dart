@@ -115,14 +115,4 @@ class AppTypography {
       decoration: decoration,
     );
   }
-
-  /// Example usage:
-  /// ```
-  /// Text(
-  ///   'Hello World',
-  ///   style: AppTypography.largeTitle(
-  ///     color: AppColors.primaryColor,
-  ///   ),
-  /// )
-  /// ```
 }

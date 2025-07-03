@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SettingsHeader extends StatelessWidget {
-  const SettingsHeader({super.key});
+class CustomHeader extends StatelessWidget {
+  const CustomHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

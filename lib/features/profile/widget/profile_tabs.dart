@@ -35,12 +35,12 @@ class ProfileTabs extends StatelessWidget {
       {
         'selectedImagePath': ProfileIcons.ausaContentSelected,
         'unselectedImagePath': ProfileIcons.ausaContentUnselected,
-        'label': 'Ausa Connect',
+        'label': 'Ausa',
       },
     ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: List.generate(tabs.length, (i) {
           final tab = tabs[i];

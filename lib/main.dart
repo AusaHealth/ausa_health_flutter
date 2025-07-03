@@ -8,6 +8,10 @@ import 'package:ausa/features/health_schedule/controller/meal_times_controller.d
 import 'package:ausa/features/health_schedule/page/health_schedule_page.dart';
 import 'package:ausa/features/health_schedule/page/meal_times_page.dart';
 import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
+import 'package:ausa/constants/dimensions.dart';
+import 'package:ausa/features/onboarding/view/splash_page.dart';
+
+
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +24,20 @@ void main() {
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
     overlays: [],
+  );
+
+  runApp(
+    Container(
+      alignment: Alignment.center,
+      color: Colors.grey[200],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: Dimensions.onboardingContainerWidth,
+          maxHeight: Dimensions.onboardingContainerHeight,
+        ),
+        child: MyApp(),
+      ),
+    ),
   );
 
   // Dependency injection - Register services first
@@ -46,8 +64,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Ausa Health',
       debugShowCheckedModeBanner: false,
+      title: 'Ausa Health',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         appBarTheme: const AppBarTheme(
@@ -98,6 +116,7 @@ class MyApp extends StatelessWidget {
         name: '/not-found',
         page: () => const AppointmentSchedulingPage(),
       ),
+      home: SplashPage(),
     );
   }
 }
