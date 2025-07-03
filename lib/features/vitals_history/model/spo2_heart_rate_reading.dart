@@ -38,9 +38,8 @@ class SpO2HeartRateReading extends VitalReading {
   }
 
   @override
-  String get displayValue =>
-      '${oxygenSaturation.toStringAsFixed(1)}% SpO2, $heartRate BPM';
+  String get displayValue => '${oxygenSaturation.toStringAsFixed(1)}% SpO2';
 
   @override
-  String get unit => '%/BPM';
+  String get unit => '%';
 }

@@ -21,6 +21,9 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
   final ItemPositionsListener _itemPositionsListener =
       ItemPositionsListener.create();
 
+  // Generic parameter selection storage
+  final RxMap<String, String> selectedParameters = <String, String>{}.obs;
+
   @override
   void initState() {
     super.initState();
@@ -110,41 +113,74 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
                         );
                       }
 
-                      return Row(
-                        children: [
-                          // Left side - Chart
-                          Expanded(
-                            flex: 1,
-                            child: Obx(
-                              () => Column(
-                                children: [
-                                  // Chart
-                                  Expanded(
-                                    child: VitalsChartWidget(
-                                      readings: controller.chartReadings,
-                                      vitalType: controller.currentVitalType,
-                                      selectedParameter:
-                                          controller
-                                                  .chartSelectedParameter
-                                                  .isNotEmpty
-                                              ? controller
-                                                  .chartSelectedParameter
-                                              : null,
+                      return Container(
+                        padding: EdgeInsets.all(AppSpacing.lg),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppRadius.xl2),
+                        ),
+                        child: Row(
+                          children: [
+                            // Left side - Chart
+                            Expanded(
+                              flex: 1,
+                              child: Obx(
+                                () => Column(
+                                  children: [
+                                    // Chart
+                                    Expanded(
+                                      child: VitalsChartWidget(
+                                        readings: controller.chartReadings,
+                                        vitalType: controller.currentVitalType,
+                                        selectedParameter:
+                                            controller
+                                                    .chartSelectedParameter
+                                                    .isNotEmpty
+                                                ? controller
+                                                    .chartSelectedParameter
+                                                : null,
+                                        onParameterTap: (chartParam) {
+                                          // Only relevant for Blood Pressure where multiple parameters exist
+                                          if (controller.currentVitalType ==
+                                              VitalType.bloodPressure) {
+                                            // Map chart-level parameter back to the underlying reading parameter
+                                            switch (chartParam) {
+                                              case 'BP':
+                                                controller
+                                                    .selectedBPParameter
+                                                    .value = 'Systolic';
+                                                break;
+                                              case 'MAP':
+                                                controller
+                                                    .selectedBPParameter
+                                                    .value = 'MAP';
+                                                break;
+                                              case 'PP':
+                                                controller
+                                                    .selectedBPParameter
+                                                    .value = 'Pulse Pressure';
+                                                break;
+                                              default:
+                                                break;
+                                            }
+                                          }
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
 
-                          SizedBox(width: AppSpacing.lg),
+                            SizedBox(width: AppSpacing.lg),
 
-                          // Right side - Readings
-                          Expanded(
-                            flex: 1,
-                            child: _buildReadingsSection(controller),
-                          ),
-                        ],
+                            // Right side - Readings
+                            Expanded(
+                              flex: 1,
+                              child: _buildReadingsSection(controller),
+                            ),
+                          ],
+                        ),
                       );
                     }),
                   ),
@@ -213,7 +249,10 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
                 final isSelected = controller.currentTabIndex.value == index;
 
                 return GestureDetector(
-                  onTap: () => controller.switchTab(index),
+                  onTap: () {
+                    controller.switchTab(index);
+                    _clearParameterSelection();
+                  },
                   child: Container(
                     margin: EdgeInsets.only(right: AppSpacing.md),
                     padding: EdgeInsets.symmetric(
@@ -365,12 +404,9 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
             isSelected: isSelected,
             showDateHeader: false,
             onTap: () => controller.selectReading(reading),
-            onParameterTap:
-                (parameter) =>
-                    controller.selectReading(reading, parameter: parameter),
+            onParameterTap: (parameter) => _selectParameter(reading, parameter),
             isParameterSelected:
-                (parameter) =>
-                    controller.isBPParameterSelected(reading, parameter),
+                (parameter) => _isParameterSelected(reading, parameter),
           );
         }
         currentIndex++;
@@ -468,5 +504,61 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
       'Dec',
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+
+  // Generic method to check if a parameter is selected for any vital type
+  bool _isParameterSelected(VitalReading reading, String parameter) {
+    if (!controller.isReadingSelected(reading)) {
+      return false;
+    }
+
+    final readingKey = '${reading.id}_${reading.type.toString()}';
+    final selectedParam = selectedParameters[readingKey];
+
+    switch (reading.type) {
+      case VitalType.bloodPressure:
+        // Handle Blood Pressure grouping logic
+        if ((parameter == 'Systolic' || parameter == 'Diastolic') &&
+            (selectedParam == 'Systolic' || selectedParam == 'Diastolic')) {
+          return true;
+        }
+        return selectedParam == parameter;
+
+      case VitalType.spO2HeartRate:
+        // Handle only SpO2 parameter
+        return selectedParam == parameter;
+
+      case VitalType.bloodGlucose:
+        return selectedParam == parameter;
+
+      case VitalType.bodyTemperature:
+        return selectedParam == parameter;
+
+      case VitalType.ecg:
+        // Handle ECG grouping
+        if ((parameter == 'ECG Heart Rate' || parameter == 'Rhythm') &&
+            (selectedParam == 'ECG Heart Rate' || selectedParam == 'Rhythm')) {
+          return true;
+        }
+        return selectedParam == parameter;
+    }
+  }
+
+  // Generic method to handle parameter selection for all vital types
+  void _selectParameter(VitalReading reading, String parameter) {
+    controller.selectReading(reading);
+    final readingKey = '${reading.id}_${reading.type.toString()}';
+    selectedParameters[readingKey] = parameter;
+
+    // Special handling for Blood Pressure to maintain chart compatibility
+    if (reading.type == VitalType.bloodPressure) {
+      controller.selectedBPParameter.value = parameter;
+    }
+  }
+
+  // Clear parameter selection when switching tabs or readings
+  void _clearParameterSelection() {
+    selectedParameters.clear();
+    controller.selectedBPParameter.value = '';
   }
 }

@@ -221,25 +221,28 @@ class ReadingCardWidget extends StatelessWidget {
   List<Widget> _buildSpO2HeartRateData() {
     final spO2Reading = reading as SpO2HeartRateReading;
     return [
-      Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : null,
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-        ),
-        child: Row(
-          children: [
-            _buildDataPoint(
+      Obx(
+        () => GestureDetector(
+          onTap: () => onParameterTap?.call('SpO2'),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            decoration: BoxDecoration(
+              color:
+                  isParameterSelected?.call('SpO2') == true
+                      ? AppColors.primaryColor.withOpacity(0.1)
+                      : null,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
+            child: _buildDataPoint(
               'SpO₂',
               '${spO2Reading.oxygenSaturation.toStringAsFixed(1)}',
               '%',
+              isHighlighted: isParameterSelected?.call('SpO2') == true,
             ),
-            SizedBox(width: AppSpacing.xl),
-            _buildDataPoint('Heart Rate', '${spO2Reading.heartRate}', 'BPM'),
-          ],
+          ),
         ),
       ),
     ];
@@ -248,25 +251,41 @@ class ReadingCardWidget extends StatelessWidget {
   List<Widget> _buildBloodGlucoseData() {
     final glucoseReading = reading as BloodGlucoseReading;
     return [
-      Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : null,
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-        ),
-        child: Row(
-          children: [
-            _buildDataPoint(
-              'Glucose Level',
-              glucoseReading.displayValue,
-              glucoseReading.unit,
+      Obx(
+        () => GestureDetector(
+          onTap: () => onParameterTap?.call('Glucose Level'),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
             ),
-            SizedBox(width: AppSpacing.xl),
-            _buildDataPoint('Type', glucoseReading.measurementTypeDisplay, ''),
-          ],
+            decoration: BoxDecoration(
+              color:
+                  isParameterSelected?.call('Glucose Level') == true
+                      ? AppColors.primaryColor.withOpacity(0.1)
+                      : null,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
+            child: Row(
+              children: [
+                _buildDataPoint(
+                  'Glucose Level',
+                  glucoseReading.displayValue,
+                  glucoseReading.unit,
+                  isHighlighted:
+                      isParameterSelected?.call('Glucose Level') == true,
+                ),
+                SizedBox(width: AppSpacing.xl),
+                _buildDataPoint(
+                  'Type',
+                  glucoseReading.measurementTypeDisplay,
+                  '',
+                  isHighlighted:
+                      isParameterSelected?.call('Glucose Level') == true,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     ];
@@ -275,25 +294,28 @@ class ReadingCardWidget extends StatelessWidget {
   List<Widget> _buildBodyTemperatureData() {
     final tempReading = reading as BodyTemperatureReading;
     return [
-      Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : null,
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-        ),
-        child: Row(
-          children: [
-            _buildDataPoint(
+      Obx(
+        () => GestureDetector(
+          onTap: () => onParameterTap?.call('Temperature'),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            decoration: BoxDecoration(
+              color:
+                  isParameterSelected?.call('Temperature') == true
+                      ? AppColors.primaryColor.withOpacity(0.1)
+                      : null,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
+            child: _buildDataPoint(
               'Temperature',
               tempReading.displayValue,
               tempReading.unit,
+              isHighlighted: isParameterSelected?.call('Temperature') == true,
             ),
-            SizedBox(width: AppSpacing.xl),
-            _buildDataPoint('Location', tempReading.locationDisplay, ''),
-          ],
+          ),
         ),
       ),
     ];
@@ -302,25 +324,71 @@ class ReadingCardWidget extends StatelessWidget {
   List<Widget> _buildECGData() {
     final ecgReading = reading as ECGReading;
     return [
-      Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : null,
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-        ),
-        child: Row(
-          children: [
-            _buildDataPoint('Heart Rate', '${ecgReading.heartRate}', 'BPM'),
-            SizedBox(width: AppSpacing.xl),
-            _buildDataPoint('Rhythm', ecgReading.rhythmDisplay, ''),
-          ],
+      Obx(
+        () => GestureDetector(
+          onTap: () => onParameterTap?.call('ECG Heart Rate'),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            decoration: BoxDecoration(
+              color:
+                  isParameterSelected?.call('ECG Heart Rate') == true ||
+                          isParameterSelected?.call('Rhythm') == true
+                      ? AppColors.primaryColor.withOpacity(0.1)
+                      : null,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
+            child: Row(
+              children: [
+                _buildDataPoint(
+                  'Heart Rate',
+                  '${ecgReading.heartRate}',
+                  'BPM',
+                  isHighlighted:
+                      isParameterSelected?.call('ECG Heart Rate') == true ||
+                      isParameterSelected?.call('Rhythm') == true,
+                ),
+                SizedBox(width: AppSpacing.xl),
+                _buildDataPoint(
+                  'Rhythm',
+                  ecgReading.rhythmDisplay,
+                  '',
+                  isHighlighted:
+                      isParameterSelected?.call('ECG Heart Rate') == true ||
+                      isParameterSelected?.call('Rhythm') == true,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       SizedBox(height: AppSpacing.md),
-      _buildDataPoint('Duration', ecgReading.durationDisplay, ''),
+      Obx(
+        () => GestureDetector(
+          onTap: () => onParameterTap?.call('Duration'),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            decoration: BoxDecoration(
+              color:
+                  isParameterSelected?.call('Duration') == true
+                      ? AppColors.primaryColor.withOpacity(0.1)
+                      : null,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
+            child: _buildDataPoint(
+              'Duration',
+              ecgReading.durationDisplay,
+              '',
+              isHighlighted: isParameterSelected?.call('Duration') == true,
+            ),
+          ),
+        ),
+      ),
     ];
   }
 

@@ -12,12 +12,14 @@ class VitalsChartWidget extends StatefulWidget {
   final List<VitalReading> readings;
   final VitalType vitalType;
   final String? selectedParameter;
+  final void Function(String parameter)? onParameterTap;
 
   const VitalsChartWidget({
     super.key,
     required this.readings,
     required this.vitalType,
     this.selectedParameter,
+    this.onParameterTap,
   });
 
   @override
@@ -54,7 +56,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
     return Container(
       padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFFFAFAFA),
         borderRadius: BorderRadius.circular(AppRadius.xl2),
         // border: Border.all(color: Colors.grey[200]!, width: 1),
       ),
@@ -124,6 +126,11 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                         setState(() {
                           selectedParameter = parameter;
                         });
+
+                        // Notify parent about the parameter change so that
+                        // other UI elements (e.g. reading list highlights)
+                        // can react accordingly.
+                        widget.onParameterTap?.call(parameter);
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: AppSpacing.sm),
@@ -361,7 +368,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
           spots: spots,
           isCurved: true,
           curveSmoothness: 0.2,
-          color: Colors.grey[400],
+          color: AppColors.primaryColor,
           barWidth: 1, // This is where the line width is set for the main chart
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -373,12 +380,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                 color:
                     isLatest
                         ? AppColors.primaryColor
-                        : const Color.fromARGB(
-                          255,
-                          193,
-                          193,
-                          193,
-                        ).withOpacity(0.6),
+                        : AppColors.primaryColor.withOpacity(0.6),
                 strokeWidth: 0,
               );
             },
@@ -460,8 +462,6 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         switch (parameter) {
           case 'SpO2':
             return spO2Reading.oxygenSaturation;
-          case 'Heart rate':
-            return spO2Reading.heartRate.toDouble();
         }
         break;
       case VitalType.bloodGlucose:
@@ -494,7 +494,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
       case VitalType.bloodPressure:
         return ['BP', 'MAP', 'PP'];
       case VitalType.spO2HeartRate:
-        return ['SpO2', 'Heart rate'];
+        return ['SpO2'];
       case VitalType.bloodGlucose:
         return ['Glucose'];
       case VitalType.bodyTemperature:
@@ -564,7 +564,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
             ? 60
             : 10; // Pulse Pressure - reduced from 20 to 10
       case VitalType.spO2HeartRate:
-        return selectedParameter == 'SpO2' ? 90 : 40;
+        return 90; // Only SpO2 values
       case VitalType.bloodGlucose:
         return 70;
       case VitalType.bodyTemperature:
@@ -583,7 +583,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
             ? 130
             : 100; // Pulse Pressure - increased from 80 to 100
       case VitalType.spO2HeartRate:
-        return selectedParameter == 'SpO2' ? 100 : 120;
+        return 100; // Only SpO2 values (percentage)
       case VitalType.bloodGlucose:
         return 200;
       case VitalType.bodyTemperature:
@@ -631,11 +631,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
       case VitalType.bloodPressure:
         return value.toInt().toString();
       case VitalType.spO2HeartRate:
-        if (selectedParameter == 'SpO2') {
-          return '${value.toInt()}%';
-        } else {
-          return value.toInt().toString();
-        }
+        return '${value.toInt()}%'; // Only SpO2 values with percentage
       case VitalType.bloodGlucose:
         return value.toInt().toString();
       case VitalType.bodyTemperature:
