@@ -1,3 +1,4 @@
+import 'package:ausa/di.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
 import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
@@ -11,21 +12,13 @@ import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
 import 'package:ausa/constants/dimensions.dart';
 import 'package:ausa/features/onboarding/view/splash_page.dart';
 
-
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Set full screen mode
-  SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.immersiveSticky,
-    overlays: [],
-  );
-
+  DependencyInject().init();
   runApp(
     Container(
       alignment: Alignment.center,
@@ -39,23 +32,6 @@ void main() {
       ),
     ),
   );
-
-  // Dependency injection - Register services first
-  _initializeDependencies();
-
-  runApp(MyApp());
-}
-
-void _initializeDependencies() {
-  // Register services
-  Get.put<AppointmentService>(AppointmentServiceImpl(), permanent: true);
-
-  // Register controllers
-  Get.put(TeleconsultationController(), permanent: true);
-  Get.put(AppointmentsController(), permanent: true);
-
-  // Note: Other controllers (AppointmentSchedulingController, AppointmentEditController, MealTimesController, VitalsHistoryController)
-  // are created on-demand when their respective pages are accessed
 }
 
 class MyApp extends StatelessWidget {

@@ -14,4 +14,6 @@ class AppColors {
   static const Color selectionButtonText = Color(0xFF155EEF);
 
   static const Color splashBackground = Color(0xFFF0F0F0);
+  static const Color textColor = Color(0xff171136);
+  static const Color textlightColor = Color(0xff828282);
 }

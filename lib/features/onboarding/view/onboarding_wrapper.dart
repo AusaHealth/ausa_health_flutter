@@ -80,10 +80,10 @@ class OnboardingWrapper extends StatelessWidget {
                             return OtpVerificationWidget();
                           case OnboardingStep.terms:
                             return OnboardingLanguagePage();
-                          case OnboardingStep.faceId:
-                            return OnboardingLanguagePage();
-                          case OnboardingStep.gestures:
-                            return OnboardingLanguagePage();
+                          // case OnboardingStep.faceId:
+                          //   return OnboardingLanguagePage();
+                          // case OnboardingStep.gestures:
+                          //   return OnboardingLanguagePage();
                           default:
                             return Container();
                         }
@@ -124,12 +124,12 @@ class OnboardingStepList extends StatelessWidget {
         'icon': Icons.description,
         'step': OnboardingStep.terms,
       },
-      {'label': 'Face-ID', 'icon': Icons.face, 'step': OnboardingStep.faceId},
-      {
-        'label': 'Gestures',
-        'icon': Icons.pan_tool,
-        'step': OnboardingStep.gestures,
-      },
+      // {'label': 'Face-ID', 'icon': Icons.face, 'step': OnboardingStep.faceId},
+      // {
+      //   'label': 'Gestures',
+      //   'icon': Icons.pan_tool,
+      //   'step': OnboardingStep.gestures,
+      // },
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

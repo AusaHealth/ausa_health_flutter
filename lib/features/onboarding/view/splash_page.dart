@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/features/onboarding/view/widgets/ob_lang_selection_widget.dart';
 import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:get/get.dart';
 import 'package:neumorphic_ui/neumorphic_ui.dart';

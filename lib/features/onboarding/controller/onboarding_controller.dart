@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 /// Enum representing each onboarding step.
-enum OnboardingStep { language, wifi, phone, otp, terms, faceId, gestures }
+enum OnboardingStep { language, wifi, phone, otp, terms }
 
 /// Controller to manage onboarding state and navigation.
 class OnboardingController extends GetxController {
