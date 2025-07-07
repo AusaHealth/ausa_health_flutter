@@ -1,3 +1,4 @@
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class CustomNav extends StatelessWidget {
@@ -26,11 +27,7 @@ class CustomNav extends StatelessWidget {
           const SizedBox(width: 32),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF091227),
-            ),
+            style: AppTypography.headline(fontWeight: FontWeight.w400),
           ),
         ],
       ),

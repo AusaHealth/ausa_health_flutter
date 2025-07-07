@@ -1,6 +1,10 @@
 import 'package:ausa/common/widget/settings_header.dart';
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/dimensions.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_lang_selection_widget.dart';
+import 'package:ausa/features/onboarding/view/widgets/ob_terms_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_wifi_selection_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/otp_verification_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/phone_number_widget.dart';
@@ -8,92 +12,116 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import '../controller/onboarding_controller.dart';
-import 'package:ausa/features/settings/model/network_info_model.dart';
-import 'package:ausa/features/settings/widget/settings_network_tile.dart';
 
 class OnboardingWrapper extends StatelessWidget {
-  const OnboardingWrapper({Key? key}) : super(key: key);
+  const OnboardingWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<OnboardingController>();
     return Scaffold(
-      backgroundColor: const Color(0xFFEAF6FF),
-      body: SafeArea(
-        child: Column(
-          children: [
-            CustomHeader(),
-            Center(
-              child: Container(
-                width: Dimensions.onboardingContainerWidth,
-                height: 604,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(80),
-                  border: Border.all(color: Colors.white, width: 10),
-                ),
-                child: Row(
-                  children: [
-                    // Left: Steps
-                    GlassmorphicContainer(
-                      width: 350,
-                      height: 604,
-                      borderRadius: 80,
-                      blur: 40,
-                      alignment: Alignment.center,
-                      border: 2,
-                      linearGradient: LinearGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.25),
-                          Colors.blue.withOpacity(0.10),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderGradient: LinearGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.4),
-                          Colors.white.withOpacity(0.1),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Obx(
-                          () => OnboardingStepList(
-                            currentStep: controller.currentStep.value,
-                            completedSteps: controller.completedSteps,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF6B9FFF), Color(0xFF7ED3D1), Color(0xFFA8E6CF)],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              CustomHeader(),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(80),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 24,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 16,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Obx(
+                                () => OnboardingStepList(
+                                  currentStep: controller.currentStep.value,
+                                  completedSteps: controller.completedSteps,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 32),
-                    // Right: Dynamic content
-                    Expanded(
-                      child: Obx(() {
-                        switch (controller.currentStep.value) {
-                          case OnboardingStep.language:
-                            return OnboardingLanguagePage();
-                          case OnboardingStep.wifi:
-                            return OnboardingWifiPage();
-                          case OnboardingStep.phone:
-                            return PhoneNumberWidget();
-                          case OnboardingStep.otp:
-                            return OtpVerificationWidget();
-                          case OnboardingStep.terms:
-                            return OnboardingLanguagePage();
-                          // case OnboardingStep.faceId:
-                          //   return OnboardingLanguagePage();
-                          // case OnboardingStep.gestures:
-                          //   return OnboardingLanguagePage();
-                          default:
-                            return Container();
-                        }
-                      }),
-                    ),
-                  ],
+                      SizedBox(width: 16),
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 24,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 16,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Obx(() {
+                            switch (controller.currentStep.value) {
+                              case OnboardingStep.language:
+                                return OnboardingLanguagePage();
+                              case OnboardingStep.wifi:
+                                return OnboardingWifiPage();
+                              case OnboardingStep.phone:
+                                return PhoneNumberWidget();
+                              case OnboardingStep.otp:
+                                return OtpVerificationWidget();
+                              case OnboardingStep.terms:
+                                return OnboardingTermsWidget();
+                              default:
+                                return Container();
+                            }
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -114,15 +142,27 @@ class OnboardingStepList extends StatelessWidget {
     final steps = [
       {
         'label': 'Language',
-        'icon': Icons.language,
+        'image': AppImages.langSelected,
         'step': OnboardingStep.language,
+        'unselectedImage': AppImages.langSelected,
       },
-      {'label': 'Wi-Fi', 'icon': Icons.wifi, 'step': OnboardingStep.wifi},
-      {'label': 'Phone', 'icon': Icons.phone, 'step': OnboardingStep.phone},
+      {
+        'label': 'Wi-Fi',
+        'image': AppImages.wifiSelected,
+        'step': OnboardingStep.wifi,
+        'unselectedImage': AppImages.wifiUnSelected,
+      },
+      {
+        'label': 'Phone',
+        'image': AppImages.phoneSelected,
+        'step': OnboardingStep.phone,
+        'unselectedImage': AppImages.phoneUnSelected,
+      },
       {
         'label': 'Terms',
-        'icon': Icons.description,
+        'image': AppImages.termsSelected,
         'step': OnboardingStep.terms,
+        'unselectedImage': AppImages.termsUnSelected,
       },
       // {'label': 'Face-ID', 'icon': Icons.face, 'step': OnboardingStep.faceId},
       // {
@@ -131,81 +171,80 @@ class OnboardingStepList extends StatelessWidget {
       //   'step': OnboardingStep.gestures,
       // },
     ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Hello, 👋',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'Lets Get you started',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black54,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 24),
-        for (int i = 0; i < steps.length; i++) ...[
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor:
-                    completedSteps.contains(steps[i]['step'])
-                        ? Colors.green
-                        : (steps[i]['step'] == currentStep
-                            ? Colors.blueAccent
-                            : Colors.white),
-                child:
-                    completedSteps.contains(steps[i]['step'])
-                        ? const Icon(Icons.check, color: Colors.white)
-                        : Icon(
-                          steps[i]['icon'] as IconData,
-                          color:
-                              steps[i]['step'] == currentStep
-                                  ? Colors.white
-                                  : Colors.blueAccent,
-                        ),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Step ${i + 1}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    steps[i]['label'] as String,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          if (i < steps.length - 1)
-            Container(
-              margin: const EdgeInsets.symmetric(
-                vertical: 4,
-                horizontal: 10,
-              ).copyWith(left: 20),
-              width: 2,
-              height: 24,
-              color: Colors.black12,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Hello, 👋',
+            style: AppTypography.headline(
+              color: AppColors.textColor,
+              fontWeight: FontWeight.w500,
             ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Lets Get you started',
+            style: AppTypography.body(color: AppColors.textColor),
+          ),
+          const SizedBox(height: 32),
+          for (int i = 0; i < steps.length; i++) ...[
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundColor: Colors.white,
+                  child:
+                      completedSteps.contains(steps[i]['step'])
+                          ? Image.asset(AppImages.done, width: 54, height: 54)
+                          : steps[i]['step'] == currentStep
+                          ? Image.asset(
+                            steps[i]['image'] as String,
+                            width: 54,
+                            height: 54,
+                          )
+                          : Image.asset(
+                            steps[i]['unselectedImage'] as String,
+                            width: 54,
+                            height: 54,
+                          ),
+                ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Step ${i + 1}',
+                      style: AppTypography.callout(
+                        color: Color(0xff828282),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      steps[i]['label'] as String,
+                      style: AppTypography.callout(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.w400,
+                      ).copyWith(fontSize: 16),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            if (i < steps.length - 1)
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 10,
+                ).copyWith(left: 20),
+                width: 2,
+                height: 24,
+                color: Colors.black12,
+              ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }

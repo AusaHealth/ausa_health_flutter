@@ -95,7 +95,7 @@ class _ConditionPageState extends State<ConditionPage> {
                     ),
                   ],
                 ),
-                child: Expanded(child: _buildReadingCard()),
+                child: _buildReadingCard(),
               ),
             ],
           ),

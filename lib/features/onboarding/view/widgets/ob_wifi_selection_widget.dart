@@ -1,9 +1,10 @@
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
 import 'package:ausa/features/settings/model/network_info_model.dart';
 import 'package:ausa/features/settings/widget/settings_network_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class OnboardingWifiPage extends StatelessWidget {
   OnboardingWifiPage({super.key});
@@ -41,29 +42,26 @@ class OnboardingWifiPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Wi-Fi',
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: AppTypography.body(
+            color: AppColors.bodyTextLightColor,
+          ).copyWith(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Select your Wi-Fi network',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black54,
-            fontWeight: FontWeight.w500,
-          ),
+          style: AppTypography.title1(
+            color: AppColors.bodyTextColor,
+          ).copyWith(fontSize: 16),
         ),
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'Available networks',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFFA0A8BB),
-            fontWeight: FontWeight.w500,
-          ),
+          style: AppTypography.body(
+            color: Color(0xFF828282),
+          ).copyWith(fontSize: 16, fontWeight: FontWeight.w500),
         ),
-        const SizedBox(height: 8),
         Expanded(
           child: ListView.separated(
             itemCount: networks.length,

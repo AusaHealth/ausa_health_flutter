@@ -16,4 +16,6 @@ class AppColors {
   static const Color splashBackground = Color(0xFFF0F0F0);
   static const Color textColor = Color(0xff171136);
   static const Color textlightColor = Color(0xff828282);
+  static const Color bodyTextColor = Color(0xff4F4F4F);
+  static const Color bodyTextLightColor = Color(0xff021633);
 }

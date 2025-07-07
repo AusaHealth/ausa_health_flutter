@@ -1,12 +1,20 @@
 import 'package:ausa/common/widget/app_icons.dart';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/common/widget/settings_header.dart';
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/features/profile/page/ausa_connect.dart';
 import 'package:ausa/features/profile/page/care_page.dart';
 import 'package:ausa/features/profile/page/condition_page.dart';
+import 'package:ausa/features/profile/page/edit_personal_page.dart';
+import 'package:ausa/features/profile/page/family_page.dart';
 import 'package:ausa/features/profile/widget/profile_tabs.dart';
 import 'package:ausa/features/profile/widget/profile_widget.dart';
+import 'package:ausa/features/settings/page/setting_page.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,7 +35,13 @@ class _ProfilePageState extends State<ProfilePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomHeader(),
+                GestureDetector(
+                  child: const CustomHeader(),
+                  onTap: () {
+                    Get.to(() => SettingsPage());
+                  },
+                ),
+
                 const SizedBox(height: 8),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.only(top: 8.0, right: 12.0),
                       child: Image.asset(
                         ProfileIcons.ausaLogo,
-                        height: 150,
-                        width: 230,
+                        height: 140,
+                        width: 200,
                       ),
                     ),
                   ],
@@ -70,9 +84,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       } else if (selectedTab == 2) {
                         return CarePage();
                       } else if (selectedTab == 3) {
-                        return Center(child: Text('Family View'));
+                        return FamilyPage();
                       } else if (selectedTab == 4) {
-                        return Center(child: Text('AUSA Connect'));
+                        return AusaConnect();
                       } else {
                         return SizedBox.shrink();
                       }

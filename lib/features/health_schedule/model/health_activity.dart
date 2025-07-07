@@ -82,10 +82,10 @@ class HealthActivity {
               : null,
       metadata: json['metadata'] as Map<String, dynamic>?,
       ctaText: json['ctaText'] as String?,
-      ctaIcon:
-          json['ctaIcon'] != null
-              ? IconData(json['ctaIcon'] as int, fontFamily: 'MaterialIcons')
-              : null,
+      // ctaIcon:
+      // json['ctaIcon'] != null
+      //     ? IconData(json['ctaIcon'] as int, fontFamily: 'MaterialIcons')
+      //     : null,
     );
   }
 

@@ -42,8 +42,10 @@ dependencies:
   flutter_screenutil: ^5.9.3
   fl_chart: ^1.0.0
   scrollable_positioned_list: ^0.3.8
-  neumorphic_ui: ^1.0.1
+  # neumorphic_ui: ^1.0.1
   glassmorphism: ^3.0.0
+  virtual_keyboard_multi_language: ^1.1.2
+  pinput: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,8 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/icons/profile_icons/
+    - assets/icons/setting_icon/
+    - assets/icons/onboarding/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

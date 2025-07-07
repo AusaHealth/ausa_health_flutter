@@ -1,3 +1,4 @@
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -12,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
+  final double? height;
 
   const CustomTextField({
     super.key,
@@ -26,6 +28,7 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.onChanged,
     this.onFieldSubmitted,
+    this.height,
   });
 
   @override
@@ -43,9 +46,10 @@ class CustomTextField extends StatelessWidget {
         if (label != null && label!.isNotEmpty)
           Text(
             label ?? '',
-            style: TextStyle(
+
+            style: AppTypography.body(
               color: errorText != null ? Colors.deepOrange : Colors.white,
-              fontWeight: FontWeight.w500,
+            ).copyWith(
               decoration:
                   errorText == null && isFocused
                       ? TextDecoration.underline
@@ -67,6 +71,7 @@ class CustomTextField extends StatelessWidget {
             );
           },
           child: Container(
+            height: height,
             decoration: BoxDecoration(
               color: const Color(0xFFF7F7FA),
               borderRadius: BorderRadius.circular(24),
@@ -78,7 +83,7 @@ class CustomTextField extends StatelessWidget {
               focusNode: focusNode,
               keyboardType: keyboardType,
               maxLines: multiline ? null : 1,
-              minLines: multiline ? 3 : 1,
+              minLines: multiline ? 4 : 1,
               style: const TextStyle(color: Colors.black, fontSize: 18),
               decoration: InputDecoration(
                 hintText: hint,
