@@ -1,10 +1,12 @@
 import 'dart:ui';
 
+import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
 import 'package:ausa/features/appointments/widget/calendar_view_widget.dart';
-import 'package:ausa/features/appointments/widget/step_indicator.dart';
 import 'package:ausa/features/appointments/widget/success_popup.dart';
 import 'package:ausa/features/appointments/widget/time_slots_grid.dart';
 import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
@@ -48,31 +50,16 @@ class AppointmentSchedulingPage extends StatelessWidget {
   Widget _buildMainLayout(AppointmentSchedulingController controller) {
     return Column(
       children: [
-        _buildHeader(controller),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: const Color.fromRGBO(222, 222, 222, 0.5),
-                backgroundBlendMode: BlendMode.srcOver,
-              ),
-              child: ClipRRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(flex: 4, child: _buildLeftCard(controller)),
-                      const SizedBox(width: 24),
-                      Expanded(flex: 2, child: _buildRightCard(controller)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+        // _buildHeader(controller),
+        const AppBackHeader(title: 'Connect with care team'),
+        AppMainContainer(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(flex: 4, child: _buildLeftCard(controller)),
+              SizedBox(width: AppSpacing.lg),
+              Expanded(flex: 2, child: _buildRightCard(controller)),
+            ],
           ),
         ),
       ],
@@ -82,216 +69,126 @@ class AppointmentSchedulingPage extends StatelessWidget {
   Widget _buildStep2Layout(AppointmentSchedulingController controller) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(24),
-          child: Row(
-            children: [
-              StepIndicator(
-                currentStep: controller.currentStep,
-                onBackPressed: controller.handleBackPressed,
-              ),
-              const Spacer(),
-              SecondaryButton(
-                text: 'Scheduled Appointments',
-                onPressed: controller.navigateToScheduledAppointments,
-                icon: Icons.calendar_today,
-                iconSize: 16,
-                height: 40,
-              ),
-            ],
-          ),
+        AppBackHeader(
+          title: 'Pick another date',
+          currentStep: controller.currentStep,
+          totalSteps: 2,
+          onBackPressed: controller.handleBackPressed,
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(46),
-              ),
-              width: double.infinity,
-              height: double.infinity,
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(36),
+
+        AppMainContainer(
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(36),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 350,
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(42),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      Text(
+                        controller.selectedTimeSlot?.dateTime.toString().split(
+                              ' ',
+                            )[0] ??
+                            '',
+                        style: AppTypography.body(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 1,
+                        height: 16,
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        controller.selectedTimeSlot?.formattedTime ?? '',
+                        style: AppTypography.body(fontWeight: FontWeight.w600),
+                      ),
+                      const Spacer(),
+                      AusaButton(
+                        text: 'Change',
+                        onPressed: controller.goBackToStep1,
+                        variant: ButtonVariant.link,
+                        iconSize: 16,
+                        height: 40,
+                      ),
+                      const SizedBox(width: 20),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 350,
-                      padding: const EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[50],
-                        borderRadius: BorderRadius.circular(42),
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 20),
-                          Text(
-                            controller.selectedTimeSlot?.dateTime
-                                    .toString()
-                                    .split(' ')[0] ??
-                                '',
-                            style: AppTypography.body(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Container(
-                            width: 1,
-                            height: 16,
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            controller.selectedTimeSlot?.formattedTime ?? '',
-                            style: AppTypography.body(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const Spacer(),
-                          SecondaryButton(
-                            text: 'Change',
-                            onPressed: controller.goBackToStep1,
-                            iconSize: 16,
-                            height: 40,
-                          ),
-                        ],
-                      ),
+                const SizedBox(height: 16),
+                Text(
+                  'Any symptoms you want to share? (Optional)',
+                  style: AppTypography.body(),
+                ),
+                const SizedBox(height: 24),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[200]!),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Any symptoms you want to share? (Optional)',
-                      style: AppTypography.body(),
-                    ),
-                    const SizedBox(height: 24),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[50],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey[200]!),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                  16,
-                                  16,
-                                  16,
-                                  0,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: Obx(
+                              () => TextField(
+                                controller: TextEditingController(
+                                  text: controller.symptomsText,
                                 ),
-                                child: Obx(
-                                  () => TextField(
-                                    controller: TextEditingController(
-                                      text: controller.symptomsText,
-                                    ),
-                                    onChanged: controller.updateSymptomsText,
-                                    maxLines: null,
-                                    expands: true,
-                                    textAlignVertical: TextAlignVertical.top,
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText:
-                                          'Optional: Describe any symptoms...',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      contentPadding: EdgeInsets.zero,
-                                    ),
-                                    style: AppTypography.body(),
-                                  ),
+                                onChanged: controller.updateSymptomsText,
+                                maxLines: null,
+                                expands: true,
+                                textAlignVertical: TextAlignVertical.top,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                      'Optional: Describe any symptoms...',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  contentPadding: EdgeInsets.zero,
                                 ),
+                                style: AppTypography.body(),
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              child: Obx(
-                                () => VoiceInputWidget(
-                                  isRecording: controller.isRecording,
-                                  onToggleRecording: controller.startRecording,
-                                  onClear: controller.clearSymptomsText,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Obx(
+                            () => VoiceInputWidget(
+                              isRecording: controller.isRecording,
+                              onToggleRecording: controller.startRecording,
+                              onClear: controller.clearSymptomsText,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Obx(() => _buildFinishButton(controller)),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Obx(() => _buildFinishButton(controller)),
+                ),
+              ],
             ),
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildHeader(AppointmentSchedulingController controller) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-      child: Obx(() {
-        if (controller.isMonthView) {
-          return Row(
-            children: [
-              StepIndicator(
-                currentStep: controller.currentStep,
-                onBackPressed: controller.handleBackPressed,
-              ),
-              const Spacer(),
-              SecondaryButton(
-                text: 'Scheduled Appointments',
-                onPressed: controller.navigateToScheduledAppointments,
-                icon: Icons.calendar_today,
-                iconSize: 16,
-                height: 40,
-              ),
-            ],
-          );
-        } else {
-          return Row(
-            children: [
-              GestureDetector(
-                onTap: controller.handleBackPressed,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.black87,
-                      size: 16,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Text('Connect with care team', style: AppTypography.headline()),
-              const Spacer(),
-              SecondaryButton(
-                text: 'Scheduled Appointments',
-                onPressed: controller.navigateToScheduledAppointments,
-                icon: Icons.calendar_today,
-                iconSize: 16,
-                height: 30,
-              ),
-            ],
-          );
-        }
-      }),
     );
   }
 
@@ -348,13 +245,14 @@ class AppointmentSchedulingPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(24),
-                child: PrimaryButton(
+                child: AusaButton(
                   text: 'Enter Symptoms',
                   onPressed:
                       controller.selectedTimeSlot != null
                           ? controller.goToStep2
                           : null,
                   isEnabled: controller.selectedTimeSlot != null,
+                  variant: ButtonVariant.primary,
                   width: double.infinity,
                   height: 56,
                   borderRadius: 32,
@@ -373,7 +271,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
     AppointmentSchedulingController controller,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 22),
+      padding: const EdgeInsets.only(left: 40, right: 40, top: 28, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -381,28 +279,29 @@ class AppointmentSchedulingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Select Date', style: AppTypography.body()),
-              TertiaryButton(
+              AusaButton(
                 text: 'Month View',
                 onPressed: controller.toggleMonthView,
+                variant: ButtonVariant.link,
                 icon: Icons.calendar_view_month,
                 textColor: AppColors.primaryColor,
                 iconColor: AppColors.primaryColor,
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 20),
           _buildWeekView(controller),
           const SizedBox(height: 20),
           Text('Select Time Slot', style: AppTypography.body()),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Expanded(
             child: Obx(
               () => GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisExtent: 47,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 24,
+                  mainAxisSpacing: 20,
                 ),
                 itemCount: controller.availableTimeSlots.length,
                 itemBuilder: (context, index) {
@@ -410,10 +309,11 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   final isSelected =
                       controller.selectedTimeSlot?.id == timeSlot.id;
 
-                  return SelectionButton(
+                  return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    initialSelected: isSelected,
+                    variant: ButtonVariant.selection,
+                    isSelected: isSelected,
                     isEnabled: timeSlot.isAvailable,
                     onSelectionChanged: (selected) {
                       if (selected) {
@@ -443,57 +343,51 @@ class AppointmentSchedulingPage extends StatelessWidget {
     });
 
     return Row(
-      spacing: 20,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children:
           weekDates.map((dateInfo) {
             final date = dateInfo['date'] as DateTime;
             final isSelected = _isSameDay(date, controller.selectedDate);
 
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => controller.selectDate(date),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color:
-                        isSelected
-                            ? const Color(0xFF1B1B3B)
-                            : const Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        spreadRadius: 4,
-                        blurRadius: 7,
-                        offset: const Offset(2, 4),
+            return GestureDetector(
+              onTap: () => controller.selectDate(date),
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color:
+                      isSelected
+                          ? const Color(0xFF1B1B3B)
+                          : const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      spreadRadius: 4,
+                      blurRadius: 7,
+                      offset: const Offset(2, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      dateInfo['month'] as String,
+                      style: AppTypography.callout(
+                        weight: AppTypographyWeight.medium,
+                        color:
+                            isSelected ? Colors.white : const Color(0xFF666666),
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        dateInfo['month'] as String,
-                        style: AppTypography.callout(
-                          color:
-                              isSelected
-                                  ? Colors.white
-                                  : const Color(0xFF666666),
-                          fontWeight: FontWeight.w500,
-                        ),
+                    ),
+                    Text(
+                      dateInfo['day'] as String,
+                      style: AppTypography.title2(
+                        weight: AppTypographyWeight.medium,
+                        color: isSelected ? Colors.white : Colors.black,
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        dateInfo['day'] as String,
-                        style: AppTypography.headline(
-                          color: isSelected ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -560,12 +454,13 @@ class AppointmentSchedulingPage extends StatelessWidget {
   }
 
   Widget _buildFinishButton(AppointmentSchedulingController controller) {
-    return PrimaryButton(
-      text: 'Finish',
+    return AusaButton(
+      text: 'Schedule Appointment',
       onPressed: controller.canFinish ? controller.scheduleAppointment : null,
       isLoading: controller.isLoading,
       isEnabled: controller.canFinish,
-      width: 100,
+      variant: ButtonVariant.primary,
+      width: double.infinity,
       height: 56,
       borderRadius: 32,
     );

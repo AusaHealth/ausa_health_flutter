@@ -107,18 +107,20 @@ class DiscardChangesDialog extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: SecondaryButton(
+                      child: AusaButton(
                         text: 'No',
                         onPressed: onKeepEditing,
+                        variant: ButtonVariant.secondary,
                         height: 48,
                         borderRadius: 24,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: PrimaryButton(
+                      child: AusaButton(
                         text: 'Yes',
                         onPressed: onDiscard,
+                        variant: ButtonVariant.primary,
                         height: 48,
                         borderRadius: 24,
                       ),

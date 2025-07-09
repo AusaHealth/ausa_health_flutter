@@ -5,6 +5,7 @@ import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CancelAppointmentDialog extends StatelessWidget {
   final Appointment appointment;
@@ -209,9 +210,14 @@ class CancelAppointmentDialog extends StatelessWidget {
                 // Cancel button
                 Align(
                   alignment: Alignment.centerRight,
-                  child: PrimaryButton(
-                    text: 'Yes, cancel',
-                    onPressed: onCancel,
+                  child: AusaButton(
+                    text: 'Cancel Appointment',
+                    onPressed: () {
+                      Get.back(
+                        result: true,
+                      ); // Return true to indicate confirmation
+                    },
+                    variant: ButtonVariant.primary,
                     width: 150,
                     height: 48,
                     borderRadius: 24,

@@ -1,4 +1,5 @@
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
 
 class NoAppointmentsWidget extends StatelessWidget {
@@ -48,35 +49,18 @@ class NoAppointmentsWidget extends StatelessWidget {
             const SizedBox(height: 32),
 
             if (onWifiSettings != null)
-              ElevatedButton(
+              AusaButton(
+                text: 'Wi-Fi Settings',
                 onPressed: onWifiSettings,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white.withOpacity(0.2),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.wifi, size: 16),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Wi-Fi Settings',
-                      style: AppTypography.body(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(Icons.arrow_forward, size: 16),
-                  ],
+                variant: ButtonVariant.secondary,
+                backgroundColor: Colors.white.withOpacity(0.2),
+                textColor: Colors.white,
+                icon: Icons.wifi,
+                iconSize: 16,
+                borderRadius: 8,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
                 ),
               ),
 

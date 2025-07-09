@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants/constants.dart';
+import '../../../common/widget/app_back_header.dart';
+import '../../../common/widget/app_main_container.dart';
 import '../controller/meal_times_controller.dart';
 
 class MealTimesPage extends StatelessWidget {
@@ -16,101 +18,46 @@ class MealTimesPage extends StatelessWidget {
         child: Column(
           children: [
             // Header
-            _buildHeader(),
+            const AppBackHeader(title: 'Edit Meal Times'),
 
             // Main content
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(AppSpacing.lg),
-                child: Container(
-                  padding: EdgeInsets.all(AppSpacing.lg),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadius.xl2),
-                    color: Colors.white.withOpacity(0.5),
-                  ),
-                  child: Row(
-                    children: [
-                      // Left sidebar with meal options
-                      _buildMealsSidebar(controller),
+            AppMainContainer(
+              child: Row(
+                children: [
+                  // Left sidebar with meal options
+                  _buildMealsSidebar(controller),
 
-                      // Right content area with time picker
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(AppRadius.xl2),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xl4,
-                            vertical: AppSpacing.xl,
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(height: AppSpacing.lg),
-
-                              // Set meal time header
-                              _buildSetTimeHeader(controller),
-
-                              SizedBox(height: AppSpacing.xl4),
-
-                              // Time picker
-                              Expanded(child: _buildTimePicker(controller)),
-                            ],
-                          ),
-                        ),
+                  // Right content area with time picker
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppRadius.xl2),
                       ),
-                    ],
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl4,
+                        vertical: AppSpacing.xl,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(height: AppSpacing.lg),
+
+                          // Set meal time header
+                          _buildSetTimeHeader(controller),
+
+                          SizedBox(height: AppSpacing.xl4),
+
+                          // Time picker
+                          Expanded(child: _buildTimePicker(controller)),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
-      child: Row(
-        children: [
-          // Back button
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black87,
-                size: 16,
-              ),
-            ),
-          ),
-
-          SizedBox(width: AppSpacing.md),
-
-          // Title
-          Text(
-            'Edit Meal Times',
-            style: AppTypography.headline(color: Colors.black87),
-          ),
-        ],
       ),
     );
   }

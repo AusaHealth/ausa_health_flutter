@@ -1,3 +1,5 @@
+import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
@@ -19,7 +21,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(controller),
+            const AppBackHeader(title: 'Scheduled appointments'),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading) {
@@ -70,9 +72,10 @@ class ScheduledAppointmentsPage extends StatelessWidget {
           const SizedBox(width: 16),
           Text('Scheduled appointments', style: AppTypography.headline()),
           const Spacer(),
-          SecondaryButton(
+          AusaButton(
             text: 'New Appointment',
             onPressed: controller.navigateToScheduleAppointment,
+            variant: ButtonVariant.secondary,
             icon: Icons.add,
             iconSize: 16,
             height: 40,
@@ -86,35 +89,27 @@ class ScheduledAppointmentsPage extends StatelessWidget {
     List<Appointment> appointments,
     AppointmentsController controller,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(32),
+    return AppMainContainer(
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
         ),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-          ),
-          itemCount: appointments.length,
-          itemBuilder: (context, index) {
-            final appointment = appointments[index];
-            return AppointmentCardWidget(
-              appointment: appointment,
-              onEdit: () {
-                controller.editAppointment(appointment);
-              },
-              onShowFullSymptoms: () {
-                controller.navigateToAppointmentDetails(appointment);
-              },
-            );
-          },
-        ),
+        itemCount: appointments.length,
+        itemBuilder: (context, index) {
+          final appointment = appointments[index];
+          return AppointmentCardWidget(
+            appointment: appointment,
+            onEdit: () {
+              controller.editAppointment(appointment);
+            },
+            onShowFullSymptoms: () {
+              controller.navigateToAppointmentDetails(appointment);
+            },
+          );
+        },
       ),
     );
   }

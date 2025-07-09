@@ -22,10 +22,7 @@ class TimeSlotsGrid extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Select Time Slot',
-            style: AppTypography.body(),
-          ),
+          Text('Select Time Slot', style: AppTypography.body()),
 
           const SizedBox(height: 24),
 
@@ -52,16 +49,16 @@ class TimeSlotsGrid extends StatelessWidget {
   Widget _buildTimeSlotButton(TimeSlot timeSlot) {
     final isSelected = selectedTimeSlot?.id == timeSlot.id;
 
-    return SelectionButton(
-      key: ValueKey('${timeSlot.id}_$isSelected'),
+    return AusaButton(
       text: timeSlot.formattedTime,
-      initialSelected: isSelected,
-      isEnabled: timeSlot.isAvailable,
-      onSelectionChanged: (bool selected) {
-        if (selected) {
+      variant: ButtonVariant.selection,
+      isSelected: isSelected,
+      onSelectionChanged: (selected) {
+        if (selected && timeSlot.isAvailable) {
           onTimeSlotSelected(timeSlot);
         }
       },
+      isEnabled: timeSlot.isAvailable,
     );
   }
 }

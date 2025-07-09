@@ -1,3 +1,6 @@
+import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/app_tab_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -5,7 +8,6 @@ import '../../../constants/constants.dart';
 import '../controller/vitals_history_controller.dart';
 import '../widget/vitals_chart_widget.dart';
 import '../widget/reading_card_widget.dart';
-import '../widget/empty_state_widget.dart';
 import '../model/vital_reading.dart';
 
 class VitalsHistoryPage extends StatefulWidget {
@@ -80,227 +82,102 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // Header
-              _buildHeader(controller),
-              SizedBox(height: AppSpacing.md),
+        child: Column(
+          children: [
+            // Header
+            const AppBackHeader(title: 'Vitals'),
 
-              // Tab buttons
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl5),
-                child: _buildTabButtons(controller),
-              ),
-
-              SizedBox(height: AppSpacing.md),
-
-              // Main content
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.lg),
-                  child: Container(
-                    padding: EdgeInsets.all(AppSpacing.lg),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadius.xl2),
-                      color: Colors.white.withOpacity(0.5),
-                    ),
-                    child: Obx(() {
-                      if (controller.hasNoReadings) {
-                        return EmptyStateWidget(
-                          onTakeFirstTest: controller.navigateToTakeFirstTest,
-                        );
-                      }
-
-                      return Container(
-                        padding: EdgeInsets.all(AppSpacing.lg),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(AppRadius.xl2),
-                        ),
-                        child: Row(
-                          children: [
-                            // Left side - Chart
-                            Expanded(
-                              flex: 1,
-                              child: Obx(
-                                () => Column(
-                                  children: [
-                                    // Chart
-                                    Expanded(
-                                      child: VitalsChartWidget(
-                                        readings: controller.chartReadings,
-                                        vitalType: controller.currentVitalType,
-                                        selectedParameter:
-                                            controller
-                                                    .chartSelectedParameter
-                                                    .isNotEmpty
-                                                ? controller
-                                                    .chartSelectedParameter
-                                                : null,
-                                        onParameterTap: (chartParam) {
-                                          // Only relevant for Blood Pressure where multiple parameters exist
-                                          if (controller.currentVitalType ==
-                                              VitalType.bloodPressure) {
-                                            // Map chart-level parameter back to the underlying reading parameter
-                                            switch (chartParam) {
-                                              case 'BP':
-                                                controller
-                                                    .selectedBPParameter
-                                                    .value = 'Systolic';
-                                                break;
-                                              case 'MAP':
-                                                controller
-                                                    .selectedBPParameter
-                                                    .value = 'MAP';
-                                                break;
-                                              case 'PP':
-                                                controller
-                                                    .selectedBPParameter
-                                                    .value = 'Pulse Pressure';
-                                                break;
-                                              default:
-                                                break;
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(width: AppSpacing.lg),
-
-                            // Right side - Readings
-                            Expanded(
-                              flex: 1,
-                              child: _buildReadingsSection(controller),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(VitalsHistoryController controller) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
-      child: Row(
-        children: [
-          // Back button
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black87,
-                size: 16,
+            // Tab buttons
+            Obx(
+              () => AppTabButtons(
+                tabs: _getTabData(controller),
+                selectedIndex: controller.currentTabIndex.value,
+                onTabSelected: (index) {
+                  controller.switchTab(index);
+                  _clearParameterSelection();
+                },
               ),
             ),
-          ),
 
-          SizedBox(width: AppSpacing.md),
-
-          // Title
-          Text('Vitals', style: AppTypography.headline(color: Colors.black87)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTabButtons(VitalsHistoryController controller) {
-    return Obx(
-      () => Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children:
-              controller.tabs.asMap().entries.map((entry) {
-                final index = entry.key;
-                final tab = entry.value;
-                final isSelected = controller.currentTabIndex.value == index;
-
-                return GestureDetector(
-                  onTap: () {
-                    controller.switchTab(index);
-                    _clearParameterSelection();
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: AppSpacing.md),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xl,
-                      vertical: AppSpacing.lg,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient:
-                          isSelected
-                              ? const LinearGradient(
-                                colors: [
-                                  AppColors.primaryDarkColor,
-                                  AppColors.primaryLightColor,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              )
-                              : const LinearGradient(
-                                colors: [Colors.white, Colors.white],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                      borderRadius: BorderRadius.circular(60),
-                      boxShadow:
-                          isSelected
-                              ? [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 20,
-                                  offset: const Offset(0, 10),
-                                ),
-                              ]
-                              : [],
-                    ),
-                    child: Text(
-                      tab['title'],
-                      style: AppTypography.callout(
-                        color: isSelected ? Colors.white : Colors.black,
-                        fontWeight: FontWeight.w500,
+            // Main content
+              AppMainContainer(
+              child:
+              Container(
+                      padding: EdgeInsets.all(AppSpacing.lg),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppRadius.xl2),
                       ),
-                    ),
-                  ),
-                );
-              }).toList(),
+                      child: Row(
+                        children: [
+                          // Left side - Chart
+                          Expanded(
+                            flex: 1,
+                            child: Obx(
+                              () => Column(
+                                children: [
+                                  // Chart
+                                  Expanded(
+                                    child: VitalsChartWidget(
+                                      readings: controller.chartReadings,
+                                      vitalType: controller.currentVitalType,
+                                      selectedParameter:
+                                          controller
+                                                  .chartSelectedParameter
+                                                  .isNotEmpty
+                                              ? controller
+                                                  .chartSelectedParameter
+                                              : null,
+                                      onParameterTap: (chartParam) {
+                                        // Only relevant for Blood Pressure where multiple parameters exist
+                                        if (controller.currentVitalType ==
+                                            VitalType.bloodPressure) {
+                                          // Map chart-level parameter back to the underlying reading parameter
+                                          switch (chartParam) {
+                                            case 'BP':
+                                              controller
+                                                  .selectedBPParameter
+                                                  .value = 'Systolic';
+                                              break;
+                                            case 'MAP':
+                                              controller
+                                                  .selectedBPParameter
+                                                  .value = 'MAP';
+                                              break;
+                                            case 'PP':
+                                              controller
+                                                  .selectedBPParameter
+                                                  .value = 'Pulse Pressure';
+                                              break;
+                                            default:
+                                              break;
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(width: AppSpacing.lg),
+
+                          // Right side - Readings
+                          Expanded(
+                            flex: 1,
+                            child: _buildReadingsSection(controller),
+                          ),
+                        ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
 
   Widget _buildReadingsSection(VitalsHistoryController controller) {
     return Container(
@@ -463,7 +340,6 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     final month = int.parse(parts[1]);
     final day = int.parse(parts[2]);
 
-    final date = DateTime(year, month, day);
     final months = [
       'Jan',
       'Feb',
@@ -486,24 +362,6 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     final today = DateTime(now.year, now.month, now.day);
     final date = DateTime(timestamp.year, timestamp.month, timestamp.day);
     return date == today;
-  }
-
-  String _formatDate(DateTime date) {
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 
   // Generic method to check if a parameter is selected for any vital type
@@ -560,5 +418,21 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
   void _clearParameterSelection() {
     selectedParameters.clear();
     controller.selectedBPParameter.value = '';
+  }
+
+  List<AppTabData> _getTabData(VitalsHistoryController controller) {
+    final Map<String, IconData> tabIcons = {
+      'Blood Pressure': Icons.favorite,
+      'SpO2 & Heart Rate': Icons.monitor_heart,
+      'Blood Glucose': Icons.bloodtype,
+      'Temperature': Icons.thermostat,
+      'ECG': Icons.timeline,
+    };
+
+    return controller.tabs.map((tab) {
+      final title = tab['title'] as String;
+      final icon = tabIcons[title] ?? Icons.medical_information;
+      return AppTabData(text: title, icon: icon);
+    }).toList();
   }
 }
