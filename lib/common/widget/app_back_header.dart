@@ -61,22 +61,12 @@ class AppBackHeader extends StatelessWidget {
           // Back button
           AusaButton(
             text: '',
-            variant: ButtonVariant.icon,
-            icon: Icons.arrow_back_ios_new,
+            variant: ButtonVariant.secondary,
+            leadingIcon: Icons.arrow_back_ios_new,
             onPressed: onBackPressed ?? () => Get.back(),
-            backgroundColor: buttonColor ?? Colors.white,
-            iconColor: buttonIconColor ?? Colors.black87,
-            iconSize: 16,
-            width: 40,
-            height: 40,
-            borderRadius: 20, // Makes it circular
-            boxShadows: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            size: ButtonSize.sm,
+            borderRadius: 20,
+            customPadding: EdgeInsets.all(8),
           ),
 
           SizedBox(width: AppSpacing.xl2),

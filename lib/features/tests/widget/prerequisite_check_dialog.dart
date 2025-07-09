@@ -117,12 +117,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                     Get.back(result: canProceed);
                                   },
                                   variant: ButtonVariant.secondary,
-                                  borderColor: Colors.blue.shade500,
-                                  borderWidth: 2,
-                                  textColor: Colors.blue.shade600,
-                                  backgroundColor: Colors.transparent,
                                   borderRadius: 25,
-                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -137,10 +132,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                     );
                                   },
                                   variant: ButtonVariant.primary,
-                                  backgroundColor: Colors.blue.shade600,
-                                  textColor: Colors.white,
                                   borderRadius: 25,
-                                  fontWeight: FontWeight.w600,
                                   text: prerequisiteCheck.primaryButtonText,
                                 ),
                               ),

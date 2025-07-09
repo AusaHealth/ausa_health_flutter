@@ -34,12 +34,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        left: 40,
-        right: 40,
-        top: 28,
-        bottom: 0,
-      ),
+      padding: const EdgeInsets.only(left: 40, right: 40, top: 28, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -52,9 +47,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                 text: 'Week View',
                 onPressed: widget.onBackToWeekView,
                 variant: ButtonVariant.link,
-                icon: Icons.calendar_view_week,
-                textColor: AppColors.primaryColor,
-                iconColor: AppColors.primaryColor,
+                leadingIcon: Icons.calendar_view_week,
               ),
             ],
           ),

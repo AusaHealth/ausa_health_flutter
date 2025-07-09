@@ -212,16 +212,9 @@ class CancelAppointmentDialog extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: AusaButton(
                     text: 'Cancel Appointment',
-                    onPressed: () {
-                      Get.back(
-                        result: true,
-                      ); // Return true to indicate confirmation
-                    },
+                    onPressed: () => Get.back(result: true),
                     variant: ButtonVariant.primary,
-                    width: 150,
-                    height: 48,
-                    borderRadius: 24,
-                    backgroundColor: const Color(0xFFFF8C00),
+                    isDestructive: true,
                   ),
                 ),
               ],

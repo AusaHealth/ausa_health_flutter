@@ -69,8 +69,6 @@ class MediaEmptyStateWidget extends StatelessWidget {
                 text: 'Take Your First Test',
                 onPressed: onTakeFirstTest,
                 variant: ButtonVariant.primary,
-                width: 200,
-                height: 48,
               ),
             ],
           ),

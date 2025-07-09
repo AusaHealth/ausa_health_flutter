@@ -338,9 +338,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                           ? AusaButton(
                             onPressed: () => controller.cancelCurrentTest(),
                             variant: ButtonVariant.primary,
-                            backgroundColor: Colors.orange,
-                            textColor: Colors.white,
-                            borderRadius: 40,
+                            isDestructive: true,
                             text: "Stop Test",
                           )
                           : const SizedBox(),

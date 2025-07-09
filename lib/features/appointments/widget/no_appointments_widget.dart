@@ -1,6 +1,8 @@
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ausa/routes/app_routes.dart';
 
 class NoAppointmentsWidget extends StatelessWidget {
   final VoidCallback? onWifiSettings;
@@ -48,21 +50,12 @@ class NoAppointmentsWidget extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            if (onWifiSettings != null)
-              AusaButton(
-                text: 'Wi-Fi Settings',
-                onPressed: onWifiSettings,
-                variant: ButtonVariant.secondary,
-                backgroundColor: Colors.white.withOpacity(0.2),
-                textColor: Colors.white,
-                icon: Icons.wifi,
-                iconSize: 16,
-                borderRadius: 8,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-              ),
+            AusaButton(
+              text: 'Schedule Your First Appointment',
+              onPressed: () => Get.toNamed(AppRoutes.appointmentSchedule),
+              variant: ButtonVariant.primary,
+              leadingIcon: Icons.add,
+            ),
 
             const SizedBox(height: 40),
           ],

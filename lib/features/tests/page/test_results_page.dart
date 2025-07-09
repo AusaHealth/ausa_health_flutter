@@ -307,44 +307,39 @@ class TestResultsPage extends StatelessWidget {
             children: [
               Expanded(
                 child: AusaButton(
-                  text: 'Schedule Appointment',
+                  text: 'View Details',
                   onPressed: () {
-                    // TODO: Navigate to appointment scheduling
+                    // TODO: Navigate to detailed result view
                   },
                   variant: ButtonVariant.secondary,
-                  borderColor: AppColors.primaryColor,
-                  textColor: AppColors.primaryColor,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: AusaButton(
-                  text: 'Check Again',
-                  onPressed: () => controller.retakeAllTests(),
+                  text: 'Share Results',
+                  onPressed: () {
+                    // TODO: Implement share functionality
+                  },
                   variant: ButtonVariant.secondary,
-                  borderColor: AppColors.primaryColor,
-                  textColor: AppColors.primaryColor,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: AusaButton(
-                  text: 'Take another Test',
-                  onPressed: () => controller.navigateToTestSelection(),
+                  text: 'Save to Health',
+                  onPressed: () {
+                    // TODO: Implement save to health functionality
+                  },
                   variant: ButtonVariant.secondary,
-                  borderColor: AppColors.primaryColor,
-                  textColor: AppColors.primaryColor,
                 ),
               ),
               const SizedBox(width: 60),
               Expanded(
                 child: AusaButton(
-                  text: 'Finish',
-                  borderRadius: 40,
-                  height: 50,
+                  text: 'Continue',
                   onPressed: () {
-                    controller.resetSelections();
-                    Get.back();
+                    controller.moveToNextTest();
                   },
                   variant: ButtonVariant.primary,
                 ),
@@ -355,7 +350,6 @@ class TestResultsPage extends StatelessWidget {
       ),
     );
   }
-
 
   // Helper method to get display name for category
   String _getCategoryDisplayName(TestResult result) {

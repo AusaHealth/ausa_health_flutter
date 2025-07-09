@@ -114,18 +114,9 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
               return AusaButton(
                 text: 'Delete',
                 onPressed: hasSelection ? _showDeleteConfirmationDialog : null,
-                variant: ButtonVariant.custom,
-                size: ButtonSize.small,
-                backgroundColor:
-                    hasSelection
-                        ? Colors.orange
-                        : Colors.orange.withOpacity(0.4),
-                textColor: Colors.white,
-                borderRadius: 60,
-                icon: Icons.delete_outline,
-                iconColor: Colors.white,
-                iconSpacing: AppSpacing.md,
-                isEnabled: hasSelection,
+                variant: ButtonVariant.primary,
+                isDestructive: true,
+                isDisabled: !hasSelection,
               );
             }),
           ),
@@ -304,12 +295,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                             Navigator.of(context).pop();
                           },
                           variant: ButtonVariant.secondary,
-                          borderColor: Colors.orange,
-                          textColor: Colors.orange,
                           borderRadius: 60,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
                         ),
                       ),
                       SizedBox(width: AppSpacing.lg),
@@ -322,12 +308,8 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                             await controller.deleteSelectedReadings();
                           },
                           variant: ButtonVariant.primary,
-                          backgroundColor: Colors.orange,
-                          textColor: Colors.white,
+                          isDestructive: true,
                           borderRadius: 60,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
                         ),
                       ),
                     ],

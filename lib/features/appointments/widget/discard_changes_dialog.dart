@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DiscardChangesDialog extends StatelessWidget {
   final VoidCallback onDiscard;
@@ -108,21 +109,18 @@ class DiscardChangesDialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: AusaButton(
-                        text: 'No',
-                        onPressed: onKeepEditing,
+                        text: 'Keep Changes',
+                        onPressed: () => Get.back(result: false),
                         variant: ButtonVariant.secondary,
-                        height: 48,
-                        borderRadius: 24,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: AusaButton(
-                        text: 'Yes',
-                        onPressed: onDiscard,
+                        text: 'Discard',
+                        onPressed: () => Get.back(result: true),
                         variant: ButtonVariant.primary,
-                        height: 48,
-                        borderRadius: 24,
+                        isDestructive: true,
                       ),
                     ),
                   ],

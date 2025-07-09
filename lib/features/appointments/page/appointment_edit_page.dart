@@ -141,10 +141,8 @@ class AppointmentEditPage extends StatelessWidget {
                       const Spacer(),
                       AusaButton(
                         text: 'Change',
-                        variant: ButtonVariant.link,
                         onPressed: controller.goBackToStep1,
-                        iconSize: 16,
-                        height: 40,
+                        variant: ButtonVariant.link,
                       ),
                       const SizedBox(width: 20),
                     ],
@@ -292,12 +290,7 @@ class AppointmentEditPage extends StatelessWidget {
 
   Widget _buildDateTimeSelectionCard(AppointmentEditController controller) {
     return Container(
-      padding: const EdgeInsets.only(
-        left: 40,
-        right: 40,
-        top: 28,
-        bottom: 0,
-      ),
+      padding: const EdgeInsets.only(left: 40, right: 40, top: 28, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
