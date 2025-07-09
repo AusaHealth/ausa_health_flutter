@@ -1,6 +1,8 @@
-import 'package:ausa/common/widget/settings_header.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/dimensions.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_lang_selection_widget.dart';
@@ -22,6 +24,7 @@ class OnboardingWrapper extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.xl3),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -33,90 +36,103 @@ class OnboardingWrapper extends StatelessWidget {
             children: [
               CustomHeader(),
               Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(80),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xl3,
+                    vertical: AppSpacing.xl2,
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 24,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl3,
+                      vertical: AppSpacing.xl2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppRadius.xl3),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 24,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 16,
-                                offset: Offset(0, 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.xl3,
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Obx(
-                                () => OnboardingStepList(
-                                  currentStep: controller.currentStep.value,
-                                  completedSteps: controller.completedSteps,
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 16,
+                                  offset: Offset(0, 4),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 24,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 16,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
+                            child: Column(
+                              children: [
+                                Obx(
+                                  () => OnboardingStepList(
+                                    currentStep: controller.currentStep.value,
+                                    completedSteps: controller.completedSteps,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          child: Obx(() {
-                            switch (controller.currentStep.value) {
-                              case OnboardingStep.language:
-                                return OnboardingLanguagePage();
-                              case OnboardingStep.wifi:
-                                return OnboardingWifiPage();
-                              case OnboardingStep.phone:
-                                return PhoneNumberWidget();
-                              case OnboardingStep.otp:
-                                return OtpVerificationWidget();
-                              case OnboardingStep.terms:
-                                return OnboardingTermsWidget();
-                              default:
-                                return Container();
-                            }
-                          }),
                         ),
-                      ),
-                    ],
+                        SizedBox(width: AppSpacing.lg),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 24,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.xl3,
+                              ),
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 16,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Obx(() {
+                              switch (controller.currentStep.value) {
+                                case OnboardingStep.language:
+                                  return OnboardingLanguagePage();
+                                case OnboardingStep.wifi:
+                                  return OnboardingWifiPage();
+                                case OnboardingStep.phone:
+                                  return PhoneNumberWidget();
+                                case OnboardingStep.otp:
+                                  return OtpVerificationWidget();
+                                case OnboardingStep.terms:
+                                  return OnboardingTermsWidget();
+                                default:
+                                  return Container();
+                              }
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/profile/page/edit_contact_page.dart';
 import 'package:ausa/features/profile/page/edit_personal_page.dart';
@@ -18,102 +20,101 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-      ).copyWith(bottom: 44, top: 14),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: Image.asset(
-              'assets/images/profile.png',
-              width: 500,
-              height: 500,
-              fit: BoxFit.cover,
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: Image.asset(
+            'assets/images/profile.png',
+            width: 500,
+            height: 500,
+            fit: BoxFit.cover,
           ),
-          const SizedBox(width: 24),
+        ),
+        SizedBox(width: AppSpacing.lg),
 
-          // Profile Details Card with Gradient Background
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: Get.width * 0.28,
-                  child: HorizontalTabBar(
-                    items: ['Personal', 'Contact'],
-                    selectedIndex: showPersonal ? 0 : 1,
-                    onSelected:
-                        (index) => setState(() => showPersonal = index == 0),
-                  ),
+        // Profile Details Card with Gradient Background
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: Get.width * 0.28,
+                child: HorizontalTabBar(
+                  items: ['Personal', 'Contact'],
+                  selectedIndex: showPersonal ? 0 : 1,
+                  onSelected:
+                      (index) => setState(() => showPersonal = index == 0),
                 ),
+              ),
+              SizedBox(height: AppSpacing.lg),
 
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 4, left: 0),
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(32),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 16,
-                              offset: const Offset(0, 4),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                        left: AppSpacing.xl4,
+                        right: AppSpacing.xl7,
+                        top: AppSpacing.xl5,
+                        bottom: AppSpacing.md,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.04),
+                            blurRadius: 16,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Details
+                          if (showPersonal)
+                            _PersonalDetails()
+                          else
+                            _ContactDetails(),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 40,
+                      top: 32,
+                      child: InkWell(
+                        onTap: () {
+                          if (showPersonal) {
+                            Get.to(() => EditPersonalPage());
+                          } else {
+                            Get.to(() => EditContactPage());
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit, color: Colors.blue, size: 16),
+                            SizedBox(width: 8),
+                            Text(
+                              'Edit',
+                              style: AppTypography.callout(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20),
-                            // Details
-                            if (showPersonal)
-                              _PersonalDetails()
-                            else
-                              _ContactDetails(),
-                          ],
-                        ),
                       ),
-                      Positioned(
-                        right: 32,
-                        top: 24,
-                        child: InkWell(
-                          onTap: () {
-                            if (showPersonal) {
-                              Get.to(() => EditPersonalPage());
-                            } else {
-                              Get.to(() => EditContactPage());
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(Icons.edit, color: Colors.blue, size: 16),
-                              SizedBox(width: 8),
-                              Text(
-                                'Edit',
-                                style: AppTypography.callout(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -166,11 +167,11 @@ class _PersonalDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _ProfileDetail(label: 'Name', value: 'Lucy O.'),
-              SizedBox(height: 4),
+
               _ProfileDetail(label: 'Age', value: '67'),
-              SizedBox(height: 4),
+
               _ProfileDetail(label: 'Height', value: '5\'8\"'),
-              SizedBox(height: 4),
+
               _ProfileDetail(label: 'BMI', value: '26.8'),
             ],
           ),
@@ -234,28 +235,26 @@ class _ProfileDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: AppTypography.callout(
-              color: Colors.black,
-              fontWeight: FontWeight.w300,
-            ).copyWith(color: Color(0xff1C1C1C)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: AppTypography.callout(
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ).copyWith(color: Color(0xff1C1C1C), fontSize: 14),
+        ),
+        SizedBox(height: AppSpacing.lg),
+        Text(
+          value,
+          style: AppTypography.body(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
           ),
-          SizedBox(height: 12),
-          Text(
-            value,
-            style: AppTypography.body(
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
+        ),
+        SizedBox(height: AppSpacing.xl3),
+      ],
     );
   }
 }
@@ -279,7 +278,8 @@ class _ContactDetail extends StatelessWidget {
             fontWeight: FontWeight.w300,
           ).copyWith(color: Color(0xff1C1C1C)),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.lg),
+
         Text(
           value,
           style: AppTypography.body(
@@ -287,6 +287,7 @@ class _ContactDetail extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        SizedBox(height: AppSpacing.xl),
       ],
     );
   }

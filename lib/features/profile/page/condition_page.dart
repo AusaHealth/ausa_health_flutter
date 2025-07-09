@@ -1,3 +1,5 @@
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -23,11 +25,9 @@ class _ConditionPageState extends State<ConditionPage> {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.all(24),
-          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(AppRadius.xl3),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.07),
@@ -36,68 +36,79 @@ class _ConditionPageState extends State<ConditionPage> {
               ),
             ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Diagnosed with',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.xl3,
+            ).copyWith(top: AppSpacing.xl2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Diagnosed with',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Diabetes, heart condition, cholestrol',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                const SizedBox(height: 8),
+                const Text(
+                  'Diabetes, heart condition, cholestrol',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              const Text(
-                'Last readings',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                const SizedBox(height: 32),
+                const Text(
+                  'Last readings',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              HorizontalTabBar(
-                items: tabItems,
-                selectedIndex: selectedTab,
-                onSelected: (index) {
-                  setState(() {
-                    selectedTab = index;
-                  });
-                },
-              ),
-              const SizedBox(height: 24),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 32,
-                  horizontal: 24,
+                const SizedBox(height: 8),
+                HorizontalTabBar(
+                  items: tabItems,
+                  selectedIndex: selectedTab,
+                  onSelected: (index) {
+                    setState(() {
+                      selectedTab = index;
+                    });
+                  },
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: const Color(0xFF1EA7FF), width: 2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                const SizedBox(height: 24),
+                Container(
+                  height: 170,
+                  width: double.infinity,
+
+                  padding: EdgeInsets.symmetric(
+                    vertical: AppSpacing.xl2,
+                    horizontal: AppSpacing.xl,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(28),
+                    border: Border.all(
+                      color: const Color(0xFF1EA7FF),
+                      width: 2,
                     ),
-                  ],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: _buildReadingCard(),
                 ),
-                child: _buildReadingCard(),
-              ),
-            ],
+                SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ],
@@ -107,42 +118,46 @@ class _ConditionPageState extends State<ConditionPage> {
   Widget _buildReadingCard() {
     switch (selectedTab) {
       case 0: // Blood Pressure
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'BP Systolic',
-                  style: TextStyle(color: Colors.black54, fontSize: 16),
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'BP Systolic',
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '128 mmHg',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8),
-                Text(
-                  '128 mmHg',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'BP Diastolic',
-                  style: TextStyle(color: Colors.black54, fontSize: 16),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  '95 mmHg',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'BP Diastolic',
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '95 mmHg',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

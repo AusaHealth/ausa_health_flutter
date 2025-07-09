@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class InputBgContainer extends StatelessWidget {
   final Widget child;
@@ -16,8 +15,8 @@ class InputBgContainer extends StatelessWidget {
         children: [
           Positioned.fill(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-              child: Container(color: const Color(0xFF000A20).withOpacity(0.8)),
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(color: const Color(0xFF0E2457).withOpacity(0.8)),
             ),
           ),
           Positioned(

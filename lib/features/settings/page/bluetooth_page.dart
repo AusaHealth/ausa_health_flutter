@@ -39,38 +39,35 @@ class BluetoothPage extends StatelessWidget {
           ),
           SizedBox(height: 16),
 
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DeviceStatusCard(
-                    deviceName: 'Blood pressure',
-                    imagePath: AppImages.bloodPressure,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DeviceStatusCard(
+                  deviceName: 'Blood pressure',
+                  imagePath: AppImages.bloodPressure,
 
-                    statusImagePath: AppImages.connecting,
-                    isActive: true,
-                  ),
-                  SizedBox(width: 32),
-                  DeviceStatusCard(
-                    deviceName: 'X',
-                    imagePath: AppImages.X,
+                  statusImagePath: AppImages.connecting,
+                  isActive: true,
+                ),
+                SizedBox(width: 32),
+                DeviceStatusCard(
+                  deviceName: 'X',
+                  imagePath: AppImages.X,
 
-                    statusImagePath: AppImages.notFound,
-                    isActive: false,
-                  ),
-                  SizedBox(width: 32),
-                  DeviceStatusCard(
-                    deviceName: 'ECG',
-                    imagePath: AppImages.ecg,
+                  statusImagePath: AppImages.notFound,
+                  isActive: false,
+                ),
+                SizedBox(width: 32),
+                DeviceStatusCard(
+                  deviceName: 'ECG',
+                  imagePath: AppImages.ecg,
 
-                    statusImagePath: AppImages.notFound,
-                    isActive: false,
-                  ),
-                ],
-              ),
+                  statusImagePath: AppImages.notFound,
+                  isActive: false,
+                ),
+              ],
             ),
           ),
         ],
@@ -97,7 +94,7 @@ class DeviceStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width * 0.23,
+      width: Get.width * 0.2,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(32),

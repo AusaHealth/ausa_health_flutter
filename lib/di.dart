@@ -1,6 +1,7 @@
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/service/appointment_service.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
+import 'package:ausa/features/profile/controller/family_controller.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
@@ -20,5 +21,6 @@ class DependencyInject {
     Get.put(OnboardingController());
     Get.put(SettingController());
     Get.put(ProfileController());
+    Get.put(FamilyController());
   }
 }

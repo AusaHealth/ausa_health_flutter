@@ -1,3 +1,5 @@
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/profile/page/add_new_member.dart';
 import 'package:ausa/features/profile/page/email_invite_page.dart';
@@ -11,11 +13,9 @@ class FamilyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(AppRadius.xl3),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.07),
@@ -25,7 +25,9 @@ class FamilyPage extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl3,
+        ).copyWith(top: AppSpacing.xl2),
         child: Column(
           children: [
             Expanded(

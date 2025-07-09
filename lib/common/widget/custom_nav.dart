@@ -1,3 +1,5 @@
+import 'package:ausa/common/widget/app_icons.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,10 @@ class CustomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.lg,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

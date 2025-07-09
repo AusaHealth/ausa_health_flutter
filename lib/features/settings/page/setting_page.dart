@@ -2,6 +2,8 @@ import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_wifi_selection_widget.dart';
 import 'package:ausa/features/settings/model/network_info_model.dart';
@@ -13,7 +15,7 @@ import 'package:ausa/features/settings/widget/call_setting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/wifi_controller.dart';
-import '../../../common/widget/settings_header.dart';
+import '../../../common/widget/custom_header.dart';
 import '../widget/settings_nav.dart';
 import '../widget/settings_tabs.dart';
 import '../widget/settings_network_list.dart';
@@ -82,63 +84,73 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: const CustomHeader(),
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: AppSpacing.xl2),
 
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CustomNav(title: 'Settings'),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: SettingsTabs(
-                              selectedIndex: selectedTab,
-                              onTabSelected:
-                                  (i) => setState(() => selectedTab = i),
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomNav(title: 'Settings'),
+                        SizedBox(height: AppSpacing.xl),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          child: SettingsTabs(
+                            selectedIndex: selectedTab,
+                            onTabSelected:
+                                (i) => setState(() => selectedTab = i),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, right: 12.0),
-                      child: Image.asset(
-                        ProfileIcons.ausaLogo,
-                        height: 140,
-                        width: 200,
-                      ),
+                    Image.asset(
+                      ProfileIcons.ausaLogo,
+                      height: 144,
+                      width: 144,
+                      fit: BoxFit.cover,
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 8),
 
                 Expanded(
-                  child: Builder(
-                    builder: (context) {
-                      if (selectedTab == 0) {
-                        return SettingsNetworkList(
-                          networks: controller.networks,
-                          selectedIndex: controller.selectedNetworkIndex.value,
-                          onTileTap: controller.onNetworkTap,
-                        );
-                      } else if (selectedTab == 1) {
-                        return DisplaySettingPage();
-                      } else if (selectedTab == 2) {
-                        return BluetoothPage();
-                      } else if (selectedTab == 3) {
-                        return NotificationSettingsPage();
-                      } else if (selectedTab == 4) {
-                        return CallSettingsPage();
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl3),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.mdLarge,
+                        vertical: AppSpacing.mdLarge,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                      ),
+                      child: Builder(
+                        builder: (context) {
+                          if (selectedTab == 0) {
+                            return SettingsNetworkList(
+                              networks: controller.networks,
+                              selectedIndex:
+                                  controller.selectedNetworkIndex.value,
+                              onTileTap: controller.onNetworkTap,
+                            );
+                          } else if (selectedTab == 1) {
+                            return DisplaySettingPage();
+                          } else if (selectedTab == 2) {
+                            return BluetoothPage();
+                          } else if (selectedTab == 3) {
+                            return NotificationSettingsPage();
+                          } else if (selectedTab == 4) {
+                            return CallSettingsPage();
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ],

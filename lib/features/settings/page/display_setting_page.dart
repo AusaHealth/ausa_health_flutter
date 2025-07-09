@@ -1,5 +1,10 @@
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class DisplaySettingPage extends StatefulWidget {
   const DisplaySettingPage({super.key});
@@ -9,11 +14,11 @@ class DisplaySettingPage extends StatefulWidget {
 }
 
 class _DisplaySettingPageState extends State<DisplaySettingPage> {
-  double brightness = 0.45;
   double textSize = 1.0;
 
   @override
   Widget build(BuildContext context) {
+    final settingController = Get.find<SettingController>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
 
@@ -38,20 +43,24 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    '${(brightness * 100).round()} %',
-                    style: AppTypography.title1(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w400,
-                    ).copyWith(fontSize: 48),
+                  Obx(
+                    () => Text(
+                      '${(settingController.brightness.value * 100).round()} %',
+                      style: AppTypography.title1(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w400,
+                      ).copyWith(fontSize: 48),
+                    ),
                   ),
                   const SizedBox(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _CustomSlider(
-                      value: brightness,
-                      onChanged: (v) => setState(() => brightness = v),
-                      icon: Icons.wb_sunny_rounded,
+                    child: Obx(
+                      () => _CustomSlider(
+                        value: settingController.brightness.value,
+                        onChanged: (v) => settingController.setBrightness(v),
+                        icon: Icons.wb_sunny_rounded,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),

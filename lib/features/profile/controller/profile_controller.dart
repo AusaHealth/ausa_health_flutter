@@ -104,6 +104,7 @@ class ProfileController extends GetxController {
       case 'email':
         return emailController;
       case 'address':
+        return addressController;
       case 'name':
         return nameController;
       case 'feet':

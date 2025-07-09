@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class SettingController extends GetxController {
   // Notification settings
@@ -33,4 +34,23 @@ class SettingController extends GetxController {
   void updateEnableClosedCaptions(bool value) =>
       enableClosedCaptions.value = value;
   void updateEnableARGuides(bool value) => enableARGuides.value = value;
+
+  RxDouble brightness = 0.5.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _initBrightness();
+  }
+
+  Future<void> _initBrightness() async {
+    final current = await ScreenBrightness.instance.application;
+    brightness.value = current;
+  }
+
+  Future<void> setBrightness(double value) async {
+    brightness.value = value;
+    print('value: $value');
+    await ScreenBrightness.instance.setApplicationScreenBrightness(value);
+  }
 }

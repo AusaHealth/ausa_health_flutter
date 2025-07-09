@@ -2,6 +2,7 @@ import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_text_field.dart';
 import 'package:ausa/common/widget/input_bg_container.dart';
 import 'package:ausa/common/widget/on_screen_keyboard_widget.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -77,7 +78,7 @@ class _EditContactPageState extends State<EditContactPage> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 32),
+                    SizedBox(width: AppSpacing.xl4),
                     // Email
                     SizedBox(
                       width: 300,
@@ -108,7 +109,7 @@ class _EditContactPageState extends State<EditContactPage> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 32),
+                    SizedBox(width: AppSpacing.xl4),
                     // Address
                     SizedBox(
                       width: 300,
@@ -125,6 +126,9 @@ class _EditContactPageState extends State<EditContactPage> {
                             controller.addressError = null;
                           });
                         },
+                        onFieldSubmitted: (_) {
+                          controller.phoneFocus.requestFocus();
+                        },
                       ),
                     ),
                   ],
@@ -133,7 +137,7 @@ class _EditContactPageState extends State<EditContactPage> {
             ),
           ),
           Positioned(
-            top: 240,
+            top: 300,
             left: 32,
             right: 32,
             child: Padding(

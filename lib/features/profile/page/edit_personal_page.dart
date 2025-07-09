@@ -142,12 +142,12 @@ class _EditPersonalPageState extends State<EditPersonalPage> {
                               controller: controller.genderController,
 
                               keyboardType: TextInputType.none,
-                              errorText: controller.addressError,
-                              isFocused: controller.addressFocus.hasFocus,
-                              focusNode: controller.addressFocus,
+                              errorText: controller.genderError,
+                              isFocused: controller.genderFocus.hasFocus,
+                              focusNode: controller.genderFocus,
                               onChanged: (value) {
                                 setState(() {
-                                  controller.addressError = null;
+                                  controller.genderError = null;
                                 });
                               },
                             ),
@@ -166,7 +166,7 @@ class _EditPersonalPageState extends State<EditPersonalPage> {
             ),
           ),
           Positioned(
-            top: 260,
+            top: 300,
             left: 32,
             right: 32,
             child: Padding(

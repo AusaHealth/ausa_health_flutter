@@ -33,7 +33,9 @@ Future<String?> showBottomSheetModal(
               ],
             ),
             const SizedBox(height: 24),
-            Row(
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
               children:
                   listItems.map((gender) {
                     final isSelected = selected == gender;

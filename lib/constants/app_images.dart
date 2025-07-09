@@ -1,4 +1,10 @@
 class AppImages {
+  static const String appBarBluetooth = 'assets/icons/bluetooth.png';
+  static const String appBarWifi = 'assets/icons/wifi.png';
+  static const String appBarBattery = 'assets/icons/battery.png';
+
+  static const String addPhoto = 'assets/images/add_photo.png';
+
   static const String splashlogo = 'assets/images/ausa_health_logo.png';
   static const String chinaFlag = 'assets/icons/onboarding/china_flag.png';
   static const String spainFlag = 'assets/icons/onboarding/espanol_flag.png';
