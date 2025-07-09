@@ -1,17 +1,7 @@
 import 'package:ausa/di.dart';
-import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
 import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
-import 'package:ausa/features/appointments/page/appointment_edit_page.dart';
-import 'package:ausa/features/appointments/page/scheduled_appointments_page.dart';
-import 'package:ausa/features/health_schedule/controller/meal_times_controller.dart';
-import 'package:ausa/features/health_schedule/page/health_schedule_page.dart';
-import 'package:ausa/features/health_schedule/page/meal_times_page.dart';
-import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
-import 'package:ausa/features/profile/page/profile_page.dart';
 import 'package:ausa/features/settings/page/setting_page.dart';
-import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
 import 'package:ausa/constants/dimensions.dart';
-import 'package:ausa/features/onboarding/view/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
