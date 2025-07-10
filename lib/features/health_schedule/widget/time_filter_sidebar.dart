@@ -89,7 +89,7 @@ class TimeFilterSidebar extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           gradient: isSelected ? null : null,
-          color: isSelected ? Color(0xFF165CFF) : Colors.grey[100],
+          color: isSelected ? AppColors.primary700 : Colors.grey[100],
           borderRadius: borderRadius,
           border: isSelected ? null : null,
           boxShadow:
@@ -97,7 +97,7 @@ class TimeFilterSidebar extends StatelessWidget {
                   ? [
                     // Light outer shadow (top-left)
                     BoxShadow(
-                      color: Color(0xFFC8D8FF),
+                      color: AppColors.primary700.withOpacity(0.3),
                       blurRadius: 10,
                       offset: Offset(-3, -4),
                     ),

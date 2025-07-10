@@ -1,5 +1,6 @@
 import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -153,13 +154,14 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                       decoration: BoxDecoration(
                                         color:
                                             isSelected
-                                                ? Colors.blue.shade50
+                                                ? AppColors.primary700
+                                                    .withOpacity(0.1)
                                                 : Colors.white,
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
                                           color:
                                               isSelected
-                                                  ? Colors.blue.shade500
+                                                  ? AppColors.primary700
                                                   : Colors.grey.shade300,
                                           width: isSelected ? 2 : 1,
                                         ),
@@ -174,7 +176,7 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                             decoration: BoxDecoration(
                                               color:
                                                   isSelected
-                                                      ? Colors.blue.shade500
+                                                      ? AppColors.primary700
                                                       : Colors.grey.shade400,
                                               shape: BoxShape.circle,
                                             ),
@@ -192,7 +194,7 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                               fontWeight: FontWeight.w600,
                                               color:
                                                   isSelected
-                                                      ? Colors.blue.shade700
+                                                      ? AppColors.primary700
                                                       : Colors.grey.shade900,
                                             ),
                                             textAlign: TextAlign.center,
@@ -221,6 +223,12 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                   text: 'Cancel',
                                   onPressed: () => Get.back(),
                                   variant: ButtonVariant.secondary,
+                                  borderColor: AppColors.primary700,
+                                  borderWidth: 2,
+                                  textColor: AppColors.primary700,
+                                  backgroundColor: Colors.transparent,
+                                  borderRadius: 25,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -233,7 +241,10 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                           )
                                           : null,
                                   variant: ButtonVariant.primary,
+                                  backgroundColor: AppColors.primary700,
+                                  textColor: Colors.white,
                                   borderRadius: 25,
+                                  fontWeight: FontWeight.w600,
                                   text: 'Continue',
                                 ),
                               ),

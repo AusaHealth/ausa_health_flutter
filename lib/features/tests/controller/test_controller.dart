@@ -673,7 +673,7 @@ class _NextTestDialogContentState extends State<_NextTestDialogContent> {
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
-                    side: BorderSide(color: AppColors.primaryColor),
+                    side: BorderSide(color: AppColors.primary700),
                   ),
                 ),
                 child: Text(
@@ -681,7 +681,7 @@ class _NextTestDialogContentState extends State<_NextTestDialogContent> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.primaryColor,
+                    color: AppColors.primary700,
                   ),
                 ),
               ),
@@ -692,7 +692,7 @@ class _NextTestDialogContentState extends State<_NextTestDialogContent> {
                   widget.onContinue();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: AppColors.primary700,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                   shape: RoundedRectangleBorder(

@@ -90,7 +90,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                 margin: EdgeInsets.only(top: AppSpacing.md),
                 child: Row(
                   children: [
-                    _buildLegendItem('Systolic', AppColors.primaryColor),
+                    _buildLegendItem('Systolic', AppColors.primary700),
                     SizedBox(width: AppSpacing.lg),
                     _buildLegendItem('Diastolic', Colors.orange),
                   ],
@@ -210,7 +210,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                         style: AppTypography.callout(
                           color:
                               isCurrentValue
-                                  ? AppColors.primaryColor
+                                  ? AppColors.primary700
                                   : Colors.grey[600],
                           fontWeight:
                               isCurrentValue
@@ -355,7 +355,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         selectedParameter == 'BP') {
       // Generate two lines for systolic and diastolic
       return [
-        _generateLineChartBarData('Systolic', AppColors.primaryColor),
+        _generateLineChartBarData('Systolic', AppColors.primary700),
         _generateLineChartBarData('Diastolic', Colors.orange),
       ];
     } else {
@@ -368,7 +368,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
           spots: spots,
           isCurved: true,
           curveSmoothness: 0.2,
-          color: AppColors.primaryColor,
+          color: AppColors.primary700,
           barWidth: 1, // This is where the line width is set for the main chart
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -379,8 +379,8 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                 radius: 3,
                 color:
                     isLatest
-                        ? AppColors.primaryColor
-                        : AppColors.primaryColor.withOpacity(0.6),
+                        ? AppColors.primary700
+                        : AppColors.primary700.withOpacity(0.6),
                 strokeWidth: 0,
               );
             },

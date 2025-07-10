@@ -86,7 +86,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.primaryColor.withValues(alpha: 0.2),
+            color: AppColors.primary700.withValues(alpha: 0.2),
           ),
         ),
         child: ClipRRect(
@@ -116,7 +116,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                 'Step ${currentInstructionIndex + 1} of ${instructions.length}',
                 style: AppTypography.callout(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primary700,
                 ),
               ),
 
@@ -166,13 +166,13 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.1),
+                color: AppColors.primary700.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Text(
                 'Show More',
                 textAlign: TextAlign.left,
-                style: AppTypography.callout(color: AppColors.primaryColor),
+                style: AppTypography.callout(color: AppColors.primary700),
               ),
             ),
           ),
@@ -200,7 +200,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                 'Instructions',
                 style: AppTypography.callout(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primary700,
                 ),
               ),
             ],
@@ -283,7 +283,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                             borderRadius: BorderRadius.circular(4),
                             color:
                                 index <= currentInstructionIndex
-                                    ? AppColors.primaryColor
+                                    ? AppColors.primary700
                                     : Colors.grey[300],
                           ),
                         ),
@@ -329,15 +329,13 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withValues(alpha: 0.1),
+                      color: AppColors.primary700.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Text(
                       'Show Less',
                       textAlign: TextAlign.left,
-                      style: AppTypography.callout(
-                        color: AppColors.primaryColor,
-                      ),
+                      style: AppTypography.callout(color: AppColors.primary700),
                     ),
                   ),
                 ),
@@ -364,12 +362,12 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
         shape: BoxShape.circle,
         color:
             isEnabled
-                ? AppColors.primaryColor.withValues(alpha: 0.1)
+                ? AppColors.primary700.withValues(alpha: 0.1)
                 : Colors.grey[100],
         border: Border.all(
           color:
               isEnabled
-                  ? AppColors.primaryColor.withValues(alpha: 0.3)
+                  ? AppColors.primary700.withValues(alpha: 0.3)
                   : Colors.grey[300]!,
         ),
       ),
@@ -379,7 +377,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
         icon: Icon(
           icon,
           size: 12,
-          color: isEnabled ? AppColors.primaryColor : Colors.grey[400],
+          color: isEnabled ? AppColors.primary700 : Colors.grey[400],
         ),
       ),
     );
@@ -397,12 +395,12 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
         shape: BoxShape.circle,
         color:
             isEnabled
-                ? AppColors.primaryColor.withValues(alpha: 0.1)
+                ? AppColors.primary700.withValues(alpha: 0.1)
                 : Colors.grey[100],
         border: Border.all(
           color:
               isEnabled
-                  ? AppColors.primaryColor.withValues(alpha: 0.3)
+                  ? AppColors.primary700.withValues(alpha: 0.3)
                   : Colors.grey[300]!,
         ),
       ),
@@ -412,7 +410,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
         icon: Icon(
           icon,
           size: 16,
-          color: isEnabled ? AppColors.primaryColor : Colors.grey[400],
+          color: isEnabled ? AppColors.primary700 : Colors.grey[400],
         ),
       ),
     );
@@ -429,7 +427,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
             'Instructions',
             style: AppTypography.callout(
               fontWeight: FontWeight.w600,
-              color: AppColors.primaryColor,
+              color: AppColors.primary700,
             ),
           ),
 
@@ -453,7 +451,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor,
+                color: AppColors.primary700,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -484,7 +482,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                 'Instructions',
                 style: AppTypography.callout(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primary700,
                 ),
               ),
               GestureDetector(
@@ -495,13 +493,13 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withValues(alpha: 0.1),
+                    color: AppColors.primary700.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Text(
                     'Show Less',
                     textAlign: TextAlign.left,
-                    style: AppTypography.callout(color: AppColors.primaryColor),
+                    style: AppTypography.callout(color: AppColors.primary700),
                   ),
                 ),
               ),

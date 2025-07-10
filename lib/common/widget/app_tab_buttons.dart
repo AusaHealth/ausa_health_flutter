@@ -55,8 +55,8 @@ class AppTabButtons extends StatelessWidget {
                         isSelected
                             ? LinearGradient(
                               colors: [
-                                Color.fromRGBO(0, 38, 126, 0.90),
-                                Color.fromRGBO(0, 73, 245, 0.90),
+                                AppColors.primary900,
+                                AppColors.primary700,
                               ],
                               begin: Alignment(-0.5, 0.5),
                               end: Alignment(1.5, -0.5),
@@ -69,7 +69,7 @@ class AppTabButtons extends StatelessWidget {
                         isSelected
                             ? [
                               BoxShadow(
-                                color: AppColors.primaryColor.withOpacity(0.3),
+                                color: AppColors.primary700.withOpacity(0.3),
                                 blurRadius: 15,
                                 offset: const Offset(0, 5),
                               ),
@@ -90,7 +90,7 @@ class AppTabButtons extends StatelessWidget {
                         decoration: BoxDecoration(
                           color:
                               isSelected
-                                  ? Color(0xFF155AF7)
+                                  ? AppColors.primary700
                                   : Colors.transparent,
                           shape: BoxShape.circle,
                         ),

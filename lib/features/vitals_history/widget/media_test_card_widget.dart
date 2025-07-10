@@ -339,7 +339,7 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
           height: 180,
           color:
               widget.isSelected
-                  ? AppColors.primaryColor.withOpacity(0.1)
+                  ? AppColors.primary700.withOpacity(0.1)
                   : Colors.white,
           child: Center(
             child: Text(
@@ -398,10 +398,10 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                 colors:
                     widget.isSelected
                         ? [
-                          AppColors.primaryColor.withOpacity(0.7),
+                          AppColors.primary700.withOpacity(0.7),
                           AppColors.primaryDarkColor.withOpacity(0.7),
                         ]
-                        : [AppColors.primaryColor, AppColors.primaryDarkColor],
+                        : [AppColors.primary700, AppColors.primaryDarkColor],
               ),
             ),
             child: Row(

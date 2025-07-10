@@ -2,259 +2,164 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../constants/constants.dart';
 
-
-// Button size configurations following Untitled UI standards
-enum ButtonSize { sm, md, lg, xl, xxl }
-
-// Button variants
 enum ButtonVariant {
   primary,
   secondary,
   tertiary,
+  selection,
   link,
+  icon,
+  custom,
 }
 
-// Button style configuration
-class _ButtonStyleConfig {
-  final Color backgroundColor;
-  final Color textColor;
-  final Color borderColor;
-  final Color hoverBackgroundColor;
-  final Color pressedBackgroundColor;
-  final Color disabledBackgroundColor;
-  final Color disabledTextColor;
-  final Color disabledBorderColor;
-  final double borderWidth;
-  final List<BoxShadow>? boxShadow;
+enum ButtonSize { extraSmall, small, medium, large, custom }
 
-  const _ButtonStyleConfig({
-    required this.backgroundColor,
-    required this.textColor,
-    required this.borderColor,
-    required this.hoverBackgroundColor,
-    required this.pressedBackgroundColor,
-    required this.disabledBackgroundColor,
-    required this.disabledTextColor,
-    required this.disabledBorderColor,
-    this.borderWidth = 0,
-    this.boxShadow,
-  });
-}
-
-// AusaButton Component
 class AusaButton extends StatefulWidget {
+  // Core properties
   final String text;
   final VoidCallback? onPressed;
   final ButtonVariant variant;
   final ButtonSize size;
-  final bool isDestructive;
-  final bool isLoading;
-  final bool isDisabled;
-  final bool isFullWidth;
-  
-  // Icons
-  final IconData? leadingIcon;
-  final IconData? trailingIcon;
-  final Widget? customLeadingIcon;
-  final Widget? customTrailingIcon;
-  
-  // Badge/Dot
-  final bool showDot;
-  final String? badge;
-  final Color? badgeColor;
-  final Color? badgeTextColor;
-  
-  // Custom styling
+
+  // Visual customization
+  final Color? backgroundColor;
+  final Color? textColor;
+  final Color? borderColor;
+  final Color? shadowColor;
+  final Gradient? gradient;
+  final double? borderWidth;
   final double? borderRadius;
-  final EdgeInsets? customPadding;
-  final TextStyle? customTextStyle;
-  
-  // Animation
-  final Duration animationDuration;
-  final bool enableHapticFeedback;
+  final double? elevation;
+  final List<BoxShadow>? boxShadows;
+
+  // Size and spacing
+  final double? width;
+  final double? height;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+
+  // Typography
+  final double? fontSize;
+  final FontWeight? fontWeight;
+  final String? fontFamily;
+  final TextStyle? textStyle;
+
+  // Icon support
+  final IconData? icon;
+  final Widget? customIcon;
+  final double? iconSize;
+  final Color? iconColor;
+  final double? iconSpacing;
+  final bool iconOnLeft;
+
+  // State management
+  final bool isLoading;
+  final bool isEnabled;
+  final bool isSelected;
+  final ValueChanged<bool>? onSelectionChanged;
+
+  // Animation and interaction
+  final Duration? animationDuration;
+  final Curve? animationCurve;
+  final bool enableFeedback;
+  final bool enableSplash;
+  final Color? splashColor;
+  final Color? highlightColor;
+
+  // Content alignment
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
+  final MainAxisSize? mainAxisSize;
+
+  // Custom child (overrides text and icon)
+  final Widget? child;
 
   const AusaButton({
     super.key,
     required this.text,
     this.onPressed,
     this.variant = ButtonVariant.primary,
-    this.size = ButtonSize.md,
-    this.isDestructive = false,
-    this.isLoading = false,
-    this.isDisabled = false,
-    this.isFullWidth = false,
-    this.leadingIcon,
-    this.trailingIcon,
-    this.customLeadingIcon,
-    this.customTrailingIcon,
-    this.showDot = false,
-    this.badge,
-    this.badgeColor,
-    this.badgeTextColor,
+    this.size = ButtonSize.medium,
+
+    // Visual
+    this.backgroundColor,
+    this.textColor,
+    this.borderColor,
+    this.shadowColor,
+    this.gradient,
+    this.borderWidth,
     this.borderRadius,
-    this.customPadding,
-    this.customTextStyle,
-    this.animationDuration = const Duration(milliseconds: 200),
-    this.enableHapticFeedback = true,
+    this.elevation,
+    this.boxShadows,
+
+    // Size and spacing
+    this.width,
+    this.height,
+    this.padding,
+    this.margin,
+
+    // Typography
+    this.fontSize,
+    this.fontWeight,
+    this.fontFamily,
+    this.textStyle,
+
+    // Icon
+    this.icon,
+    this.customIcon,
+    this.iconSize,
+    this.iconColor,
+    this.iconSpacing,
+    this.iconOnLeft = true,
+
+    // State
+    this.isLoading = false,
+    this.isEnabled = true,
+    this.isSelected = false,
+    this.onSelectionChanged,
+
+    // Animation
+    this.animationDuration,
+    this.animationCurve,
+    this.enableFeedback = true,
+    this.enableSplash = true,
+    this.splashColor,
+    this.highlightColor,
+
+    // Alignment
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.mainAxisSize,
+
+    // Custom
+    this.child,
   });
-
-  // Factory constructors for common button types
-  factory AusaButton.primary({
-    Key? key,
-    required String text,
-    VoidCallback? onPressed,
-    ButtonSize size = ButtonSize.md,
-    bool isDestructive = false,
-    bool isLoading = false,
-    bool isDisabled = false,
-    bool isFullWidth = false,
-    IconData? leadingIcon,
-    IconData? trailingIcon,
-    Widget? customLeadingIcon,
-    Widget? customTrailingIcon,
-    bool showDot = false,
-    String? badge,
-  }) {
-    return AusaButton(
-      key: key,
-      text: text,
-      onPressed: onPressed,
-      variant: ButtonVariant.primary,
-      size: size,
-      isDestructive: isDestructive,
-      isLoading: isLoading,
-      isDisabled: isDisabled,
-      isFullWidth: isFullWidth,
-      leadingIcon: leadingIcon,
-      trailingIcon: trailingIcon,
-      customLeadingIcon: customLeadingIcon,
-      customTrailingIcon: customTrailingIcon,
-      showDot: showDot,
-      badge: badge,
-    );
-  }
-
-  factory AusaButton.secondary({
-    Key? key,
-    required String text,
-    VoidCallback? onPressed,
-    ButtonSize size = ButtonSize.md,
-    bool isDestructive = false,
-    bool isLoading = false,
-    bool isDisabled = false,
-    bool isFullWidth = false,
-    IconData? leadingIcon,
-    IconData? trailingIcon,
-    Widget? customLeadingIcon,
-    Widget? customTrailingIcon,
-    bool showDot = false,
-    String? badge,
-  }) {
-    return AusaButton(
-      key: key,
-      text: text,
-      onPressed: onPressed,
-      variant: ButtonVariant.secondary,
-      size: size,
-      isDestructive: isDestructive,
-      isLoading: isLoading,
-      isDisabled: isDisabled,
-      isFullWidth: isFullWidth,
-      leadingIcon: leadingIcon,
-      trailingIcon: trailingIcon,
-      customLeadingIcon: customLeadingIcon,
-      customTrailingIcon: customTrailingIcon,
-      showDot: showDot,
-      badge: badge,
-    );
-  }
-
-  factory AusaButton.tertiary({
-    Key? key,
-    required String text,
-    VoidCallback? onPressed,
-    ButtonSize size = ButtonSize.md,
-    bool isDestructive = false,
-    bool isLoading = false,
-    bool isDisabled = false,
-    bool isFullWidth = false,
-    IconData? leadingIcon,
-    IconData? trailingIcon,
-    Widget? customLeadingIcon,
-    Widget? customTrailingIcon,
-    bool showDot = false,
-    String? badge,
-  }) {
-    return AusaButton(
-      key: key,
-      text: text,
-      onPressed: onPressed,
-      variant: ButtonVariant.tertiary,
-      size: size,
-      isDestructive: isDestructive,
-      isLoading: isLoading,
-      isDisabled: isDisabled,
-      isFullWidth: isFullWidth,
-      leadingIcon: leadingIcon,
-      trailingIcon: trailingIcon,
-      customLeadingIcon: customLeadingIcon,
-      customTrailingIcon: customTrailingIcon,
-      showDot: showDot,
-      badge: badge,
-    );
-  }
-
-  factory AusaButton.link({
-    Key? key,
-    required String text,
-    VoidCallback? onPressed,
-    ButtonSize size = ButtonSize.md,
-    bool isDestructive = false,
-    bool isDisabled = false,
-    IconData? leadingIcon,
-    IconData? trailingIcon,
-    Widget? customLeadingIcon,
-    Widget? customTrailingIcon,
-  }) {
-    return AusaButton(
-      key: key,
-      text: text,
-      onPressed: onPressed,
-      variant: ButtonVariant.link,
-      size: size,
-      isDestructive: isDestructive,
-      isDisabled: isDisabled,
-      leadingIcon: leadingIcon,
-      trailingIcon: trailingIcon,
-      customLeadingIcon: customLeadingIcon,
-      customTrailingIcon: customTrailingIcon,
-    );
-  }
 
   @override
   State<AusaButton> createState() => _AusaButtonState();
 }
 
-class _AusaButtonState extends State<AusaButton> with SingleTickerProviderStateMixin {
+class _AusaButtonState extends State<AusaButton> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
-  bool _isHovered = false;
+  bool _currentSelection = false;
 
   @override
   void initState() {
     super.initState();
+    _currentSelection = widget.isSelected;
+
     _animationController = AnimationController(
-      duration: widget.animationDuration,
+      duration: widget.animationDuration ?? const Duration(milliseconds: 150),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.98,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.animationCurve ?? Curves.easeInOut,
+      ),
+    );
   }
 
   @override
@@ -263,302 +168,403 @@ class _AusaButtonState extends State<AusaButton> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  bool get _isEnabled => !widget.isDisabled && !widget.isLoading && widget.onPressed != null;
-
-  _ButtonStyleConfig get _styleConfig {
-    final configs = <ButtonVariant, _ButtonStyleConfig>{
-      ButtonVariant.primary: _ButtonStyleConfig(
-        backgroundColor: widget.isDestructive ? AppColors.error600 : AppColors.primary600,
-        textColor: AppColors.white,
-        borderColor: widget.isDestructive ? AppColors.error600 : AppColors.primary600,
-        hoverBackgroundColor: widget.isDestructive ? AppColors.error700 : AppColors.primary700,
-        pressedBackgroundColor: widget.isDestructive ? AppColors.error800 : AppColors.primary800,
-        disabledBackgroundColor: AppColors.gray200,
-        disabledTextColor: AppColors.gray400,
-        disabledBorderColor: AppColors.gray200,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, 1),
-            blurRadius: 2,
-            color: AppColors.gray900.withOpacity(0.05),
-          ),
-        ],
-      ),
-      ButtonVariant.secondary: _ButtonStyleConfig(
-        backgroundColor: AppColors.white,
-        textColor: widget.isDestructive ? AppColors.error700 : AppColors.gray700,
-        borderColor: AppColors.gray300,
-        hoverBackgroundColor: AppColors.gray50,
-        pressedBackgroundColor: AppColors.gray100,
-        disabledBackgroundColor: AppColors.white,
-        disabledTextColor: AppColors.gray300,
-        disabledBorderColor: AppColors.gray200,
-        borderWidth: 1,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, 1),
-            blurRadius: 2,
-            color: AppColors.gray900.withOpacity(0.05),
-          ),
-        ],
-      ),
-      ButtonVariant.tertiary: _ButtonStyleConfig(
-        backgroundColor: Colors.transparent,
-        textColor: widget.isDestructive ? AppColors.error700 : AppColors.gray600,
-        borderColor: Colors.transparent,
-        hoverBackgroundColor: AppColors.gray50,
-        pressedBackgroundColor: AppColors.gray100,
-        disabledBackgroundColor: Colors.transparent,
-        disabledTextColor: AppColors.gray300,
-        disabledBorderColor: Colors.transparent,
-      ),
-      ButtonVariant.link: _ButtonStyleConfig(
-        backgroundColor: Colors.transparent,
-        textColor: widget.isDestructive ? AppColors.error700 : AppColors.primary700,
-        borderColor: Colors.transparent,
-        hoverBackgroundColor: Colors.transparent,
-        pressedBackgroundColor: Colors.transparent,
-        disabledBackgroundColor: Colors.transparent,
-        disabledTextColor: AppColors.gray300,
-        disabledBorderColor: Colors.transparent,
-      ),
-    };
-
-    return configs[widget.variant]!;
+  @override
+  void didUpdateWidget(AusaButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isSelected != widget.isSelected) {
+      _currentSelection = widget.isSelected;
+    }
   }
 
-  Size get _buttonSize {
-    final sizes = <ButtonSize, Size>{
-      ButtonSize.sm: const Size(0, 36),
-      ButtonSize.md: const Size(0, 40),
-      ButtonSize.lg: const Size(0, 44),
-      ButtonSize.xl: const Size(0, 48),
-      ButtonSize.xxl: const Size(0, 56),
-    };
-    return sizes[widget.size]!;
-  }
+  void _handleTap() {
+    if (!_isButtonEnabled) return;
 
-  EdgeInsets get _padding {
-    if (widget.customPadding != null) return widget.customPadding!;
-    
-    final isLink = widget.variant == ButtonVariant.link;
-    final paddings = <ButtonSize, EdgeInsets>{
-      ButtonSize.sm: EdgeInsets.symmetric(horizontal: isLink ? 0 : 12, vertical: 8),
-      ButtonSize.md: EdgeInsets.symmetric(horizontal: isLink ? 0 : 14, vertical: 10),
-      ButtonSize.lg: EdgeInsets.symmetric(horizontal: isLink ? 0 : 16, vertical: 10),
-      ButtonSize.xl: EdgeInsets.symmetric(horizontal: isLink ? 0 : 18, vertical: 12),
-      ButtonSize.xxl: EdgeInsets.symmetric(horizontal: isLink ? 0 : 22, vertical: 16),
-    };
-    return paddings[widget.size]!;
-  }
+    if (widget.enableFeedback) {
+      HapticFeedback.lightImpact();
+    }
 
-  TextStyle get _textStyle {
-    if (widget.customTextStyle != null) return widget.customTextStyle!;
-    
-    final textStyles = <ButtonSize, TextStyle>{
-      ButtonSize.sm: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, height: 20/14),
-      ButtonSize.md: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, height: 20/14),
-      ButtonSize.lg: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 24/16),
-      ButtonSize.xl: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 24/16),
-      ButtonSize.xxl: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, height: 28/18),
-    };
-    return textStyles[widget.size]!;
-  }
+    // Handle selection toggle
+    if (widget.onSelectionChanged != null) {
+      setState(() {
+        _currentSelection = !_currentSelection;
+      });
+      widget.onSelectionChanged!(_currentSelection);
+    }
 
-  double get _iconSize {
-    final sizes = <ButtonSize, double>{
-      ButtonSize.sm: 16,
-      ButtonSize.md: 16,
-      ButtonSize.lg: 20,
-      ButtonSize.xl: 20,
-      ButtonSize.xxl: 24,
-    };
-    return sizes[widget.size]!;
+    // Handle regular tap
+    widget.onPressed?.call();
   }
-
-  double get _iconSpacing {
-    return widget.size == ButtonSize.xxl ? 12 : 8;
-  }
-
-  double get _borderRadius => widget.borderRadius ?? 8;
 
   void _handleTapDown(TapDownDetails details) {
-    if (!_isEnabled) return;
-    setState(() => _isPressed = true);
+    if (!_isButtonEnabled) return;
     _animationController.forward();
   }
 
   void _handleTapUp(TapUpDetails details) {
-    if (!_isEnabled) return;
-    setState(() => _isPressed = false);
     _animationController.reverse();
   }
 
   void _handleTapCancel() {
-    setState(() => _isPressed = false);
     _animationController.reverse();
   }
 
-  void _handleTap() {
-    if (!_isEnabled) return;
-    if (widget.enableHapticFeedback) {
-      HapticFeedback.lightImpact();
+  bool get _isButtonEnabled => widget.isEnabled && !widget.isLoading;
+
+  ButtonStyle get _buttonStyle {
+    switch (widget.variant) {
+      case ButtonVariant.primary:
+        return _getPrimaryStyle();
+      case ButtonVariant.secondary:
+        return _getSecondaryStyle();
+      case ButtonVariant.tertiary:
+        return _getTertiaryStyle();
+      case ButtonVariant.selection:
+        return _getSelectionStyle();
+      case ButtonVariant.link:
+        return _getLinkStyle();
+      case ButtonVariant.icon:
+        return _getIconStyle();
+      case ButtonVariant.custom:
+      default:
+        return _getCustomStyle();
     }
-    widget.onPressed?.call();
   }
 
-  Widget _buildIcon(IconData? icon, Widget? customIcon) {
-    if (icon == null && customIcon == null) return const SizedBox.shrink();
-    
-    final iconWidget = customIcon ?? Icon(
-      icon,
-      size: _iconSize,
-      color: _isEnabled ? _styleConfig.textColor : _styleConfig.disabledTextColor,
-    );
-
-    return iconWidget;
-  }
-
-  Widget _buildDot() {
-    return Container(
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: _isEnabled ? _styleConfig.textColor : _styleConfig.disabledTextColor,
-      ),
+  ButtonStyle _getPrimaryStyle() {
+    return ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? AppColors.primary700,
+      textColor: widget.textColor ?? Colors.white,
+      borderColor: widget.borderColor ?? AppColors.primary700,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 16,
+      elevation: widget.elevation ?? 2,
     );
   }
 
-  Widget _buildBadge() {
-    if (widget.badge == null) return const SizedBox.shrink();
-    
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: widget.badgeColor ?? (_isEnabled ? _styleConfig.textColor : _styleConfig.disabledTextColor),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        widget.badge!,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: widget.badgeTextColor ?? AppColors.white,
-          height: 16/12,
-        ),
-      ),
+  ButtonStyle _getSecondaryStyle() {
+    return ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.transparent,
+      textColor: widget.textColor ?? AppColors.primary700,
+      borderColor: widget.borderColor ?? AppColors.primary700,
+      borderWidth: widget.borderWidth ?? 1,
+      borderRadius: widget.borderRadius ?? 32,
+      elevation: widget.elevation ?? 0,
     );
   }
 
-  Widget _buildContent() {
+  ButtonStyle _getTertiaryStyle() {
+    return ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.transparent,
+      textColor: widget.textColor ?? Colors.grey[600] ?? Colors.grey,
+      borderColor: widget.borderColor ?? Colors.grey[300] ?? Colors.grey,
+      borderWidth: widget.borderWidth ?? 1,
+      borderRadius: widget.borderRadius ?? 32,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  ButtonStyle _getSelectionStyle() {
+    final bool isSelected = _currentSelection;
+    return ButtonStyle(
+      backgroundColor:
+          widget.backgroundColor ??
+          (isSelected
+              ? AppColors.primary700
+              : AppColors.primary25),
+      textColor:
+          widget.textColor ??
+          (isSelected
+              ? AppColors.primary25
+              : AppColors.primary700),
+      borderColor:
+          widget.borderColor ??
+          (isSelected
+              ? AppColors.primary700
+              : AppColors.primary25),
+      borderWidth: widget.borderWidth ?? 2,
+      borderRadius: widget.borderRadius ?? 32,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  ButtonStyle _getLinkStyle() {
+    return ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.transparent,
+      textColor: widget.textColor ?? AppColors.primary700,
+      borderColor: widget.borderColor ?? Colors.transparent,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 0,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  ButtonStyle _getIconStyle() {
+    return ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.grey[100]!,
+      textColor: widget.textColor ?? AppColors.primary700,
+      borderColor: widget.borderColor ?? Colors.transparent,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 24,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  ButtonStyle _getCustomStyle() {
+    return ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? AppColors.primary700,
+      textColor: widget.textColor ?? Colors.white,
+      borderColor: widget.borderColor ?? Colors.transparent,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 16,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  Size get _buttonSize {
+    // For link variant, let it size naturally unless explicitly set
+    if (widget.variant == ButtonVariant.link) {
+      return Size(widget.width ?? 0, widget.height ?? 0);
+    }
+
+    // For icon variant, make it square by default
+    if (widget.variant == ButtonVariant.icon) {
+      switch (widget.size) {
+        case ButtonSize.extraSmall:
+          final size = widget.width ?? widget.height ?? 28;
+          return Size(size, size);
+        case ButtonSize.small:
+          final size = widget.width ?? widget.height ?? 36;
+          return Size(size, size);
+        case ButtonSize.medium:
+          final size = widget.width ?? widget.height ?? 48;
+          return Size(size, size);
+        case ButtonSize.large:
+          final size = widget.width ?? widget.height ?? 56;
+          return Size(size, size);
+        case ButtonSize.custom:
+        default:
+          final size = widget.width ?? widget.height ?? 48;
+          return Size(size, size);
+      }
+    }
+
+    switch (widget.size) {
+      case ButtonSize.extraSmall:
+        return Size(widget.width ?? 80, widget.height ?? 32);
+      case ButtonSize.small:
+        return Size(widget.width ?? 100, widget.height ?? 40);
+      case ButtonSize.medium:
+        return Size(widget.width ?? 150, widget.height ?? 48);
+      case ButtonSize.large:
+        return Size(widget.width ?? 200, widget.height ?? 56);
+      case ButtonSize.custom:
+      default:
+        return Size(widget.width ?? 150, widget.height ?? 48);
+    }
+  }
+
+  EdgeInsets get _buttonPadding {
+    // For link variant, use no padding unless explicitly set
+    if (widget.variant == ButtonVariant.link) {
+      return widget.padding ?? EdgeInsets.zero;
+    }
+
+    // For icon variant, use minimal padding to center the icon
+    if (widget.variant == ButtonVariant.icon) {
+      return widget.padding ?? const EdgeInsets.all(8);
+    }
+
+    switch (widget.size) {
+      case ButtonSize.extraSmall:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+      case ButtonSize.small:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+      case ButtonSize.medium:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
+      case ButtonSize.large:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 24, vertical: 16);
+      case ButtonSize.custom:
+      default:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
+    }
+  }
+
+  double get _buttonFontSize {
+    switch (widget.size) {
+      case ButtonSize.extraSmall:
+        return widget.fontSize ?? 10;
+      case ButtonSize.small:
+        return widget.fontSize ?? 12;
+      case ButtonSize.medium:
+        return widget.fontSize ?? 14;
+      case ButtonSize.large:
+        return widget.fontSize ?? 16;
+      case ButtonSize.custom:
+      default:
+        return widget.fontSize ?? 14;
+    }
+  }
+
+  Widget _buildButtonContent() {
+    if (widget.child != null) {
+      return widget.child!;
+    }
+
     if (widget.isLoading) {
       return SizedBox(
-        width: _iconSize,
-        height: _iconSize,
+        width: 20,
+        height: 20,
         child: CircularProgressIndicator(
           strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            _isEnabled ? _styleConfig.textColor : _styleConfig.disabledTextColor,
-          ),
+          valueColor: AlwaysStoppedAnimation<Color>(_buttonStyle.textColor),
         ),
       );
     }
 
     final List<Widget> children = [];
+    final iconWidget =
+        widget.customIcon ??
+        (widget.icon != null
+            ? Icon(
+              widget.icon,
+              size: widget.iconSize ?? _buttonFontSize + 4,
+              color:
+                  widget.isEnabled
+                      ? widget.iconColor ?? _buttonStyle.textColor
+                      : Colors.grey[600]!,
+            )
+            : null);
 
-    // Dot indicator
-    if (widget.showDot) {
-      children.add(_buildDot());
-      children.add(SizedBox(width: _iconSpacing));
+    if (iconWidget != null && widget.iconOnLeft) {
+      children.add(iconWidget);
+      if (widget.text.isNotEmpty) {
+        children.add(SizedBox(width: widget.iconSpacing ?? 8));
+      }
     }
 
-    // Leading icon
-    final leadingIcon = _buildIcon(widget.leadingIcon, widget.customLeadingIcon);
-    if (widget.leadingIcon != null || widget.customLeadingIcon != null) {
-      children.add(leadingIcon);
-      children.add(SizedBox(width: _iconSpacing));
-    }
-
-    // Text
-    children.add(
-      Text(
-        widget.text,
-        style: _textStyle.copyWith(
-          color: _isEnabled ? _styleConfig.textColor : _styleConfig.disabledTextColor,
-          decoration: widget.variant == ButtonVariant.link ? TextDecoration.underline : null,
+    if (widget.text.isNotEmpty) {
+      children.add(
+        Flexible(
+          child: Text(
+            widget.text,
+            style:
+                widget.textStyle ??
+                TextStyle(
+                  color:
+                      widget.isEnabled
+                          ? _buttonStyle.textColor
+                          : Colors.grey[600]!,
+                  fontSize: _buttonFontSize,
+                  fontWeight: widget.fontWeight ?? FontWeight.w600,
+                  fontFamily: widget.fontFamily,
+                ),
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
         ),
-      ),
-    );
-
-    // Badge
-    if (widget.badge != null) {
-      children.add(SizedBox(width: _iconSpacing));
-      children.add(_buildBadge());
+      );
     }
 
-    // Trailing icon
-    final trailingIcon = _buildIcon(widget.trailingIcon, widget.customTrailingIcon);
-    if (widget.trailingIcon != null || widget.customTrailingIcon != null) {
-      children.add(SizedBox(width: _iconSpacing));
-      children.add(trailingIcon);
+    if (iconWidget != null && !widget.iconOnLeft) {
+      if (widget.text.isNotEmpty) {
+        children.add(SizedBox(width: widget.iconSpacing ?? 8));
+      }
+      children.add(iconWidget);
+    }
+
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    if (children.length == 1) {
+      return children.first;
     }
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: widget.mainAxisSize ?? MainAxisSize.min,
+      mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
+      crossAxisAlignment:
+          widget.crossAxisAlignment ?? CrossAxisAlignment.center,
       children: children,
     );
   }
 
-  Color get _currentBackgroundColor {
-    if (!_isEnabled) return _styleConfig.disabledBackgroundColor;
-    if (_isPressed) return _styleConfig.pressedBackgroundColor;
-    if (_isHovered) return _styleConfig.hoverBackgroundColor;
-    return _styleConfig.backgroundColor;
-  }
-
-  Color get _currentBorderColor {
-    if (!_isEnabled) return _styleConfig.disabledBorderColor;
-    return _styleConfig.borderColor;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = _buttonStyle;
+    final buttonSize = _buttonSize;
+
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
         return Transform.scale(
           scale: _scaleAnimation.value,
-          child: MouseRegion(
-            onEnter: (_) => setState(() => _isHovered = true),
-            onExit: (_) => setState(() => _isHovered = false),
-            cursor: _isEnabled ? SystemMouseCursors.click : SystemMouseCursors.forbidden,
-            child: GestureDetector(
-              onTapDown: _handleTapDown,
-              onTapUp: _handleTapUp,
-              onTapCancel: _handleTapCancel,
-              onTap: _handleTap,
-              child: AnimatedContainer(
-                duration: widget.animationDuration,
-                curve: Curves.easeInOut,
-                height: _buttonSize.height,
-                constraints: BoxConstraints(
-                  minWidth: widget.isFullWidth ? double.infinity : 0,
+          child: Container(
+            width:
+                widget.variant == ButtonVariant.link && widget.width == null
+                    ? null
+                    : buttonSize.width,
+            height:
+                widget.variant == ButtonVariant.link && widget.height == null
+                    ? null
+                    : buttonSize.height,
+            margin:
+                widget.variant == ButtonVariant.link
+                    ? EdgeInsets.zero
+                    : widget.margin,
+            child: Material(
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTap: _handleTap,
+                onTapDown: _handleTapDown,
+                onTapUp: _handleTapUp,
+                onTapCancel: _handleTapCancel,
+                child: AnimatedContainer(
+                  duration:
+                      widget.animationDuration ??
+                      const Duration(milliseconds: 150),
+                  curve: widget.animationCurve ?? Curves.easeInOut,
+                  padding: _buttonPadding,
+                  decoration: BoxDecoration(
+                    color:
+                        _isButtonEnabled
+                            ? buttonStyle.backgroundColor
+                            : Colors.grey[300],
+                    gradient: _isButtonEnabled ? widget.gradient : null,
+                    borderRadius: BorderRadius.circular(
+                      buttonStyle.borderRadius,
+                    ),
+                    border:
+                        buttonStyle.borderWidth > 0
+                            ? Border.all(
+                              color:
+                                  _isButtonEnabled
+                                      ? buttonStyle.borderColor
+                                      : Colors.grey[300]!,
+                              width: buttonStyle.borderWidth,
+                            )
+                            : null,
+                    boxShadow:
+                        widget.boxShadows ??
+                        (_isButtonEnabled && buttonStyle.elevation > 0
+                            ? [
+                              BoxShadow(
+                                color: (widget.shadowColor ??
+                                        buttonStyle.backgroundColor)
+                                    .withOpacity(0.3),
+                                blurRadius: buttonStyle.elevation * 2,
+                                offset: Offset(0, buttonStyle.elevation),
+                              ),
+                            ]
+                            : null),
+                  ),
+                  child: Center(child: _buildButtonContent()),
                 ),
-                padding: _padding,
-                decoration: BoxDecoration(
-                  color: _currentBackgroundColor,
-                  borderRadius: BorderRadius.circular(_borderRadius),
-                  border: _styleConfig.borderWidth > 0
-                      ? Border.all(
-                          color: _currentBorderColor,
-                          width: _styleConfig.borderWidth,
-                        )
-                      : null,
-                  boxShadow: _styleConfig.boxShadow,
-                ),
-                child: _buildContent(),
               ),
             ),
           ),
@@ -568,185 +574,185 @@ class _AusaButtonState extends State<AusaButton> with SingleTickerProviderStateM
   }
 }
 
-// Example usage
-class ButtonExamples extends StatelessWidget {
-  const ButtonExamples({super.key});
+// Helper class for button styling
+class ButtonStyle {
+  final Color backgroundColor;
+  final Color textColor;
+  final Color borderColor;
+  final double borderWidth;
+  final double borderRadius;
+  final double elevation;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.gray50,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Primary buttons
-            const Text('Primary Buttons', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                AusaButton.primary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  leadingIcon: Icons.add,
-                ),
-                AusaButton.primary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  trailingIcon: Icons.arrow_forward,
-                ),
-                AusaButton.primary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  showDot: true,
-                ),
-                AusaButton.primary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  badge: '12',
-                ),
-                AusaButton.primary(
-                  text: 'Destructive',
-                  onPressed: () {},
-                  isDestructive: true,
-                  leadingIcon: Icons.delete,
-                ),
-                AusaButton.primary(
-                  text: 'Disabled',
-                  onPressed: () {},
-                  isDisabled: true,
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 32),
-            
-            // Secondary buttons
-            const Text('Secondary Buttons', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                AusaButton.secondary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  leadingIcon: Icons.cloud_upload,
-                ),
-                AusaButton.secondary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  trailingIcon: Icons.download,
-                ),
-                AusaButton.secondary(
-                  text: 'Destructive',
-                  onPressed: () {},
-                  isDestructive: true,
-                  leadingIcon: Icons.close,
-                ),
-                AusaButton.secondary(
-                  text: 'Disabled',
-                  onPressed: () {},
-                  isDisabled: true,
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 32),
-            
-            // Tertiary buttons
-            const Text('Tertiary Buttons', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                AusaButton.tertiary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  leadingIcon: Icons.settings,
-                ),
-                AusaButton.tertiary(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  trailingIcon: Icons.chevron_right,
-                ),
-                AusaButton.tertiary(
-                  text: 'Destructive',
-                  onPressed: () {},
-                  isDestructive: true,
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 32),
-            
-            // Link buttons
-            const Text('Link Buttons', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                AusaButton.link(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  leadingIcon: Icons.arrow_back,
-                ),
-                AusaButton.link(
-                  text: 'Button CTA',
-                  onPressed: () {},
-                  trailingIcon: Icons.arrow_forward,
-                ),
-                AusaButton.link(
-                  text: 'Destructive',
-                  onPressed: () {},
-                  isDestructive: true,
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 32),
-            
-            // Different sizes
-            const Text('Button Sizes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                AusaButton.primary(text: 'Small', onPressed: () {}, size: ButtonSize.sm),
-                AusaButton.primary(text: 'Medium', onPressed: () {}, size: ButtonSize.md),
-                AusaButton.primary(text: 'Large', onPressed: () {}, size: ButtonSize.lg),
-                AusaButton.primary(text: 'Extra Large', onPressed: () {}, size: ButtonSize.xl),
-                AusaButton.primary(text: '2X Large', onPressed: () {}, size: ButtonSize.xxl),
-              ],
-            ),
-            
-            const SizedBox(height: 32),
-            
-            // States
-            const Text('Button States', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AusaButton.primary(text: 'Loading', onPressed: () {}, isLoading: true),
-                const SizedBox(height: 12),
-                AusaButton(
-                  text: 'Full Width Button',
-                  onPressed: () {},
-                  isFullWidth: true,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+  const ButtonStyle({
+    required this.backgroundColor,
+    required this.textColor,
+    required this.borderColor,
+    required this.borderWidth,
+    required this.borderRadius,
+    required this.elevation,
+  });
+}
+
+// Convenience constructors for common button types
+extension AusaButtonExtensions on AusaButton {
+  static AusaButton primary({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    Color? backgroundColor,
+    Color? textColor,
+    double? width,
+    double? height,
+    ButtonSize size = ButtonSize.medium,
+    IconData? icon,
+    bool iconOnLeft = true,
+    bool isLoading = false,
+    bool isEnabled = true,
+  }) {
+    return AusaButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      variant: ButtonVariant.primary,
+      size: size,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      width: width,
+      height: height,
+      icon: icon,
+      iconOnLeft: iconOnLeft,
+      isLoading: isLoading,
+      isEnabled: isEnabled,
+    );
+  }
+
+  static AusaButton secondary({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    Color? borderColor,
+    Color? textColor,
+    double? width,
+    double? height,
+    ButtonSize size = ButtonSize.medium,
+    IconData? icon,
+    bool iconOnLeft = true,
+    bool isLoading = false,
+    bool isEnabled = true,
+  }) {
+    return AusaButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      variant: ButtonVariant.secondary,
+      size: size,
+      borderColor: borderColor,
+      textColor: textColor,
+      width: width,
+      height: height,
+      icon: icon,
+      iconOnLeft: iconOnLeft,
+      isLoading: isLoading,
+      isEnabled: isEnabled,
+    );
+  }
+
+  static AusaButton selection({
+    Key? key,
+    required String text,
+    required ValueChanged<bool> onSelectionChanged,
+    bool isSelected = false,
+    Color? activeColor,
+    Color? inactiveColor,
+    double? width,
+    double? height,
+    ButtonSize size = ButtonSize.medium,
+    bool isEnabled = true,
+  }) {
+    return AusaButton(
+      key: key,
+      text: text,
+      onPressed: () {}, // Required but handled by onSelectionChanged
+      variant: ButtonVariant.selection,
+      size: size,
+      backgroundColor: isSelected ? activeColor : inactiveColor,
+      width: width,
+      height: height,
+      isSelected: isSelected,
+      onSelectionChanged: onSelectionChanged,
+      isEnabled: isEnabled,
+    );
+  }
+
+  static AusaButton link({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    Color? textColor,
+    double? fontSize,
+    FontWeight? fontWeight,
+    IconData? icon,
+    bool iconOnLeft = true,
+    bool isEnabled = true,
+  }) {
+    return AusaButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      variant: ButtonVariant.link,
+      textColor: textColor,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      icon: icon,
+      iconOnLeft: iconOnLeft,
+      isEnabled: isEnabled,
+    );
+  }
+
+  static AusaButton icon({
+    Key? key,
+    IconData? icon,
+    Widget? customIcon,
+    VoidCallback? onPressed,
+    Color? backgroundColor,
+    Color? iconColor,
+    Color? borderColor,
+    double? iconSize,
+    double? borderWidth,
+    double? borderRadius,
+    double? width,
+    double? height,
+    EdgeInsets? padding,
+    ButtonSize size = ButtonSize.medium,
+    bool isEnabled = true,
+    bool enableFeedback = true,
+    Duration? animationDuration,
+  }) {
+    assert(
+      icon != null || customIcon != null,
+      'Either icon or customIcon must be provided',
+    );
+
+    return AusaButton(
+      key: key,
+      text: '', // No text for icon-only buttons
+      onPressed: onPressed,
+      variant: ButtonVariant.icon,
+      size: size,
+      icon: icon,
+      customIcon: customIcon,
+      backgroundColor: backgroundColor,
+      iconColor: iconColor,
+      borderColor: borderColor,
+      iconSize: iconSize,
+      borderWidth: borderWidth,
+      borderRadius: borderRadius,
+      width: width,
+      height: height,
+      padding: padding,
+      isEnabled: isEnabled,
+      enableFeedback: enableFeedback,
+      animationDuration: animationDuration,
     );
   }
 }

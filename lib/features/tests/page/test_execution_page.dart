@@ -168,7 +168,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: Column(
         children: [
           Obx(
@@ -258,18 +258,16 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withValues(alpha: 0.1),
+                          color: AppColors.primary700.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: AppColors.primaryColor.withValues(
-                              alpha: 0.3,
-                            ),
+                            color: AppColors.primary700.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Text(
                           'Category: ${controller.currentTest!.selectedCategory}',
                           style: AppTypography.callout(
-                            color: AppColors.primaryColor,
+                            color: AppColors.primary700,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -309,7 +307,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: AppColors.scaffoldBackgroundColor,
+      color: AppColors.gray50,
       child: Column(
         children: [
           // const Spacer(),
@@ -338,7 +336,9 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                           ? AusaButton(
                             onPressed: () => controller.cancelCurrentTest(),
                             variant: ButtonVariant.primary,
-                            isDestructive: true,
+                            backgroundColor: Colors.orange,
+                            textColor: Colors.white,
+                            borderRadius: 40,
                             text: "Stop Test",
                           )
                           : const SizedBox(),

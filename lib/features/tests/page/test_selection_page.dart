@@ -15,7 +15,7 @@ class TestSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: Column(
         children: [
           const AppBackHeader(title: 'Your Tests'),

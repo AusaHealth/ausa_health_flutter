@@ -119,6 +119,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
                         text: 'Change',
                         onPressed: controller.goBackToStep1,
                         variant: ButtonVariant.link,
+                        iconSize: 16,
+                        height: 40,
                       ),
                       const SizedBox(width: 20),
                     ],
@@ -249,9 +251,10 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       controller.selectedTimeSlot != null
                           ? controller.goToStep2
                           : null,
-                  isDisabled: controller.selectedTimeSlot == null,
+                  isEnabled: controller.selectedTimeSlot != null,
                   variant: ButtonVariant.primary,
-                  isFullWidth: true,
+                  width: double.infinity,
+                  height: 56,
                   borderRadius: 32,
                 ),
               ),
@@ -278,9 +281,11 @@ class AppointmentSchedulingPage extends StatelessWidget {
               Text('Select Date', style: AppTypography.body()),
               AusaButton(
                 text: 'Month View',
-                leadingIcon: Icons.calendar_view_month,
                 onPressed: controller.toggleMonthView,
                 variant: ButtonVariant.link,
+                icon: Icons.calendar_view_month,
+                textColor: AppColors.primary700,
+                iconColor: AppColors.primary700,
               ),
             ],
           ),
@@ -307,15 +312,14 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    variant:
-                        isSelected
-                            ? ButtonVariant.primary
-                            : ButtonVariant.secondary,
-                    onPressed:
-                        timeSlot.isAvailable
-                            ? () => controller.selectTimeSlot(timeSlot)
-                            : null,
-                    isDisabled: !timeSlot.isAvailable,
+                    variant: ButtonVariant.selection,
+                    isSelected: isSelected,
+                    isEnabled: timeSlot.isAvailable,
+                    onSelectionChanged: (selected) {
+                      if (selected) {
+                        controller.selectTimeSlot(timeSlot);
+                      }
+                    },
                   );
                 },
               ),

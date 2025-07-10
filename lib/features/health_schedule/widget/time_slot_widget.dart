@@ -32,14 +32,14 @@ class TimeSlotWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(AppRadius.full),
               border: Border.all(
-                color: AppColors.primaryColor.withOpacity(0.3),
+                color: AppColors.primary700.withOpacity(0.3),
                 width: 1,
               ),
             ),
             child: Text(
               timeSlot.title,
               style: AppTypography.callout(
-                color: AppColors.primaryColor,
+                color: AppColors.primary700,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -116,7 +116,7 @@ class DashedDivider extends StatelessWidget {
 
   const DashedDivider({
     super.key,
-    this.color = AppColors.primaryColor,
+    this.color = AppColors.primary700,
     this.height = 1,
     this.dashWidth = 3,
     this.dashSpace = 4,
@@ -178,7 +178,7 @@ class TimelineConnectorPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint =
         Paint()
-          ..color = AppColors.primaryColor.withOpacity(0.3)
+          ..color = AppColors.primary700.withOpacity(0.3)
           ..strokeWidth = 2
           ..style = PaintingStyle.stroke;
 

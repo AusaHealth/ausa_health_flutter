@@ -32,7 +32,7 @@ class FloatingCTAWidget extends StatelessWidget {
               vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor,
+              color: AppColors.primary700,
               borderRadius: BorderRadius.circular(AppRadius.full),
               boxShadow: [
                 BoxShadow(

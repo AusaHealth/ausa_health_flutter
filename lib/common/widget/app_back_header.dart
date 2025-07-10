@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/constants.dart';
-import 'buttons.dart';
 
 /// A reusable header widget with back button and page title
 /// Optionally displays step indicators when currentStep and totalSteps are provided
@@ -59,17 +58,31 @@ class AppBackHeader extends StatelessWidget {
       child: Row(
         children: [
           // Back button
-          AusaButton(
-            text: '',
-            variant: ButtonVariant.secondary,
-            leadingIcon: Icons.arrow_back_ios_new,
-            onPressed: onBackPressed ?? () => Get.back(),
-            size: ButtonSize.sm,
-            borderRadius: 20,
-            customPadding: EdgeInsets.all(8),
+          GestureDetector(
+            onTap: onBackPressed ?? () => Get.back(),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: buttonColor ?? Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.arrow_back_ios_new,
+                color: buttonIconColor ?? Colors.black87,
+                size: 16,
+              ),
+            ),
           ),
 
-          SizedBox(width: AppSpacing.xl2),
+          SizedBox(width: AppSpacing.md),
 
           // Title
           Text(
@@ -97,7 +110,7 @@ class AppBackHeader extends StatelessWidget {
                             isActive
                                 ? Colors.white
                                 : isCompleted
-                                ? (completedStepColor ?? AppColors.primaryColor)
+                                ? (completedStepColor ?? AppColors.primary700)
                                 : (inactiveStepColor ?? Colors.white),
                         border: Border.all(
                           color:
@@ -105,7 +118,7 @@ class AppBackHeader extends StatelessWidget {
                                   ? activeStepColor!
                                   : isCompleted
                                   ? (completedStepColor ??
-                                      AppColors.primaryColor)
+                                      AppColors.primary700)
                                   : (inactiveStepColor ?? Colors.grey[300]!),
                           width: 1,
                         ),
@@ -138,7 +151,7 @@ class AppBackHeader extends StatelessWidget {
                         margin: EdgeInsets.symmetric(horizontal: 4),
                         color:
                             isCompleted
-                                ? (completedStepColor ?? AppColors.primaryColor)
+                                ? (completedStepColor ?? AppColors.primary700)
                                 : Colors.grey[300],
                       ),
                   ],

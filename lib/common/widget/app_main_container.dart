@@ -36,7 +36,8 @@ class AppMainContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: margin ??
+        margin:
+            margin ??
             EdgeInsets.only(
               left: AppSpacing.xl3,
               right: AppSpacing.xl3,

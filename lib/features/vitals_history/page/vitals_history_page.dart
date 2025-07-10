@@ -80,7 +80,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     // Ensure the UI reflects the selected reading when the page is loaded
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Column(
           children: [
@@ -100,75 +100,65 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
             ),
 
             // Main content
-              AppMainContainer(
-              child:
-              Container(
-                      padding: EdgeInsets.all(AppSpacing.lg),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(AppRadius.xl2),
-                      ),
-                      child: Row(
-                        children: [
-                          // Left side - Chart
-                          Expanded(
-                            flex: 1,
-                            child: Obx(
-                              () => Column(
-                                children: [
-                                  // Chart
-                                  Expanded(
-                                    child: VitalsChartWidget(
-                                      readings: controller.chartReadings,
-                                      vitalType: controller.currentVitalType,
-                                      selectedParameter:
-                                          controller
-                                                  .chartSelectedParameter
-                                                  .isNotEmpty
-                                              ? controller
-                                                  .chartSelectedParameter
-                                              : null,
-                                      onParameterTap: (chartParam) {
-                                        // Only relevant for Blood Pressure where multiple parameters exist
-                                        if (controller.currentVitalType ==
-                                            VitalType.bloodPressure) {
-                                          // Map chart-level parameter back to the underlying reading parameter
-                                          switch (chartParam) {
-                                            case 'BP':
-                                              controller
-                                                  .selectedBPParameter
-                                                  .value = 'Systolic';
-                                              break;
-                                            case 'MAP':
-                                              controller
-                                                  .selectedBPParameter
-                                                  .value = 'MAP';
-                                              break;
-                                            case 'PP':
-                                              controller
-                                                  .selectedBPParameter
-                                                  .value = 'Pulse Pressure';
-                                              break;
-                                            default:
-                                              break;
-                                          }
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
+            AppMainContainer(
+              child: Container(
+                padding: EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(AppRadius.xl2),
+                ),
+                child: Row(
+                  children: [
+                    // Left side - Chart
+                    Expanded(
+                      flex: 1,
+                      child: Obx(
+                        () => Column(
+                          children: [
+                            // Chart
+                            Expanded(
+                              child: VitalsChartWidget(
+                                readings: controller.chartReadings,
+                                vitalType: controller.currentVitalType,
+                                selectedParameter:
+                                    controller.chartSelectedParameter.isNotEmpty
+                                        ? controller.chartSelectedParameter
+                                        : null,
+                                onParameterTap: (chartParam) {
+                                  // Only relevant for Blood Pressure where multiple parameters exist
+                                  if (controller.currentVitalType ==
+                                      VitalType.bloodPressure) {
+                                    // Map chart-level parameter back to the underlying reading parameter
+                                    switch (chartParam) {
+                                      case 'BP':
+                                        controller.selectedBPParameter.value =
+                                            'Systolic';
+                                        break;
+                                      case 'MAP':
+                                        controller.selectedBPParameter.value =
+                                            'MAP';
+                                        break;
+                                      case 'PP':
+                                        controller.selectedBPParameter.value =
+                                            'Pulse Pressure';
+                                        break;
+                                      default:
+                                        break;
+                                    }
+                                  }
+                                },
                               ),
                             ),
-                          ),
+                          ],
+                        ),
+                      ),
+                    ),
 
-                          SizedBox(width: AppSpacing.lg),
+                    SizedBox(width: AppSpacing.lg),
 
-                          // Right side - Readings
-                          Expanded(
-                            flex: 1,
-                            child: _buildReadingsSection(controller),
-                          ),
-                        ],
+                    // Right side - Readings
+                    Expanded(flex: 1, child: _buildReadingsSection(controller)),
+                  ],
                 ),
               ),
             ),
@@ -177,7 +167,6 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
       ),
     );
   }
-
 
   Widget _buildReadingsSection(VitalsHistoryController controller) {
     return Container(
@@ -316,12 +305,12 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
                 vertical: AppSpacing.xs,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.1),
+                color: AppColors.primary700.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppRadius.xl3),
               ),
               child: Text(
                 'Today',
-                style: AppTypography.callout(color: AppColors.primaryColor),
+                style: AppTypography.callout(color: AppColors.primary700),
               ),
             ),
           ],

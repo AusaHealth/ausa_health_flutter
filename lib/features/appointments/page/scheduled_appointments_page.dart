@@ -8,7 +8,6 @@ import 'package:ausa/features/appointments/widget/no_appointments_widget.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ausa/routes/app_routes.dart';
 
 class ScheduledAppointmentsPage extends StatelessWidget {
   const ScheduledAppointmentsPage({super.key});
@@ -74,11 +73,12 @@ class ScheduledAppointmentsPage extends StatelessWidget {
           Text('Scheduled appointments', style: AppTypography.headline()),
           const Spacer(),
           AusaButton(
-            text: 'Schedule Appointment',
-            leadingIcon: Icons.add,
-            onPressed: () => Get.toNamed(AppRoutes.appointmentSchedule),
-            variant: ButtonVariant.primary,
-            size: ButtonSize.lg,
+            text: 'New Appointment',
+            onPressed: controller.navigateToScheduleAppointment,
+            variant: ButtonVariant.secondary,
+            icon: Icons.add,
+            iconSize: 16,
+            height: 40,
           ),
         ],
       ),

@@ -522,7 +522,7 @@ class AppTypography {
   /// Text(
   ///   'Hello World',
   ///   style: AppTypography.largeTitleBold(
-  ///     color: AppColors.primaryColor,
+  ///     color: AppColors.primary700,
   ///   ),
   /// )
   ///
@@ -530,7 +530,7 @@ class AppTypography {
   /// Text(
   ///   'Hello World',
   ///   style: AppTypography.callout(
-  ///     color: AppColors.primaryColor,
+  ///     color: AppColors.primary700,
   ///     weight: AppTypographyWeight.medium,
   ///   ),
   /// )
@@ -539,7 +539,7 @@ class AppTypography {
   /// Text(
   ///   'Hello World',
   ///   style: AppTypography.largeTitle(
-  ///     color: AppColors.primaryColor,
+  ///     color: AppColors.primary700,
   ///     fontWeight: FontWeight.w700,
   ///   ),
   /// )

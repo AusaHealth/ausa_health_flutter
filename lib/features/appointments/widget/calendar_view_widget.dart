@@ -47,7 +47,9 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                 text: 'Week View',
                 onPressed: widget.onBackToWeekView,
                 variant: ButtonVariant.link,
-                leadingIcon: Icons.calendar_view_week,
+                icon: Icons.calendar_view_week,
+                textColor: AppColors.primary700,
+                iconColor: AppColors.primary700,
               ),
             ],
           ),
@@ -203,7 +205,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                   isSelected
                       ? const Color(0xFF1B1B3B)
                       : isToday
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : Colors.transparent,
               shape: BoxShape.circle,
             ),
@@ -217,7 +219,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                           : !isCurrentMonth || isPast
                           ? Colors.grey[400]
                           : isToday
-                          ? AppColors.primaryColor
+                          ? AppColors.primary700
                           : Colors.black87,
                   fontWeight:
                       isSelected || isToday ? FontWeight.w600 : FontWeight.w400,

@@ -128,7 +128,7 @@ class ReadingCardWidget extends StatelessWidget {
               color:
                   isParameterSelected?.call('Systolic') == true ||
                           isParameterSelected?.call('Diastolic') == true
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -171,7 +171,7 @@ class ReadingCardWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         isParameterSelected?.call('MAP') == true
-                            ? AppColors.primaryColor.withOpacity(0.1)
+                            ? AppColors.primary700.withOpacity(0.1)
                             : null,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
@@ -198,7 +198,7 @@ class ReadingCardWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         isParameterSelected?.call('Pulse Pressure') == true
-                            ? AppColors.primaryColor.withOpacity(0.1)
+                            ? AppColors.primary700.withOpacity(0.1)
                             : null,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
@@ -232,7 +232,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('SpO2') == true
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -262,7 +262,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Glucose Level') == true
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -305,7 +305,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Temperature') == true
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -336,7 +336,7 @@ class ReadingCardWidget extends StatelessWidget {
               color:
                   isParameterSelected?.call('ECG Heart Rate') == true ||
                           isParameterSelected?.call('Rhythm') == true
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -376,7 +376,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Duration') == true
-                      ? AppColors.primaryColor.withOpacity(0.1)
+                      ? AppColors.primary700.withOpacity(0.1)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -416,8 +416,7 @@ class ReadingCardWidget extends StatelessWidget {
             Text(
               value,
               style: AppTypography.body(
-                color:
-                    isHighlighted ? AppColors.primaryColor : _getValueColor(),
+                color: isHighlighted ? AppColors.primary700 : _getValueColor(),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -427,7 +426,7 @@ class ReadingCardWidget extends StatelessWidget {
                 unit,
                 style: AppTypography.callout(
                   color:
-                      isHighlighted ? AppColors.primaryColor : _getValueColor(),
+                      isHighlighted ? AppColors.primary700 : _getValueColor(),
                   fontWeight: FontWeight.w400,
                 ),
               ),

@@ -29,7 +29,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Column(
           children: [
@@ -91,7 +91,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                           child: Icon(
                             Icons.circle_outlined,
                             size: 16.0,
-                            color: AppColors.primaryColor,
+                            color: AppColors.primary700,
                           ),
                         ),
                       ),
@@ -99,7 +99,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                       Text(
                         'Select',
                         style: AppTypography.callout(
-                          color: AppColors.primaryColor,
+                          color: AppColors.primary700,
                         ),
                       ),
                     ],
@@ -114,9 +114,18 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
               return AusaButton(
                 text: 'Delete',
                 onPressed: hasSelection ? _showDeleteConfirmationDialog : null,
-                variant: ButtonVariant.primary,
-                isDestructive: true,
-                isDisabled: !hasSelection,
+                variant: ButtonVariant.custom,
+                size: ButtonSize.small,
+                backgroundColor:
+                    hasSelection
+                        ? Colors.orange
+                        : Colors.orange.withOpacity(0.4),
+                textColor: Colors.white,
+                borderRadius: 60,
+                icon: Icons.delete_outline,
+                iconColor: Colors.white,
+                iconSpacing: AppSpacing.md,
+                isEnabled: hasSelection,
               );
             }),
           ),
@@ -211,12 +220,12 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                 vertical: AppSpacing.xs,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.1),
+                color: AppColors.primary700.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppRadius.xl3),
               ),
               child: Text(
                 'Today',
-                style: AppTypography.callout(color: AppColors.primaryColor),
+                style: AppTypography.callout(color: AppColors.primary700),
               ),
             ),
           ],
@@ -295,7 +304,12 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                             Navigator.of(context).pop();
                           },
                           variant: ButtonVariant.secondary,
+                          borderColor: Colors.orange,
+                          textColor: Colors.orange,
                           borderRadius: 60,
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
                         ),
                       ),
                       SizedBox(width: AppSpacing.lg),
@@ -308,8 +322,12 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                             await controller.deleteSelectedReadings();
                           },
                           variant: ButtonVariant.primary,
-                          isDestructive: true,
+                          backgroundColor: Colors.orange,
+                          textColor: Colors.white,
                           borderRadius: 60,
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
                         ),
                       ),
                     ],

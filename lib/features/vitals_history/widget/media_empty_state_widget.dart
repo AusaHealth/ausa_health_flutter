@@ -28,13 +28,13 @@ class MediaEmptyStateWidget extends StatelessWidget {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.1),
+                  color: AppColors.primary700.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   _getEmptyStateIcon(),
                   size: 60,
-                  color: AppColors.primaryColor.withOpacity(0.7),
+                  color: AppColors.primary700.withOpacity(0.7),
                 ),
               ),
 
@@ -69,6 +69,8 @@ class MediaEmptyStateWidget extends StatelessWidget {
                 text: 'Take Your First Test',
                 onPressed: onTakeFirstTest,
                 variant: ButtonVariant.primary,
+                width: 200,
+                height: 48,
               ),
             ],
           ),

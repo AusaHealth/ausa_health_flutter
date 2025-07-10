@@ -116,6 +116,9 @@ class IncompleteTests extends StatelessWidget {
                         testController.clearSelection();
                       },
                       variant: ButtonVariant.secondary,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.orange,
+                      borderColor: Colors.orange,
                     ),
                     const SizedBox(width: 16),
                     AusaButton(

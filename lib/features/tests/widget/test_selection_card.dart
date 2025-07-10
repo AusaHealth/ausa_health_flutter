@@ -24,8 +24,7 @@ class TestSelectionCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color:
-                test.isSelected ? AppColors.primaryColor : Colors.transparent,
+            color: test.isSelected ? AppColors.primary700 : Colors.transparent,
             width: test.isSelected ? 2.5 : 0,
           ),
           boxShadow: [
@@ -58,13 +57,9 @@ class TestSelectionCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
                 ],
               ),
             ),
-
-
-      
           ],
         ),
       ),

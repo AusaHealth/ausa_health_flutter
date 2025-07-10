@@ -34,7 +34,10 @@ class BaseTeleconsultationPage extends StatelessWidget {
               left: 0,
               right: 0,
               bottom: 0,
-              child: ActionBar(autoHideContainerKey: controller.actionBarKey, controller: controller),
+              child: ActionBar(
+                autoHideContainerKey: controller.actionBarKey,
+                controller: controller,
+              ),
             ),
           ],
         ),
@@ -45,19 +48,15 @@ class BaseTeleconsultationPage extends StatelessWidget {
 
   Widget get body {
     return SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: Column(
-                children: [
-                  Text('Base Teleconsultation Page'),
-                ],
-        ),
-      );
+      width: double.infinity,
+      height: double.infinity,
+      child: Column(children: [Text('Base Teleconsultation Page')]),
+    );
   }
 
   PreferredSizeWidget? get appBar => null;
 
-  Color get backgroundColor => AppColors.scaffoldBackgroundColor;
+  Color get backgroundColor => AppColors.gray50;
 
   FloatingActionButton? get floatingActionButton => null;
 }

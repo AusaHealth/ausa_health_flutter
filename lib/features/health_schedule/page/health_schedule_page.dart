@@ -18,7 +18,7 @@ class HealthSchedulePage extends StatelessWidget {
     final controller = Get.put(HealthScheduleController());
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Stack(
           children: [
@@ -142,12 +142,12 @@ class HealthSchedulePage extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.edit, color: AppColors.primaryColor, size: 16),
+              Icon(Icons.edit, color: AppColors.primary700, size: 16),
               SizedBox(width: AppSpacing.md),
               Text(
                 'Meal Times',
                 style: AppTypography.callout(
-                  color: AppColors.primaryColor,
+                  color: AppColors.primary700,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -194,7 +194,7 @@ class HealthSchedulePage extends StatelessWidget {
                         width: 2,
                         height: dashHeight,
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
+                          color: AppColors.primary700,
                           // borderRadius: BorderRadius.circular(1),
                         ),
                         margin: EdgeInsets.only(bottom: dashSpace),

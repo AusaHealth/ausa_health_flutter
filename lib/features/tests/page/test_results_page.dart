@@ -6,8 +6,6 @@ import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:ausa/features/tests/model/test_result.dart';
 import 'package:ausa/common/model/test.dart';
-// import 'package:ausa/features/tests/widget/result_parameter_widget.dart';
-// import 'package:ausa/features/tests/widget/result_section_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +17,7 @@ class TestResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: Column(
         children: [
           _buildHeader(),
@@ -184,16 +182,16 @@ class TestResultsPage extends StatelessWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withValues(alpha: 0.1),
+                    color: AppColors.primary700.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: AppColors.primaryColor.withValues(alpha: 0.3),
+                      color: AppColors.primary700.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(
                     _getCategoryDisplayName(result),
                     style: AppTypography.callout(
-                      color: AppColors.primaryColor,
+                      color: AppColors.primary700,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -307,39 +305,44 @@ class TestResultsPage extends StatelessWidget {
             children: [
               Expanded(
                 child: AusaButton(
-                  text: 'View Details',
+                  text: 'Schedule Appointment',
                   onPressed: () {
-                    // TODO: Navigate to detailed result view
+                    // TODO: Navigate to appointment scheduling
                   },
                   variant: ButtonVariant.secondary,
+                  borderColor: AppColors.primary700,
+                  textColor: AppColors.primary700,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: AusaButton(
-                  text: 'Share Results',
-                  onPressed: () {
-                    // TODO: Implement share functionality
-                  },
+                  text: 'Check Again',
+                  onPressed: () => controller.retakeAllTests(),
                   variant: ButtonVariant.secondary,
+                  borderColor: AppColors.primary700,
+                  textColor: AppColors.primary700,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: AusaButton(
-                  text: 'Save to Health',
-                  onPressed: () {
-                    // TODO: Implement save to health functionality
-                  },
+                  text: 'Take another Test',
+                  onPressed: () => controller.navigateToTestSelection(),
                   variant: ButtonVariant.secondary,
+                  borderColor: AppColors.primary700,
+                  textColor: AppColors.primary700,
                 ),
               ),
               const SizedBox(width: 60),
               Expanded(
                 child: AusaButton(
-                  text: 'Continue',
+                  text: 'Finish',
+                  borderRadius: 40,
+                  height: 50,
                   onPressed: () {
-                    controller.moveToNextTest();
+                    controller.resetSelections();
+                    Get.back();
                   },
                   variant: ButtonVariant.primary,
                 ),

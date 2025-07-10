@@ -156,7 +156,7 @@ class CancelAppointmentDialog extends StatelessWidget {
                                   child: Icon(
                                     Icons.edit_outlined,
                                     size: 26,
-                                    color: AppColors.primaryColor,
+                                    color: AppColors.primary700,
                                   ),
                                 ),
                               ),
@@ -212,9 +212,16 @@ class CancelAppointmentDialog extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: AusaButton(
                     text: 'Cancel Appointment',
-                    onPressed: () => Get.back(result: true),
+                    onPressed: () {
+                      Get.back(
+                        result: true,
+                      ); // Return true to indicate confirmation
+                    },
                     variant: ButtonVariant.primary,
-                    isDestructive: true,
+                    width: 150,
+                    height: 48,
+                    borderRadius: 24,
+                    backgroundColor: const Color(0xFFFF8C00),
                   ),
                 ),
               ],

@@ -1,3 +1,4 @@
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/tests/model/test_prerequisites.dart';
 import 'package:ausa/common/widget/buttons.dart';
@@ -117,7 +118,12 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                     Get.back(result: canProceed);
                                   },
                                   variant: ButtonVariant.secondary,
+                                  borderColor: AppColors.primary700,
+                                  borderWidth: 2,
+                                  textColor: AppColors.primary700,
+                                  backgroundColor: Colors.transparent,
                                   borderRadius: 25,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -132,7 +138,10 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                     );
                                   },
                                   variant: ButtonVariant.primary,
+                                  backgroundColor: AppColors.primary700,
+                                  textColor: Colors.white,
                                   borderRadius: 25,
+                                  fontWeight: FontWeight.w600,
                                   text: prerequisiteCheck.primaryButtonText,
                                 ),
                               ),

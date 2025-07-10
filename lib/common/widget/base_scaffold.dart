@@ -31,7 +31,7 @@ class BaseScaffold extends StatelessWidget {
   final Color backgroundColor;
   final PreferredSizeWidget? appBar;
   final FloatingActionButton? floatingActionButton;
-  const BaseScaffold({super.key, this.body, this.backgroundColor = AppColors.scaffoldBackgroundColor, this.appBar, this.floatingActionButton});
+  const BaseScaffold({super.key, this.body, this.backgroundColor = AppColors.gray50, this.appBar, this.floatingActionButton});
 
   @override
   Widget build(BuildContext context) {

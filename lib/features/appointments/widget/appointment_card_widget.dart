@@ -45,7 +45,7 @@ class AppointmentCardWidget extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.08),
+                  color: AppColors.primary700.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(26),
                 ),
                 child: Row(
@@ -53,14 +53,14 @@ class AppointmentCardWidget extends StatelessWidget {
                     Icon(
                       Icons.access_time,
                       size: 20,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primary700,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       appointment.formattedTime,
                       style: AppTypography.body(
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primary700,
                       ),
                     ),
                   ],
@@ -76,7 +76,7 @@ class AppointmentCardWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Icon(
                       Icons.edit_outlined,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primary700,
                       size: 24,
                     ),
                   ),
@@ -136,7 +136,7 @@ class AppointmentCardWidget extends StatelessWidget {
                   child: Text(
                     'read more',
                     style: AppTypography.body(
-                      color: AppColors.primaryColor,
+                      color: AppColors.primary700,
                     ),
                   ),
                 ),

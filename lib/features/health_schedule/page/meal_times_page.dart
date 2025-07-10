@@ -13,7 +13,7 @@ class MealTimesPage extends StatelessWidget {
     final controller = Get.put(MealTimesController());
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
+      backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Column(
           children: [
@@ -135,14 +135,14 @@ class MealTimesPage extends StatelessWidget {
           vertical: AppSpacing.lg,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF165CFF) : Colors.grey[100],
+          color: isSelected ? AppColors.primary700 : Colors.grey[100],
           borderRadius: borderRadius,
           boxShadow:
               isSelected
                   ? [
                     // Light outer shadow (top-left)
                     BoxShadow(
-                      color: Color(0xFFC8D8FF),
+                      color: AppColors.primary700.withOpacity(0.3),
                       blurRadius: 10,
                       offset: Offset(-3, -4),
                     ),
@@ -237,10 +237,10 @@ class MealTimesPage extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withOpacity(0.1),
+              color: AppColors.primary700.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.mic, color: AppColors.primaryColor, size: 20),
+            child: Icon(Icons.mic, color: AppColors.primary700, size: 20),
           ),
         ],
       ),
@@ -386,7 +386,7 @@ class MealTimesPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color:
                           isSelected
-                              ? AppColors.primaryColor.withOpacity(0.1)
+                              ? AppColors.primary700.withOpacity(0.1)
                               : Colors.transparent,
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                     ),
@@ -395,7 +395,7 @@ class MealTimesPage extends StatelessWidget {
                       style: AppTypography.title2(
                         color:
                             isSelected
-                                ? AppColors.primaryColor
+                                ? AppColors.primary700
                                 : Colors.grey[400],
                         fontWeight:
                             isSelected ? FontWeight.w600 : FontWeight.w400,

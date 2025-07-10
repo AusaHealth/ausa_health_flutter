@@ -56,14 +56,14 @@ class EmptyStateWidget extends StatelessWidget {
                     Text(
                       'Take your first tests',
                       style: AppTypography.callout(
-                        color: AppColors.primaryColor,
+                        color: AppColors.primary700,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     SizedBox(width: AppSpacing.md),
                     Icon(
                       Icons.arrow_forward,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primary700,
                       size: 20,
                     ),
                   ],

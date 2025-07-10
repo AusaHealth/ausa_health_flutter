@@ -70,16 +70,16 @@ class _VoiceInputWidgetState extends State<VoiceInputWidget>
                     shape: BoxShape.circle,
                     color:
                         widget.isRecording
-                            ? AppColors.primaryColor
-                            : AppColors.primaryColor.withOpacity(0.1),
-                    border: Border.all(color: AppColors.primaryColor, width: 2),
+                            ? AppColors.primary700
+                            : AppColors.primary700.withOpacity(0.1),
+                    border: Border.all(color: AppColors.primary700, width: 2),
                   ),
                   child: Icon(
                     widget.isRecording ? Icons.stop : Icons.mic,
                     color:
                         widget.isRecording
                             ? Colors.white
-                            : AppColors.primaryColor,
+                            : AppColors.primary700,
                     size: 20,
                   ),
                 ),
