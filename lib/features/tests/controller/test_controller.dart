@@ -4,7 +4,7 @@ import 'package:ausa/common/model/test_error.dart';
 import 'package:ausa/common/enums/test_error_type.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:ausa/features/tests/constants/test_definitions.dart';
+import 'package:ausa/constants/test_definitions.dart';
 import 'package:ausa/features/tests/model/test_session.dart';
 import 'package:ausa/features/tests/model/test_result.dart';
 import 'package:ausa/features/tests/model/test_prerequisites.dart';

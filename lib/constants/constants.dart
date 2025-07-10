@@ -12,4 +12,4 @@ export 'color.dart';
 export 'gradients.dart';
 
 // Test constants
-export 'tests.dart';
+export 'test_definitions.dart';
