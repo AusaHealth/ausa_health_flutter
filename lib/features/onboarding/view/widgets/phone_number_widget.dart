@@ -81,7 +81,7 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              PrimaryButton(
+              AusaButton(
                 borderRadius: 60,
                 onPressed: () {
                   controller.completeStep(OnboardingStep.phone);

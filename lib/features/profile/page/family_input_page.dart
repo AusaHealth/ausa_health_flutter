@@ -201,7 +201,7 @@ class _FamilyInputPageState extends State<FamilyInputPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  PrimaryButton(
+                  AusaButton(
                     width: 100,
                     borderRadius: 60,
                     onPressed: () {

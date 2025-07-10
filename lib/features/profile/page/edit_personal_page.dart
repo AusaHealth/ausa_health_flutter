@@ -174,7 +174,7 @@ class _EditPersonalPageState extends State<EditPersonalPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  PrimaryButton(
+                  AusaButton(
                     width: 100,
                     borderRadius: 60,
                     onPressed: () {

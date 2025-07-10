@@ -167,9 +167,8 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
 
             right: 32,
             child: Center(
-              child: PrimaryButton(
-                width: 180,
-                borderRadius: 60,
+              child: AusaButton(
+                text: 'Proceed',
                 onPressed: () {
                   if (!controller.isOtpValid) {
                     Get.snackbar('Error', 'Please enter a valid OTP');
@@ -179,7 +178,6 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                   controller.completeStep(OnboardingStep.otp);
                   controller.goToStep(OnboardingStep.terms);
                 },
-                text: 'Proceed',
               ),
             ),
           ),

@@ -116,7 +116,7 @@ class TermsConditionPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 24),
-                          PrimaryButton(
+                          AusaButton(
                             width: 130,
                             borderRadius: 60,
                             onPressed: () {

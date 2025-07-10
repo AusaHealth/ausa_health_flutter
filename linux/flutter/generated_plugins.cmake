@@ -3,11 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
   audioplayers_linux
-=======
   smart_auth
->>>>>>> profile
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

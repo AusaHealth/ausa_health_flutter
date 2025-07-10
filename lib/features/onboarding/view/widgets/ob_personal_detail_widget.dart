@@ -113,7 +113,7 @@ class ObPersonalDetailWidget extends StatelessWidget {
         Expanded(child: SizedBox()),
         Align(
           alignment: Alignment.bottomRight,
-          child: PrimaryButton(
+          child: AusaButton(
             width: 130,
             borderRadius: 60,
             onPressed: () {

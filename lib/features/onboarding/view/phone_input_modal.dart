@@ -67,7 +67,7 @@ class _PhoneNumberInputModalState extends State<PhoneNumberInputModal> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  PrimaryButton(
+                  AusaButton(
                     borderRadius: 60,
                     onPressed: () {
                       Get.offAll(() => OnboardingWrapper());

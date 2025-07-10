@@ -165,7 +165,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              PrimaryButton(
+              AusaButton(
                 width: 180,
                 borderRadius: 60,
                 onPressed: () {
