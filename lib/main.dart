@@ -1,5 +1,6 @@
 import 'package:ausa/di.dart';
 import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
+import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/features/settings/page/setting_page.dart';
 import 'package:ausa/constants/dimensions.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,7 @@ class MyApp extends StatelessWidget {
         name: '/not-found',
         page: () => const AppointmentSchedulingPage(),
       ),
-      home: SettingsPage(),
+      home: OnboardingWrapper(),
     );
   }
 }

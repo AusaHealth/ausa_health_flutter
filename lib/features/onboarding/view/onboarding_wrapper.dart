@@ -6,6 +6,7 @@ import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/dimensions.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_lang_selection_widget.dart';
+import 'package:ausa/features/onboarding/view/widgets/ob_personal_detail_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_terms_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_wifi_selection_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/otp_verification_widget.dart';
@@ -123,8 +124,11 @@ class OnboardingWrapper extends StatelessWidget {
                                   return PhoneNumberWidget();
                                 case OnboardingStep.otp:
                                   return OtpVerificationWidget();
+                                case OnboardingStep.personalDetails:
+                                  return ObPersonalDetailWidget();
                                 case OnboardingStep.terms:
                                   return OnboardingTermsWidget();
+
                                 default:
                                   return Container();
                               }
@@ -173,6 +177,12 @@ class OnboardingStepList extends StatelessWidget {
         'image': AppImages.phoneSelected,
         'step': OnboardingStep.phone,
         'unselectedImage': AppImages.phoneUnSelected,
+      },
+      {
+        'label': 'Personal Details',
+        'image': AppImages.personalDetails,
+        'step': OnboardingStep.personalDetails,
+        'unselectedImage': AppImages.personalDetails,
       },
       {
         'label': 'Terms',

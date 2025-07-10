@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 /// Enum representing each onboarding step.
-enum OnboardingStep { language, wifi, phone, otp, terms }
+enum OnboardingStep { language, wifi, phone, otp, personalDetails, terms }
 
 /// Controller to manage onboarding state and navigation.
 class OnboardingController extends GetxController {
-  var currentStep = OnboardingStep.language.obs;
+  var currentStep = OnboardingStep.personalDetails.obs;
   var completedSteps = <OnboardingStep>{}.obs;
 
   final phoneController = TextEditingController().obs;
@@ -81,4 +82,83 @@ class OnboardingController extends GetxController {
     otpFocusNode.dispose();
     super.onClose();
   }
+
+  // personal Details controller
+
+  final firstNameController = TextEditingController().obs;
+  final lastNameController = TextEditingController().obs;
+  final nickNameController = TextEditingController().obs;
+  final emailIdController = TextEditingController().obs;
+  final birthDateController = TextEditingController().obs;
+  final ageController = TextEditingController().obs;
+  final heightController = TextEditingController().obs;
+  final weightController = TextEditingController().obs;
+  final genderController = TextEditingController().obs;
+
+  // void setupKeyboardListeners(void Function() onFocusChange) {
+  //   shortNameFocus.addListener(() => _handleFocusChange(onFocusChange));
+  //   fullNameFocus.addListener(() => _handleFocusChange(onFocusChange));
+  //   relationshipFocus.addListener(() => _handleFocusChange(onFocusChange));
+  //   phoneFocus.addListener(() => _handleFocusChange(onFocusChange));
+  //   emailFocus.addListener(() => _handleFocusChange(onFocusChange));
+  //   addressFocus.addListener(() => _handleFocusChange(onFocusChange));
+  // }
+
+  // // Call this in dispose of EditContactPage
+  // void removeKeyboardListeners(void Function() onFocusChange) {
+  //   shortNameFocus.removeListener(() => _handleFocusChange(onFocusChange));
+  //   fullNameFocus.removeListener(() => _handleFocusChange(onFocusChange));
+  //   relationshipFocus.removeListener(() => _handleFocusChange(onFocusChange));
+  //   phoneFocus.removeListener(() => _handleFocusChange(onFocusChange));
+  //   emailFocus.removeListener(() => _handleFocusChange(onFocusChange));
+  //   addressFocus.removeListener(() => _handleFocusChange(onFocusChange));
+  // }
+
+  // void _handleFocusChange(void Function() onFocusChange) {
+  //   if (shortNameFocus.hasFocus) {
+  //     keyboardType.value = VirtualKeyboardType.Alphanumeric;
+  //     _lastFocusedField = 'shortName';
+  //   } else if (emailFocus.hasFocus) {
+  //     keyboardType.value = VirtualKeyboardType.Alphanumeric;
+  //     _lastFocusedField = 'email';
+  //   } else if (addressFocus.hasFocus) {
+  //     keyboardType.value = VirtualKeyboardType.Alphanumeric;
+  //     _lastFocusedField = 'address';
+  //   } else if (fullNameFocus.hasFocus) {
+  //     keyboardType.value = VirtualKeyboardType.Alphanumeric;
+  //     _lastFocusedField = 'fullName';
+  //   }
+  //   if (relationshipFocus.hasFocus) {
+  //     keyboardType.value = VirtualKeyboardType.Alphanumeric;
+  //     _lastFocusedField = 'relationship';
+  //   }
+  //   if (phoneFocus.hasFocus) {
+  //     keyboardType.value = VirtualKeyboardType.Numeric;
+  //     _lastFocusedField = 'phone';
+  //   }
+
+  //   onFocusChange();
+  // }
+
+  // TextEditingController get currentController {
+  //   switch (_lastFocusedField) {
+  //     case 'shortName':
+  //       return shortNameController;
+  //     case 'fullName':
+  //       return fullNameController;
+  //     case 'relationship':
+  //       return relationshipController;
+  //     case 'phone':
+  //       return phoneController;
+  //     case 'email':
+  //       return emailController;
+  //     case 'address':
+  //       return addressController;
+  //     default:
+  //       return addressController;
+  //   }
+  // }
+
+  // // Get the current keyboard type (reactive)
+  // VirtualKeyboardType get currentKeyboardType => keyboardType.value;
 }

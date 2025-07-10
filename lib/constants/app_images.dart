@@ -25,6 +25,9 @@ class AppImages {
       'assets/icons/onboarding/terms_unselected.png';
   static const String done = 'assets/icons/onboarding/done.png';
 
+  static const String personalDetails =
+      'assets/icons/onboarding/personal_details.png';
+
   static const String wifi = 'assets/icons/setting_icon/wifi.png';
   static const String swifiSelected =
       'assets/icons/setting_icon/wifi_selected.png';
