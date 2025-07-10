@@ -6,9 +6,10 @@ plugins {
 }
 
 android {
+  
     namespace = "health.ausa.ausa"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "26.1.10909125"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -136,23 +136,3 @@ class AppIcons {
 
 /// Icon size enum for standardized icon sizing
 enum IconSize { small, medium, large, xl, doubleXl }
-
-class ProfileIcons {
-  static const String _basePath = 'assets/icons/profile_icons/';
-
-  static const String profileUnselected = '${_basePath}profile_unselected.png';
-  static const String profileSelected = '${_basePath}profile_selected.png';
-  static const String conditionUnselected =
-      '${_basePath}condition_unselected.png';
-  static const String conditionSelected = '${_basePath}condition_selected.png';
-  static const String careUnselected = '${_basePath}care_unselected.png';
-  static const String careSelected = '${_basePath}care_selected.png';
-  static const String familySelected = '${_basePath}family_selected.png';
-  static const String familyUnselected = '${_basePath}family_unselected.png';
-  static const String ausaContentSelected =
-      '${_basePath}ausa_content_selected.png';
-  static const String ausaContentUnselected =
-      '${_basePath}ausa_content_unselected.png';
-
-  static const String ausaLogo = '${_basePath}ausa_logo.png';
-}

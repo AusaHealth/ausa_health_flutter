@@ -5,12 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Set full screen mode
-  SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.immersiveSticky,
-    overlays: [],
+  // DependencyInject().init();
+  runApp(
+    Container(
+      alignment: Alignment.center,
+      color: Colors.grey[200],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 375, maxHeight: 812),
+        child: MyApp(),
+      ),
+    ),
   );
 
   runApp(MyApp());
@@ -22,8 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Ausa Health',
       debugShowCheckedModeBanner: false,
+      title: 'Ausa Health',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(

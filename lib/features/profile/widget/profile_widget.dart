@@ -1,7 +1,22 @@
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/profile/page/edit_contact_page.dart';
+import 'package:ausa/features/profile/page/edit_personal_page.dart';
+import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
+
+  @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  bool showPersonal = true;
 
   @override
   Widget build(BuildContext context) {
@@ -12,133 +27,86 @@ class ProfileWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(32),
           child: Image.asset(
             'assets/images/profile.png',
-            width: 280,
-            height: 280,
+            width: 500,
+            height: 500,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(width: 32),
-        // Profile Details Card
+        SizedBox(width: AppSpacing.lg),
+
+        // Profile Details Card with Gradient Background
         Expanded(
-          child: Stack(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Blue gradient shadow
-              Positioned(
-                right: 0,
-                bottom: 0,
-                left: 40,
-                top: 40,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [Color(0xFF0049F5), Color(0x000049F5)],
-                      radius: 1.2,
-                      center: Alignment.bottomRight,
-                    ),
-                  ),
+              SizedBox(
+                width: Get.width * 0.28,
+                child: HorizontalTabBar(
+                  items: ['Personal', 'Contact'],
+                  selectedIndex: showPersonal ? 0 : 1,
+                  onSelected:
+                      (index) => setState(() => showPersonal = index == 0),
                 ),
               ),
-              // Card with content
-              Container(
-                margin: const EdgeInsets.only(top: 8, left: 0),
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(32),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(height: AppSpacing.lg),
+
+              Expanded(
+                child: Stack(
                   children: [
-                    // Tab Bar
                     Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFE0B2),
-                        borderRadius: BorderRadius.circular(32),
+                      padding: EdgeInsets.only(
+                        left: AppSpacing.xl4,
+                        right: AppSpacing.xl7,
+                        top: AppSpacing.xl5,
+                        bottom: AppSpacing.md,
                       ),
-                      child: Row(
-                        children: [
-                          _ProfileTabButton(
-                            label: 'Personal',
-                            selected: true,
-                            onTap: () {},
-                          ),
-                          _ProfileTabButton(
-                            label: 'Contact',
-                            selected: false,
-                            onTap: () {},
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.04),
+                            blurRadius: 16,
+                            offset: const Offset(0, 4),
                           ),
                         ],
                       ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Details
+                          if (showPersonal)
+                            _PersonalDetails()
+                          else
+                            _ContactDetails(),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 24),
-                    // Details Row
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Left column
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              _ProfileDetail(
-                                label: 'Name',
-                                value: 'Lucy O.',
-                                bold: true,
+                    Positioned(
+                      right: 40,
+                      top: 32,
+                      child: InkWell(
+                        onTap: () {
+                          if (showPersonal) {
+                            Get.to(() => EditPersonalPage());
+                          } else {
+                            Get.to(() => EditContactPage());
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit, color: Colors.blue, size: 16),
+                            SizedBox(width: 8),
+                            Text(
+                              'Edit',
+                              style: AppTypography.callout(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w500,
                               ),
-                              _ProfileDetail(label: 'Age', value: '67'),
-                              _ProfileDetail(
-                                label: 'Height',
-                                value: '5\'8\"',
-                                bold: true,
-                              ),
-                              _ProfileDetail(
-                                label: 'BMI',
-                                value: '26.8',
-                                color: Color(0xFF2196F3),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        // Right column
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              _ProfileDetail(
-                                label: 'Birthday',
-                                value: 'July 23, 1980',
-                                bold: true,
-                              ),
-                              _ProfileDetail(label: 'Gender', value: 'F'),
-                              _ProfileDetail(
-                                label: 'Weight',
-                                value: '176 lbs',
-                                bold: true,
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Edit button
-                        IconButton(
-                          icon: Icon(Icons.edit, color: Color(0xFF2196F3)),
-                          onPressed: () {},
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Edit',
-                          style: TextStyle(
-                            color: Color(0xFF2196F3),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -151,6 +119,7 @@ class ProfileWidget extends StatelessWidget {
   }
 }
 
+// Tab Button
 class _ProfileTabButton extends StatelessWidget {
   final String label;
   final bool selected;
@@ -168,7 +137,7 @@ class _ProfileTabButton extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
           color: selected ? const Color(0xFFFFA726) : Colors.transparent,
           borderRadius: BorderRadius.circular(32),
@@ -186,39 +155,140 @@ class _ProfileTabButton extends StatelessWidget {
   }
 }
 
+// Personal Details Card
+class _PersonalDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _ProfileDetail(label: 'Name', value: 'Lucy O.'),
+
+              _ProfileDetail(label: 'Age', value: '67'),
+
+              _ProfileDetail(label: 'Height', value: '5\'8\"'),
+
+              _ProfileDetail(label: 'BMI', value: '26.8'),
+            ],
+          ),
+        ),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _ProfileDetail(label: 'Birthday', value: 'July 23, 1980'),
+              _ProfileDetail(label: 'Gender', value: 'F'),
+              _ProfileDetail(label: 'Weight', value: '176 lbs'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Contact Details Card
+class _ContactDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _ContactDetail(label: 'Phone', value: '+1 555-123-4567'),
+              SizedBox(height: 32),
+              _ContactDetail(
+                label: 'Address',
+                value: '123 Maplewood Lane\nSpringfield, IL 62704',
+              ),
+            ],
+          ),
+        ),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _ContactDetail(label: 'Email', value: 'olucy@gmail.com'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Profile Detail (Personal)
 class _ProfileDetail extends StatelessWidget {
   final String label;
   final String value;
-  final bool bold;
-  final Color? color;
 
-  const _ProfileDetail({
-    required this.label,
-    required this.value,
-    this.bold = false,
-    this.color,
-  });
+  const _ProfileDetail({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: [
-          Text(
-            '$label ',
-            style: const TextStyle(color: Colors.black54, fontSize: 16),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: AppTypography.callout(
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ).copyWith(color: Color(0xff1C1C1C), fontSize: 14),
+        ),
+        SizedBox(height: AppSpacing.lg),
+        Text(
+          value,
+          style: AppTypography.body(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
           ),
-          Text(
-            value,
-            style: TextStyle(
-              color: color ?? Colors.black,
-              fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-              fontSize: 16,
-            ),
+        ),
+        SizedBox(height: AppSpacing.xl3),
+      ],
+    );
+  }
+}
+
+// Contact Detail
+class _ContactDetail extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _ContactDetail({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: AppTypography.callout(
+            color: Colors.black,
+            fontWeight: FontWeight.w300,
+          ).copyWith(color: Color(0xff1C1C1C)),
+        ),
+        SizedBox(height: AppSpacing.lg),
+
+        Text(
+          value,
+          style: AppTypography.body(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: AppSpacing.xl),
+      ],
     );
   }
 }

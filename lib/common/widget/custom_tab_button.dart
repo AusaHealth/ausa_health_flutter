@@ -1,4 +1,5 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class CustomTabButton extends StatelessWidget {
@@ -23,7 +24,7 @@ class CustomTabButton extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           gradient:
               selected
@@ -60,14 +61,16 @@ class CustomTabButton extends StatelessWidget {
               width: 28,
               height: 28,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: selected ? Colors.white : Colors.black,
-              ),
+
+              style:
+                  selected
+                      ? AppTypography.body(
+                        color: Colors.white,
+                      ).copyWith(fontSize: 18)
+                      : AppTypography.body(color: Colors.black),
             ),
           ],
         ),

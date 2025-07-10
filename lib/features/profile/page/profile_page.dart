@@ -1,11 +1,19 @@
 import 'package:ausa/common/widget/app_icons.dart';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
+import 'package:ausa/common/widget/custom_header.dart';
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/features/profile/page/ausa_connect.dart';
+import 'package:ausa/features/profile/page/care_page.dart';
+import 'package:ausa/features/profile/page/condition_page.dart';
+
+import 'package:ausa/features/profile/page/family_page.dart';
 import 'package:ausa/features/profile/widget/profile_tabs.dart';
 import 'package:ausa/features/profile/widget/profile_widget.dart';
-import 'package:ausa/features/settings/controller/wifi_controller.dart';
-import 'package:ausa/features/settings/widget/settings_header.dart';
-import 'package:ausa/features/settings/widget/wifi_password_modal.dart';
-import 'package:ausa/features/settings/widget/wifi_popup.dart';
+import 'package:ausa/features/settings/page/setting_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +25,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final WifiController controller = Get.put(WifiController());
   int selectedTab = 0;
   @override
   Widget build(BuildContext context) {
@@ -29,96 +36,75 @@ class _ProfilePageState extends State<ProfilePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SettingsHeader(),
-                const SizedBox(height: 8),
+                GestureDetector(
+                  child: const CustomHeader(),
+                  onTap: () {
+                    Get.to(() => SettingsPage());
+                  },
+                ),
+
+                SizedBox(height: AppSpacing.xl2),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CustomNav(title: 'Profile'),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: ProfileTabs(
-                              selectedIndex: selectedTab,
-                              onTabSelected:
-                                  (i) => setState(() => selectedTab = i),
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomNav(title: 'Your Profile'),
+                        SizedBox(height: AppSpacing.xl),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 52),
+                          child: ProfileTabs(
+                            selectedIndex: selectedTab,
+                            onTabSelected:
+                                (i) => setState(() => selectedTab = i),
                           ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, right: 24.0),
-                      child: Image.asset(
-                        ProfileIcons.ausaLogo,
-                        height: 150,
-                        width: 230,
-                      ),
+                    Image.asset(
+                      ProfileIcons.ausaLogo,
+                      height: 144,
+                      width: 144,
+                      fit: BoxFit.cover,
                     ),
                   ],
                 ),
 
+                SizedBox(height: 8),
                 Expanded(
-                  child:
-                      selectedTab == 0
-                          ? ProfileWidget()
-                          : Container(
-                            color: Colors.white,
-                            child: const Center(
-                              child: Text('Other tab content'),
-                            ),
-                          ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl3),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.mdLarge,
+                        vertical: AppSpacing.mdLarge,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                      ),
+                      child: Builder(
+                        builder: (context) {
+                          if (selectedTab == 0) {
+                            return ProfileWidget();
+                          } else if (selectedTab == 1) {
+                            return ConditionPage();
+                          } else if (selectedTab == 2) {
+                            return CarePage();
+                          } else if (selectedTab == 3) {
+                            return FamilyPage();
+                          } else if (selectedTab == 4) {
+                            return AusaConnect();
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ],
-            ),
-            // Password modal
-            Obx(
-              () =>
-                  controller.showPasswordSheet.value
-                      ? WifiPasswordModal(
-                        networkName:
-                            controller
-                                .networks[controller
-                                    .selectedNetworkIndex
-                                    .value!]
-                                .name,
-                        onSubmit: (password) {
-                          controller.submitPassword(password);
-                        },
-                        onClose: () {
-                          controller.showPasswordSheet.value = false;
-                        },
-                      )
-                      : const SizedBox.shrink(),
-            ),
-            // Connecting popup
-            Obx(
-              () =>
-                  controller.isConnecting.value
-                      ? WifiPopup(type: WifiPopupType.connecting)
-                      : const SizedBox.shrink(),
-            ),
-            // Connected popup
-            Obx(
-              () =>
-                  controller.showConnectedPopup.value
-                      ? WifiPopup(type: WifiPopupType.connected)
-                      : const SizedBox.shrink(),
-            ),
-            // Wrong password popup
-            Obx(
-              () =>
-                  controller.showWrongPasswordPopup.value
-                      ? WifiPopup(
-                        type: WifiPopupType.wrongPassword,
-                        onClose: controller.closeWrongPasswordPopup,
-                      )
-                      : const SizedBox.shrink(),
             ),
           ],
         ),

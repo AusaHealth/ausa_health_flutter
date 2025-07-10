@@ -1,5 +1,6 @@
-import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/common/widget/custom_tab_button.dart';
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/spacing.dart';
 
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class ProfileTabs extends StatelessWidget {
     ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 8),
       child: Row(
         children: List.generate(tabs.length, (i) {
           final tab = tabs[i];
