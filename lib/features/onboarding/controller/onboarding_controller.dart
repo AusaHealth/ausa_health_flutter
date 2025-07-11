@@ -7,7 +7,7 @@ enum OnboardingStep { language, wifi, phone, otp, personalDetails, terms }
 
 /// Controller to manage onboarding state and navigation.
 class OnboardingController extends GetxController {
-  var currentStep = OnboardingStep.personalDetails.obs;
+  var currentStep = OnboardingStep.language.obs;
   var completedSteps = <OnboardingStep>{}.obs;
 
   final phoneController = TextEditingController().obs;

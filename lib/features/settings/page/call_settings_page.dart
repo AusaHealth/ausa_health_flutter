@@ -1,3 +1,6 @@
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:get/get.dart';
@@ -17,21 +20,19 @@ class _CallSettingsPageState extends State<CallSettingsPage> {
   Widget _sectionHeader(String text) {
     return Text(
       text,
-      style: AppTypography.callout(
-        color: const Color(0xFFB0B0B0), // grey
-      ).copyWith(fontSize: 16),
+      style: AppTypography.bodyRegular(color: AppColors.textlightColor),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
 
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(AppRadius.xl3),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -45,7 +46,6 @@ class _CallSettingsPageState extends State<CallSettingsPage> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            const SizedBox(height: 24),
             _sectionHeader('Privacy'),
             const SizedBox(height: 8),
             Obx(

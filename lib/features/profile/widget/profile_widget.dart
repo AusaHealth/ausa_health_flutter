@@ -23,24 +23,23 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(32),
-          child: Image.asset(
-            'assets/images/profile.png',
-            width: 500,
-            height: 500,
-            fit: BoxFit.cover,
+        Expanded(
+          flex: 1,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: Image.asset('assets/images/profile.png', fit: BoxFit.fill),
           ),
         ),
         SizedBox(width: AppSpacing.lg),
 
         // Profile Details Card with Gradient Background
         Expanded(
+          flex: 1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: Get.width * 0.28,
+                width: Get.width * 0.22,
                 child: HorizontalTabBar(
                   items: ['Personal', 'Contact'],
                   selectedIndex: showPersonal ? 0 : 1,
@@ -48,8 +47,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       (index) => setState(() => showPersonal = index == 0),
                 ),
               ),
-              SizedBox(height: AppSpacing.lg),
 
+              SizedBox(height: AppSpacing.smMedium),
               Expanded(
                 child: Stack(
                   children: [
@@ -57,7 +56,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       padding: EdgeInsets.only(
                         left: AppSpacing.xl4,
                         right: AppSpacing.xl7,
-                        top: AppSpacing.xl5,
+                        top: AppSpacing.xl2,
                         bottom: AppSpacing.md,
                       ),
                       decoration: BoxDecoration(
@@ -84,7 +83,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     ),
                     Positioned(
                       right: 40,
-                      top: 32,
+                      top: 20,
                       child: InkWell(
                         onTap: () {
                           if (showPersonal) {
@@ -202,10 +201,10 @@ class _ContactDetails extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              _ContactDetail(label: 'Phone', value: '+1 555-123-4567'),
-              SizedBox(height: 32),
-              _ContactDetail(
+            children: [
+              const _ProfileDetail(label: 'Phone', value: '+1 555-123-4567'),
+              SizedBox(height: AppSpacing.xl),
+              const _ProfileDetail(
                 label: 'Address',
                 value: '123 Maplewood Lane\nSpringfield, IL 62704',
               ),
@@ -217,7 +216,7 @@ class _ContactDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              _ContactDetail(label: 'Email', value: 'olucy@gmail.com'),
+              _ProfileDetail(label: 'Email', value: 'olucy@gmail.com'),
             ],
           ),
         ),
@@ -243,49 +242,14 @@ class _ProfileDetail extends StatelessWidget {
           style: AppTypography.callout(
             color: Colors.black,
             fontWeight: FontWeight.w400,
-          ).copyWith(color: Color(0xff1C1C1C), fontSize: 14),
+          ).copyWith(fontSize: 11),
         ),
-        SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.md),
         Text(
           value,
           style: AppTypography.body(
-            color: Colors.black,
             fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: AppSpacing.xl3),
-      ],
-    );
-  }
-}
-
-// Contact Detail
-class _ContactDetail extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _ContactDetail({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: AppTypography.callout(
-            color: Colors.black,
-            fontWeight: FontWeight.w300,
-          ).copyWith(color: Color(0xff1C1C1C)),
-        ),
-        SizedBox(height: AppSpacing.lg),
-
-        Text(
-          value,
-          style: AppTypography.body(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
+          ).copyWith(fontSize: 14),
         ),
         SizedBox(height: AppSpacing.xl),
       ],

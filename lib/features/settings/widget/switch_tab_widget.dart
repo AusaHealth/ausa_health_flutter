@@ -1,3 +1,4 @@
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -16,13 +17,7 @@ class SwitchTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          title,
-          style: AppTypography.body(
-            color: const Color(0xFF111827),
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        Text(title, style: AppTypography.bodyRegular()),
         SizedBox(width: 24),
         Expanded(
           child: Container(
@@ -39,7 +34,8 @@ class SwitchTabWidget extends StatelessWidget {
           child: Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xFF1673FF),
+            activeColor: AppColors.white,
+            activeTrackColor: AppColors.primary500,
             trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
             inactiveTrackColor: const Color(0xFFE9E9E9),
             inactiveThumbColor: Colors.white,

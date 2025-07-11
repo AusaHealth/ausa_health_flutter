@@ -1,3 +1,4 @@
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class SettingsNetworkTile extends StatelessWidget {
@@ -29,19 +30,15 @@ class SettingsNetworkTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        decoration: BoxDecoration(
-          color: selected ? selectedBg : normalBg,
-        ),
+        // margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        // decoration: BoxDecoration(color: selected ? selectedBg : normalBg),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 networkName,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                style: AppTypography.bodyRegular(
                   color: selected ? selectedText : normalText,
                 ),
               ),

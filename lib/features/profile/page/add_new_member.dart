@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/app_images.dart';
@@ -17,7 +18,6 @@ class AddNewMember extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<FamilyController>();
     return Scaffold(
-      backgroundColor: const Color(0xffE6E2DC).withOpacity(0.2),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: SafeArea(
@@ -33,13 +33,14 @@ class AddNewMember extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: Container(
-                  margin: EdgeInsets.all(AppSpacing.xl2),
-                  padding: EdgeInsets.all(AppSpacing.xl2),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(AppRadius.xl3),
-                  ),
+                child: AppMainContainer(
+                  backgroundColor: const Color(0xffE6E2DC).withOpacity(0.2),
+                  // margin: EdgeInsets.all(AppSpacing.xl2),
+                  // padding: EdgeInsets.all(AppSpacing.xl2),
+                  // decoration: BoxDecoration(
+                  //   color: Colors.grey.shade100,
+                  //   borderRadius: BorderRadius.circular(AppRadius.xl3),
+                  // ),
                   child: Row(
                     children: [
                       Expanded(
@@ -56,26 +57,28 @@ class AddNewMember extends StatelessWidget {
 
                             children: [
                               // Avatar container
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(() => AddPhotoPage());
-                                },
-                                child: Container(
-                                  height: 369,
-                                  width: 400,
-                                  padding: EdgeInsets.all(AppSpacing.smMedium),
-
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFC2EFFF),
-                                    borderRadius: BorderRadius.circular(
-                                      AppRadius.xl3,
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => AddPhotoPage());
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                      AppSpacing.smMedium,
                                     ),
-                                  ),
-                                  child: Center(
-                                    child: Image.asset(
-                                      AppImages.addPhoto,
-                                      height: 200,
-                                      width: 200,
+
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFC2EFFF),
+                                      borderRadius: BorderRadius.circular(
+                                        AppRadius.xl3,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Image.asset(
+                                        AppImages.addPhoto,
+                                        height: 200,
+                                        width: 200,
+                                      ),
                                     ),
                                   ),
                                 ),

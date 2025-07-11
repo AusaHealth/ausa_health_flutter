@@ -23,9 +23,9 @@ class ObPersonalDetailWidget extends StatelessWidget {
             color: AppColors.bodyTextLightColor,
           ).copyWith(fontSize: 20, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.md),
         Text('Let’s this device to your name.', style: AppTypography.callout()),
-        SizedBox(height: AppSpacing.xl4),
+        SizedBox(height: AppSpacing.xl),
         Row(
           children: [
             Expanded(
@@ -117,7 +117,8 @@ class ObPersonalDetailWidget extends StatelessWidget {
             width: 130,
             borderRadius: 60,
             onPressed: () {
-              // Accept logic
+              controller.completeStep(OnboardingStep.personalDetails);
+              controller.goToStep(OnboardingStep.terms);
             },
             text: 'Proceed',
           ),

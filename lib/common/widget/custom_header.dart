@@ -10,19 +10,15 @@ class CustomHeader extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
-        vertical: AppSpacing.lg,
-      ),
+      ).copyWith(top: AppSpacing.sm),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Image.asset(AppImages.appBarBluetooth, height: 32, width: 32),
+          Image.asset(AppImages.appBarBluetooth, height: 24, width: 24),
           SizedBox(width: AppSpacing.xl2),
-
-          Image.asset(AppImages.appBarWifi, height: 32, width: 32),
-
+          Image.asset(AppImages.appBarWifi, height: 24, width: 24),
           SizedBox(width: AppSpacing.xl2),
-
-          Image.asset(AppImages.appBarBattery, height: 32, width: 32),
+          Image.asset(AppImages.appBarBattery, height: 24, width: 24),
           SizedBox(width: AppSpacing.xl2),
         ],
       ),

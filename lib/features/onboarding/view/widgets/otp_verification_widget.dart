@@ -49,9 +49,9 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
           children: [
             Text(
               'Phone Number',
-              style: AppTypography.body(
+              style: AppTypography.bodyBold(
                 color: AppColors.bodyTextLightColor,
-              ).copyWith(fontWeight: FontWeight.w600),
+              ),
             ),
             TextButton.icon(
               onPressed: () {
@@ -60,9 +60,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
               icon: Icon(Icons.apps, color: Color(0xFF3CB2FF)),
               label: Text(
                 'Choose another number',
-                style: AppTypography.body(
-                  color: Color(0xFF3CB2FF),
-                ).copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                style: AppTypography.bodyMedium(color: Color(0xFF3CB2FF)),
               ),
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white.withOpacity(0.7),
@@ -81,9 +79,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
         Obx(() {
           return Text(
             'Enter code sent to ${controller.phoneController.value.text}',
-            style: AppTypography.title2(
-              color: AppColors.bodyTextColor,
-            ).copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+            style: AppTypography.calloutMedium(color: AppColors.bodyTextColor),
           );
         }),
 
@@ -169,14 +165,8 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                 width: 180,
                 borderRadius: 60,
                 onPressed: () {
-                  // if (!controller.isOtpValid) {
-                  //   Get.snackbar('Error', 'Please enter a valid OTP');
-                  //   return;
-                  // }
-
-                  Get.to(() => OnboardingWrapper());
                   controller.completeStep(OnboardingStep.otp);
-                  controller.goToStep(OnboardingStep.terms);
+                  controller.goToStep(OnboardingStep.personalDetails);
                 },
                 text: 'Proceed',
               ),

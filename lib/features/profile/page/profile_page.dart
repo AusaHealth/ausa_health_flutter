@@ -1,4 +1,6 @@
+import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_icons.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/common/widget/custom_header.dart';
@@ -36,24 +38,20 @@ class _ProfilePageState extends State<ProfilePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  child: const CustomHeader(),
-                  onTap: () {
-                    Get.to(() => SettingsPage());
-                  },
-                ),
-
-                SizedBox(height: AppSpacing.xl2),
+                const CustomHeader(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CustomNav(title: 'Your Profile'),
-                        SizedBox(height: AppSpacing.xl),
+                        const AppBackHeader(title: 'Your profile'),
+                        // const CustomNav(title: 'Your profile'),
+                        SizedBox(height: AppSpacing.md),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 52),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xl,
+                          ).copyWith(left: AppSpacing.xl5),
                           child: ProfileTabs(
                             selectedIndex: selectedTab,
                             onTabSelected:
@@ -62,47 +60,38 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ProfileIcons.ausaLogo,
-                      height: 144,
-                      width: 144,
-                      fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Image.asset(
+                        ProfileIcons.ausaLogo,
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ],
                 ),
 
-                SizedBox(height: 8),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl3),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppSpacing.mdLarge,
-                        vertical: AppSpacing.mdLarge,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(AppRadius.xl3),
-                      ),
-                      child: Builder(
-                        builder: (context) {
-                          if (selectedTab == 0) {
-                            return ProfileWidget();
-                          } else if (selectedTab == 1) {
-                            return ConditionPage();
-                          } else if (selectedTab == 2) {
-                            return CarePage();
-                          } else if (selectedTab == 3) {
-                            return FamilyPage();
-                          } else if (selectedTab == 4) {
-                            return AusaConnect();
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        },
-                      ),
-                    ),
+                SizedBox(height: AppSpacing.smMedium),
+                AppMainContainer(
+                  child: Builder(
+                    builder: (context) {
+                      if (selectedTab == 0) {
+                        return ProfileWidget();
+                      } else if (selectedTab == 1) {
+                        return ConditionPage();
+                      } else if (selectedTab == 2) {
+                        return CarePage();
+                      } else if (selectedTab == 3) {
+                        return FamilyPage();
+                      } else if (selectedTab == 4) {
+                        return AusaConnect();
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
                   ),
+                  // ),
                 ),
               ],
             ),

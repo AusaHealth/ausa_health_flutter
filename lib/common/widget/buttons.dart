@@ -268,19 +268,13 @@ class _AusaButtonState extends State<AusaButton> with TickerProviderStateMixin {
     return ButtonStyle(
       backgroundColor:
           widget.backgroundColor ??
-          (isSelected
-              ? AppColors.primary700
-              : AppColors.primary25),
+          (isSelected ? AppColors.primary700 : AppColors.primary25),
       textColor:
           widget.textColor ??
-          (isSelected
-              ? AppColors.primary25
-              : AppColors.primary700),
+          (isSelected ? AppColors.primary25 : AppColors.primary700),
       borderColor:
           widget.borderColor ??
-          (isSelected
-              ? AppColors.primary700
-              : AppColors.primary25),
+          (isSelected ? AppColors.primary700 : AppColors.primary25),
       borderWidth: widget.borderWidth ?? 2,
       borderRadius: widget.borderRadius ?? 32,
       elevation: widget.elevation ?? 0,

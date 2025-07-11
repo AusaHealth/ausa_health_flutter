@@ -1,7 +1,10 @@
+import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_icons.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
@@ -70,32 +73,28 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Stack(
           children: [
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.to(OnboardingWrapper());
-                  },
-                  child: const CustomHeader(),
-                ),
-
-                SizedBox(height: AppSpacing.xl2),
-
+                const CustomHeader(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CustomNav(title: 'Settings'),
-                        SizedBox(height: AppSpacing.xl),
+                        // const CustomNav(title: 'Settings'),
+                        const AppBackHeader(title: 'Settings'),
+                        SizedBox(height: AppSpacing.md),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xl,
+                          ).copyWith(left: AppSpacing.xl5),
                           child: SettingsTabs(
                             selectedIndex: selectedTab,
                             onTabSelected:
@@ -104,53 +103,40 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ProfileIcons.ausaLogo,
-                      height: 144,
-                      width: 144,
-                      fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Image.asset(
+                        ProfileIcons.ausaLogo,
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-
                 SizedBox(height: 8),
 
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl3),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppSpacing.mdLarge,
-                        vertical: AppSpacing.mdLarge,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(AppRadius.xl3),
-                      ),
-                      child: Builder(
-                        builder: (context) {
-                          if (selectedTab == 0) {
-                            return SettingsNetworkList(
-                              networks: controller.networks,
-                              selectedIndex:
-                                  controller.selectedNetworkIndex.value,
-                              onTileTap: controller.onNetworkTap,
-                            );
-                          } else if (selectedTab == 1) {
-                            return DisplaySettingPage();
-                          } else if (selectedTab == 2) {
-                            return BluetoothPage();
-                          } else if (selectedTab == 3) {
-                            return NotificationSettingsPage();
-                          } else if (selectedTab == 4) {
-                            return CallSettingsPage();
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        },
-                      ),
-                    ),
+                AppMainContainer(
+                  child: Builder(
+                    builder: (context) {
+                      if (selectedTab == 0) {
+                        return SettingsNetworkList(
+                          networks: controller.networks,
+                          selectedIndex: controller.selectedNetworkIndex.value,
+                          onTileTap: controller.onNetworkTap,
+                        );
+                      } else if (selectedTab == 1) {
+                        return DisplaySettingPage();
+                      } else if (selectedTab == 2) {
+                        return BluetoothPage();
+                      } else if (selectedTab == 3) {
+                        return NotificationSettingsPage();
+                      } else if (selectedTab == 4) {
+                        return CallSettingsPage();
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
                   ),
                 ),
               ],

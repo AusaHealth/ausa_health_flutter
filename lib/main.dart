@@ -5,19 +5,20 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() {
-  // DependencyInject().init();
   runApp(
     Container(
       alignment: Alignment.center,
-      color: Colors.grey[200],
+      color: Colors.grey,
+      height: 693,
+      width: 1108,
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 375, maxHeight: 812),
+        constraints: BoxConstraints(maxWidth: 1108, maxHeight: 693),
         child: MyApp(),
       ),
     ),
   );
 
-  runApp(MyApp());
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

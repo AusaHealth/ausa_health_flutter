@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/home/page/home_page.dart';
 import 'package:ausa/features/onboarding/view/terms_condtion_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -97,6 +98,7 @@ class OnboardingTermsWidget extends StatelessWidget {
               width: 130,
               borderRadius: 60,
               onPressed: () {
+                Get.offAll(() => HomePage());
                 // Accept logic
               },
               text: 'Accept',

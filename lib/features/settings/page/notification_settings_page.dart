@@ -1,3 +1,6 @@
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:get/get.dart';
@@ -18,9 +21,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   Widget _sectionHeader(String text) {
     return Text(
       text,
-      style: AppTypography.callout(
-        color: const Color(0xFFB0B0B0),
-      ).copyWith(fontSize: 16),
+      style: AppTypography.bodyRegular(color: AppColors.textlightColor),
     );
   }
 
@@ -32,7 +33,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
         Expanded(
           flex: 1,
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color(0xFF0B1836),
@@ -43,12 +44,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                bottomLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
+              borderRadius: BorderRadius.circular(AppRadius.xl3),
             ),
             child: Padding(
               padding: const EdgeInsets.all(32.0),
@@ -58,18 +54,13 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 children: [
                   Text(
                     'Smart Prompt',
-                    style: AppTypography.title2(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTypography.bodyMedium(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'To alert you when its needed.',
-                    style: AppTypography.callout(
-                      color: Colors.white.withOpacity(0.8),
-                    ),
+                    style: AppTypography.bodyRegular(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
@@ -96,7 +87,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: AppSpacing.xl),
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
@@ -145,7 +136,6 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
               child: ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
-                  const SizedBox(height: 24),
                   _sectionHeader('Or enter code below to authenticate'),
                   SizedBox(height: 8),
                   Obx(

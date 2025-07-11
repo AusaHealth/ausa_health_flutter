@@ -24,17 +24,12 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
       children: [
         Text(
           'Phone Number',
-          style: AppTypography.body(
-            color: AppColors.bodyTextLightColor,
-          ).copyWith(fontWeight: FontWeight.w600, fontSize: 24),
+          style: AppTypography.bodyBold(color: AppColors.bodyTextLightColor),
         ),
         const SizedBox(height: 8),
         Text(
           'Your phone number is required for verification',
-          style: AppTypography.callout(
-            color: AppColors.bodyTextColor,
-            fontWeight: FontWeight.w500,
-          ),
+          style: AppTypography.calloutMedium(color: AppColors.bodyTextColor),
         ),
         SizedBox(height: 20),
         Obx(() {
@@ -82,6 +77,9 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               AusaButton(
+                backgroundColor: AppColors.primary700,
+                textColor: Colors.white,
+
                 borderRadius: 60,
                 onPressed: () {
                   controller.completeStep(OnboardingStep.phone);
