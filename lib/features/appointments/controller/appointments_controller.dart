@@ -22,7 +22,7 @@ class AppointmentsController extends GetxController {
     loadAppointments();
   }
 
-  // Event-based state updates (no direct state changes)
+  // Event-based state updates 
   void _updateIsLoading(bool loading) => _isLoading.value = loading;
   void _updateAppointments(List<Appointment> appointments) =>
       _appointments.value = appointments;
