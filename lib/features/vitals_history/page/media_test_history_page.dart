@@ -23,7 +23,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(MediaTestHistoryController());
+    controller = Get.find<MediaTestHistoryController>();
   }
 
   @override

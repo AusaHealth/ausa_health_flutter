@@ -50,6 +50,7 @@ dependencies:
   virtual_keyboard_multi_language: ^1.1.2
   pinput: ^3.0.1
   screen_brightness: ^2.1.5
+  rive: ^0.13.20
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,7 @@ flutter:
     - assets/sample/
     - assets/icons/setting_icon/
     - assets/icons/onboarding/
+    - assets/rive/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

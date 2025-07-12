@@ -66,7 +66,7 @@ class TeleconsultationController extends GetxController {
 
   // Test integration methods
   void navigateToTests() {
-    _testController ??= Get.put(TestController());
+    _testController ??= Get.find<TestController>();
     _testController!.navigateToTestSelection();
   }
 

@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 class TestSelectionPage extends StatelessWidget {
   TestSelectionPage({super.key});
 
-  final TestController controller = Get.put(TestController());
+  final TestController controller = Get.find<TestController>();
 
   @override
   Widget build(BuildContext context) {

@@ -29,7 +29,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(VitalsHistoryController());
+    controller = Get.find<VitalsHistoryController>();
     _itemPositionsListener.itemPositions.addListener(_handleScroll);
   }
 

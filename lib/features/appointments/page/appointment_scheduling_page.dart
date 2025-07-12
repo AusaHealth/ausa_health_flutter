@@ -19,7 +19,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AppointmentSchedulingController());
+    final controller = Get.find<AppointmentSchedulingController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),

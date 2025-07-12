@@ -30,7 +30,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final WifiController controller = Get.put(WifiController());
+  final WifiController controller = Get.find<WifiController>();
 
   int selectedTab = 0;
 

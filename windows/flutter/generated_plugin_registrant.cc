@@ -7,12 +7,15 @@
 #include "generated_plugin_registrant.h"
 
 #include <audioplayers_windows/audioplayers_windows_plugin.h>
+#include <rive_common/rive_plugin.h>
 #include <screen_brightness_windows/screen_brightness_windows_plugin.h>
 #include <smart_auth/smart_auth_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   AudioplayersWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("AudioplayersWindowsPlugin"));
+  RivePluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("RivePlugin"));
   ScreenBrightnessWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ScreenBrightnessWindowsPlugin"));
   SmartAuthPluginRegisterWithRegistrar(
