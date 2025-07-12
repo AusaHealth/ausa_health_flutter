@@ -1,3 +1,4 @@
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +30,8 @@ class SettingsNetworkTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        // margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        // decoration: BoxDecoration(color: selected ? selectedBg : normalBg),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
         child: Row(
           children: [
             Expanded(

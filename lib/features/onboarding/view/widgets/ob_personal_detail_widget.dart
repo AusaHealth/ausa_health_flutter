@@ -14,116 +14,125 @@ class ObPersonalDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<OnboardingController>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Personal Details',
-          style: AppTypography.body(
-            color: AppColors.bodyTextLightColor,
-          ).copyWith(fontSize: 20, fontWeight: FontWeight.w600),
-        ),
-        SizedBox(height: AppSpacing.md),
-        Text('Let’s this device to your name.', style: AppTypography.callout()),
-        SizedBox(height: AppSpacing.xl),
-        Row(
-          children: [
-            Expanded(
-              child: _buildTextField(
-                controller: controller.firstNameController.value,
-                label: 'First name*',
-                placeholder: 'Enter',
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: _buildTextField(
-                controller: controller.lastNameController.value,
-                label: 'Last name*',
-                placeholder: 'Enter',
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: _buildTextField(
-                controller: controller.nickNameController.value,
-                label: 'Nickname',
-                placeholder: 'Enter',
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.xl4),
-        Row(
-          children: [
-            Expanded(
-              child: _buildTextField(
-                controller: controller.emailIdController.value,
-                label: 'Email ID',
-                placeholder: 'Enter',
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: _buildTextField(
-                controller: controller.birthDateController.value,
-                label: 'Birthday',
-                placeholder: 'Enter',
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: _buildTextField(
-                controller: controller.ageController.value,
-                label: 'Age',
-                placeholder: 'Auto',
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.xl4),
-        Row(
-          children: [
-            Expanded(
-              child: _buildTextField(
-                controller: controller.heightController.value,
-                label: 'Height',
-                placeholder: 'Enter',
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: _buildTextField(
-                controller: controller.weightController.value,
-                label: 'Weight',
-                placeholder: 'Enter',
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: _buildTextField(
-                controller: controller.genderController.value,
-                label: 'Gender',
-                placeholder: 'Enter',
-              ),
-            ),
-          ],
-        ),
-        // SizedBox(height: AppSpacing.xl7),
-        Expanded(child: SizedBox()),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: AusaButton(
-            width: 130,
-            borderRadius: 60,
-            onPressed: () {
-              controller.completeStep(OnboardingStep.personalDetails);
-              controller.goToStep(OnboardingStep.terms);
-            },
-            text: 'Proceed',
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl6,
+        vertical: AppSpacing.xl4,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Personal Details',
+            style: AppTypography.body(
+              color: AppColors.bodyTextLightColor,
+            ).copyWith(fontSize: 20, fontWeight: FontWeight.w600),
           ),
-        ),
-      ],
+          SizedBox(height: AppSpacing.md),
+          Text(
+            'Let’s this device to your name.',
+            style: AppTypography.callout(),
+          ),
+          SizedBox(height: AppSpacing.xl),
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.firstNameController.value,
+                  label: 'First name*',
+                  placeholder: 'Enter',
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.lastNameController.value,
+                  label: 'Last name*',
+                  placeholder: 'Enter',
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.nickNameController.value,
+                  label: 'Nickname',
+                  placeholder: 'Enter',
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.xl4),
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.emailIdController.value,
+                  label: 'Email ID',
+                  placeholder: 'Enter',
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.birthDateController.value,
+                  label: 'Birthday',
+                  placeholder: 'Enter',
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.ageController.value,
+                  label: 'Age',
+                  placeholder: 'Auto',
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.xl4),
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.heightController.value,
+                  label: 'Height',
+                  placeholder: 'Enter',
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.weightController.value,
+                  label: 'Weight',
+                  placeholder: 'Enter',
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: _buildTextField(
+                  controller: controller.genderController.value,
+                  label: 'Gender',
+                  placeholder: 'Enter',
+                ),
+              ),
+            ],
+          ),
+          // SizedBox(height: AppSpacing.xl7),
+          Expanded(child: SizedBox()),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: AusaButton(
+              width: 130,
+              borderRadius: 60,
+              onPressed: () {
+                controller.completeStep(OnboardingStep.personalDetails);
+                controller.goToStep(OnboardingStep.terms);
+              },
+              text: 'Proceed',
+            ),
+          ),
+        ],
+      ),
     );
   }
 
