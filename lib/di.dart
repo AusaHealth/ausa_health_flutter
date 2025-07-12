@@ -36,14 +36,11 @@ class AppBinding extends Bindings {
     Get.put(ProfileController());
     Get.put(FamilyController());
     Get.put(AppointmentSchedulingController());
-
-
-    // Register lazy-loaded controllers
-    Get.lazyPut(() => MealTimesController());
-    Get.lazyPut(() => HealthScheduleController());
-    Get.lazyPut(() => VitalsHistoryController());
-    Get.lazyPut(() => MediaTestHistoryController());
-    Get.lazyPut(() => WifiController());
+    Get.put(HealthScheduleController());
+    Get.put(MealTimesController());
+    Get.put(VitalsHistoryController());
+    Get.put(MediaTestHistoryController());
+    Get.put(WifiController());
 
     // Note: AppointmentEditController is created on-demand with parameters in the page
     // Other specialized controllers are created when their respective pages are accessed

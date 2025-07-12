@@ -43,6 +43,4 @@ abstract class AppRoutes {
 
   static const String notFound = '/not-found';
   static const String onboarding = '/onboarding';
-  static const String settings = '/settings';
-  static const String profile = '/profile';
 }

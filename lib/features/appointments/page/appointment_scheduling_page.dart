@@ -182,7 +182,21 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 const SizedBox(height: 24),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Obx(() => _buildFinishButton(controller)),
+                  child: Obx(
+                    () => AusaButton(
+                      text: 'Schedule Appointment',
+                      onPressed:
+                          controller.canFinish
+                              ? controller.scheduleAppointment
+                              : null,
+                      isLoading: controller.isLoading,
+                      isEnabled: controller.canFinish,
+                      variant: ButtonVariant.primary,
+                      width: double.infinity,
+                      height: 56,
+                      borderRadius: 32,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -254,6 +268,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   isEnabled: controller.selectedTimeSlot != null,
                   variant: ButtonVariant.primary,
                   width: double.infinity,
+                  icon: Icons.arrow_forward,
+                  iconOnLeft: false,
                   height: 56,
                   borderRadius: 32,
                 ),
@@ -447,22 +463,24 @@ class AppointmentSchedulingPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Center(child: Obx(() => _buildFinishButton(controller))),
+          Center(
+            child: Obx(
+              () => AusaButton(
+                text: 'Finish',
+                onPressed:
+                    controller.canFinish
+                        ? controller.scheduleAppointment
+                        : null,
+                isLoading: controller.isLoading,
+                isEnabled: controller.canFinish,
+                variant: ButtonVariant.primary,
+                height: 56,
+                borderRadius: 32,
+              ),
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildFinishButton(AppointmentSchedulingController controller) {
-    return AusaButton(
-      text: 'Schedule Appointment',
-      onPressed: controller.canFinish ? controller.scheduleAppointment : null,
-      isLoading: controller.isLoading,
-      isEnabled: controller.canFinish,
-      variant: ButtonVariant.primary,
-      width: double.infinity,
-      height: 56,
-      borderRadius: 32,
     );
   }
 
