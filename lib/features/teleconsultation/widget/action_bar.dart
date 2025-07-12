@@ -3,10 +3,10 @@ import 'package:ausa/common/widget/auto_hide_container.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/trapezium_clippers.dart';
 import 'package:ausa/constants/gradients.dart';
-import 'package:ausa/constants/tests.dart';
 import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -51,7 +51,8 @@ class ActionBarPillAndIncompleteTests extends StatelessWidget {
       children: [
         if (showIncompleteTests)
           Obx(() {
-            if (controller.hasIncompleteTests) {
+            final testController = Get.find<TestController>();
+            if (testController.hasSelectedTests) {
               return IncompleteTests(controller: controller);
             }
             return SizedBox.shrink();
@@ -71,6 +72,8 @@ class IncompleteTests extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final testController = Get.find<TestController>();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,10 +83,7 @@ class IncompleteTests extends StatelessWidget {
           topInset: 4,
           horizontalPadding: 24,
           verticalPadding: 8,
-          child: Text(
-            'Tests Requested',
-            style: AppTypography.body(),
-          ),
+          child: Text('Tests Requested', style: AppTypography.body()),
         ),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -92,40 +92,46 @@ class IncompleteTests extends StatelessWidget {
             gradient: Gradients.gradient1,
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-          child: Column(
-            children: [
-              Row(
-                spacing: 8,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (var test in controller.tests) TestItem(test: test),
-                ],
-              ),
+          child: Obx(
+            () => Column(
+              children: [
+                Row(
+                  spacing: 8,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    for (var test in testController.selectedTests)
+                      TestItem(test: test),
+                  ],
+                ),
 
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AusaButton(
-                    text: 'Decline',
-                    onPressed: () {
-                      controller.declineTests();
-                    },
-                    color: Colors.white,
-                    textColor: Colors.orange,
-                  ),
-                  const SizedBox(width: 16),
-                  AusaButton(
-                    text: 'Take Tests',
-                    onPressed: () {
-                      controller.startTests();
-                    },
-                  ),
-                ],
-              ),
-            ],
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AusaButton(
+                      text: 'Decline',
+                      onPressed: () {
+                        testController.clearSelection();
+                      },
+                      variant: ButtonVariant.secondary,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.orange,
+                      borderColor: Colors.orange,
+                    ),
+                    const SizedBox(width: 16),
+                    AusaButton(
+                      text: 'Take Tests',
+                      onPressed: () {
+                        testController.startTestSession();
+                      },
+                      variant: ButtonVariant.primary,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         ClipPath(
@@ -163,10 +169,7 @@ class TestItem extends StatelessWidget {
             children: [
               Image.asset(test.image, width: 120, height: 80),
               const SizedBox(height: 8),
-              Text(
-                test.name,
-                style: AppTypography.callout(),
-              ),
+              Text(test.name, style: AppTypography.callout()),
             ],
           ),
         ),
@@ -235,22 +238,8 @@ class ActionBarPill extends StatelessWidget {
                   iconWidget: AppIcons.testIcon(size: IconSize.medium),
                   selected: false,
                   onTap: () {
-                    if (controller.tests.isEmpty) {
-                      controller.setTests([
-                        tests[TestType.bloodPressure]!,
-                        tests[TestType.heartSignal]!,
-                      ]);
-                      snackbarController.show(
-                        context: context,
-                        leading: Icon(Icons.error, color: Colors.white),
-                        body: Text(
-                          'No tests available',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    } else {
-                      // TODO: Implement test action
-                    }
+                    final testController = Get.find<TestController>();
+                    testController.navigateToTestSelection();
                   },
                   padding: iconPadding,
                 ),
