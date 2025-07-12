@@ -71,7 +71,7 @@ class _ConditionPageState extends State<ConditionPage> {
                 ),
                 SizedBox(height: AppSpacing.xl),
                 Container(
-                  height: 285,
+                  height: 130,
                   padding: EdgeInsets.symmetric(
                     vertical: AppSpacing.lg,
                     horizontal: AppSpacing.lg,

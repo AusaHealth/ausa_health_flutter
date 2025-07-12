@@ -21,105 +21,94 @@ class OnboardingWrapper extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          // borderRadius: BorderRadius.circular(AppRadius.xl3),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [Color(0xFF6B9FFF), Color(0xFF7ED3D1), Color(0xFFA8E6CF)],
           ),
         ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              CustomHeader(),
-              SizedBox(height: AppSpacing.xl3),
-              AppMainContainer(
-                backgroundColor: Colors.white,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 24,
+        child: Column(
+          children: [
+            CustomHeader(),
+            SizedBox(height: AppSpacing.xl3),
+            AppMainContainer(
+              backgroundColor: Colors.white,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppRadius.xl3),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 16,
+                            offset: Offset(0, 4),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 16,
-                              offset: Offset(0, 4),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Obx(
+                            () => OnboardingStepList(
+                              currentStep: controller.currentStep.value,
+                              completedSteps: controller.completedSteps,
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            Obx(
-                              () => OnboardingStepList(
-                                currentStep: controller.currentStep.value,
-                                completedSteps: controller.completedSteps,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(width: AppSpacing.lg),
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 24,
+                  ),
+                  SizedBox(width: AppSpacing.lg),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppRadius.xl3),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFF8FBFD), Color(0xFFB6F3F3)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 16,
+                            offset: Offset(0, 4),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 16,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Obx(() {
-                          switch (controller.currentStep.value) {
-                            case OnboardingStep.language:
-                              return OnboardingLanguagePage();
-                            case OnboardingStep.wifi:
-                              return OnboardingWifiPage();
-                            case OnboardingStep.phone:
-                              return PhoneNumberWidget();
-                            case OnboardingStep.otp:
-                              return OtpVerificationWidget();
-                            case OnboardingStep.personalDetails:
-                              return ObPersonalDetailWidget();
-                            case OnboardingStep.terms:
-                              return OnboardingTermsWidget();
+                        ],
+                      ),
+                      child: Obx(() {
+                        switch (controller.currentStep.value) {
+                          case OnboardingStep.language:
+                            return OnboardingLanguagePage();
+                          case OnboardingStep.wifi:
+                            return OnboardingWifiPage();
+                          case OnboardingStep.phone:
+                            return PhoneNumberWidget();
+                          case OnboardingStep.otp:
+                            return OtpVerificationWidget();
+                          case OnboardingStep.personalDetails:
+                            return ObPersonalDetailWidget();
+                          case OnboardingStep.terms:
+                            return OnboardingTermsWidget();
 
-                            default:
-                              return Container();
-                          }
-                        }),
-                      ),
+                          default:
+                            return Container();
+                        }
+                      }),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -176,7 +165,10 @@ class OnboardingStepList extends StatelessWidget {
       // },
     ];
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl6,
+        vertical: AppSpacing.xl4,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -216,7 +208,7 @@ class OnboardingStepList extends StatelessWidget {
                     ),
                     Text(
                       steps[i]['label'] as String,
-                      style: AppTypography.calloutRegular(
+                      style: AppTypography.bodyMedium(
                         color: AppColors.textColor,
                       ),
                     ),
@@ -227,7 +219,7 @@ class OnboardingStepList extends StatelessWidget {
             if (i < steps.length - 1)
               Container(
                 margin: const EdgeInsets.symmetric(
-                  vertical: 4,
+                  vertical: 2,
                   horizontal: 10,
                 ).copyWith(left: 20),
                 width: 2,

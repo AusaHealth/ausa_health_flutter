@@ -56,8 +56,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       padding: EdgeInsets.only(
                         left: AppSpacing.xl4,
                         right: AppSpacing.xl7,
-                        top: AppSpacing.xl2,
-                        bottom: AppSpacing.md,
+                        top: AppSpacing.xl,
+                        bottom: AppSpacing.sm,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white,
