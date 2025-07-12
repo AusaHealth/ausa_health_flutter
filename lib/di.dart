@@ -28,15 +28,17 @@ class AppBinding extends Bindings {
     Get.put(AppointmentsController(), permanent: true);
     Get.put(TestController(), permanent: true);
 
+
     // Register feature controllers
     Get.put(AuthController(), permanent: true);
     Get.put(OnboardingController());
     Get.put(SettingController());
     Get.put(ProfileController());
     Get.put(FamilyController());
+    Get.put(AppointmentSchedulingController());
+
 
     // Register lazy-loaded controllers
-    Get.lazyPut(() => AppointmentSchedulingController());
     Get.lazyPut(() => MealTimesController());
     Get.lazyPut(() => HealthScheduleController());
     Get.lazyPut(() => VitalsHistoryController());

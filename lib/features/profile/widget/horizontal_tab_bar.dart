@@ -1,3 +1,5 @@
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalTabBar extends StatelessWidget {
@@ -25,7 +27,7 @@ class HorizontalTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -49,20 +51,19 @@ class HorizontalTabBar extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
                     color: isSelected ? selectedColor : unselectedColor,
-                    borderRadius: BorderRadius.circular(32),
+                    borderRadius: BorderRadius.circular(AppRadius.xl3),
                   ),
                   child: Center(
                     child: Text(
                       items[index],
-                      style: TextStyle(
+                      style: AppTypography.callout(
                         color:
                             isSelected
                                 ? selectedTextColor
                                 : unselectedTextColor,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.w600,
-                        fontSize: 18,
                       ),
+
+                      // ),
                     ),
                   ),
                 ),

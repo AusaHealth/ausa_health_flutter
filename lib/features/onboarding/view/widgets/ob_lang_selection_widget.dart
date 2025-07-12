@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,12 +20,12 @@ class OnboardingLanguagePage extends StatelessWidget {
       children: [
         Text(
           'Language',
-          style: AppTypography.headline(color: AppColors.textColor),
+          style: AppTypography.bodyBold(color: AppColors.textColor),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.md),
         Text(
           'Choose the language familiar to you',
-          style: AppTypography.callout(color: AppColors.textlightColor),
+          style: AppTypography.calloutMedium(color: AppColors.textlightColor),
         ),
         const SizedBox(height: 32),
 
@@ -34,9 +38,11 @@ class OnboardingLanguagePage extends StatelessWidget {
               onTap: () {
                 controller.completeStep(OnboardingStep.language);
                 controller.goToStep(OnboardingStep.wifi);
+                // controller.completeStep(OnboardingStep.language);
+                // controller.goToStep(OnboardingStep.wifi);
               },
             ),
-            // const SizedBox(width: 24),
+
             LanguageCard(
               flagImage: AppImages.spainFlag,
               language: 'Español',
@@ -45,7 +51,7 @@ class OnboardingLanguagePage extends StatelessWidget {
                 controller.goToStep(OnboardingStep.wifi);
               },
             ),
-            // const SizedBox(width: 24),
+
             LanguageCard(
               flagImage: AppImages.chinaFlag,
               language: '中文',
@@ -59,7 +65,7 @@ class OnboardingLanguagePage extends StatelessWidget {
         const Spacer(),
         Center(
           child: Column(
-            children: const [
+            children: [
               CircleAvatar(
                 radius: 32,
                 backgroundColor: Color(0xFFEAF6FF),
@@ -73,6 +79,7 @@ class OnboardingLanguagePage extends StatelessWidget {
             ],
           ),
         ),
+
         const SizedBox(height: 32),
       ],
     );
@@ -84,11 +91,11 @@ class LanguageCard extends StatelessWidget {
   final String language;
   final VoidCallback onTap;
   const LanguageCard({
-    Key? key,
+    super.key,
     required this.flagImage,
     required this.language,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -103,9 +110,9 @@ class LanguageCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
-              blurRadius: 12,
-              offset: Offset(0, 4),
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: Offset(0, 20),
             ),
           ],
         ),
@@ -113,11 +120,19 @@ class LanguageCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(flagImage, width: 120, height: 100),
-
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Image.asset(
+                flagImage,
+                width: 90,
+                height: 90,
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(height: 8),
             Text(
               language,
-              style: AppTypography.body(color: AppColors.bodyTextColor),
+              style: AppTypography.bodyMedium(color: AppColors.bodyTextColor),
             ),
           ],
         ),

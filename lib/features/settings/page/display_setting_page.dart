@@ -1,3 +1,6 @@
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +20,12 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
   Widget build(BuildContext context) {
     final settingController = Get.find<SettingController>();
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
 
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(AppRadius.xl3),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -43,10 +46,9 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                   Obx(
                     () => Text(
                       '${(settingController.brightness.value * 100).round()} %',
-                      style: AppTypography.title1(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w400,
-                      ).copyWith(fontSize: 48),
+                      style: AppTypography.largeTitleRegular(
+                        color: AppColors.primary500,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -61,12 +63,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text(
-                    'Brightness',
-                    style: AppTypography.body(
-                      color: Colors.black,
-                    ).copyWith(fontSize: 24),
-                  ),
+                  Text('Brightness', style: AppTypography.bodyBold()),
                 ],
               ),
             ),
@@ -114,12 +111,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text(
-                    'Text Size',
-                    style: AppTypography.body(
-                      color: Colors.black,
-                    ).copyWith(fontSize: 24),
-                  ),
+                  Text('Text Size', style: AppTypography.bodyBold()),
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -108,6 +109,27 @@ class HomePage extends StatelessWidget {
                       icon: Icons.video_call,
                       color: Colors.pink,
                       onTap: () => Get.toNamed(AppRoutes.teleconsultation),
+                    ),
+                    _buildNavigationCard(
+                      title: 'Onboarding',
+                      subtitle: 'Page',
+                      icon: Icons.code,
+                      color: Colors.cyan,
+                      onTap: () => Get.toNamed(AppRoutes.onboarding),
+                    ),
+                    _buildNavigationCard(
+                      title: 'Settings',
+                      subtitle: 'Page',
+                      icon: Icons.settings,
+                      color: Colors.cyan,
+                      onTap: () => Get.toNamed(AppRoutes.settings),
+                    ),
+                    _buildNavigationCard(
+                      title: 'Profile',
+                      subtitle: 'Page',
+                      icon: Icons.person,
+                      color: Colors.cyan,
+                      onTap: () => Get.toNamed(AppRoutes.profile),
                     ),
                   ],
                 ),

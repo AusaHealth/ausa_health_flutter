@@ -4,6 +4,9 @@ import 'package:ausa/features/appointments/page/scheduled_appointments_page.dart
 import 'package:ausa/features/demo/page/demo_page.dart';
 import 'package:ausa/features/health_schedule/page/health_schedule_page.dart';
 import 'package:ausa/features/health_schedule/page/meal_times_page.dart';
+import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
+import 'package:ausa/features/profile/page/profile_page.dart';
+import 'package:ausa/features/settings/page/setting_page.dart';
 import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
 import 'package:ausa/features/vitals_history/page/media_test_history_page.dart';
 import 'package:ausa/features/teleconsultation/page/base_teleconsultation_page.dart';
@@ -47,6 +50,9 @@ abstract class AppPages {
   static const String initialRoute = AppRoutes.home;
 
   static final List<GetPage> pages = [
+    GetPage(name: AppRoutes.onboarding, page: () => OnboardingWrapper()),
+    GetPage(name: AppRoutes.settings, page: () => const SettingsPage()),
+    GetPage(name: AppRoutes.profile, page: () => const ProfilePage()),
     GetPage(name: AppRoutes.home, page: () => const HomePage()),
     GetPage(
       name: AppRoutes.demo,

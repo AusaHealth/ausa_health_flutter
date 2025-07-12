@@ -1,5 +1,7 @@
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class CarePage extends StatelessWidget {
@@ -27,23 +29,13 @@ class CarePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Care provider',
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            Text('Care provider', style: AppTypography.calloutRegular()),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Dr. John Doe, Endocrinologist',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTypography.bodyBold(),
             ),
+
             const SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,76 +43,43 @@ class CarePage extends StatelessWidget {
                 // Next availability
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'Next availability',
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style: AppTypography.calloutRegular(),
                     ),
                     SizedBox(height: 8),
-                    Text(
-                      'Today 3:00 PM',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('Today 3:00 PM', style: AppTypography.bodyBold()),
                   ],
                 ),
                 // Phone
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Phone',
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
-                    ),
+                  children: [
+                    Text('Phone', style: AppTypography.calloutRegular()),
                     SizedBox(height: 8),
-                    Text(
-                      '+1 555-123-4567',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('+1 555-123-4567', style: AppTypography.bodyBold()),
                   ],
                 ),
                 // Email
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Email',
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
-                    ),
+                  children: [
+                    Text('Email', style: AppTypography.calloutRegular()),
                     SizedBox(height: 8),
-                    Text(
-                      'johndoe@clinic.com',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('johndoe@clinic.com', style: AppTypography.bodyBold()),
                   ],
                 ),
                 // Address
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Address',
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
-                    ),
+                  children: [
+                    Text('Address', style: AppTypography.calloutRegular()),
+
                     SizedBox(height: 8),
                     Text(
                       '123 Main St, Los Angeles,\nCA, 90001',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTypography.bodyBold(),
                     ),
                   ],
                 ),

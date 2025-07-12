@@ -67,10 +67,8 @@ class CustomTabButton extends StatelessWidget {
 
               style:
                   selected
-                      ? AppTypography.body(
-                        color: Colors.white,
-                      ).copyWith(fontSize: 18)
-                      : AppTypography.body(color: Colors.black),
+                      ? AppTypography.bodySemibold(color: Colors.white)
+                      : AppTypography.bodyRegular(color: Colors.black),
             ),
           ],
         ),

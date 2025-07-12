@@ -177,6 +177,284 @@ class _AusaButtonState extends State<AusaButton>
 
   bool get _isButtonEnabled => widget.isEnabled && !widget.isLoading;
 
+  _ButtonStyle get _buttonStyle {
+    switch (widget.variant) {
+      case ButtonVariant.primary:
+        return _getPrimaryStyle();
+      case ButtonVariant.secondary:
+        return _getSecondaryStyle();
+      case ButtonVariant.tertiary:
+        return _getTertiaryStyle();
+      case ButtonVariant.selection:
+        return _getSelectionStyle();
+      case ButtonVariant.link:
+        return _getLinkStyle();
+      case ButtonVariant.icon:
+        return _getIconStyle();
+      case ButtonVariant.custom:
+      default:
+        return _getCustomStyle();
+    }
+  }
+
+  _ButtonStyle _getPrimaryStyle() {
+    return _ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? AppColors.primary700,
+      textColor: widget.textColor ?? Colors.white,
+      borderColor: widget.borderColor ?? AppColors.primary700,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 16,
+      elevation: widget.elevation ?? 2,
+    );
+  }
+
+  _ButtonStyle _getSecondaryStyle() {
+    return _ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.transparent,
+      textColor: widget.textColor ?? AppColors.primary700,
+      borderColor: widget.borderColor ?? AppColors.primary700,
+      borderWidth: widget.borderWidth ?? 1,
+      borderRadius: widget.borderRadius ?? 32,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  _ButtonStyle _getTertiaryStyle() {
+    return _ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.transparent,
+      textColor: widget.textColor ?? Colors.grey[600] ?? Colors.grey,
+      borderColor: widget.borderColor ?? Colors.grey[300] ?? Colors.grey,
+      borderWidth: widget.borderWidth ?? 1,
+      borderRadius: widget.borderRadius ?? 32,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  _ButtonStyle _getSelectionStyle() {
+    final bool isSelected = _currentSelection;
+    return _ButtonStyle(
+      backgroundColor:
+          widget.backgroundColor ??
+          (isSelected ? AppColors.primary700 : AppColors.primary25),
+      textColor:
+          widget.textColor ??
+          (isSelected ? AppColors.primary25 : AppColors.primary700),
+      borderColor:
+          widget.borderColor ??
+          (isSelected ? AppColors.primary700 : AppColors.primary25),
+      borderWidth: widget.borderWidth ?? 2,
+      borderRadius: widget.borderRadius ?? 32,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  _ButtonStyle _getLinkStyle() {
+    return _ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.transparent,
+      textColor: widget.textColor ?? AppColors.primary700,
+      borderColor: widget.borderColor ?? Colors.transparent,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 0,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  _ButtonStyle _getIconStyle() {
+    return _ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? Colors.grey[100]!,
+      textColor: widget.textColor ?? AppColors.primary700,
+      borderColor: widget.borderColor ?? Colors.transparent,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 24,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  _ButtonStyle _getCustomStyle() {
+    return _ButtonStyle(
+      backgroundColor: widget.backgroundColor ?? AppColors.primary700,
+      textColor: widget.textColor ?? Colors.white,
+      borderColor: widget.borderColor ?? Colors.transparent,
+      borderWidth: widget.borderWidth ?? 0,
+      borderRadius: widget.borderRadius ?? 16,
+      elevation: widget.elevation ?? 0,
+    );
+  }
+
+  Size get _buttonSize {
+    // For link variant, let it size naturally unless explicitly set
+    if (widget.variant == ButtonVariant.link) {
+      return Size(widget.width ?? 0, widget.height ?? 0);
+    }
+
+    // For icon variant, make it square by default
+    if (widget.variant == ButtonVariant.icon) {
+      switch (widget.size) {
+        case ButtonSize.extraSmall:
+          final size = widget.width ?? widget.height ?? 28;
+          return Size(size, size);
+        case ButtonSize.small:
+          final size = widget.width ?? widget.height ?? 36;
+          return Size(size, size);
+        case ButtonSize.medium:
+          final size = widget.width ?? widget.height ?? 48;
+          return Size(size, size);
+        case ButtonSize.large:
+          final size = widget.width ?? widget.height ?? 56;
+          return Size(size, size);
+        case ButtonSize.custom:
+        default:
+          final size = widget.width ?? widget.height ?? 48;
+          return Size(size, size);
+      }
+    }
+
+    switch (widget.size) {
+      case ButtonSize.extraSmall:
+        return Size(widget.width ?? 80, widget.height ?? 32);
+      case ButtonSize.small:
+        return Size(widget.width ?? 100, widget.height ?? 40);
+      case ButtonSize.medium:
+        return Size(widget.width ?? 150, widget.height ?? 48);
+      case ButtonSize.large:
+        return Size(widget.width ?? 200, widget.height ?? 56);
+      case ButtonSize.custom:
+      default:
+        return Size(widget.width ?? 150, widget.height ?? 48);
+    }
+  }
+
+  EdgeInsets get _buttonPadding {
+    // For link variant, use no padding unless explicitly set
+    if (widget.variant == ButtonVariant.link) {
+      return widget.padding ?? EdgeInsets.zero;
+    }
+
+    // For icon variant, use minimal padding to center the icon
+    if (widget.variant == ButtonVariant.icon) {
+      return widget.padding ?? const EdgeInsets.all(8);
+    }
+
+    switch (widget.size) {
+      case ButtonSize.extraSmall:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+      case ButtonSize.small:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+      case ButtonSize.medium:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
+      case ButtonSize.large:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 24, vertical: 16);
+      case ButtonSize.custom:
+      default:
+        return widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
+    }
+  }
+
+  double get _buttonFontSize {
+    switch (widget.size) {
+      case ButtonSize.extraSmall:
+        return widget.fontSize ?? 10;
+      case ButtonSize.small:
+        return widget.fontSize ?? 12;
+      case ButtonSize.medium:
+        return widget.fontSize ?? 14;
+      case ButtonSize.large:
+        return widget.fontSize ?? 16;
+      case ButtonSize.custom:
+      default:
+        return widget.fontSize ?? 14;
+    }
+  }
+
+  Widget _buildButtonContent() {
+    if (widget.child != null) {
+      return widget.child!;
+    }
+
+    if (widget.isLoading) {
+      return SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(_buttonStyle.textColor),
+        ),
+      );
+    }
+
+    final List<Widget> children = [];
+    final iconWidget =
+        widget.customIcon ??
+        (widget.icon != null
+            ? Icon(
+              widget.icon,
+              size: widget.iconSize ?? _buttonFontSize + 4,
+              color:
+                  widget.isEnabled
+                      ? widget.iconColor ?? _buttonStyle.textColor
+                      : Colors.grey[600]!,
+            )
+            : null);
+
+    if (iconWidget != null && widget.iconOnLeft) {
+      children.add(iconWidget);
+      if (widget.text.isNotEmpty) {
+        children.add(SizedBox(width: widget.iconSpacing ?? 8));
+      }
+    }
+
+    if (widget.text.isNotEmpty) {
+      children.add(
+        Flexible(
+          child: Text(
+            widget.text,
+            style:
+                widget.textStyle ??
+                TextStyle(
+                  color:
+                      widget.isEnabled
+                          ? _buttonStyle.textColor
+                          : Colors.grey[600]!,
+                  fontSize: _buttonFontSize,
+                  fontWeight: widget.fontWeight ?? FontWeight.w600,
+                  fontFamily: widget.fontFamily,
+                ),
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    if (iconWidget != null && !widget.iconOnLeft) {
+      if (widget.text.isNotEmpty) {
+        children.add(SizedBox(width: widget.iconSpacing ?? 8));
+      }
+      children.add(iconWidget);
+    }
+
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    if (children.length == 1) {
+      return children.first;
+    }
+
+    return Row(
+      mainAxisSize: widget.mainAxisSize ?? MainAxisSize.min,
+      mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
+      crossAxisAlignment:
+          widget.crossAxisAlignment ?? CrossAxisAlignment.center,
+      children: children,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final style = _getButtonStyle();
@@ -263,87 +541,6 @@ class _AusaButtonState extends State<AusaButton>
           ),
         );
       },
-    );
-  }
-
-  Widget _buildButtonContent() {
-    if (widget.child != null) return widget.child!;
-
-    if (widget.isLoading) {
-      return SizedBox(
-        width: 20,
-        height: 20,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            _getButtonStyle().textColor,
-          ),
-        ),
-      );
-    }
-
-    final iconWidget = _buildIconWidget();
-    final textWidget = _buildTextWidget();
-
-    if (iconWidget == null && textWidget == null)
-      return const SizedBox.shrink();
-    if (iconWidget == null) return textWidget!;
-    if (textWidget == null) return iconWidget;
-
-    return Row(
-      mainAxisSize: widget.mainAxisSize ?? MainAxisSize.min,
-      mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
-      crossAxisAlignment:
-          widget.crossAxisAlignment ?? CrossAxisAlignment.center,
-      children:
-          widget.iconOnLeft
-              ? [
-                iconWidget,
-                SizedBox(width: widget.iconSpacing ?? 8),
-                textWidget,
-              ]
-              : [
-                textWidget,
-                SizedBox(width: widget.iconSpacing ?? 8),
-                iconWidget,
-              ],
-    );
-  }
-
-  Widget? _buildIconWidget() {
-    if (widget.customIcon != null) return widget.customIcon;
-    if (widget.icon == null) return null;
-
-    return Icon(
-      widget.icon,
-      size: widget.iconSize ?? _getButtonFontSize() + 4,
-      color:
-          widget.isEnabled
-              ? widget.iconColor ?? _getButtonStyle().textColor
-              : Colors.grey[600]!,
-    );
-  }
-
-  Widget? _buildTextWidget() {
-    if (widget.text.isEmpty) return null;
-
-    return Flexible(
-      child: Text(
-        widget.text,
-        style:
-            widget.textStyle ??
-            TextStyle(
-              color:
-                  widget.isEnabled
-                      ? _getButtonStyle().textColor
-                      : Colors.grey[600]!,
-              fontSize: _getButtonFontSize(),
-              fontWeight: widget.fontWeight ?? FontWeight.w600,
-              fontFamily: widget.fontFamily,
-            ),
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.center,
-      ),
     );
   }
 

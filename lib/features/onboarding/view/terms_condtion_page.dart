@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/features/home/page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class TermsConditionPage extends StatelessWidget {
                 children: [
                   Text(
                     'Terms',
-                    style: AppTypography.headline(color: Colors.white),
+                    style: AppTypography.bodySemibold(color: Colors.white),
                   ),
                   IconButton(
                     onPressed: () {
@@ -121,6 +122,7 @@ class TermsConditionPage extends StatelessWidget {
                             borderRadius: 60,
                             onPressed: () {
                               // Accept logic
+                              Get.offAll(() => HomePage());
                             },
                             text: 'Accept',
                           ),

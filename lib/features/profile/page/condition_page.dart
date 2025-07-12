@@ -1,5 +1,6 @@
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -44,33 +45,21 @@ class _ConditionPageState extends State<ConditionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   'Diagnosed with',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: AppTypography.calloutRegular(color: Colors.black),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: AppSpacing.sm),
+                Text(
                   'Diabetes, heart condition, cholestrol',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTypography.bodyMedium(color: Colors.black),
                 ),
-                const SizedBox(height: 32),
-                const Text(
+                SizedBox(height: AppSpacing.xl),
+                Text(
                   'Last readings',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: AppTypography.body(color: Colors.black),
                 ),
-                const SizedBox(height: 8),
+
                 HorizontalTabBar(
                   items: tabItems,
                   selectedIndex: selectedTab,
@@ -80,18 +69,16 @@ class _ConditionPageState extends State<ConditionPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: AppSpacing.xl),
                 Container(
-                  height: 170,
-                  width: double.infinity,
-
+                  height: 285,
                   padding: EdgeInsets.symmetric(
-                    vertical: AppSpacing.xl2,
-                    horizontal: AppSpacing.xl,
+                    vertical: AppSpacing.lg,
+                    horizontal: AppSpacing.lg,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius: BorderRadius.circular(AppRadius.xl3),
                     border: Border.all(
                       color: const Color(0xFF1EA7FF),
                       width: 2,
@@ -106,7 +93,7 @@ class _ConditionPageState extends State<ConditionPage> {
                   ),
                   child: _buildReadingCard(),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: AppSpacing.xl),
               ],
             ),
           ),
@@ -122,22 +109,18 @@ class _ConditionPageState extends State<ConditionPage> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
+              children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'BP Systolic',
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style: AppTypography.body(color: Colors.black),
                     ),
                     SizedBox(height: 8),
                     Text(
                       '128 mmHg',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTypography.title2(color: Colors.black),
                     ),
                   ],
                 ),
@@ -146,16 +129,12 @@ class _ConditionPageState extends State<ConditionPage> {
                   children: [
                     Text(
                       'BP Diastolic',
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style: AppTypography.body(color: Colors.black),
                     ),
                     SizedBox(height: 8),
                     Text(
                       '95 mmHg',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTypography.title2(color: Colors.black),
                     ),
                   ],
                 ),
@@ -167,28 +146,28 @@ class _ConditionPageState extends State<ConditionPage> {
         return Center(
           child: Text(
             'ECG Reading',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: AppTypography.title2(color: Colors.black),
           ),
         );
       case 2: // Body temperature
         return Center(
           child: Text(
             'Body Temperature: 36.6°C',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: AppTypography.title2(color: Colors.black),
           ),
         );
       case 3: // SpO2 & Heart Rate
         return Center(
           child: Text(
             'SpO2: 98%  |  Heart Rate: 72 bpm',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: AppTypography.title2(color: Colors.black),
           ),
         );
       case 4: // Blood glucose
         return Center(
           child: Text(
             'Blood Glucose: 110 mg/dL',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: AppTypography.title2(color: Colors.black),
           ),
         );
       default:
