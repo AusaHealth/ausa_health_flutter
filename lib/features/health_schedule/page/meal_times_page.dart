@@ -203,7 +203,7 @@ class MealTimesPage extends StatelessWidget {
                           isSelected
                               ? Colors.white.withOpacity(0.8)
                               : Colors.black87,
-                      weight: AppTypographyWeight.regular,
+                      weight: AppTypographyWeight.medium,
                     ),
                   ),
                 ],

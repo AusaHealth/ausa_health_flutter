@@ -446,7 +446,7 @@ class ReadingCardWidget extends StatelessWidget {
               SizedBox(width: AppSpacing.xs),
               Text(
                 unit,
-                style: AppTypography.callout(
+                style: AppTypography.body(
                   color:
                       isHighlighted ? AppColors.primary700 : _getValueColor(),
                   weight: AppTypographyWeight.regular,

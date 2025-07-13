@@ -1,10 +1,12 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 // import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
@@ -43,77 +45,77 @@ class HomePage extends StatelessWidget {
                     _buildNavigationCard(
                       title: 'Appointments',
                       subtitle: 'Schedule',
-                      icon: Icons.calendar_month,
+                      iconPath: AusaIcons.calendar,
                       color: Colors.blue,
                       onTap: () => Get.toNamed(AppRoutes.appointmentSchedule),
                     ),
                     _buildNavigationCard(
                       title: 'Scheduled',
                       subtitle: 'Appointments',
-                      icon: Icons.event_available,
+                      iconPath: AusaIcons.calendarCheck01,
                       color: Colors.green,
                       onTap: () => Get.toNamed(AppRoutes.appointmentScheduled),
                     ),
                     _buildNavigationCard(
                       title: 'Health',
                       subtitle: 'Schedule',
-                      icon: Icons.schedule,
+                      iconPath: AusaIcons.clockCheck,
                       color: Colors.orange,
                       onTap: () => Get.toNamed(AppRoutes.healthSchedule),
                     ),
                     _buildNavigationCard(
                       title: 'Meal',
                       subtitle: 'Times',
-                      icon: Icons.restaurant,
+                      iconPath: AusaIcons.clock,
                       color: Colors.amber,
                       onTap: () => Get.toNamed(AppRoutes.mealTimes),
                     ),
                     _buildNavigationCard(
                       title: 'Vitals',
                       subtitle: 'History',
-                      icon: Icons.favorite,
+                      iconPath: AusaIcons.activityHeart,
                       color: Colors.red,
                       onTap: () => Get.toNamed(AppRoutes.vitalsHistory),
                     ),
                     _buildNavigationCard(
                       title: 'Media Test',
                       subtitle: 'History',
-                      icon: Icons.video_library,
+                      iconPath: AusaIcons.videoRecorder,
                       color: Colors.purple,
                       onTap: () => Get.toNamed(AppRoutes.mediaTestHistory),
                     ),
                     _buildNavigationCard(
                       title: 'Test',
                       subtitle: 'Selection',
-                      icon: Icons.quiz,
+                      iconPath: AusaIcons.clipboardCheck,
                       color: Colors.indigo,
                       onTap: () => Get.toNamed(AppRoutes.testSelection),
                     ),
                     _buildNavigationCard(
                       title: 'Settings',
                       subtitle: 'App Settings',
-                      icon: Icons.settings,
+                      iconPath: AusaIcons.settings01,
                       color: Colors.blueGrey,
                       onTap: () => Get.toNamed(AppRoutes.settings),
                     ),
                     _buildNavigationCard(
                       title: 'Profile',
                       subtitle: 'User Profile',
-                      icon: Icons.person,
+                      iconPath: AusaIcons.userCircle,
                       color: Colors.deepPurple,
                       onTap: () => Get.toNamed(AppRoutes.profile),
                     ),
                     // _buildNavigationCard(
                     //   title: 'Teleconsultation',
                     //   subtitle: 'Video Call',
-                    //   icon: Icons.video_call,
+                    //   iconPath: AusaIcons.phoneCall01,
                     //   color: Colors.pink,
                     //   onTap: () => Get.toNamed(AppRoutes.teleconsultation),
                     // ),
                     _buildNavigationCard(
                       title: 'Onboarding',
                       subtitle: 'Page',
-                      icon: Icons.code,
+                      iconPath: AusaIcons.arrowRight,
                       color: Colors.cyan,
                       onTap: () => Get.toNamed(AppRoutes.onboarding),
                     ),
@@ -130,7 +132,7 @@ class HomePage extends StatelessWidget {
   Widget _buildNavigationCard({
     required String title,
     required String subtitle,
-    required IconData icon,
+    required String iconPath,
     required Color color,
     required VoidCallback onTap,
   }) {
@@ -160,7 +162,18 @@ class HomePage extends StatelessWidget {
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: color, size: 24),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: SvgPicture.asset(
+                    iconPath,
+                    width: 24,
+                    height: 24,
+                    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                    placeholderBuilder:
+                        (context) =>
+                            Icon(Icons.widgets, size: 24, color: color),
+                  ),
+                ),
               ),
               SizedBox(height: AppSpacing.sm),
               Text(

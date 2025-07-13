@@ -25,7 +25,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                 children: [
                   // Left side - Image with orange background
                   Container(
-                    width: 250,
+                    width: 200,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -108,6 +108,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                 
                                 child: AusaButton(
                                   text: prerequisiteCheck.secondaryButtonText,
+                                    size: ButtonSize.lg,
                                   onPressed: () {
                                     // For blood glucose, secondary button "No" means they can proceed
                                     // For other tests, secondary button means "don't proceed" or "take later"
@@ -125,6 +126,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: AusaButton(
+                                         size: ButtonSize.lg,
                                   onPressed: () {
                                     // Return based on what the primary button means for this test
                                     Get.back(

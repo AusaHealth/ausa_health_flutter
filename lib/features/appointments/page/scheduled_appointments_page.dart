@@ -22,7 +22,18 @@ class ScheduledAppointmentsPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const AppBackHeader(title: 'Scheduled appointments'),
+            AppBackHeader(
+              title: 'Scheduled appointments',
+              actionButtons: [
+                AusaButton(
+                  text: 'New Appointment',
+                  onPressed: controller.navigateToScheduleAppointment,
+                  variant: ButtonVariant.secondary,
+                  borderColor: AppColors.white,
+                  leadingIcon: const Icon(Icons.calendar_month, size: 16, color: AppColors.primary700),
+                ),
+              ]
+              ),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading) {

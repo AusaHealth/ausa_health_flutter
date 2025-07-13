@@ -4,10 +4,13 @@ import '../../constants/constants.dart';
 
 enum ButtonVariant { primary, secondary, tertiary }
 
+enum ButtonSize { xs, s, md, lg }
+
 class AusaButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final ButtonVariant variant;
+  final ButtonSize size;
   final Color? backgroundColor;
   final Color? textColor;
   final Color? borderColor;
@@ -23,6 +26,7 @@ class AusaButton extends StatelessWidget {
     required this.text,
     this.onPressed,
     this.variant = ButtonVariant.primary,
+    this.size = ButtonSize.s,
     this.backgroundColor,
     this.textColor,
     this.borderColor,
@@ -37,6 +41,7 @@ class AusaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = _getButtonStyle();
+    final paddingConfig = _getPaddingConfig();
     final isButtonEnabled = isEnabled && !isLoading;
 
     return SizedBox(
@@ -57,8 +62,8 @@ class AusaButton extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.xl,
-              vertical: AppSpacing.md,
+              horizontal: paddingConfig.horizontal,
+              vertical: paddingConfig.vertical,
             ),
             decoration: BoxDecoration(
               color: isButtonEnabled ? style.backgroundColor : Colors.grey[300],
@@ -110,9 +115,8 @@ class AusaButton extends StatelessWidget {
 
     final textWidget = Text(
       text,
-      style: AppTypography.body(
+      style: _getTextStyle(
         color: isButtonEnabled ? style.textColor : Colors.grey[600],
-        weight: AppTypographyWeight.semibold,
       ),
       textAlign: TextAlign.center,
     );
@@ -130,6 +134,44 @@ class AusaButton extends StatelessWidget {
         if (trailingIcon != null) ...[const SizedBox(width: 8), trailingIcon!],
       ],
     );
+  }
+
+  TextStyle _getTextStyle({Color? color}) {
+    switch (size) {
+      case ButtonSize.xs:
+      case ButtonSize.s:
+        return AppTypography.callout(
+          color: color,
+          weight: AppTypographyWeight.medium,
+        );
+      case ButtonSize.md:
+      case ButtonSize.lg:
+        return AppTypography.body(
+          color: color,
+          weight: AppTypographyWeight.medium,
+        );
+    }
+  }
+
+  _ButtonPadding _getPaddingConfig() {
+    return switch (size) {
+      ButtonSize.xs => _ButtonPadding(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      ButtonSize.s => _ButtonPadding(
+        horizontal: AppSpacing.xl,
+        vertical: AppSpacing.md,
+      ),
+      ButtonSize.md => _ButtonPadding(
+        horizontal: AppSpacing.xl,
+        vertical: AppSpacing.md,
+      ),
+      ButtonSize.lg => _ButtonPadding(
+        horizontal: AppSpacing.xl4,
+        vertical: AppSpacing.xl,
+      ),
+    };
   }
 
   _ButtonStyle _getButtonStyle() {
@@ -163,4 +205,11 @@ class _ButtonStyle {
     required this.textColor,
     this.borderColor,
   });
+}
+
+class _ButtonPadding {
+  final double horizontal;
+  final double vertical;
+
+  const _ButtonPadding({required this.horizontal, required this.vertical});
 }

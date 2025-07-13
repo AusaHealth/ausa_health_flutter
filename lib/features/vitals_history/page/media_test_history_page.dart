@@ -36,20 +36,6 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
             AppBackHeader(
               title: 'Media',
               onBackPressed: () => Get.back(),
-              actionButtons: [
-                IconButton(
-                  icon: Icon(Icons.download, color: Colors.grey[600]),
-                  onPressed: () {
-                    // Add download functionality
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.share, color: Colors.grey[600]),
-                  onPressed: () {
-                    // Add share functionality
-                  },
-                ),
-              ],
             ),
             Obx(
               () => Padding(
