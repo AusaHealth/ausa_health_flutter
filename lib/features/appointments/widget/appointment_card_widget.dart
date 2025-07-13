@@ -1,4 +1,5 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,10 @@ class AppointmentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(36),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl3,
+        vertical: AppSpacing.xl4,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(52),
@@ -40,9 +44,9 @@ class AppointmentCardWidget extends StatelessWidget {
             children: [
               // Time display with icon
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg,
+                  vertical: AppSpacing.sm,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.primary700.withOpacity(0.08),
@@ -59,7 +63,7 @@ class AppointmentCardWidget extends StatelessWidget {
                     Text(
                       appointment.formattedTime,
                       style: AppTypography.body(
-                        fontWeight: FontWeight.w600,
+                        weight: AppTypographyWeight.medium,
                         color: AppColors.primary700,
                       ),
                     ),
@@ -93,8 +97,8 @@ class AppointmentCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     appointment.formattedDate,
-                    style: AppTypography.headline(
-                      fontWeight: FontWeight.w700,
+                    style: AppTypography.title2(
+                      weight: AppTypographyWeight.medium,
                       color: Colors.black,
                     ),
                   ),
@@ -107,14 +111,14 @@ class AppointmentCardWidget extends StatelessWidget {
               // Doctor info
               Text(
                 'with ${appointment.doctorName}',
-                style: AppTypography.headline(
+                style: AppTypography.body(
                   color: Colors.black,
-                  fontWeight: FontWeight.w500,
+                  weight: AppTypographyWeight.medium,
                 ),
               ),
             ],
           ),
-
+          SizedBox(height: AppSpacing.xl4),
           Row(
             children: [
               Text(
@@ -153,7 +157,7 @@ class AppointmentCardWidget extends StatelessWidget {
     switch (status) {
       case AppointmentStatus.confirmed:
         textColor = const Color(0xFF2E7D32);
-        text = 'Appointment Confirmed';
+        text = 'Confirmed';
         break;
       case AppointmentStatus.pending:
         textColor = const Color(0xFFE65100);
@@ -175,9 +179,9 @@ class AppointmentCardWidget extends StatelessWidget {
         children: [
           Text(
             text,
-            style: AppTypography.callout(
+            style: AppTypography.body(
               color: textColor,
-              fontWeight: FontWeight.w500,
+              weight: AppTypographyWeight.regular,
             ),
           ),
         ],

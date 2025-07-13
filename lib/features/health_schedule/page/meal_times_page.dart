@@ -25,10 +25,11 @@ class MealTimesPage extends StatelessWidget {
               child: Row(
                 children: [
                   // Left sidebar with meal options
-                  _buildMealsSidebar(controller),
+                  Expanded(flex: 2, child: _buildMealsSidebar(controller)),
 
                   // Right content area with time picker
                   Expanded(
+                    flex: 4,
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -64,7 +65,7 @@ class MealTimesPage extends StatelessWidget {
 
   Widget _buildMealsSidebar(MealTimesController controller) {
     return Container(
-      width: 220,
+      // width: 220,
       padding: EdgeInsets.all(AppSpacing.lg),
       child: Obx(
         () => Column(
@@ -130,9 +131,11 @@ class MealTimesPage extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 70,
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.xl,
-          vertical: AppSpacing.lg,
+        padding: EdgeInsets.only(
+          left: AppSpacing.xl6,
+          right: AppSpacing.xl5,
+          top: AppSpacing.xl3,
+          bottom: AppSpacing.xl3,
         ),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary700 : Colors.grey[100],
@@ -169,34 +172,38 @@ class MealTimesPage extends StatelessWidget {
                   ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.grey[600],
-              size: 22,
+              color: isSelected ? Colors.white : Colors.black87,
+              size: 16,
             ),
             SizedBox(width: AppSpacing.md),
             Expanded(
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     title,
                     style: AppTypography.body(
                       color: isSelected ? Colors.white : Colors.black87,
-                      fontWeight:
-                          isSelected ? FontWeight.w600 : FontWeight.w500,
-                    ),
+                      weight:
+                          isSelected
+                              ? AppTypographyWeight.semibold
+                              : AppTypographyWeight.medium,
+                    ).copyWith(height: 1.4),
                   ),
                   Text(
                     _getCurrentMealTime(controller, index),
-                    style: AppTypography.callout(
+                    style: AppTypography.headline(
                       color:
                           isSelected
                               ? Colors.white.withOpacity(0.8)
-                              : Colors.grey[600],
-                      fontWeight: FontWeight.w400,
+                              : Colors.black87,
+                      weight: AppTypographyWeight.regular,
                     ),
                   ),
                 ],

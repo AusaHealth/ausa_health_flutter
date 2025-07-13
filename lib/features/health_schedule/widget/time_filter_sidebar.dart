@@ -21,17 +21,17 @@ class TimeFilterSidebar extends StatelessWidget {
                 _buildFilterButton('All Day', Icons.schedule, 0, isFirst: true),
           ),
 
-          SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.lg),
 
           // Morning Button
           Obx(() => _buildFilterButton('Morning', Icons.wb_sunny_outlined, 1)),
 
-          SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.lg),
 
           // Afternoon Button
           Obx(() => _buildFilterButton('Afternoon', Icons.wb_sunny, 2)),
 
-          SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.lg),
 
           // Evening Button
           Obx(
@@ -118,7 +118,7 @@ class TimeFilterSidebar extends StatelessWidget {
                     // Dark grey shadow (bottom-right)
                     BoxShadow(
                       color: Colors.black.withOpacity(0.08),
-                      blurRadius: 10,
+                      blurRadius: 5,
                       offset: Offset(5, 6),
                     ),
                   ],

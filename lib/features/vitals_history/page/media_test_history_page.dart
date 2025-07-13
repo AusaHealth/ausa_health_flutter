@@ -35,10 +35,12 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
           children: [
             AppBackHeader(title: 'Media', onBackPressed: () => Get.back()),
             Obx(
-              () => AppTabButtons(
-                tabs: _getTabData(controller),
-                selectedIndex: controller.currentTabIndex.value,
-                onTabSelected: (index) => controller.switchTab(index),
+              () => Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl6,
+                  vertical: AppSpacing.lg,
+                ),
+                child: Row(children: _buildTabButtons(controller)),
               ),
             ),
             Obx(() {
@@ -82,23 +84,18 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                 return GestureDetector(
                   onTap: () => controller.enterSelectionMode(),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        decoration: const BoxDecoration(shape: BoxShape.circle),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.circle_outlined,
-                            size: 16.0,
-                            color: AppColors.primary700,
-                          ),
-                        ),
+                      Icon(
+                        Icons.circle_outlined,
+                        size: 16.0,
+                        color: AppColors.primary700,
                       ),
-                      SizedBox(width: AppSpacing.xs),
+                      SizedBox(width: AppSpacing.md),
                       Text(
                         'Select',
-                        style: AppTypography.callout(
+                        style: AppTypography.body(
                           color: AppColors.primary700,
                         ),
                       ),
@@ -114,17 +111,17 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
               return AusaButton(
                 text: 'Delete',
                 onPressed: hasSelection ? _showDeleteConfirmationDialog : null,
-                variant: ButtonVariant.custom,
-                size: ButtonSize.small,
+                variant: ButtonVariant.primary,
                 backgroundColor:
                     hasSelection
                         ? Colors.orange
                         : Colors.orange.withOpacity(0.4),
                 textColor: Colors.white,
-                borderRadius: 60,
-                icon: Icons.delete_outline,
-                iconColor: Colors.white,
-                iconSpacing: AppSpacing.md,
+                leadingIcon: Icon(
+                  Icons.delete_outline,
+                  size: 20,
+                  color: Colors.white,
+                ),
                 isEnabled: hasSelection,
               );
             }),
@@ -151,7 +148,12 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
         groupedReadings.keys.toList()..sort((a, b) => b.compareTo(a));
 
     return ListView.builder(
-      padding: EdgeInsets.only(bottom: AppSpacing.xl),
+      padding: EdgeInsets.only(
+        bottom: AppSpacing.xl,
+        left: AppSpacing.xl,
+        right: AppSpacing.xl,
+        
+      ),
       itemCount: sortedDateKeys.length,
       itemBuilder: (context, index) {
         final dateKey = sortedDateKeys[index];
@@ -174,26 +176,31 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
   }
 
   Widget _buildReadingsGrid(List<MediaTestReading> readings) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: AppSpacing.md,
-        mainAxisSpacing: AppSpacing.md,
-        childAspectRatio: 2, // Slightly taller than wide
+    return Container(
+      padding: EdgeInsets.only(
+        top: AppSpacing.lg,
       ),
-      itemCount: readings.length,
-      itemBuilder: (context, index) {
-        return Obx(
-          () => MediaTestCardWidget(
-            reading: readings[index],
-            isSelected: controller.isReadingSelected(readings[index].id),
-            isSelectionMode: controller.isSelectionMode.value,
-            onTap: () => _handleReadingTap(readings[index]),
-          ),
-        );
-      },
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: AppSpacing.md,
+          mainAxisSpacing: AppSpacing.md,
+          childAspectRatio: 2, // Slightly taller than wide
+        ),
+        itemCount: readings.length,
+        itemBuilder: (context, index) {
+          return Obx(
+            () => MediaTestCardWidget(
+              reading: readings[index],
+              isSelected: controller.isReadingSelected(readings[index].id),
+              isSelectionMode: controller.isSelectionMode.value,
+              onTap: () => _handleReadingTap(readings[index]),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -207,16 +214,16 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
         children: [
           Text(
             displayText,
-            style: AppTypography.callout(
+            style: AppTypography.body(
               color: Colors.black87,
-              fontWeight: FontWeight.w600,
+              weight: AppTypographyWeight.semibold,
             ),
           ),
           if (isToday) ...[
             SizedBox(width: AppSpacing.md),
             Container(
               padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
+                horizontal: AppSpacing.lg,
                 vertical: AppSpacing.xs,
               ),
               decoration: BoxDecoration(
@@ -225,7 +232,10 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
               ),
               child: Text(
                 'Today',
-                style: AppTypography.callout(color: AppColors.primary700),
+                style: AppTypography.callout(
+                  color: AppColors.primary700,
+                  weight: AppTypographyWeight.semibold,
+                ),
               ),
             ),
           ],
@@ -306,10 +316,6 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                           variant: ButtonVariant.secondary,
                           borderColor: Colors.orange,
                           textColor: Colors.orange,
-                          borderRadius: 60,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
                         ),
                       ),
                       SizedBox(width: AppSpacing.lg),
@@ -324,10 +330,6 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                           variant: ButtonVariant.primary,
                           backgroundColor: Colors.orange,
                           textColor: Colors.white,
-                          borderRadius: 60,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
                         ),
                       ),
                     ],
@@ -368,18 +370,17 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
     return '${months[month - 1]} $day, $year';
   }
 
-  List<AppTabData> _getTabData(MediaTestHistoryController controller) {
-    final Map<String, IconData> tabIcons = {
-      'Voice': Icons.mic,
-      'Video': Icons.videocam,
-      'Audio': Icons.audio_file,
-      'Media': Icons.perm_media,
-    };
-
-    return controller.tabs.map((tab) {
+  List<AppTabButton> _buildTabButtons(MediaTestHistoryController controller) {
+    return controller.tabs.asMap().entries.map((entry) {
+      final index = entry.key;
+      final tab = entry.value;
       final title = tab['title'] as String;
-      final icon = tabIcons[title] ?? Icons.media_bluetooth_on;
-      return AppTabData(text: title, icon: icon);
+
+      return AppTabButton(
+        text: title,
+        isSelected: controller.currentTabIndex.value == index,
+        onTap: () => controller.switchTab(index),
+      );
     }).toList();
   }
 }

@@ -54,11 +54,11 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
     }
 
     return Container(
-      padding: EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.xl2),
       decoration: BoxDecoration(
         color: Color(0xFFFAFAFA),
-        borderRadius: BorderRadius.circular(AppRadius.xl2),
-        // border: Border.all(color: Colors.grey[200]!, width: 1),
+        borderRadius: BorderRadius.circular(AppRadius.xl3),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,19 +82,16 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
           children: [
             Text(
               'Previous readings',
-              style: AppTypography.body(color: Colors.grey[600]),
+              style: AppTypography.body(weight: AppTypographyWeight.medium),
             ),
             if (widget.vitalType == VitalType.bloodPressure &&
                 selectedParameter == 'BP')
-              Container(
-                margin: EdgeInsets.only(top: AppSpacing.md),
-                child: Row(
-                  children: [
-                    _buildLegendItem('Systolic', AppColors.primary700),
-                    SizedBox(width: AppSpacing.lg),
-                    _buildLegendItem('Diastolic', Colors.orange),
-                  ],
-                ),
+              Row(
+                children: [
+                  _buildLegendItem('Systolic', AppColors.primary700),
+                  SizedBox(width: AppSpacing.lg),
+                  _buildLegendItem('Diastolic', AppColors.accent),
+                ],
               ),
           ],
         ),
@@ -102,19 +99,19 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         if (parameters.length > 1)
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.lg,
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.black.withOpacity(0.05),
               borderRadius: BorderRadius.circular(AppRadius.xl3),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: Offset(0, 2),
-                ),
-              ],
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withOpacity(0.1),
+              //     blurRadius: 10,
+              //     offset: Offset(0, 2),
+              //   ),
+              // ],
             ),
 
             child: Row(
@@ -136,7 +133,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                         margin: EdgeInsets.only(right: AppSpacing.sm),
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
+                          vertical: AppSpacing.sm,
                         ),
                         decoration: BoxDecoration(
                           color:
@@ -147,10 +144,12 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                         ),
                         child: Text(
                           parameter,
-                          style: AppTypography.callout(
+                          style: AppTypography.body(
                             color: Color(0xFF1A2A78),
-                            fontWeight:
-                                isSelected ? FontWeight.w600 : FontWeight.w400,
+                            weight:
+                                isSelected
+                                    ? AppTypographyWeight.semibold
+                                    : AppTypographyWeight.medium,
                           ),
                         ),
                       ),
@@ -165,7 +164,10 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
   Widget _buildLegendItem(String label, Color color) {
     return Text(
       label,
-      style: AppTypography.callout(color: color, fontWeight: FontWeight.w400),
+      style: AppTypography.callout(
+        color: color,
+        weight: AppTypographyWeight.medium,
+      ),
     );
   }
 
@@ -178,131 +180,157 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
 
     return SizedBox(
       height: 300,
-      child: Container(
-        padding: EdgeInsets.all(AppSpacing.xl),
-        child: LineChart(
-          LineChartData(
-            gridData: FlGridData(
-              show: true,
-              drawVerticalLine: true,
-              getDrawingVerticalLine: (value) {
-                return FlLine(color: Colors.grey[200]!, strokeWidth: 0.2);
-              },
-              horizontalInterval: _getGridInterval(),
-              getDrawingHorizontalLine: (value) {
-                return FlLine(color: Colors.grey[300]!, strokeWidth: 0.2);
-              },
+      child: Stack(
+        children: [
+          // Global dashed line behind the chart
+          Positioned(
+            left: 40, // Align after left axis labels
+            right: 5,
+            bottom: 36, // Align with date label baseline (45 - 7)
+            child: IgnorePointer(
+              child: CustomPaint(
+                size: const Size(double.infinity, 1),
+                painter: DashedLinePainter(color: Color(0xFF8E8E8E)),
+              ),
             ),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 40,
-                  interval: _getGridInterval(),
-                  getTitlesWidget: (value, meta) {
-                    // Show all grid values plus exact current values
-                    final isCurrentValue = _isCurrentValue(value);
-                    final isGridValue = _isGridValue(value);
-
-                    if (isGridValue || isCurrentValue) {
-                      return Text(
-                        _formatLeftAxisValue(value),
-                        style: AppTypography.callout(
-                          color:
-                              isCurrentValue
-                                  ? AppColors.primary700
-                                  : Colors.grey[600],
-                          fontWeight:
-                              isCurrentValue
-                                  ? FontWeight.w600
-                                  : FontWeight.w400,
-                        ),
-                        textAlign: TextAlign.center,
-                      );
-                    }
-
-                    return const SizedBox();
+          ),
+          // Chart (including date/time labels) painted above
+          Container(
+            padding: EdgeInsets.only(
+              left: AppSpacing.sm,
+              right: AppSpacing.xl4,
+              top: AppSpacing.sm,
+              bottom: AppSpacing.sm,
+            ),
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: true,
+                  getDrawingVerticalLine: (value) {
+                    return FlLine(color: Colors.grey[200]!, strokeWidth: 0.2);
+                  },
+                  horizontalInterval: _getGridInterval(),
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(color: Colors.grey[300]!, strokeWidth: 0.2);
                   },
                 ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 45,
-                  interval: 1,
-                  getTitlesWidget: (value, meta) {
-                    final index = value.toInt();
-                    final maxReadings = _getMaxReadings();
-                    if (index >= 0 && index < maxReadings) {
-                      final reading =
-                          widget.readings[widget.readings.length - 1 - index];
-                      final isToday = _isToday(reading.timestamp);
-                      final showDateLabel = _shouldShowDateLabel(index);
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 50,
+                      interval: _getGridInterval(),
+                      getTitlesWidget: (value, meta) {
+                        // Show all grid values plus exact current values
+                        final isCurrentValue = _isCurrentValue(value);
+                        final isGridValue = _isGridValue(value);
 
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 11),
-                        child: Stack(
-                          children: [
-                            // // Dashed line
-                            // if (index > 0 && showDateLabel)
-                            //   Positioned(
-                            //     left: -20,
-                            //     right: -20,
-                            //     top: 0,
-                            //     child: CustomPaint(
-                            //       painter: DashedLinePainter(
-                            //         color: Colors.grey[300]!,
-                            //       ),
-                            //     ),
-                            //   ),
-                            Column(
+                        if (isGridValue || isCurrentValue) {
+                          return Text(
+                            _formatLeftAxisValue(value),
+                            style: AppTypography.body(
+                              color:
+                                  isCurrentValue
+                                      ? AppColors.primary700
+                                      : Colors.black,
+                              weight:
+                                  isCurrentValue
+                                      ? AppTypographyWeight.semibold
+                                      : AppTypographyWeight.medium,
+                            ),
+                            textAlign: TextAlign.center,
+                          );
+                        }
+
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 45,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        final index = value.toInt();
+                        final maxReadings = _getMaxReadings();
+                        if (index >= 0 && index < maxReadings) {
+                          final reading =
+                              widget.readings[widget.readings.length -
+                                  1 -
+                                  index];
+                          final isToday = _isToday(reading.timestamp);
+                          final showDateLabel = _shouldShowDateLabel(index);
+
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 11),
+                            child: Stack(
                               children: [
-                                SizedBox(
-                                  height: 20, // Fixed height for date area
-                                  child:
-                                      showDateLabel
-                                          ? Text(
-                                            _formatDate(reading.timestamp),
-                                            style: AppTypography.callout(
-                                              color: Colors.grey[600],
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          )
-                                          : null,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _formatTime(reading.timestamp),
-                                  style: AppTypography.callout(
-                                    color: Colors.grey[600],
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                // (Per-cell dashed line removed; a global dashed line is now painted.)
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 15,
+                                      child:
+                                          showDateLabel
+                                              ? Container(
+                                                color: Color(0xFFFAFAFA),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 4,
+                                                    ),
+                                                child: Text(
+                                                  _formatDate(
+                                                    reading.timestamp,
+                                                  ),
+                                                  style: AppTypography.callout(
+                                                    color: const Color(
+                                                      0xFF6B6B6B,
+                                                    ),
+                                                    weight:
+                                                        AppTypographyWeight
+                                                            .medium,
+                                                  ),
+                                                ),
+                                              )
+                                              : null,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      _formatTime(reading.timestamp),
+                                      style: AppTypography.body(
+                                        color: Colors.black,
+                                        weight: AppTypographyWeight.medium,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                 ),
-              ),
-              rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
+                borderData: FlBorderData(show: false),
+                minX: 0,
+                maxX: (_getMaxReadings() - 1).toDouble(),
+                minY: _getMinY(),
+                maxY: _getMaxY(),
+                lineBarsData: chartData,
               ),
             ),
-            borderData: FlBorderData(show: false),
-            minX: 0,
-            maxX: (_getMaxReadings() - 1).toDouble(),
-            minY: _getMinY(),
-            maxY: _getMaxY(),
-            lineBarsData: chartData,
           ),
-        ),
+        ],
       ),
     );
   }
@@ -356,7 +384,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
       // Generate two lines for systolic and diastolic
       return [
         _generateLineChartBarData('Systolic', AppColors.primary700),
-        _generateLineChartBarData('Diastolic', Colors.orange),
+        _generateLineChartBarData('Diastolic', AppColors.accent),
       ];
     } else {
       // Generate single line for other parameters
@@ -367,7 +395,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         LineChartBarData(
           spots: spots,
           isCurved: true,
-          curveSmoothness: 0.2,
+          curveSmoothness: 0.5,
           color: AppColors.primary700,
           barWidth: 1, // This is where the line width is set for the main chart
           isStrokeCapRound: true,
@@ -376,11 +404,11 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
             getDotPainter: (spot, percent, barData, index) {
               final isLatest = index == spots.length - 1;
               return FlDotCirclePainter(
-                radius: 3,
+                radius: 6,
                 color:
                     isLatest
                         ? AppColors.primary700
-                        : AppColors.primary700.withOpacity(0.6),
+                        : AppColors.primary700.withOpacity(0.8),
                 strokeWidth: 0,
               );
             },
@@ -407,7 +435,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
     return LineChartBarData(
       spots: spots,
       isCurved: true,
-      curveSmoothness: 0.2,
+      curveSmoothness: 0.5,
       color: color,
       barWidth: 1, // This is where the line width is set for BP chart lines
       isStrokeCapRound: true,
@@ -416,8 +444,8 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         getDotPainter: (spot, percent, barData, index) {
           final isLatest = index == spots.length - 1;
           return FlDotCirclePainter(
-            radius: 3,
-            color: isLatest ? color : color.withOpacity(0.6),
+            radius: 6,
+            color: isLatest ? color : color.withOpacity(0.8),
             strokeWidth: 0,
           );
         },

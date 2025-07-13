@@ -1,3 +1,4 @@
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/model/time_slot.dart';
 import 'package:ausa/common/widget/buttons.dart';
@@ -18,7 +19,11 @@ class TimeSlotsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.only(
+        left: AppSpacing.xl5,
+        right: AppSpacing.xl5,
+        top: AppSpacing.xl4,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,13 +56,14 @@ class TimeSlotsGrid extends StatelessWidget {
 
     return AusaButton(
       text: timeSlot.formattedTime,
-      variant: ButtonVariant.selection,
-      isSelected: isSelected,
-      onSelectionChanged: (selected) {
-        if (selected && timeSlot.isAvailable) {
-          onTimeSlotSelected(timeSlot);
-        }
-      },
+       backgroundColor: isSelected
+                        ? AppColors.black
+                        : AppColors.primary25,
+                    borderColor: AppColors.primary25,
+                    textColor: isSelected ? AppColors.white : AppColors.primary700,
+      variant: isSelected ? ButtonVariant.primary : ButtonVariant.secondary,
+      onPressed:
+          timeSlot.isAvailable ? () => onTimeSlotSelected(timeSlot) : null,
       isEnabled: timeSlot.isAvailable,
     );
   }

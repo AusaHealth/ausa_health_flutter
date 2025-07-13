@@ -55,12 +55,9 @@ class NoAppointmentsWidget extends StatelessWidget {
                 variant: ButtonVariant.secondary,
                 backgroundColor: Colors.white.withOpacity(0.2),
                 textColor: Colors.white,
-                icon: Icons.wifi,
-                iconSize: 16,
-                borderRadius: 8,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
+                leadingIcon: Icon(
+                  Icons.wifi,
+                  size: 16,
                 ),
               ),
 

@@ -29,13 +29,27 @@ class HealthSchedulePage extends StatelessWidget {
 
                 // Tab buttons
                 Obx(
-                  () => AppTabButtons(
-                    tabs: const [
-                      AppTabData(text: 'Routine', icon: Icons.person),
-                      AppTabData(text: 'Medication', icon: Icons.medication),
-                    ],
-                    selectedIndex: controller.currentTabIndex,
-                    onTabSelected: (index) => controller.switchTab(index),
+                  () => Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl6,
+                      vertical: AppSpacing.lg,
+                    ),
+                    child: Row(
+                      children: [
+                        AppTabButton(
+                          text: 'Routine',
+                          icon: Icons.person,
+                          isSelected: controller.currentTabIndex == 0,
+                          onTap: () => controller.switchTab(0),
+                        ),
+                        AppTabButton(
+                          text: 'Medication',
+                          icon: Icons.medication,
+                          isSelected: controller.currentTabIndex == 1,
+                          onTap: () => controller.switchTab(1),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 

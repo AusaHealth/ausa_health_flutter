@@ -335,20 +335,24 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
 
         // Right section - Time
         Container(
-          width: 80,
+          width: 100,
           height: 180,
           color:
               widget.isSelected
                   ? AppColors.primary700.withOpacity(0.1)
                   : Colors.white,
-          child: Center(
-            child: Text(
-              _formatTime(widget.reading.timestamp),
-              style: AppTypography.callout(
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
+          child: Padding(
+            padding: EdgeInsets.only(top: AppSpacing.xl),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                _formatTime(widget.reading.timestamp),
+                style: AppTypography.body(
+                  color: Colors.black87,
+                  weight: AppTypographyWeight.semibold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -361,8 +365,11 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
       children: [
         // Header with icon, title, and time
         Container(
-          height: 70,
-          padding: EdgeInsets.all(AppSpacing.md),
+          height: 76,
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl,
+            vertical: AppSpacing.sm,
+          ),
           color: Colors.white,
           child: Row(
             children: [
@@ -370,17 +377,17 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
               SizedBox(width: AppSpacing.sm),
               Text(
                 widget.reading.displayCategory,
-                style: AppTypography.callout(
+                style: AppTypography.body(
                   color: Colors.black87,
-                  fontWeight: FontWeight.w600,
+                  weight: AppTypographyWeight.semibold,
                 ),
               ),
               Spacer(),
               Text(
                 _formatTime(widget.reading.timestamp),
-                style: AppTypography.callout(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w400,
+                style: AppTypography.body(
+                  color: Colors.black,
+                  weight: AppTypographyWeight.medium,
                 ),
               ),
             ],
@@ -398,10 +405,10 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                 colors:
                     widget.isSelected
                         ? [
-                          AppColors.primary700.withOpacity(0.7),
-                          AppColors.primaryDarkColor.withOpacity(0.7),
+                          AppColors.primary800.withOpacity(0.7),
+                          AppColors.primary900.withOpacity(0.7),
                         ]
-                        : [AppColors.primary700, AppColors.primaryDarkColor],
+                        : [AppColors.primary800, AppColors.primary900],
               ),
             ),
             child: Row(
@@ -414,8 +421,8 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                 GestureDetector(
                   onTap: _togglePlayPause,
                   child: Container(
-                    width: 48,
-                    height: 48,
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       shape: BoxShape.circle,
@@ -506,36 +513,36 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
     switch (widget.reading.category.toLowerCase()) {
       case 'heart':
         iconData = Icons.favorite;
-        iconColor = Colors.white;
+        iconColor = AppColors.primary700;
         break;
       case 'lungs':
       case 'lung':
         iconData = Icons.air;
-        iconColor = Colors.white;
+        iconColor = AppColors.primary700;
         break;
       case 'stomach':
         iconData = Icons.monitor_heart;
-        iconColor = Colors.white;
+        iconColor = AppColors.primary700;
         break;
       case 'bowel':
         iconData = Icons.medication;
-        iconColor = Colors.white;
+        iconColor = AppColors.primary700;
         break;
       case 'ear':
         iconData = Icons.hearing;
-        iconColor = Colors.white;
+        iconColor = AppColors.white;
         break;
       case 'nose':
         iconData = Icons.self_improvement;
-        iconColor = Colors.white;
+        iconColor = AppColors.white;
         break;
       case 'throat':
         iconData = Icons.record_voice_over;
-        iconColor = Colors.white;
+        iconColor = AppColors.white;
         break;
       default:
         iconData = Icons.graphic_eq;
-        iconColor = Colors.white;
+        iconColor = AppColors.primary700;
     }
 
     return Container(

@@ -42,7 +42,7 @@ class MedicationFilterSidebar extends StatelessWidget {
 
                     return Column(
                       children: [
-                        if (index > 0) SizedBox(height: AppSpacing.md),
+                        if (index > 0) SizedBox(height: AppSpacing.lg),
                         _buildFilterButton(
                           filterName,
                           index,
@@ -97,7 +97,7 @@ class MedicationFilterSidebar extends StatelessWidget {
           vertical: AppSpacing.lg,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF165CFF) : Colors.grey[100],
+          color: isSelected ? AppColors.primary700 : Colors.grey[100],
           borderRadius: borderRadius,
           boxShadow:
               isSelected
@@ -124,8 +124,8 @@ class MedicationFilterSidebar extends StatelessWidget {
                     ),
                     // Dark grey shadow (bottom-right)
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 10,
+                      color: Colors.black.withOpacity(0.07),
+                      blurRadius: 3,
                       offset: Offset(5, 6),
                     ),
                   ],

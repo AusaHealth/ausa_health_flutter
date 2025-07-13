@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
@@ -76,8 +77,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
             text: 'New Appointment',
             onPressed: controller.navigateToScheduleAppointment,
             variant: ButtonVariant.secondary,
-            icon: Icons.add,
-            iconSize: 16,
+            leadingIcon: Icon(Icons.add, size: 16, color: AppColors.primary700),
             height: 40,
           ),
         ],

@@ -220,7 +220,6 @@ class CancelAppointmentDialog extends StatelessWidget {
                     variant: ButtonVariant.primary,
                     width: 150,
                     height: 48,
-                    borderRadius: 24,
                     backgroundColor: const Color(0xFFFF8C00),
                   ),
                 ),

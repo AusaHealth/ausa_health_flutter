@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointment_edit_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
@@ -141,9 +142,8 @@ class AppointmentEditPage extends StatelessWidget {
                       const Spacer(),
                       AusaButton(
                         text: 'Change',
-                        variant: ButtonVariant.link,
+                        variant: ButtonVariant.tertiary,
                         onPressed: controller.goBackToStep1,
-                        iconSize: 16,
                         height: 40,
                       ),
                       const SizedBox(width: 20),
@@ -268,7 +268,7 @@ class AppointmentEditPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
                 child: AusaButton(
                   text: 'Enter Symptoms',
                   onPressed:
@@ -276,9 +276,17 @@ class AppointmentEditPage extends StatelessWidget {
                           ? controller.goToStep2
                           : null,
                   isEnabled: controller.selectedTimeSlot != null,
-                  width: double.infinity,
+                     leadingIcon: Icon(
+                    Icons.keyboard,
+                    size: 20,
+                    color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                  ),
+                  trailingIcon: Icon(
+                    Icons.arrow_forward,
+                    size: 20,
+                    color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                  ),
                   height: 56,
-                  borderRadius: 32,
                 ),
               ),
             ],
@@ -302,11 +310,14 @@ class AppointmentEditPage extends StatelessWidget {
               Text('Select Date', style: AppTypography.body()),
               AusaButton(
                 text: 'Month View',
-                variant: ButtonVariant.link,
+                variant: ButtonVariant.tertiary,
                 onPressed: controller.toggleMonthView,
-                icon: Icons.calendar_view_month,
+                leadingIcon: Icon(
+                  Icons.calendar_view_month,
+                  size: 20,
+                  color: AppColors.primary700,
+                ),
                 textColor: AppColors.primary700,
-                iconColor: AppColors.primary700,
               ),
             ],
           ),
@@ -333,14 +344,20 @@ class AppointmentEditPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    variant: ButtonVariant.selection,
-                    isSelected: isSelected,
+                    backgroundColor: isSelected
+                        ? AppColors.black
+                        : AppColors.primary25,
+                    borderColor: AppColors.primary25,
+                    textColor: isSelected ? AppColors.white : AppColors.primary700,
+                    variant:
+                        isSelected
+                            ? ButtonVariant.primary
+                            : ButtonVariant.secondary,
                     isEnabled: timeSlot.isAvailable,
-                    onSelectionChanged: (selected) {
-                      if (selected) {
-                        controller.selectTimeSlot(timeSlot);
-                      }
-                    },
+                    onPressed:
+                        timeSlot.isAvailable
+                            ? () => controller.selectTimeSlot(timeSlot)
+                            : null,
                   );
                 },
               ),
@@ -473,8 +490,10 @@ class AppointmentEditPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
-          Center(child: Obx(() => _buildFinishButton(controller))),
+          Padding(
+                padding: EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+            child: Center(child: Obx(() => _buildFinishButton(controller))),
+          ),
         ],
       ),
     );
@@ -487,8 +506,7 @@ class AppointmentEditPage extends StatelessWidget {
       isLoading: controller.isLoading,
       isEnabled: controller.canFinish,
       width: 100,
-      height: 56,
-      borderRadius: 32,
+      height: 50,
     );
   }
 

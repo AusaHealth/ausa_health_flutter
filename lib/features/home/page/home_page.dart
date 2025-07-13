@@ -2,7 +2,7 @@ import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
-import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
+// import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -118,9 +118,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       AusaButton(
                         text: 'Change',
                         onPressed: controller.goBackToStep1,
-                        variant: ButtonVariant.link,
-                        iconSize: 16,
-                        height: 40,
+                        variant: ButtonVariant.tertiary,
+                        height: 45,
                       ),
                       const SizedBox(width: 20),
                     ],
@@ -184,7 +183,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Obx(
                     () => AusaButton(
-                      text: 'Schedule Appointment',
+                      text: 'Finish',
                       onPressed:
                           controller.canFinish
                               ? controller.scheduleAppointment
@@ -192,9 +191,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       isLoading: controller.isLoading,
                       isEnabled: controller.canFinish,
                       variant: ButtonVariant.primary,
-                      width: double.infinity,
-                      height: 56,
-                      borderRadius: 32,
+                      width: 100,
+                      height: 50,
                     ),
                   ),
                 ),
@@ -258,20 +256,28 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(24),
-                child: AusaButton(
-                  text: 'Enter Symptoms',
-                  onPressed:
-                      controller.selectedTimeSlot != null
-                          ? controller.goToStep2
-                          : null,
-                  isEnabled: controller.selectedTimeSlot != null,
-                  variant: ButtonVariant.primary,
-                  width: double.infinity,
-                  icon: Icons.arrow_forward,
-                  iconOnLeft: false,
-                  height: 56,
-                  borderRadius: 32,
+                padding: EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+                child: Center(
+                  child: AusaButton(
+                    text: 'Enter Symptoms',
+                    onPressed:
+                        controller.selectedTimeSlot != null
+                            ? controller.goToStep2
+                            : null,
+                    isEnabled: controller.selectedTimeSlot != null,
+                    variant: ButtonVariant.primary,
+                    leadingIcon: Icon(
+                      Icons.keyboard,
+                      size: 20,
+                      color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                    ),
+                    trailingIcon: Icon(
+                      Icons.arrow_forward,
+                      size: 20,
+                      color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                    ),
+                    height: 56,
+                  ),
                 ),
               ),
             ],
@@ -298,10 +304,13 @@ class AppointmentSchedulingPage extends StatelessWidget {
               AusaButton(
                 text: 'Month View',
                 onPressed: controller.toggleMonthView,
-                variant: ButtonVariant.link,
-                icon: Icons.calendar_view_month,
+                variant: ButtonVariant.tertiary,
+                leadingIcon: Icon(
+                  Icons.calendar_view_month,
+                  size: 20,
+                  color: AppColors.primary700,
+                ),
                 textColor: AppColors.primary700,
-                iconColor: AppColors.primary700,
               ),
             ],
           ),
@@ -328,14 +337,20 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    variant: ButtonVariant.selection,
-                    isSelected: isSelected,
+                    backgroundColor: isSelected
+                        ? AppColors.black
+                        : AppColors.primary25,
+                    borderColor: AppColors.primary25,
+                    textColor: isSelected ? AppColors.white : AppColors.primary700,
+                    variant:
+                        isSelected
+                            ? ButtonVariant.primary
+                            : ButtonVariant.secondary,
                     isEnabled: timeSlot.isAvailable,
-                    onSelectionChanged: (selected) {
-                      if (selected) {
-                        controller.selectTimeSlot(timeSlot);
-                      }
-                    },
+                    onPressed:
+                        timeSlot.isAvailable
+                            ? () => controller.selectTimeSlot(timeSlot)
+                            : null,
                   );
                 },
               ),
@@ -462,20 +477,22 @@ class AppointmentSchedulingPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
-          Center(
-            child: Obx(
-              () => AusaButton(
-                text: 'Finish',
-                onPressed:
-                    controller.canFinish
-                        ? controller.scheduleAppointment
-                        : null,
-                isLoading: controller.isLoading,
-                isEnabled: controller.canFinish,
-                variant: ButtonVariant.primary,
-                height: 56,
-                borderRadius: 32,
+          Padding(
+            padding:  EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+            child: Center(
+              child: Obx(
+                () => AusaButton(
+                  text: 'Finish',
+                  onPressed:
+                      controller.canFinish
+                          ? controller.scheduleAppointment
+                          : null,
+                  isLoading: controller.isLoading,
+                  isEnabled: controller.canFinish,
+                  variant: ButtonVariant.primary,
+                  height: 50,
+                  width: 100,
+                ),
               ),
             ),
           ),

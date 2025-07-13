@@ -37,7 +37,11 @@ class ReadingCardWidget extends StatelessWidget {
       onDoubleTap: onDoubleTap,
       child: Container(
         margin: EdgeInsets.only(bottom: AppSpacing.lg),
-        padding: EdgeInsets.all(AppSpacing.lg),
+        padding: EdgeInsets.only(
+          right: AppSpacing.lg,
+          top: AppSpacing.lg,
+          bottom: AppSpacing.lg
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -77,18 +81,24 @@ class ReadingCardWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          flex: 1,
-          child: Text(
-            _formatTime(),
-            style: AppTypography.callout(
-              color: Color(0xFF415981),
-              fontWeight: FontWeight.w400,
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 0,
+              vertical: AppSpacing.md,
+            ),
+            child: Text(
+              _formatTime(),
+              style: AppTypography.callout(
+                color: Color(0xFF415981),
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),
         SizedBox(height: AppSpacing.sm),
         Expanded(
-          flex: 2,
+          flex: 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: _buildVitalSpecificData(),
@@ -120,10 +130,6 @@ class ReadingCardWidget extends StatelessWidget {
         () => GestureDetector(
           onTap: () => onParameterTap?.call('Systolic'),
           child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
-            ),
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Systolic') == true ||
@@ -134,22 +140,38 @@ class ReadingCardWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                _buildDataPoint(
-                  'BP Systolic',
-                  '${bpReading.systolic}',
-                  'mmHg',
-                  isHighlighted:
-                      isParameterSelected?.call('Systolic') == true ||
-                      isParameterSelected?.call('Diastolic') == true,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.md,
+                    ),
+                    child: _buildDataPoint(
+                      'BP Systolic',
+                      '${bpReading.systolic}',
+                      'mmHg',
+                      isHighlighted:
+                          isParameterSelected?.call('Systolic') == true ||
+                          isParameterSelected?.call('Diastolic') == true,
+                    ),
+                  ),
                 ),
-                SizedBox(width: AppSpacing.xl),
-                _buildDataPoint(
-                  'BP Diastolic',
-                  '${bpReading.diastolic}',
-                  'mmHg',
-                  isHighlighted:
-                      isParameterSelected?.call('Systolic') == true ||
-                      isParameterSelected?.call('Diastolic') == true,
+                // SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.md,
+                    ),
+                    child: _buildDataPoint(
+                      'BP Diastolic',
+                      '${bpReading.diastolic}',
+                      'mmHg',
+                      isHighlighted:
+                          isParameterSelected?.call('Systolic') == true ||
+                          isParameterSelected?.call('Diastolic') == true,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -185,7 +207,7 @@ class ReadingCardWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: AppSpacing.md),
+          // SizedBox(width: AppSpacing.md),
           Expanded(
             child: Obx(
               () => GestureDetector(
@@ -405,7 +427,7 @@ class ReadingCardWidget extends StatelessWidget {
           label,
           style: AppTypography.callout(
             color: Color(0xFF415981),
-            fontWeight: FontWeight.w400,
+            weight: AppTypographyWeight.medium,
           ),
         ),
         SizedBox(height: AppSpacing.xs),
@@ -417,7 +439,7 @@ class ReadingCardWidget extends StatelessWidget {
               value,
               style: AppTypography.body(
                 color: isHighlighted ? AppColors.primary700 : _getValueColor(),
-                fontWeight: FontWeight.w600,
+                weight: AppTypographyWeight.bold,
               ),
             ),
             if (unit.isNotEmpty) ...[
@@ -427,7 +449,7 @@ class ReadingCardWidget extends StatelessWidget {
                 style: AppTypography.callout(
                   color:
                       isHighlighted ? AppColors.primary700 : _getValueColor(),
-                  fontWeight: FontWeight.w400,
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ],

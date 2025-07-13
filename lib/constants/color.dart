@@ -46,6 +46,10 @@ class AppColors {
   static const Color error800 = Color(0xFF912018);
   static const Color error900 = Color(0xFF7A271A);
 
+  // Warning colors
+  static const Color accent = Color(0xFFDE7600);
+ 
+
   // Base colors
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
