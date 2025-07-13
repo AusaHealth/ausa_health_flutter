@@ -24,7 +24,10 @@ class TermsConditionPage extends StatelessWidget {
                 children: [
                   Text(
                     'Terms',
-                    style: AppTypography.bodySemibold(color: Colors.white),
+                    style: AppTypography.body(
+                      color: Colors.white,
+                      weight: AppTypographyWeight.bold,
+                    ),
                   ),
                   IconButton(
                     onPressed: () {
@@ -119,7 +122,7 @@ class TermsConditionPage extends StatelessWidget {
                           const SizedBox(width: 24),
                           AusaButton(
                             width: 130,
-                            borderRadius: 60,
+
                             onPressed: () {
                               // Accept logic
                               Get.offAll(() => HomePage());

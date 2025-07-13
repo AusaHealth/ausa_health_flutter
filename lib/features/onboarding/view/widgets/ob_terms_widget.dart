@@ -24,19 +24,14 @@ class OnboardingTermsWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Terms', style: AppTypography.headline().copyWith()),
-              TextButton.icon(
+              AusaButton(
+                borderColor: Colors.transparent,
+                text: 'Expand',
+                leadingIcon: Icon(Icons.open_in_full, color: Colors.blue),
+                variant: ButtonVariant.secondary,
                 onPressed: () {
                   Get.to(() => TermsConditionPage());
                 },
-                icon: Icon(Icons.open_in_full, color: Colors.blue),
-                label: Text(
-                  'Expand',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                style: TextButton.styleFrom(foregroundColor: Colors.blue),
               ),
             ],
           ),
@@ -70,7 +65,9 @@ class OnboardingTermsWidget extends StatelessWidget {
               2. Purpose of the Device
               
               This Device is designed to collect and monitor vital signs and provide digital access to health resources and analytics for facilitating...''',
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                  style: AppTypography.body(
+                    weight: AppTypographyWeight.regular,
+                  ),
                 ),
               ),
             ),
@@ -80,32 +77,16 @@ class OnboardingTermsWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              OutlinedButton(
-                onPressed: () {
-                  // Decline logic
-                },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Colors.blue, width: 2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 16,
-                  ),
-                ),
-                child: Text(
-                  'Decline',
-                  style: TextStyle(color: Colors.blue, fontSize: 18),
-                ),
-              ),
-              const SizedBox(width: 24),
               AusaButton(
-                width: 130,
-                borderRadius: 60,
+                text: 'Decline',
+                variant: ButtonVariant.secondary,
+                onPressed: () {},
+              ),
+
+              SizedBox(width: AppSpacing.lg),
+              AusaButton(
                 onPressed: () {
                   Get.offAll(() => HomePage());
-                  // Accept logic
                 },
                 text: 'Accept',
               ),

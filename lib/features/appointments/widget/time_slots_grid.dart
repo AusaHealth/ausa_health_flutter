@@ -51,13 +51,7 @@ class TimeSlotsGrid extends StatelessWidget {
 
     return AusaButton(
       text: timeSlot.formattedTime,
-      variant: ButtonVariant.selection,
-      isSelected: isSelected,
-      onSelectionChanged: (selected) {
-        if (selected && timeSlot.isAvailable) {
-          onTimeSlotSelected(timeSlot);
-        }
-      },
+
       isEnabled: timeSlot.isAvailable,
     );
   }

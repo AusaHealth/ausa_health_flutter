@@ -172,15 +172,21 @@ class OnboardingStepList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Hello, 👋', style: AppTypography.headlineMedium()),
-          Text('Lets Get you started', style: AppTypography.bodyRegular()),
+          Text(
+            'Hello, 👋',
+            style: AppTypography.headline(weight: AppTypographyWeight.medium),
+          ),
+          Text(
+            "Let's Get you started",
+            style: AppTypography.body(weight: AppTypographyWeight.regular),
+          ),
           SizedBox(height: AppSpacing.xl),
           for (int i = 0; i < steps.length; i++) ...[
             Row(
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.transparent,
                   child:
                       completedSteps.contains(steps[i]['step'])
                           ? Image.asset(AppImages.done, width: 50, height: 50)
@@ -202,13 +208,15 @@ class OnboardingStepList extends StatelessWidget {
                   children: [
                     Text(
                       'Step ${i + 1}',
-                      style: AppTypography.calloutRegular(
+                      style: AppTypography.callout(
                         color: Color(0xff828282),
+                        weight: AppTypographyWeight.regular,
                       ),
                     ),
                     Text(
                       steps[i]['label'] as String,
-                      style: AppTypography.bodyMedium(
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.medium,
                         color: AppColors.textColor,
                       ),
                     ),

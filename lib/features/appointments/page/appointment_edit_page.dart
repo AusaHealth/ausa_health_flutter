@@ -141,9 +141,9 @@ class AppointmentEditPage extends StatelessWidget {
                       const Spacer(),
                       AusaButton(
                         text: 'Change',
-                        variant: ButtonVariant.link,
+
                         onPressed: controller.goBackToStep1,
-                        iconSize: 16,
+
                         height: 40,
                       ),
                       const SizedBox(width: 20),
@@ -278,7 +278,6 @@ class AppointmentEditPage extends StatelessWidget {
                   isEnabled: controller.selectedTimeSlot != null,
                   width: double.infinity,
                   height: 56,
-                  borderRadius: 32,
                 ),
               ),
             ],
@@ -302,11 +301,10 @@ class AppointmentEditPage extends StatelessWidget {
               Text('Select Date', style: AppTypography.body()),
               AusaButton(
                 text: 'Month View',
-                variant: ButtonVariant.link,
+
                 onPressed: controller.toggleMonthView,
-                icon: Icons.calendar_view_month,
+
                 textColor: AppColors.primary700,
-                iconColor: AppColors.primary700,
               ),
             ],
           ),
@@ -333,14 +331,8 @@ class AppointmentEditPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    variant: ButtonVariant.selection,
-                    isSelected: isSelected,
                     isEnabled: timeSlot.isAvailable,
-                    onSelectionChanged: (selected) {
-                      if (selected) {
-                        controller.selectTimeSlot(timeSlot);
-                      }
-                    },
+                    onPressed: () => controller.selectTimeSlot(timeSlot),
                   );
                 },
               ),
@@ -488,7 +480,6 @@ class AppointmentEditPage extends StatelessWidget {
       isEnabled: controller.canFinish,
       width: 100,
       height: 56,
-      borderRadius: 32,
     );
   }
 

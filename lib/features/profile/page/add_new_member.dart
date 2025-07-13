@@ -1,4 +1,6 @@
+import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/app_images.dart';
@@ -17,229 +19,220 @@ class AddNewMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<FamilyController>();
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: SafeArea(
-          child: Column(
-            children: [
-              CustomHeader(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return BaseScaffold(
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl3),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBackHeader(title: 'Add new member'),
+                Spacer(),
+                Image.asset(
+                  ProfileIcons.ausaLogo,
+                  height: DesignScaleManager.scaleValue(130),
+                  width: DesignScaleManager.scaleValue(130),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: AppMainContainer(
+              backgroundColor: const Color(0xffE6E2DC).withOpacity(0.2),
+              // ),
+              child: Row(
                 children: [
-                  const CustomNav(title: 'Add new member'),
-                  Spacer(),
-                  Image.asset(ProfileIcons.ausaLogo, height: 80, width: 100),
-                ],
-              ),
-              Expanded(
-                child: AppMainContainer(
-                  backgroundColor: const Color(0xffE6E2DC).withOpacity(0.2),
-                  // margin: EdgeInsets.all(AppSpacing.xl2),
-                  // padding: EdgeInsets.all(AppSpacing.xl2),
-                  // decoration: BoxDecoration(
-                  //   color: Colors.grey.shade100,
-                  //   borderRadius: BorderRadius.circular(AppRadius.xl3),
-                  // ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          padding: EdgeInsets.all(AppSpacing.smMedium),
-                          // margin: EdgeInsets.all(AppSpacing.lg),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(AppRadius.xl3),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: EdgeInsets.all(AppSpacing.smMedium),
+                      // margin: EdgeInsets.all(AppSpacing.lg),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
 
-                            children: [
-                              // Avatar container
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => AddPhotoPage());
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(
-                                      AppSpacing.smMedium,
-                                    ),
+                        children: [
+                          // Avatar container
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.to(() => AddPhotoPage());
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(AppSpacing.smMedium),
 
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFC2EFFF),
-                                      borderRadius: BorderRadius.circular(
-                                        AppRadius.xl3,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        AppImages.addPhoto,
-                                        height: 200,
-                                        width: 200,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: AppSpacing.lg),
-
-                              // Add profile photo button
-                              Container(
-                                margin: EdgeInsets.all(AppSpacing.lg),
-                                padding: EdgeInsets.all(AppSpacing.lg),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: const Color(0xFFC2EFFF),
                                   borderRadius: BorderRadius.circular(
                                     AppRadius.xl3,
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 10,
-                                      offset: Offset(0, 10),
-                                    ),
-                                  ],
                                 ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // Handle photo selection
-                                    print('Add profile photo tapped');
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.add_photo_alternate_outlined,
-                                        color: const Color(0xFF2196F3),
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Text(
-                                        'Add a profile photo',
-                                        style: TextStyle(
-                                          color: Color(0xFF2196F3),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
+                                child: Center(
+                                  child: Image.asset(
+                                    AppImages.addPhoto,
+                                    height: 200,
+                                    width: 200,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: AppSpacing.lg),
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 24,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppRadius.xl3),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 16,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: AppSpacing.xl4,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: AppSpacing.xl4),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildTextField(
-                                        controller:
-                                            controller.shortNameController,
-                                        label: 'Short Name',
-                                        placeholder: 'Enter',
-                                      ),
-                                    ),
-                                    SizedBox(width: 20),
-                                    Expanded(
-                                      child: _buildTextField(
-                                        controller:
-                                            controller.fullNameController,
-                                        label: 'Full name',
-                                        placeholder: 'Enter',
-                                      ),
-                                    ),
-                                    SizedBox(width: 20),
-                                    Expanded(
-                                      child: _buildTextField(
-                                        controller:
-                                            controller.relationshipController,
-                                        label: 'Relation',
-                                        placeholder: 'Enter',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: AppSpacing.xl),
+                          ),
+                          SizedBox(height: AppSpacing.lg),
 
-                                // Second row - Phone Number, Email
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildTextField(
-                                        controller: controller.phoneController,
-                                        label: 'Phone Number',
-                                        placeholder: '+1 (000) 000-0000',
-                                      ),
-                                    ),
-                                    SizedBox(width: 20),
-                                    Expanded(
-                                      child: _buildTextField(
-                                        controller: controller.emailController,
-                                        label: 'Email',
-                                        placeholder: 'Enter',
-                                      ),
-                                    ),
-                                    Spacer(),
-                                  ],
-                                ),
-                                SizedBox(height: AppSpacing.xl),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildTextField(
-                                        controller:
-                                            controller.addressController,
-                                        label: 'Address',
-                                        placeholder: 'Enter',
-                                      ),
-                                    ),
-
-                                    Spacer(),
-                                    Spacer(),
-                                  ],
+                          // Add profile photo button
+                          Container(
+                            margin: EdgeInsets.all(AppSpacing.lg),
+                            padding: EdgeInsets.all(AppSpacing.lg),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.xl3,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 10),
                                 ),
                               ],
                             ),
+                            child: GestureDetector(
+                              onTap: () {
+                                // Handle photo selection
+                                print('Add profile photo tapped');
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.add_photo_alternate_outlined,
+                                    color: const Color(0xFF2196F3),
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    'Add a profile photo',
+                                    style: TextStyle(
+                                      color: Color(0xFF2196F3),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: AppSpacing.lg),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 24,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 16,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xl4,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: AppSpacing.xl4),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildTextField(
+                                    controller: controller.shortNameController,
+                                    label: 'Short Name',
+                                    placeholder: 'Enter',
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Expanded(
+                                  child: _buildTextField(
+                                    controller: controller.fullNameController,
+                                    label: 'Full name',
+                                    placeholder: 'Enter',
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Expanded(
+                                  child: _buildTextField(
+                                    controller:
+                                        controller.relationshipController,
+                                    label: 'Relation',
+                                    placeholder: 'Enter',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: AppSpacing.xl),
+
+                            // Second row - Phone Number, Email
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildTextField(
+                                    controller: controller.phoneController,
+                                    label: 'Phone Number',
+                                    placeholder: '+1 (000) 000-0000',
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Expanded(
+                                  child: _buildTextField(
+                                    controller: controller.emailController,
+                                    label: 'Email',
+                                    placeholder: 'Enter',
+                                  ),
+                                ),
+                                Spacer(),
+                              ],
+                            ),
+                            SizedBox(height: AppSpacing.xl),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildTextField(
+                                    controller: controller.addressController,
+                                    label: 'Address',
+                                    placeholder: 'Enter',
+                                  ),
+                                ),
+
+                                Spacer(),
+                                Spacer(),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

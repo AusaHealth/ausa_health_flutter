@@ -1,29 +1,20 @@
 import 'package:ausa/common/widget/app_back_header.dart';
-import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
-import 'package:ausa/common/widget/buttons.dart';
-import 'package:ausa/common/widget/custom_nav.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/app_images.dart';
-import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/spacing.dart';
-import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
-import 'package:ausa/features/onboarding/view/widgets/ob_wifi_selection_widget.dart';
 import 'package:ausa/features/settings/model/network_info_model.dart';
 import 'package:ausa/features/settings/page/bluetooth_page.dart';
 import 'package:ausa/features/settings/page/call_settings_page.dart';
 import 'package:ausa/features/settings/page/display_setting_page.dart';
 import 'package:ausa/features/settings/page/notification_settings_page.dart';
-import 'package:ausa/features/settings/widget/call_setting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/wifi_controller.dart';
 import '../../../common/widget/custom_header.dart';
-import '../widget/settings_nav.dart';
 import '../widget/settings_tabs.dart';
 import '../widget/settings_network_list.dart';
-import '../widget/wifi_password_modal.dart';
-import '../widget/wifi_popup.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -72,143 +63,71 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.gray50,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomHeader(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // const CustomNav(title: 'Settings'),
-                        const AppBackHeader(title: 'Settings'),
-                        SizedBox(height: AppSpacing.md),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xl,
-                          ).copyWith(left: AppSpacing.xl5),
-                          child: SettingsTabs(
-                            selectedIndex: selectedTab,
-                            onTabSelected:
-                                (i) => setState(() => selectedTab = i),
-                          ),
-                        ),
-                      ],
+    return BaseScaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: AppSpacing.lg),
+                    child: const AppBackHeader(title: 'Settings'),
+                  ),
+                  SizedBox(height: AppSpacing.xl2),
+                  Padding(
+                    padding: EdgeInsets.only(left: AppSpacing.xl5),
+                    child: SettingsTabs(
+                      selectedIndex: selectedTab,
+                      onTabSelected: (i) => setState(() => selectedTab = i),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Image.asset(
-                        ProfileIcons.ausaLogo,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-
-                AppMainContainer(
-                  child: Builder(
-                    builder: (context) {
-                      if (selectedTab == 0) {
-                        return SettingsNetworkList(
-                          networks: controller.networks,
-                          selectedIndex: controller.selectedNetworkIndex.value,
-                          onTileTap: controller.onNetworkTap,
-                        );
-                      } else if (selectedTab == 1) {
-                        return DisplaySettingPage();
-                      } else if (selectedTab == 2) {
-                        return BluetoothPage();
-                      } else if (selectedTab == 3) {
-                        return NotificationSettingsPage();
-                      } else if (selectedTab == 4) {
-                        return CallSettingsPage();
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    },
+                  ),
+                ],
+              ),
+              Spacer(),
+              SizedBox(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xl,
+                  ).copyWith(top: 12),
+                  child: Image.asset(
+                    ProfileIcons.ausaLogo,
+                    height: DesignScaleManager.scaleValue(207),
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.lg),
+
+          AppMainContainer(
+            child: Builder(
+              builder: (context) {
+                if (selectedTab == 0) {
+                  return SettingsNetworkList(
+                    networks: controller.networks,
+                    selectedIndex: controller.selectedNetworkIndex.value,
+                    onTileTap: controller.onNetworkTap,
+                  );
+                } else if (selectedTab == 1) {
+                  return DisplaySettingPage();
+                } else if (selectedTab == 2) {
+                  return BluetoothPage();
+                } else if (selectedTab == 3) {
+                  return NotificationSettingsPage();
+                } else if (selectedTab == 4) {
+                  return CallSettingsPage();
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
-
-            //     Expanded(
-            //       child:
-            //           selectedTab == 0
-            //               ? Obx(
-            //                 () => SettingsNetworkList(
-            //                   networks: controller.networks,
-            //                   selectedIndex:
-            //                       controller.selectedNetworkIndex.value,
-            //                   onTileTap: controller.onNetworkTap,
-            //                 ),
-            //               )
-            //               : Container(
-            //                 color: Colors.white,
-            //                 child: const Center(
-            //                   child: Text('Other tab content'),
-            //                 ),
-            //               ),
-            //     ),
-            //   ],
-            // ),
-            // // Password modal
-            // Obx(
-            //   () =>
-            //       controller.showPasswordSheet.value
-            //           ? WifiPasswordModal(
-            //             networkName:
-            //                 controller
-            //                     .networks[controller
-            //                         .selectedNetworkIndex
-            //                         .value!]
-            //                     .name,
-            //             onSubmit: (password) {
-            //               controller.submitPassword(password);
-            //             },
-            //             onClose: () {
-            //               controller.showPasswordSheet.value = false;
-            //             },
-            //           )
-            //           : const SizedBox.shrink(),
-            // ),
-            // // Connecting popup
-            // Obx(
-            //   () =>
-            //       controller.isConnecting.value
-            //           ? WifiPopup(type: WifiPopupType.connecting)
-            //           : const SizedBox.shrink(),
-            // ),
-            // // Connected popup
-            // Obx(
-            //   () =>
-            //       controller.showConnectedPopup.value
-            //           ? WifiPopup(type: WifiPopupType.connected)
-            //           : const SizedBox.shrink(),
-            // ),
-            // // Wrong password popup
-            // Obx(
-            //   () =>
-            //       controller.showWrongPasswordPopup.value
-            //           ? WifiPopup(
-            //             type: WifiPopupType.wrongPassword,
-            //             onClose: controller.closeWrongPasswordPopup,
-            //           )
-            //           : const SizedBox.shrink(),
-            

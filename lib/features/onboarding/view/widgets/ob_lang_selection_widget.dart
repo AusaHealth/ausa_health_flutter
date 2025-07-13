@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
@@ -25,20 +22,21 @@ class OnboardingLanguagePage extends StatelessWidget {
             horizontal: AppSpacing.xl6,
             vertical: AppSpacing.xl4,
           ),
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Language',
-                style: AppTypography.headlineSemibold(
-                  color: AppColors.textColor,
+                style: AppTypography.headline(
+                  weight: AppTypographyWeight.semibold,
                 ),
               ),
               SizedBox(height: AppSpacing.sm),
               Text(
                 'Choose the language familiar to you',
-                style: AppTypography.calloutMedium(
-                  color: AppColors.textlightColor,
+                style: AppTypography.callout(
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ],
@@ -89,7 +87,8 @@ class OnboardingLanguagePage extends StatelessWidget {
               SizedBox(height: 12),
               Text(
                 'Tap to speak / Toca para hablar / 点击说话',
-                style: AppTypography.bodyMedium(
+                style: AppTypography.body(
+                  weight: AppTypographyWeight.regular,
                   color: AppColors.textlightColor,
                 ),
               ),
@@ -142,15 +141,18 @@ class LanguageCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Image.asset(
                 flagImage,
-                width: DesignScaleManager.scaleValue(200),
-                height: DesignScaleManager.scaleValue(200),
+                width: DesignScaleManager.scaleValue(150),
+                height: DesignScaleManager.scaleValue(150),
                 fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               language,
-              style: AppTypography.bodyMedium(color: AppColors.bodyTextColor),
+              style: AppTypography.body(
+                weight: AppTypographyWeight.medium,
+                color: AppColors.bodyTextColor,
+              ),
             ),
           ],
         ),

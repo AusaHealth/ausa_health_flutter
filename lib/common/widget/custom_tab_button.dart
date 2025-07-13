@@ -1,4 +1,7 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +26,13 @@ class CustomTabButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        duration: const Duration(milliseconds: 100),
+        padding: EdgeInsets.only(
+          left: AppSpacing.lg,
+          top: AppSpacing.lg,
+          bottom: AppSpacing.lg,
+          right: AppSpacing.xl2,
+        ),
         decoration: BoxDecoration(
           gradient:
               selected
@@ -41,34 +49,39 @@ class CustomTabButton extends StatelessWidget {
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),
-          borderRadius: BorderRadius.circular(60),
-          boxShadow:
-              selected
-                  ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: Offset(0, 10),
-                    ),
-                  ]
-                  : [],
+          borderRadius: BorderRadius.circular(AppRadius.xl2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              spreadRadius: 0,
+
+              offset: Offset(0, 6),
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               selected ? selectedImagePath : unselectedImagePath,
-              width: 28,
-              height: 28,
+              width: DesignScaleManager.scaleValue(48),
+              height: DesignScaleManager.scaleValue(48),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: AppSpacing.smMedium),
             Text(
               label,
 
               style:
                   selected
-                      ? AppTypography.bodySemibold(color: Colors.white)
-                      : AppTypography.bodyRegular(color: Colors.black),
+                      ? AppTypography.body(
+                        weight: AppTypographyWeight.semibold,
+                        color: Colors.white,
+                      )
+                      : AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: Colors.black,
+                      ),
             ),
           ],
         ),

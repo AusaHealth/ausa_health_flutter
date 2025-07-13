@@ -338,7 +338,7 @@ class TestResultsPage extends StatelessWidget {
               Expanded(
                 child: AusaButton(
                   text: 'Finish',
-                  borderRadius: 40,
+
                   height: 50,
                   onPressed: () {
                     controller.resetSelections();

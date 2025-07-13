@@ -39,11 +39,13 @@ class _OnScreenKeyboardWidgetState extends State<OnScreenKeyboardWidget> {
       color: widget.color,
       child: VirtualKeyboard(
         fontSize: 16,
-        height: 300,
+        height: 250,
         textColor: Colors.black,
         textController: _controller,
+
         defaultLayouts: [VirtualKeyboardDefaultLayouts.English],
         type: widget.type,
+
         postKeyPress: (key) {
           print(key);
         },

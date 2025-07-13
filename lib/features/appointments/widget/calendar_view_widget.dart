@@ -46,10 +46,8 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
               AusaButton(
                 text: 'Week View',
                 onPressed: widget.onBackToWeekView,
-                variant: ButtonVariant.link,
-                icon: Icons.calendar_view_week,
+
                 textColor: AppColors.primary700,
-                iconColor: AppColors.primary700,
               ),
             ],
           ),

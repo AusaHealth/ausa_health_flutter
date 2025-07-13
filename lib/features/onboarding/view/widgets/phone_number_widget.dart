@@ -30,14 +30,15 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
         children: [
           Text(
             'Phone Number',
-            style: AppTypography.headlineSemibold(
+            style: AppTypography.headline(
+              weight: AppTypographyWeight.semibold,
               color: AppColors.bodyTextLightColor,
             ),
           ),
           SizedBox(height: AppSpacing.sm),
           Text(
             'Your phone number is required for verification',
-            style: AppTypography.calloutMedium(color: AppColors.bodyTextColor),
+            style: AppTypography.callout(weight: AppTypographyWeight.medium),
           ),
           SizedBox(height: AppSpacing.xl2),
           Obx(() {
@@ -79,8 +80,8 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
           }),
           SizedBox(height: 20),
           Expanded(child: SizedBox()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+          Align(
+            alignment: Alignment.bottomRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -88,17 +89,15 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
                   backgroundColor: AppColors.primary700,
                   textColor: Colors.white,
 
-                  borderRadius: 60,
                   onPressed: () {
                     controller.completeStep(OnboardingStep.phone);
                     controller.goToStep(OnboardingStep.otp);
                   },
-                  text: 'SEND OTP',
+                  text: 'Send OTP',
                 ),
               ],
             ),
           ),
-          SizedBox(height: 40),
         ],
       ),
     );
@@ -150,9 +149,6 @@ class PhoneInputField extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.7),
         borderRadius: BorderRadius.circular(40),
-        // boxShadow: [
-        //   BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
-        // ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
       child: Row(

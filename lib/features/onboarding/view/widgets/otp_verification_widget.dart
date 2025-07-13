@@ -55,37 +55,27 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
             children: [
               Text(
                 'Phone Number',
-                style: AppTypography.bodyBold(
-                  color: AppColors.bodyTextLightColor,
+                style: AppTypography.headline(
+                  weight: AppTypographyWeight.semibold,
                 ),
               ),
-              TextButton.icon(
+              AusaButton(
+                textColor: AppColors.primary500,
+                borderColor: Colors.transparent,
+                leadingIcon: Icon(Icons.apps, color: Color(0xFF3CB2FF)),
+                variant: ButtonVariant.secondary,
                 onPressed: () {
                   Get.to(() => PhoneNumberInputModal());
                 },
-                icon: Icon(Icons.apps, color: Color(0xFF3CB2FF)),
-                label: Text(
-                  'Choose another number',
-                  style: AppTypography.bodyMedium(color: Color(0xFF3CB2FF)),
-                ),
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white.withOpacity(0.7),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 28,
-                    vertical: 12,
-                  ),
-                ),
+                text: 'Choose another number',
               ),
             ],
           ),
-          const SizedBox(height: 8),
           Obx(() {
             return Text(
               'Enter code sent to ${controller.phoneController.value.text}',
-              style: AppTypography.calloutMedium(
+              style: AppTypography.callout(
+                weight: AppTypographyWeight.medium,
                 color: AppColors.bodyTextColor,
               ),
             );
@@ -170,8 +160,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 AusaButton(
-                  width: 180,
-                  borderRadius: 60,
+                  width: 160,
                   onPressed: () {
                     controller.completeStep(OnboardingStep.otp);
                     controller.goToStep(OnboardingStep.personalDetails);

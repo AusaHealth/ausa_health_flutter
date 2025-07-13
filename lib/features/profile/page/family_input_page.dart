@@ -203,7 +203,7 @@ class _FamilyInputPageState extends State<FamilyInputPage> {
                 children: [
                   AusaButton(
                     width: 100,
-                    borderRadius: 60,
+
                     onPressed: () {
                       Get.back();
                     },

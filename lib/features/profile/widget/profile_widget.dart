@@ -1,6 +1,5 @@
-import 'package:ausa/constants/radius.dart';
-import 'package:ausa/constants/spacing.dart';
-import 'package:ausa/constants/typography.dart';
+import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/features/profile/page/edit_contact_page.dart';
 import 'package:ausa/features/profile/page/edit_personal_page.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
@@ -26,8 +25,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         Expanded(
           flex: 1,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: Image.asset('assets/images/profile.png', fit: BoxFit.fill),
+            borderRadius: BorderRadius.circular(AppRadius.xl3),
+            child: Image.asset(
+              'assets/images/profile.png',
+              fit: BoxFit.fill,
+              height: 760,
+            ),
           ),
         ),
         SizedBox(width: AppSpacing.lg),
@@ -39,7 +42,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: Get.width * 0.22,
+                height: DesignScaleManager.scaleValue(96),
+                width: DesignScaleManager.scaleValue(488),
                 child: HorizontalTabBar(
                   items: ['Personal', 'Contact'],
                   selectedIndex: showPersonal ? 0 : 1,
@@ -48,16 +52,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.smMedium),
+              SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: Stack(
                   children: [
                     Container(
                       padding: EdgeInsets.only(
                         left: AppSpacing.xl4,
-                        right: AppSpacing.xl7,
-                        top: AppSpacing.xl,
-                        bottom: AppSpacing.sm,
+                        right: AppSpacing.xl4,
+                        top: AppSpacing.xl4,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -82,30 +85,49 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       ),
                     ),
                     Positioned(
-                      right: 40,
-                      top: 20,
-                      child: InkWell(
-                        onTap: () {
+                      right: AppSpacing.xl,
+                      top: 14,
+                      child: AusaButton(
+                        height: DesignScaleManager.scaleValue(100),
+                        onPressed: () {
                           if (showPersonal) {
                             Get.to(() => EditPersonalPage());
                           } else {
                             Get.to(() => EditContactPage());
                           }
                         },
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit, color: Colors.blue, size: 16),
-                            SizedBox(width: 8),
-                            Text(
-                              'Edit',
-                              style: AppTypography.callout(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                        variant: ButtonVariant.tertiary,
+                        leadingIcon: Icon(
+                          Icons.edit,
+                          size: 16,
+                          color: AppColors.primary500,
                         ),
+
+                        text: 'Edit',
                       ),
+
+                      // InkWell(
+                      //   onTap: () {
+                      //
+                      //   },
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(
+                      //         Icons.edit,
+                      //         color: Colors.blue,
+                      //         size: AppSpacing.xl,
+                      //       ),
+                      //       SizedBox(width: AppSpacing.sm),
+                      //       Text(
+                      //         'Edit',
+                      //         style: AppTypography.callout(
+                      //           color: Colors.blue,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ),
                   ],
                 ),
@@ -171,7 +193,7 @@ class _PersonalDetails extends StatelessWidget {
 
               _ProfileDetail(label: 'Height', value: '5\'8\"'),
 
-              _ProfileDetail(label: 'BMI', value: '26.8'),
+              _ProfileDetail(label: 'BMI', value: '26.8', isLast: true),
             ],
           ),
         ),
@@ -182,7 +204,7 @@ class _PersonalDetails extends StatelessWidget {
             children: const [
               _ProfileDetail(label: 'Birthday', value: 'July 23, 1980'),
               _ProfileDetail(label: 'Gender', value: 'F'),
-              _ProfileDetail(label: 'Weight', value: '176 lbs'),
+              _ProfileDetail(label: 'Weight', value: '176 lbs', isLast: true),
             ],
           ),
         ),
@@ -229,8 +251,13 @@ class _ContactDetails extends StatelessWidget {
 class _ProfileDetail extends StatelessWidget {
   final String label;
   final String value;
+  final bool isLast;
 
-  const _ProfileDetail({required this.label, required this.value});
+  const _ProfileDetail({
+    required this.label,
+    required this.value,
+    this.isLast = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -239,19 +266,14 @@ class _ProfileDetail extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppTypography.callout(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-          ).copyWith(fontSize: 11),
+          style: AppTypography.callout(weight: AppTypographyWeight.regular),
         ),
-        SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.mdLarge),
         Text(
           value,
-          style: AppTypography.body(
-            fontWeight: FontWeight.w500,
-          ).copyWith(fontSize: 14),
+          style: AppTypography.body(weight: AppTypographyWeight.semibold),
         ),
-        SizedBox(height: AppSpacing.xl),
+        if (!isLast) SizedBox(height: AppSpacing.xl2),
       ],
     );
   }

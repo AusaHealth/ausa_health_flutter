@@ -17,7 +17,10 @@ class SwitchTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(title, style: AppTypography.bodyRegular()),
+        Text(
+          title,
+          style: AppTypography.body(weight: AppTypographyWeight.regular),
+        ),
         SizedBox(width: 24),
         Expanded(
           child: Container(
@@ -31,14 +34,16 @@ class SwitchTabWidget extends StatelessWidget {
         SizedBox(width: 24),
         Padding(
           padding: const EdgeInsets.only(top: 4),
-          child: Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: AppColors.white,
-            activeTrackColor: AppColors.primary500,
-            trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-            inactiveTrackColor: const Color(0xFFE9E9E9),
-            inactiveThumbColor: Colors.white,
+          child: SizedBox(
+            child: Switch(
+              value: value,
+              onChanged: onChanged,
+              activeColor: AppColors.white,
+              activeTrackColor: AppColors.primary500,
+              trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
+              inactiveTrackColor: const Color(0xFFE9E9E9),
+              inactiveThumbColor: Colors.white,
+            ),
           ),
         ),
       ],

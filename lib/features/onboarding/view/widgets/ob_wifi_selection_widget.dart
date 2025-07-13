@@ -50,19 +50,20 @@ class OnboardingWifiPage extends StatelessWidget {
         children: [
           Text(
             'Wi-Fi',
-            style: AppTypography.headlineSemibold(
-              color: AppColors.bodyTextLightColor,
-            ),
+            style: AppTypography.headline(weight: AppTypographyWeight.semibold),
           ),
           SizedBox(height: AppSpacing.sm),
           Text(
             'Select your Wi-Fi network',
-            style: AppTypography.calloutMedium(color: AppColors.bodyTextColor),
+            style: AppTypography.callout(weight: AppTypographyWeight.regular),
           ),
           SizedBox(height: AppSpacing.xl2),
           Text(
             'Available networks',
-            style: AppTypography.calloutRegular(color: Color(0xFF828282)),
+            style: AppTypography.callout(
+              color: Color(0xFF828282),
+              weight: AppTypographyWeight.medium,
+            ),
           ),
           SizedBox(height: AppSpacing.sm),
           Expanded(

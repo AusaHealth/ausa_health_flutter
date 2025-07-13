@@ -118,8 +118,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       AusaButton(
                         text: 'Change',
                         onPressed: controller.goBackToStep1,
-                        variant: ButtonVariant.link,
-                        iconSize: 16,
+
                         height: 40,
                       ),
                       const SizedBox(width: 20),
@@ -194,7 +193,6 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       variant: ButtonVariant.primary,
                       width: double.infinity,
                       height: 56,
-                      borderRadius: 32,
                     ),
                   ),
                 ),
@@ -268,10 +266,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   isEnabled: controller.selectedTimeSlot != null,
                   variant: ButtonVariant.primary,
                   width: double.infinity,
-                  icon: Icons.arrow_forward,
-                  iconOnLeft: false,
+
                   height: 56,
-                  borderRadius: 32,
                 ),
               ),
             ],
@@ -298,10 +294,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
               AusaButton(
                 text: 'Month View',
                 onPressed: controller.toggleMonthView,
-                variant: ButtonVariant.link,
-                icon: Icons.calendar_view_month,
+
                 textColor: AppColors.primary700,
-                iconColor: AppColors.primary700,
               ),
             ],
           ),
@@ -328,14 +322,9 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    variant: ButtonVariant.selection,
-                    isSelected: isSelected,
+
                     isEnabled: timeSlot.isAvailable,
-                    onSelectionChanged: (selected) {
-                      if (selected) {
-                        controller.selectTimeSlot(timeSlot);
-                      }
-                    },
+                    onPressed: () => controller.selectTimeSlot(timeSlot),
                   );
                 },
               ),
@@ -475,7 +464,6 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 isEnabled: controller.canFinish,
                 variant: ButtonVariant.primary,
                 height: 56,
-                borderRadius: 32,
               ),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
@@ -24,11 +25,9 @@ class ObPersonalDetailWidget extends StatelessWidget {
         children: [
           Text(
             'Personal Details',
-            style: AppTypography.body(
-              color: AppColors.bodyTextLightColor,
-            ).copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+            style: AppTypography.headline(weight: AppTypographyWeight.semibold),
           ),
-          SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.sm),
           Text(
             'Let’s this device to your name.',
             style: AppTypography.callout(),
@@ -122,8 +121,7 @@ class ObPersonalDetailWidget extends StatelessWidget {
           Align(
             alignment: Alignment.bottomRight,
             child: AusaButton(
-              width: 130,
-              borderRadius: 60,
+              trailingIcon: Icon(Icons.arrow_forward, color: Colors.white),
               onPressed: () {
                 controller.completeStep(OnboardingStep.personalDetails);
                 controller.goToStep(OnboardingStep.terms);
@@ -148,6 +146,7 @@ class ObPersonalDetailWidget extends StatelessWidget {
         Text(label, style: AppTypography.callout(color: AppColors.textColor)),
         SizedBox(height: 8),
         Container(
+          height: DesignScaleManager.scaleValue(80),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppRadius.xl2),
@@ -162,10 +161,7 @@ class ObPersonalDetailWidget extends StatelessWidget {
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               border: InputBorder.none,
             ),
             style: TextStyle(fontSize: 14, color: Colors.black87),
