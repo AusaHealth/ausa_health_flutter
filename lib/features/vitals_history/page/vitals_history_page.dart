@@ -97,7 +97,9 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
         child: Column(
           children: [
             // Header
-            const AppBackHeader(title: 'Vitals'),
+            AppBackHeader(
+              title: 'Vitals',
+            ),
 
             // Tab buttons
             Obx(

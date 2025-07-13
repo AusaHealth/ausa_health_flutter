@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/app_stepper_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
@@ -97,7 +98,10 @@ class AppointmentEditPage extends StatelessWidget {
       children: [
         AppBackHeader(
           title: 'Pick another date',
-          currentStep: controller.currentStep,
+          stepperWidget: AppStepperWidget(
+            currentStep: controller.currentStep,
+            totalSteps: 2,
+          ),
           onBackPressed: controller.handleBackPressed,
         ),
 
@@ -268,7 +272,10 @@ class AppointmentEditPage extends StatelessWidget {
                 ),
               ),
               Padding(
-              padding: EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+                padding: EdgeInsets.only(
+                  bottom: AppSpacing.xl4,
+                  top: AppSpacing.xl2,
+                ),
                 child: AusaButton(
                   text: 'Enter Symptoms',
                   onPressed:
@@ -276,15 +283,21 @@ class AppointmentEditPage extends StatelessWidget {
                           ? controller.goToStep2
                           : null,
                   isEnabled: controller.selectedTimeSlot != null,
-                     leadingIcon: Icon(
+                  leadingIcon: Icon(
                     Icons.keyboard,
                     size: 20,
-                    color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                    color:
+                        controller.selectedTimeSlot != null
+                            ? Colors.white
+                            : Colors.grey[600],
                   ),
                   trailingIcon: Icon(
                     Icons.arrow_forward,
                     size: 20,
-                    color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                    color:
+                        controller.selectedTimeSlot != null
+                            ? Colors.white
+                            : Colors.grey[600],
                   ),
                   height: 56,
                 ),
@@ -344,11 +357,11 @@ class AppointmentEditPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    backgroundColor: isSelected
-                        ? AppColors.black
-                        : AppColors.primary25,
+                    backgroundColor:
+                        isSelected ? AppColors.black : AppColors.primary25,
                     borderColor: AppColors.primary25,
-                    textColor: isSelected ? AppColors.white : AppColors.primary700,
+                    textColor:
+                        isSelected ? AppColors.white : AppColors.primary700,
                     variant:
                         isSelected
                             ? ButtonVariant.primary
@@ -491,7 +504,10 @@ class AppointmentEditPage extends StatelessWidget {
             ),
           ),
           Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+            padding: EdgeInsets.only(
+              bottom: AppSpacing.xl4,
+              top: AppSpacing.xl2,
+            ),
             child: Center(child: Obx(() => _buildFinishButton(controller))),
           ),
         ],

@@ -33,7 +33,24 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBackHeader(title: 'Media', onBackPressed: () => Get.back()),
+            AppBackHeader(
+              title: 'Media',
+              onBackPressed: () => Get.back(),
+              actionButtons: [
+                IconButton(
+                  icon: Icon(Icons.download, color: Colors.grey[600]),
+                  onPressed: () {
+                    // Add download functionality
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.share, color: Colors.grey[600]),
+                  onPressed: () {
+                    // Add share functionality
+                  },
+                ),
+              ],
+            ),
             Obx(
               () => Padding(
                 padding: EdgeInsets.symmetric(
@@ -95,9 +112,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                       SizedBox(width: AppSpacing.md),
                       Text(
                         'Select',
-                        style: AppTypography.body(
-                          color: AppColors.primary700,
-                        ),
+                        style: AppTypography.body(color: AppColors.primary700),
                       ),
                     ],
                   ),
@@ -152,7 +167,6 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
         bottom: AppSpacing.xl,
         left: AppSpacing.xl,
         right: AppSpacing.xl,
-        
       ),
       itemCount: sortedDateKeys.length,
       itemBuilder: (context, index) {
@@ -177,9 +191,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
 
   Widget _buildReadingsGrid(List<MediaTestReading> readings) {
     return Container(
-      padding: EdgeInsets.only(
-        top: AppSpacing.lg,
-      ),
+      padding: EdgeInsets.only(top: AppSpacing.lg),
       child: GridView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),

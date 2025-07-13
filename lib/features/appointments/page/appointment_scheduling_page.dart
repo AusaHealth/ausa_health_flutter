@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/app_stepper_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/typography.dart';
@@ -51,7 +52,18 @@ class AppointmentSchedulingPage extends StatelessWidget {
     return Column(
       children: [
         // _buildHeader(controller),
-        const AppBackHeader(title: 'Connect with care team'),
+        Obx(
+          () => AppBackHeader(
+            title: 'Connect with care team',
+            stepperWidget:
+                controller.isMonthView
+                    ? AppStepperWidget(
+                      currentStep: controller.currentStep,
+                      totalSteps: 2,
+                    )
+                    : null,
+          ),
+        ),
         AppMainContainer(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,9 +82,11 @@ class AppointmentSchedulingPage extends StatelessWidget {
     return Column(
       children: [
         AppBackHeader(
-          title: 'Pick another date',
-          currentStep: controller.currentStep,
-          totalSteps: 2,
+          title: 'Connect with care team',
+          stepperWidget: AppStepperWidget(
+            currentStep: controller.currentStep,
+            totalSteps: 2,
+          ),
           onBackPressed: controller.handleBackPressed,
         ),
 
@@ -256,7 +270,10 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+                padding: EdgeInsets.only(
+                  bottom: AppSpacing.xl4,
+                  top: AppSpacing.xl2,
+                ),
                 child: Center(
                   child: AusaButton(
                     text: 'Enter Symptoms',
@@ -269,12 +286,18 @@ class AppointmentSchedulingPage extends StatelessWidget {
                     leadingIcon: Icon(
                       Icons.keyboard,
                       size: 20,
-                      color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                      color:
+                          controller.selectedTimeSlot != null
+                              ? Colors.white
+                              : Colors.grey[600],
                     ),
                     trailingIcon: Icon(
                       Icons.arrow_forward,
                       size: 20,
-                      color: controller.selectedTimeSlot != null ? Colors.white : Colors.grey[600],
+                      color:
+                          controller.selectedTimeSlot != null
+                              ? Colors.white
+                              : Colors.grey[600],
                     ),
                     height: 56,
                   ),
@@ -337,11 +360,11 @@ class AppointmentSchedulingPage extends StatelessWidget {
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
                     text: timeSlot.formattedTime,
-                    backgroundColor: isSelected
-                        ? AppColors.black
-                        : AppColors.primary25,
+                    backgroundColor:
+                        isSelected ? AppColors.black : AppColors.primary25,
                     borderColor: AppColors.primary25,
-                    textColor: isSelected ? AppColors.white : AppColors.primary700,
+                    textColor:
+                        isSelected ? AppColors.white : AppColors.primary700,
                     variant:
                         isSelected
                             ? ButtonVariant.primary
@@ -478,7 +501,10 @@ class AppointmentSchedulingPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:  EdgeInsets.only(bottom: AppSpacing.xl4,top: AppSpacing.xl2),
+            padding: EdgeInsets.only(
+              bottom: AppSpacing.xl4,
+              top: AppSpacing.xl2,
+            ),
             child: Center(
               child: Obx(
                 () => AusaButton(
