@@ -29,13 +29,27 @@ class HealthSchedulePage extends StatelessWidget {
 
                 // Tab buttons
                 Obx(
-                  () => AppTabButtons(
-                    tabs: const [
-                      AppTabData(text: 'Routine', icon: Icons.person),
-                      AppTabData(text: 'Medication', icon: Icons.medication),
-                    ],
-                    selectedIndex: controller.currentTabIndex,
-                    onTabSelected: (index) => controller.switchTab(index),
+                  () => Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl6,
+                      vertical: AppSpacing.lg,
+                    ),
+                    child: Row(
+                      children: [
+                        AppTabButton(
+                          text: 'Routine',
+                          icon: Icons.person,
+                          isSelected: controller.currentTabIndex == 0,
+                          onTap: () => controller.switchTab(0),
+                        ),
+                        AppTabButton(
+                          text: 'Medication',
+                          icon: Icons.medication,
+                          isSelected: controller.currentTabIndex == 1,
+                          onTap: () => controller.switchTab(1),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -59,59 +73,60 @@ class HealthSchedulePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(AppRadius.xl2),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xl4,
-                            vertical: AppSpacing.xl,
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(height: AppSpacing.lg),
-
-                              // Edit meal times button (only for routine tab)
-                              controller.currentTabIndex == 0
-                                  ? _buildEditMealTimesButton(controller)
-                                  : Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: AppSpacing.md,
-                                        vertical: AppSpacing.sm,
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.edit,
-                                            color: Colors.transparent,
-                                            size: 16,
-                                          ),
-                                          SizedBox(width: AppSpacing.md),
-                                          Text(
-                                            'Meal Times',
-                                            style: AppTypography.callout(
-                                              color: Colors.transparent,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-
-                              SizedBox(height: AppSpacing.lg),
-
-                              // Content based on selected tab
-                              Expanded(
-                                child: Obx(
-                                  () =>
-                                      controller.currentTabIndex == 0
-                                          ? _buildTimelineContent(controller)
-                                          : _buildMedicationContent(controller),
-                                ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
                               ),
                             ],
                           ),
+                          padding: EdgeInsets.only(
+                            left: AppSpacing.xl4,
+                            right: AppSpacing.xl4,
+                            top: AppSpacing.xl,
+                          ),
+                          // Use a Stack to keep the "Meal Times" button fixed while the list scrolls
+                          child: Obx(() {
+                            final bool isRoutineTab =
+                                controller.currentTabIndex == 0;
+
+                            return Stack(
+                              children: [
+                                // Main scrollable / tab content with top padding so it doesn't get hidden beneath the floating button.
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: isRoutineTab ? AppSpacing.xl4 : 0,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child:
+                                            isRoutineTab
+                                                ? _buildTimelineContent(
+                                                  controller,
+                                                )
+                                                : _buildMedicationContent(
+                                                  controller,
+                                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // Floating "Meal Times" button – only visible on the Routine tab
+                                if (isRoutineTab)
+                                  Positioned(
+                                    top:
+                                        10, // aligns visually with the first timeline tag
+                                    right: 0,
+                                    child: _buildEditMealTimesButton(
+                                      controller,
+                                    ),
+                                  ),
+                              ],
+                            );
+                          }),
                         ),
                       ),
                     ],
@@ -146,9 +161,9 @@ class HealthSchedulePage extends StatelessWidget {
               SizedBox(width: AppSpacing.md),
               Text(
                 'Meal Times',
-                style: AppTypography.callout(
+                style: AppTypography.body(
                   color: AppColors.primary700,
-                  fontWeight: FontWeight.w500,
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ],

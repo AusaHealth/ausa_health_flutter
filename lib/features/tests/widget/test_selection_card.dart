@@ -52,7 +52,7 @@ class TestSelectionCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     test.name,
-                    style: AppTypography.callout(fontWeight: FontWeight.w600),
+                    style: AppTypography.body(fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

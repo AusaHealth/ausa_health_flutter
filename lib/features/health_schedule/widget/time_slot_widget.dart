@@ -25,7 +25,7 @@ class TimeSlotWidget extends StatelessWidget {
           // Time slot header
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
+              horizontal: AppSpacing.lg,
               vertical: AppSpacing.sm,
             ),
             decoration: BoxDecoration(

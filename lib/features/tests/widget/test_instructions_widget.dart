@@ -355,67 +355,32 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
     required VoidCallback? onPressed,
     required bool isEnabled,
   }) {
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color:
-            isEnabled
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: isEnabled ? onPressed : null,
+        child: Container(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isEnabled
                 ? AppColors.primary700.withValues(alpha: 0.1)
-                : Colors.grey[100],
-        border: Border.all(
-          color:
-              isEnabled
-                  ? AppColors.primary700.withValues(alpha: 0.3)
-                  : Colors.grey[300]!,
-        ),
-      ),
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
-          size: 12,
-          color: isEnabled ? AppColors.primary700 : Colors.grey[400],
+                : const Color.fromARGB(255, 238, 238, 238),
+          ),
+          child: Center(
+            child: Icon(
+              icon,
+              size: 12,
+              color: isEnabled ? AppColors.primary700 : Colors.grey[400],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildNavigationButton({
-    required IconData icon,
-    required VoidCallback? onPressed,
-    required bool isEnabled,
-  }) {
-    return Container(
-      width: 36,
-      height: 36,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color:
-            isEnabled
-                ? AppColors.primary700.withValues(alpha: 0.1)
-                : Colors.grey[100],
-        border: Border.all(
-          color:
-              isEnabled
-                  ? AppColors.primary700.withValues(alpha: 0.3)
-                  : Colors.grey[300]!,
-        ),
-      ),
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
-          size: 16,
-          color: isEnabled ? AppColors.primary700 : Colors.grey[400],
-        ),
-      ),
-    );
-  }
-
+  
   Widget _buildFallbackCollapsed() {
     return Padding(
       padding: const EdgeInsets.all(16),

@@ -37,7 +37,11 @@ class ReadingCardWidget extends StatelessWidget {
       onDoubleTap: onDoubleTap,
       child: Container(
         margin: EdgeInsets.only(bottom: AppSpacing.lg),
-        padding: EdgeInsets.all(AppSpacing.lg),
+        padding: EdgeInsets.only(
+          right: AppSpacing.lg,
+          top: AppSpacing.lg,
+          bottom: AppSpacing.lg
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -77,18 +81,24 @@ class ReadingCardWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          flex: 1,
-          child: Text(
-            _formatTime(),
-            style: AppTypography.callout(
-              color: Color(0xFF415981),
-              fontWeight: FontWeight.w400,
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 0,
+              vertical: AppSpacing.md,
+            ),
+            child: Text(
+              _formatTime(),
+              style: AppTypography.callout(
+                color: Color(0xFF415981),
+                weight: AppTypographyWeight.medium,
+              ),
             ),
           ),
         ),
         SizedBox(height: AppSpacing.sm),
         Expanded(
-          flex: 2,
+          flex: 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: _buildVitalSpecificData(),
@@ -120,36 +130,49 @@ class ReadingCardWidget extends StatelessWidget {
         () => GestureDetector(
           onTap: () => onParameterTap?.call('Systolic'),
           child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
-            ),
+            
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Systolic') == true ||
                           isParameterSelected?.call('Diastolic') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
             child: Row(
               children: [
-                _buildDataPoint(
-                  'BP Systolic',
-                  '${bpReading.systolic}',
-                  'mmHg',
-                  isHighlighted:
-                      isParameterSelected?.call('Systolic') == true ||
-                      isParameterSelected?.call('Diastolic') == true,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl,
+                      vertical: AppSpacing.lg,
+                    ),
+                    child: _buildDataPoint(
+                      'BP Systolic',
+                      '${bpReading.systolic}',
+                      'mmHg',
+                      isHighlighted:
+                          isParameterSelected?.call('Systolic') == true ||
+                          isParameterSelected?.call('Diastolic') == true,
+                    ),
+                  ),
                 ),
-                SizedBox(width: AppSpacing.xl),
-                _buildDataPoint(
-                  'BP Diastolic',
-                  '${bpReading.diastolic}',
-                  'mmHg',
-                  isHighlighted:
-                      isParameterSelected?.call('Systolic') == true ||
-                      isParameterSelected?.call('Diastolic') == true,
+                // SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.md,
+                    ),
+                    child: _buildDataPoint(
+                      'BP Diastolic',
+                      '${bpReading.diastolic}',
+                      'mmHg',
+                      isHighlighted:
+                          isParameterSelected?.call('Systolic') == true ||
+                          isParameterSelected?.call('Diastolic') == true,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -165,13 +188,13 @@ class ReadingCardWidget extends StatelessWidget {
                 onTap: () => onParameterTap?.call('MAP'),
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
+                    horizontal: AppSpacing.xl,
+                    vertical: AppSpacing.lg,
                   ),
                   decoration: BoxDecoration(
                     color:
                         isParameterSelected?.call('MAP') == true
-                            ? AppColors.primary700.withOpacity(0.1)
+                            ? Color(0xFFFFF7DE)
                             : null,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
@@ -185,7 +208,7 @@ class ReadingCardWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: AppSpacing.md),
+          // SizedBox(width: AppSpacing.md),
           Expanded(
             child: Obx(
               () => GestureDetector(
@@ -198,7 +221,7 @@ class ReadingCardWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         isParameterSelected?.call('Pulse Pressure') == true
-                            ? AppColors.primary700.withOpacity(0.1)
+                            ? Color(0xFFFFF7DE)
                             : null,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
@@ -232,7 +255,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('SpO2') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -262,7 +285,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Glucose Level') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -305,7 +328,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Temperature') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -336,7 +359,7 @@ class ReadingCardWidget extends StatelessWidget {
               color:
                   isParameterSelected?.call('ECG Heart Rate') == true ||
                           isParameterSelected?.call('Rhythm') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -376,7 +399,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Duration') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -405,7 +428,7 @@ class ReadingCardWidget extends StatelessWidget {
           label,
           style: AppTypography.callout(
             color: Color(0xFF415981),
-            fontWeight: FontWeight.w400,
+            weight: AppTypographyWeight.medium,
           ),
         ),
         SizedBox(height: AppSpacing.xs),
@@ -417,17 +440,17 @@ class ReadingCardWidget extends StatelessWidget {
               value,
               style: AppTypography.body(
                 color: isHighlighted ? AppColors.primary700 : _getValueColor(),
-                fontWeight: FontWeight.w600,
+                weight: AppTypographyWeight.bold,
               ),
             ),
             if (unit.isNotEmpty) ...[
               SizedBox(width: AppSpacing.xs),
               Text(
                 unit,
-                style: AppTypography.callout(
+                style: AppTypography.body(
                   color:
                       isHighlighted ? AppColors.primary700 : _getValueColor(),
-                  fontWeight: FontWeight.w400,
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ],

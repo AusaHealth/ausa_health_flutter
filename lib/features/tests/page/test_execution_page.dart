@@ -338,7 +338,6 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                             variant: ButtonVariant.primary,
                             backgroundColor: Colors.orange,
                             textColor: Colors.white,
-
                             text: "Stop Test",
                           )
                           : const SizedBox(),

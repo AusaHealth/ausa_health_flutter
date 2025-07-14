@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
@@ -21,7 +22,19 @@ class ScheduledAppointmentsPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const AppBackHeader(title: 'Scheduled appointments'),
+            AppBackHeader(
+              title: 'Scheduled appointments',
+              actionButtons: [
+                AusaButton(
+                  text: 'New Appointment',
+                  onPressed: controller.navigateToScheduleAppointment,
+                  variant: ButtonVariant.secondary,
+                  borderColor: AppColors.white,
+                  leadingIcon: const Icon(Icons.calendar_month, size: 20, color: AppColors.primary700),
+                  size: ButtonSize.md,
+                ),
+              ]
+              ),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading) {
@@ -76,7 +89,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
             text: 'New Appointment',
             onPressed: controller.navigateToScheduleAppointment,
             variant: ButtonVariant.secondary,
-
+            leadingIcon: Icon(Icons.add, size: 16, color: AppColors.primary700),
             height: 40,
           ),
         ],

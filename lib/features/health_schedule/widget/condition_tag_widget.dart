@@ -17,7 +17,7 @@ class ConditionTagWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
      padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
+              horizontal: AppSpacing.xl,
               vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(

@@ -17,10 +17,15 @@ class MedicationCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: AppSpacing.lg),
-      padding: EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.only(
+        left: AppSpacing.xl3,
+        right: AppSpacing.xl3,
+        top: AppSpacing.xl,
+        bottom: AppSpacing.xl6,
+      ),
       decoration: BoxDecoration(
-        color: Color(0xFF2978FB).withOpacity(0.02),
-        borderRadius: BorderRadius.circular(AppRadius.xl),
+        color: AppColors.primary25.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(AppRadius.xl2),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,23 +47,31 @@ class MedicationCardWidget extends StatelessWidget {
 
                 // Prescribed by
                 Text(
-                  'Prescribed by: ${medication.subtitle ?? 'Dr. Adnan'}',
+                  '${medication.subtitle}',
                   style: AppTypography.callout(
                     color: Colors.grey[600],
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: AppSpacing.sm),
+              ],
+            ),
+          ),
 
-                // Dosage
+          SizedBox(width: AppSpacing.lg),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Dosage
                 Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.xs,
+                    horizontal: AppSpacing.xl,
+                    vertical: AppSpacing.md,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xFFE8F4FD),
-                    borderRadius: BorderRadius.circular(AppRadius.md),
+                   borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
                   child: Text(
                     'Dosage: ${medication.dosage ?? '13.5 mg'}',
@@ -68,16 +81,12 @@ class MedicationCardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          SizedBox(width: AppSpacing.lg),
-
+                  SizedBox(width: AppSpacing.lg),
           // Frequency pill
-          Container(
+
+                Container(
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
+              horizontal: AppSpacing.xl,
               vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(
@@ -85,13 +94,16 @@ class MedicationCardWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.full),
             ),
             child: Text(
-              '3 Pills Everyday',
+              'Everyday',
               style: AppTypography.callout(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
+            ],
+          )
+          
         ],
       ),
     );

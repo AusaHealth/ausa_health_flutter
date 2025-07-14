@@ -78,6 +78,27 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    
+    - assets/icons/untitled_ui/Alerts & feedback/
+    - assets/icons/untitled_ui/Arrows/
+    - assets/icons/untitled_ui/Charts/
+    - assets/icons/untitled_ui/Communication/
+    - assets/icons/untitled_ui/Development/
+    - assets/icons/untitled_ui/Editor/
+    - assets/icons/untitled_ui/Education/
+    - assets/icons/untitled_ui/Files/
+    - assets/icons/untitled_ui/Finance & eCommerce/
+    - assets/icons/untitled_ui/general/
+    - assets/icons/untitled_ui/Images/
+    - assets/icons/untitled_ui/Layout/
+    - assets/icons/untitled_ui/Media & devices/
+    - assets/icons/untitled_ui/Security/
+    - assets/icons/untitled_ui/Shapes/
+    - assets/icons/untitled_ui/Time/
+    - assets/icons/untitled_ui/travel/
+    - assets/icons/untitled_ui/users/
+    - assets/icons/untitled_ui/Weather/
+
     - assets/icons/profile_icons/
     - assets/pre/
     - assets/products/

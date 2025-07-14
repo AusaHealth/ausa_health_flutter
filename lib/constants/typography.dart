@@ -37,23 +37,6 @@ class AppTypography {
     }
   }
 
-  /// Base method for creating text styles
-  static TextStyle _createTextStyle({
-    required double baseFontSize,
-    required AppTypographyWeight weight,
-    Color? color,
-    double? height,
-    TextDecoration? decoration,
-  }) {
-    return GoogleFonts.inter(
-      fontSize: DesignScaleManager.scaleValue(baseFontSize),
-      fontWeight: _getFlutterFontWeight(weight),
-      color: color ?? Colors.black,
-      height: height,
-      decoration: decoration,
-    );
-  }
-
   // ==================== LARGE TITLE METHODS ====================
 
   /// Large Title - 64px base (flexible method)
@@ -78,58 +61,6 @@ class AppTypography {
       decoration: decoration,
     );
   }
-
-  /// Large Title Regular - 64px base, regular weight
-  static TextStyle largeTitleRegular({
-    Color? color,
-    double? height = 1.2,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseLargeTitle,
-    weight: AppTypographyWeight.regular,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
-  /// Large Title Medium - 64px base, medium weight
-  static TextStyle largeTitleMedium({
-    Color? color,
-    double? height = 1.2,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseLargeTitle,
-    weight: AppTypographyWeight.medium,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
-  /// Large Title Semibold - 64px base, semibold weight
-  static TextStyle largeTitleSemibold({
-    Color? color,
-    double? height = 1.2,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseLargeTitle,
-    weight: AppTypographyWeight.semibold,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
-  /// Large Title Bold - 64px base, bold weight
-  static TextStyle largeTitleBold({
-    Color? color,
-    double? height = 1.2,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseLargeTitle,
-    weight: AppTypographyWeight.bold,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
 
   // ==================== TITLE 1 METHODS ====================
 
@@ -156,19 +87,6 @@ class AppTypography {
     );
   }
 
-  /// Title 1 Bold - 56px base, bold weight
-  static TextStyle title1Bold({
-    Color? color,
-    double? height = 1.2,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseTitle1,
-    weight: AppTypographyWeight.bold,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
   // ==================== TITLE 2 METHODS ====================
 
   /// Title 2 - 48px base (flexible method)
@@ -193,58 +111,6 @@ class AppTypography {
       decoration: decoration,
     );
   }
-
-  /// Title 2 Regular - 48px base, regular weight
-  static TextStyle title2Regular({
-    Color? color,
-    double? height = 1.25,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseTitle2,
-    weight: AppTypographyWeight.regular,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
-  /// Title 2 Medium - 48px base, medium weight
-  static TextStyle title2Medium({
-    Color? color,
-    double? height = 1.25,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseTitle2,
-    weight: AppTypographyWeight.medium,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
-  /// Title 2 Semibold - 48px base, semibold weight
-  static TextStyle title2Semibold({
-    Color? color,
-    double? height = 1.25,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseTitle2,
-    weight: AppTypographyWeight.semibold,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
-
-  /// Title 2 Bold - 48px base, bold weight
-  static TextStyle title2Bold({
-    Color? color,
-    double? height = 1.25,
-    TextDecoration? decoration,
-  }) => _createTextStyle(
-    baseFontSize: _baseTitle2,
-    weight: AppTypographyWeight.bold,
-    color: color,
-    height: height,
-    decoration: decoration,
-  );
 
   // ==================== HEADLINE METHODS ====================
 
@@ -296,6 +162,8 @@ class AppTypography {
     );
   }
 
+  // ==================== CALLOUT METHODS ====================
+
   /// Callout - 24px base (flexible method)
   static TextStyle callout({
     Color? color,
@@ -318,4 +186,6 @@ class AppTypography {
       decoration: decoration,
     );
   }
+
+
 }

@@ -46,8 +46,9 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                   Obx(
                     () => Text(
                       '${(settingController.brightness.value * 100).round()} %',
-                      style: AppTypography.largeTitleRegular(
+                      style: AppTypography.title1(
                         color: AppColors.primary500,
+                        weight: AppTypographyWeight.regular,
                       ),
                     ),
                   ),

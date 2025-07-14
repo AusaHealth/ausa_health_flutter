@@ -26,6 +26,11 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
   // Generic parameter selection storage
   final RxMap<String, String> selectedParameters = <String, String>{}.obs;
 
+  // Scrollbar state
+  final RxDouble scrollPosition = 0.0.obs;
+  final RxInt totalItems = 0.obs;
+  bool _isDragging = false;
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +50,13 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     final reading = _getReadingAtIndex(topMost.index);
     if (reading != null) {
       controller.updateReadingFromScroll(reading);
+    }
+
+    // Update scrollbar position
+    if (!_isDragging) {
+      final progress =
+          topMost.index / (totalItems.value - 1).clamp(1, double.infinity);
+      scrollPosition.value = progress.clamp(0.0, 1.0);
     }
   }
 
@@ -85,81 +97,77 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
         child: Column(
           children: [
             // Header
-            const AppBackHeader(title: 'Vitals'),
+            AppBackHeader(
+              title: 'Vitals',
+            ),
 
             // Tab buttons
             Obx(
-              () => AppTabButtons(
-                tabs: _getTabData(controller),
-                selectedIndex: controller.currentTabIndex.value,
-                onTabSelected: (index) {
-                  controller.switchTab(index);
-                  _clearParameterSelection();
-                },
+              () => Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl6,
+                  vertical: AppSpacing.lg,
+                ),
+                child: Row(children: _buildTabButtons(controller)),
               ),
             ),
 
             // Main content
             AppMainContainer(
-              child: Container(
-                padding: EdgeInsets.all(AppSpacing.lg),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(AppRadius.xl2),
-                ),
-                child: Row(
-                  children: [
-                    // Left side - Chart
-                    Expanded(
-                      flex: 1,
-                      child: Obx(
-                        () => Column(
-                          children: [
-                            // Chart
-                            Expanded(
-                              child: VitalsChartWidget(
-                                readings: controller.chartReadings,
-                                vitalType: controller.currentVitalType,
-                                selectedParameter:
-                                    controller.chartSelectedParameter.isNotEmpty
-                                        ? controller.chartSelectedParameter
-                                        : null,
-                                onParameterTap: (chartParam) {
-                                  // Only relevant for Blood Pressure where multiple parameters exist
-                                  if (controller.currentVitalType ==
-                                      VitalType.bloodPressure) {
-                                    // Map chart-level parameter back to the underlying reading parameter
-                                    switch (chartParam) {
-                                      case 'BP':
-                                        controller.selectedBPParameter.value =
-                                            'Systolic';
-                                        break;
-                                      case 'MAP':
-                                        controller.selectedBPParameter.value =
-                                            'MAP';
-                                        break;
-                                      case 'PP':
-                                        controller.selectedBPParameter.value =
-                                            'Pulse Pressure';
-                                        break;
-                                      default:
-                                        break;
-                                    }
+              padding: EdgeInsets.all(AppSpacing.md),
+              opacity: 1,
+              child: Row(
+                children: [
+                  // Left side - Chart
+                  Expanded(
+                    flex: 1,
+                    child: Obx(
+                      () => Column(
+                        children: [
+                          // Chart
+                          Expanded(
+                            child: VitalsChartWidget(
+                              readings: controller.chartReadings,
+                              vitalType: controller.currentVitalType,
+                              selectedParameter:
+                                  controller.chartSelectedParameter.isNotEmpty
+                                      ? controller.chartSelectedParameter
+                                      : null,
+                              onParameterTap: (chartParam) {
+                                // Only relevant for Blood Pressure where multiple parameters exist
+                                if (controller.currentVitalType ==
+                                    VitalType.bloodPressure) {
+                                  // Map chart-level parameter back to the underlying reading parameter
+                                  switch (chartParam) {
+                                    case 'BP':
+                                      controller.selectedBPParameter.value =
+                                          'Systolic';
+                                      break;
+                                    case 'MAP':
+                                      controller.selectedBPParameter.value =
+                                          'MAP';
+                                      break;
+                                    case 'PP':
+                                      controller.selectedBPParameter.value =
+                                          'Pulse Pressure';
+                                      break;
+                                    default:
+                                      break;
                                   }
-                                },
-                              ),
+                                }
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
+                  ),
 
-                    SizedBox(width: AppSpacing.lg),
+                  SizedBox(width: AppSpacing.lg),
 
-                    // Right side - Readings
-                    Expanded(flex: 1, child: _buildReadingsSection(controller)),
-                  ],
-                ),
+                  // Right side - Readings
+                  Expanded(flex: 1, child: _buildReadingsSection(controller)),
+                ],
               ),
             ),
           ],
@@ -186,7 +194,17 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
 
               return Container(
                 padding: EdgeInsets.all(AppSpacing.lg),
-                child: _buildGroupedReadingsList(readings, controller),
+                child: Stack(
+                  children: [
+                    // Main scrollable content
+                    Positioned.fill(
+                      right: 12, // Leave space for scrollbar
+                      child: _buildGroupedReadingsList(readings, controller),
+                    ),
+                    // Custom scrollbar
+                    _buildCustomScrollbar(readings),
+                  ],
+                ),
               );
             }),
           ),
@@ -214,8 +232,11 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     final sortedDateKeys =
         groupedReadings.keys.toList()..sort((a, b) => b.compareTo(a));
 
+    final itemCount = _calculateTotalItems(groupedReadings, sortedDateKeys);
+    totalItems.value = itemCount;
+
     return ScrollablePositionedList.builder(
-      itemCount: _calculateTotalItems(groupedReadings, sortedDateKeys),
+      itemCount: itemCount,
       itemBuilder: (context, index) {
         return _buildItemAtIndex(
           groupedReadings,
@@ -229,14 +250,90 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     );
   }
 
+  Widget _buildCustomScrollbar(List<VitalReading> readings) {
+    if (readings.isEmpty) return const SizedBox();
+
+    return Positioned(
+      right: 0,
+      top: 20,
+      bottom: 20,
+      child: Container(
+        width: 6,
+        child: Obx(() {
+          final progress = scrollPosition.value;
+
+          return GestureDetector(
+            onPanStart: (details) {
+              _isDragging = true;
+            },
+            onPanUpdate: (details) {
+              final RenderBox renderBox =
+                  context.findRenderObject() as RenderBox;
+              final localPosition = renderBox.globalToLocal(
+                details.globalPosition,
+              );
+              final containerHeight = renderBox.size.height;
+              final newProgress = (localPosition.dy / containerHeight).clamp(
+                0.0,
+                1.0,
+              );
+
+              scrollPosition.value = newProgress;
+
+              // Calculate target item index
+              final targetIndex =
+                  (newProgress * (totalItems.value - 1)).round();
+
+              // Scroll to the target position
+              _itemScrollController.scrollTo(
+                index: targetIndex,
+                duration: const Duration(milliseconds: 100),
+              );
+            },
+            onPanEnd: (details) {
+              _isDragging = false;
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.primary50,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: FractionallySizedBox(
+                heightFactor: 0.3, // Thumb size relative to track
+                alignment:
+                    Alignment.lerp(
+                      Alignment.topCenter,
+                      Alignment.bottomCenter,
+                      progress,
+                    )!,
+                child: Container(
+                  width: 8,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary800,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
   int _calculateTotalItems(
     Map<String, List<VitalReading>> groupedReadings,
     List<String> sortedDateKeys,
   ) {
     int totalItems = 0;
-    for (final dateKey in sortedDateKeys) {
+    for (int i = 0; i < sortedDateKeys.length; i++) {
+      final dateKey = sortedDateKeys[i];
       totalItems += 1; // Date header
       totalItems += groupedReadings[dateKey]!.length; // Readings for that date
+      // Add separator after each group except the last one
+      if (i < sortedDateKeys.length - 1) {
+        totalItems += 1; // Separator
+      }
     }
     return totalItems;
   }
@@ -249,7 +346,8 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
   ) {
     int currentIndex = 0;
 
-    for (final dateKey in sortedDateKeys) {
+    for (int dateIndex = 0; dateIndex < sortedDateKeys.length; dateIndex++) {
+      final dateKey = sortedDateKeys[dateIndex];
       final readingsForDate = groupedReadings[dateKey]!;
 
       // Check if this index is the date header
@@ -277,6 +375,14 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
         }
         currentIndex++;
       }
+
+      // Check if this index is the separator (only for groups that are not the last)
+      if (dateIndex < sortedDateKeys.length - 1) {
+        if (currentIndex == index) {
+          return _buildDottedSeparator();
+        }
+        currentIndex++;
+      }
     }
 
     return const SizedBox(); // Fallback
@@ -287,33 +393,59 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     final displayText = _formatDateFromKey(dateKey);
 
     return Container(
-      margin: EdgeInsets.only(bottom: AppSpacing.md, top: AppSpacing.md),
+      margin: EdgeInsets.only(bottom: AppSpacing.md, top: AppSpacing.xl2),
       child: Row(
         children: [
           Text(
             displayText,
-            style: AppTypography.callout(
+            style: AppTypography.body(
               color: Colors.black87,
-              fontWeight: FontWeight.w600,
+              weight: AppTypographyWeight.semibold,
             ),
           ),
           if (isToday) ...[
             SizedBox(width: AppSpacing.md),
             Container(
               padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.xs,
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.sm,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primary700.withOpacity(0.1),
+                color: AppColors.primary50,
                 borderRadius: BorderRadius.circular(AppRadius.xl3),
               ),
               child: Text(
                 'Today',
-                style: AppTypography.callout(color: AppColors.primary700),
+                style: AppTypography.callout(
+                  color: AppColors.primary700,
+                  weight: AppTypographyWeight.semibold,
+                ),
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDottedSeparator() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: AppSpacing.lg),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: 1,
+              child: CustomPaint(
+                painter: DottedLinePainter(
+                  color: AppColors.gray300,
+                  strokeWidth: 1,
+                  dashLength: 4,
+                  dashSpacing: 4,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -409,19 +541,55 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     controller.selectedBPParameter.value = '';
   }
 
-  List<AppTabData> _getTabData(VitalsHistoryController controller) {
-    final Map<String, IconData> tabIcons = {
-      'Blood Pressure': Icons.favorite,
-      'SpO2 & Heart Rate': Icons.monitor_heart,
-      'Blood Glucose': Icons.bloodtype,
-      'Temperature': Icons.thermostat,
-      'ECG': Icons.timeline,
-    };
-
-    return controller.tabs.map((tab) {
+  List<AppTabButton> _buildTabButtons(VitalsHistoryController controller) {
+    return controller.tabs.asMap().entries.map((entry) {
+      final index = entry.key;
+      final tab = entry.value;
       final title = tab['title'] as String;
-      final icon = tabIcons[title] ?? Icons.medical_information;
-      return AppTabData(text: title, icon: icon);
+
+      return AppTabButton(
+        text: title,
+        isSelected: controller.currentTabIndex.value == index,
+        onTap: () {
+          controller.switchTab(index);
+          _clearParameterSelection();
+        },
+      );
     }).toList();
   }
+}
+
+class DottedLinePainter extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+  final double dashLength;
+  final double dashSpacing;
+
+  DottedLinePainter({
+    required this.color,
+    required this.strokeWidth,
+    required this.dashLength,
+    required this.dashSpacing,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint =
+        Paint()
+          ..color = color
+          ..strokeWidth = strokeWidth
+          ..style = PaintingStyle.stroke;
+
+    double startX = 0;
+    final y = size.height / 2;
+
+    while (startX < size.width) {
+      final endX = (startX + dashLength).clamp(0.0, size.width);
+      canvas.drawLine(Offset(startX, y), Offset(endX, y), paint);
+      startX += dashLength + dashSpacing;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

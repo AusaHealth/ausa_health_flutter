@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/constants.dart';
 
-/// A reusable main container widget that wraps content in a styled container
-/// This is the common pattern used across screens for the main content area
-///
-/// Example usage:
-/// ```dart
-/// AppMainContainer(
-///   opacity: 0.8,
-///   backgroundColor: Colors.blue,
-///   child: YourContentWidget(),
-/// )
-/// ```
 class AppMainContainer extends StatelessWidget {
   final Widget child;
   final Color? backgroundColor;

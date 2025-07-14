@@ -15,44 +15,30 @@ class MedicationFilterSidebar extends StatelessWidget {
       child: Obx(() {
         final filters = controller.dynamicMedicationFilters;
 
-        return ShaderMask(
-          shaderCallback: (Rect bounds) {
-            return LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black,
-                Colors.black,
-                Colors.black,
-              ],
-              stops: [0.0, 0.025, 0.95, 1.0],
-            ).createShader(bounds);
-          },
-          blendMode: BlendMode.dstIn,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              children:
-                  filters.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final filterName = entry.value;
-                    final isFirst = index == 0;
-                    final isLast = index == filters.length - 1;
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            right: AppSpacing.lg,
+          ),
+          child: Column(
+            children:
+                filters.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final filterName = entry.value;
+                  final isFirst = index == 0;
+                  final isLast = index == filters.length - 1;
 
-                    return Column(
-                      children: [
-                        if (index > 0) SizedBox(height: AppSpacing.md),
-                        _buildFilterButton(
-                          filterName,
-                          index,
-                          isFirst: isFirst,
-                          isLast: isLast,
-                        ),
-                      ],
-                    );
-                  }).toList(),
-            ),
+                  return Column(
+                    children: [
+                      if (index > 0) SizedBox(height: AppSpacing.lg),
+                      _buildFilterButton(
+                        filterName,
+                        index,
+                        isFirst: isFirst,
+                        isLast: isLast,
+                      ),
+                    ],
+                  );
+                }).toList(),
           ),
         );
       }),
@@ -71,7 +57,7 @@ class MedicationFilterSidebar extends StatelessWidget {
     BorderRadius borderRadius;
     if (isFirst) {
       borderRadius = BorderRadius.only(
-        topLeft: Radius.circular(AppRadius.xl * 2.5),
+        topLeft: Radius.circular(AppRadius.xl3),
         topRight: Radius.circular(AppRadius.xl),
         bottomLeft: Radius.circular(AppRadius.xl),
         bottomRight: Radius.circular(AppRadius.xl),
@@ -80,7 +66,7 @@ class MedicationFilterSidebar extends StatelessWidget {
       borderRadius = BorderRadius.only(
         topLeft: Radius.circular(AppRadius.xl),
         topRight: Radius.circular(AppRadius.xl),
-        bottomLeft: Radius.circular(AppRadius.xl * 2.5),
+        bottomLeft: Radius.circular(AppRadius.xl3),
         bottomRight: Radius.circular(AppRadius.xl),
       );
     } else {
@@ -97,47 +83,54 @@ class MedicationFilterSidebar extends StatelessWidget {
           vertical: AppSpacing.lg,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF165CFF) : Colors.grey[100],
+          color: isSelected ? AppColors.primary700 : Colors.grey[100],
           borderRadius: borderRadius,
           boxShadow:
               isSelected
                   ? [
-                    // Light outer shadow (top-left)
-                    BoxShadow(
-                      color: Color(0xFFC8D8FF),
-                      blurRadius: 10,
-                      offset: Offset(-3, -4),
-                    ),
-                    // Dark outer shadow (bottom-right)
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.10),
+                    // Drop Shadow 1 – Black @10%
+                    const BoxShadow(
+                      color: Color(0x1A000000), // Black with 10% opacity
                       blurRadius: 10,
                       offset: Offset(5, 6),
+                      spreadRadius: 0,
+                    ),
+                    // Drop Shadow 2 – Light blue highlight
+                    BoxShadow(
+                      color: const Color(0xFFC8D8FF), // #C8D8FF @100%
+                      blurRadius: 10,
+                      offset: const Offset(-3, -4),
+                      spreadRadius: 0,
+                    ),
+                    // Inner Shadow approximation – Blue tint
+                    BoxShadow(
+                      color: const Color(0xFF86AAFF), // #86AAFF @100%
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 0,
                     ),
                   ]
                   : [
-                    // Light grey shadow (top-left)
-                    BoxShadow(
-                      color: Color(0xFFF5F5F5),
+                    // Single shadow for non-selected buttons – Black @10%
+                    const BoxShadow(
+                      color: Color(0x1A000000), // Black with 10% opacity
                       blurRadius: 10,
-                      offset: Offset(-3, -4),
-                    ),
-                    // Dark grey shadow (bottom-right)
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 10,
-                      offset: Offset(5, 6),
+                      offset: Offset(0, 4),
+                      spreadRadius: 0,
                     ),
                   ],
         ),
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                title,
-                style: AppTypography.body(
-                  color: isSelected ? Colors.white : Colors.black87,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              child: Center(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: AppTypography.body(
+                    color: isSelected ? Colors.white : Colors.black87,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  ),
                 ),
               ),
             ),

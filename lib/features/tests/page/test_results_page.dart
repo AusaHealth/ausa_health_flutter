@@ -20,7 +20,43 @@ class TestResultsPage extends StatelessWidget {
       backgroundColor: AppColors.gray50,
       body: Column(
         children: [
-          _buildHeader(),
+          // _buildHeader(),
+          Container(
+            padding: EdgeInsets.only(
+              top: AppSpacing.xl,
+              left: AppSpacing.xl,
+              right: AppSpacing.xl,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(
+                      255,
+                      15,
+                      203,
+                      140,
+                    ).withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check_circle,
+                    size: 24,
+                    color: const Color.fromARGB(255, 4, 137, 26),
+                  ),
+                ),
+                SizedBox(width: AppSpacing.lg),
+                Text(
+                  'Success',
+                  style: AppTypography.headline(
+                    color: Colors.black,
+                    weight: AppTypographyWeight.medium,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Obx(
               () =>
@@ -133,9 +169,9 @@ class TestResultsPage extends StatelessWidget {
             ),
             child: Text(
               'Results',
-              style: AppTypography.body(
+              style: AppTypography.headline(
                 color: Colors.black87,
-                fontWeight: FontWeight.w600,
+                weight: AppTypographyWeight.regular,
               ),
             ),
           ),
@@ -172,7 +208,10 @@ class TestResultsPage extends StatelessWidget {
               Expanded(
                 child: Text(
                   result.testName,
-                  style: AppTypography.callout(fontWeight: FontWeight.w400),
+                  style: AppTypography.body(
+                    weight: AppTypographyWeight.bold,
+                    color: Color(0xff5A7497),
+                  ),
                 ),
               ),
               if (result.category != null) ...[
@@ -201,9 +240,9 @@ class TestResultsPage extends StatelessWidget {
               // Abnormal values warning
               if (result.hasAbnormalValues) ...[
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+                  padding:  EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xl,
+                    vertical: AppSpacing.md,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xffFFCECB),
@@ -211,9 +250,9 @@ class TestResultsPage extends StatelessWidget {
                   ),
                   child: Text(
                     'Abnormal reading',
-                    style: AppTypography.callout(
+                    style: AppTypography.body(
                       color: Color(0xffD92D20),
-                      fontWeight: FontWeight.w600,
+                      weight: AppTypographyWeight.medium,
                     ),
                   ),
                 ),
@@ -246,9 +285,9 @@ class TestResultsPage extends StatelessWidget {
       children: [
         Text(
           parameter.name,
-          style: AppTypography.callout(
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
+          style: AppTypography.body(
+           color: Color(0xff5A7497),
+            weight: AppTypographyWeight.medium,
           ),
           textAlign: TextAlign.center,
           maxLines: 2,
@@ -264,16 +303,16 @@ class TestResultsPage extends StatelessWidget {
               parameter.value,
               style: AppTypography.title1(
                 color: parameter.isAbnormal ? Colors.red : Colors.black,
-                fontWeight: FontWeight.w400,
+                weight: AppTypographyWeight.semibold,
               ),
             ),
             if (parameter.unit.isNotEmpty) ...[
               const SizedBox(width: 4),
               Text(
                 parameter.unit,
-                style: AppTypography.callout(
+                style: AppTypography.body(
                   color: Colors.black,
-                  fontWeight: FontWeight.w400,
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ],
@@ -285,9 +324,9 @@ class TestResultsPage extends StatelessWidget {
 
   Widget _buildActionButtonsContent() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Color(0xffEBE9E6),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
@@ -298,55 +337,67 @@ class TestResultsPage extends StatelessWidget {
         children: [
           Text(
             'Would you like to:',
-            style: AppTypography.body(color: Colors.grey[700]),
+            style: AppTypography.headline(color: Color(0xff5A7497), weight: AppTypographyWeight.regular),
           ),
           const SizedBox(height: 16),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: AusaButton(
-                  text: 'Schedule Appointment',
-                  onPressed: () {
-                    // TODO: Navigate to appointment scheduling
-                  },
-                  variant: ButtonVariant.secondary,
-                  borderColor: AppColors.primary700,
-                  textColor: AppColors.primary700,
+              AusaButton(
+                text: 'Schedule Appointment',
+                onPressed: () {
+                  // TODO: Navigate to appointment scheduling
+                },
+                variant: ButtonVariant.secondary,
+                borderColor: AppColors.white,
+                textColor: AppColors.primary700,
+                leadingIcon: Icon(
+                  Icons.calendar_month,
+                  color: AppColors.primary700,
+                  size: 20,
                 ),
+                size: ButtonSize.lg,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: AusaButton(
-                  text: 'Check Again',
-                  onPressed: () => controller.retakeAllTests(),
-                  variant: ButtonVariant.secondary,
-                  borderColor: AppColors.primary700,
-                  textColor: AppColors.primary700,
+              const SizedBox(width: 5),
+              AusaButton(
+                text: 'Check Again',
+                onPressed: () => controller.retakeAllTests(),
+                variant: ButtonVariant.secondary,
+                borderColor: AppColors.white,
+                textColor: AppColors.primary700,
+                leadingIcon: Icon(
+                  Icons.refresh,
+                  color: AppColors.primary700,
+                  size: 20,
                 ),
+                size: ButtonSize.lg,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: AusaButton(
-                  text: 'Take another Test',
-                  onPressed: () => controller.navigateToTestSelection(),
-                  variant: ButtonVariant.secondary,
-                  borderColor: AppColors.primary700,
-                  textColor: AppColors.primary700,
+              const SizedBox(width: 5),
+              AusaButton(
+                text: 'Take another Test',
+                onPressed: () => controller.navigateToTestSelection(),
+                variant: ButtonVariant.secondary,
+                borderColor: AppColors.white,
+                textColor: AppColors.primary700,
+                leadingIcon: Icon(
+                  Icons.refresh,
+                  color: AppColors.primary700,
+                  size: 20,
                 ),
+                size: ButtonSize.lg,
               ),
-              const SizedBox(width: 60),
-              Expanded(
-                child: AusaButton(
-                  text: 'Finish',
+              const SizedBox(width: 10),
+              AusaButton(
+                text: 'Finish',
+                onPressed: () {
+                  controller.resetSelections();
+                  Get.back();
+                },
+                width: 200,
+                variant: ButtonVariant.primary,
+                size: ButtonSize.lg,
+              ),
 
-                  height: 50,
-                  onPressed: () {
-                    controller.resetSelections();
-                    Get.back();
-                  },
-                  variant: ButtonVariant.primary,
-                ),
-              ),
             ],
           ),
         ],

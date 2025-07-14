@@ -15,10 +15,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
-        constraints: BoxConstraints(
-          maxWidth: 600,
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
-        ),
+        constraints: BoxConstraints(maxWidth: 640, maxHeight: 400),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -28,7 +25,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                 children: [
                   // Left side - Image with orange background
                   Container(
-                    width: 250,
+                    width: 240,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -74,20 +71,20 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                           // Test name/title
                           Text(
                             prerequisiteCheck.title,
-                            style: AppTypography.headline(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey.shade900,
+                            style: AppTypography.largeTitle(
+                              color: Colors.black,
+                              weight: AppTypographyWeight.medium,
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 44),
 
                           // Question
                           Text(
                             prerequisiteCheck.question,
-                            style: AppTypography.callout(
-                              color: Colors.grey.shade800,
-                              fontWeight: FontWeight.w500,
+                            style: AppTypography.body(
+                              color: Colors.black,
+                              weight: AppTypographyWeight.semibold,
                             ),
                           ),
 
@@ -96,12 +93,13 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                           // Description
                           Text(
                             prerequisiteCheck.description,
-                            style: AppTypography.callout(
-                              color: Colors.grey.shade600,
+                            style: AppTypography.body(
+                              color: Colors.black,
+                              weight: AppTypographyWeight.regular,
                             ),
                           ),
 
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 40),
 
                           // Action Buttons
                           Row(
@@ -109,6 +107,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                               Expanded(
                                 child: AusaButton(
                                   text: prerequisiteCheck.secondaryButtonText,
+                                  size: ButtonSize.lg,
                                   onPressed: () {
                                     // For blood glucose, secondary button "No" means they can proceed
                                     // For other tests, secondary button means "don't proceed" or "take later"
@@ -119,7 +118,6 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                   },
                                   variant: ButtonVariant.secondary,
                                   borderColor: AppColors.primary700,
-
                                   textColor: AppColors.primary700,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -127,6 +125,7 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: AusaButton(
+                                  size: ButtonSize.lg,
                                   onPressed: () {
                                     // Return based on what the primary button means for this test
                                     Get.back(
@@ -138,7 +137,6 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                                   variant: ButtonVariant.primary,
                                   backgroundColor: AppColors.primary700,
                                   textColor: Colors.white,
-
                                   text: prerequisiteCheck.primaryButtonText,
                                 ),
                               ),

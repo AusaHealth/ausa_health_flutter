@@ -26,20 +26,55 @@ class VitalsChartWidget extends StatefulWidget {
   State<VitalsChartWidget> createState() => _VitalsChartWidgetState();
 }
 
-class _VitalsChartWidgetState extends State<VitalsChartWidget> {
+class _VitalsChartWidgetState extends State<VitalsChartWidget>
+    with TickerProviderStateMixin {
   String selectedParameter = '';
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+  VitalType? _previousVitalType;
 
   @override
   void initState() {
     super.initState();
     selectedParameter = widget.selectedParameter ?? _getDefaultParameter();
+    _previousVitalType = widget.vitalType;
+
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
   void didUpdateWidget(VitalsChartWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    // Trigger animation when vital type changes
     if (oldWidget.vitalType != widget.vitalType) {
       selectedParameter = _getDefaultParameter();
+      _previousVitalType = widget.vitalType;
+      _animationController.reset();
+      _animationController.forward();
     } else if (widget.selectedParameter != null &&
         widget.selectedParameter!.isNotEmpty) {
       // Use the external selected parameter
@@ -53,21 +88,32 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
       return _buildEmptyChart();
     }
 
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: Color(0xFFFAFAFA),
-        borderRadius: BorderRadius.circular(AppRadius.xl2),
-        // border: Border.all(color: Colors.grey[200]!, width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildChartHeader(),
-          SizedBox(height: AppSpacing.lg),
-          Expanded(child: _buildChart()),
-        ],
-      ),
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return FadeTransition(
+          opacity: _fadeAnimation,
+          child: SlideTransition(
+            position: _slideAnimation,
+            child: Container(
+              padding: EdgeInsets.all(AppSpacing.xl2),
+              decoration: BoxDecoration(
+                color: Color(0xFFFAFAFA),
+                borderRadius: BorderRadius.circular(AppRadius.xl3),
+                border: Border.all(color: Colors.grey[200]!, width: 1),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildChartHeader(),
+                  SizedBox(height: AppSpacing.lg),
+                  Expanded(child: _buildChart()),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -82,19 +128,16 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
           children: [
             Text(
               'Previous readings',
-              style: AppTypography.body(color: Colors.grey[600]),
+              style: AppTypography.body(weight: AppTypographyWeight.medium),
             ),
             if (widget.vitalType == VitalType.bloodPressure &&
                 selectedParameter == 'BP')
-              Container(
-                margin: EdgeInsets.only(top: AppSpacing.md),
-                child: Row(
-                  children: [
-                    _buildLegendItem('Systolic', AppColors.primary700),
-                    SizedBox(width: AppSpacing.lg),
-                    _buildLegendItem('Diastolic', Colors.orange),
-                  ],
-                ),
+              Row(
+                children: [
+                  _buildLegendItem('Systolic', AppColors.primary700),
+                  SizedBox(width: AppSpacing.lg),
+                  _buildLegendItem('Diastolic', AppColors.accent),
+                ],
               ),
           ],
         ),
@@ -102,19 +145,19 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         if (parameters.length > 1)
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.lg,
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.black.withOpacity(0.05),
               borderRadius: BorderRadius.circular(AppRadius.xl3),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: Offset(0, 2),
-                ),
-              ],
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withOpacity(0.1),
+              //     blurRadius: 10,
+              //     offset: Offset(0, 2),
+              //   ),
+              // ],
             ),
 
             child: Row(
@@ -136,7 +179,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                         margin: EdgeInsets.only(right: AppSpacing.sm),
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
+                          vertical: AppSpacing.sm,
                         ),
                         decoration: BoxDecoration(
                           color:
@@ -147,10 +190,12 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
                         ),
                         child: Text(
                           parameter,
-                          style: AppTypography.callout(
+                          style: AppTypography.body(
                             color: Color(0xFF1A2A78),
-                            fontWeight:
-                                isSelected ? FontWeight.w600 : FontWeight.w400,
+                            weight:
+                                isSelected
+                                    ? AppTypographyWeight.semibold
+                                    : AppTypographyWeight.medium,
                           ),
                         ),
                       ),
@@ -165,7 +210,10 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
   Widget _buildLegendItem(String label, Color color) {
     return Text(
       label,
-      style: AppTypography.callout(color: color, fontWeight: FontWeight.w400),
+      style: AppTypography.callout(
+        color: color,
+        weight: AppTypographyWeight.medium,
+      ),
     );
   }
 
@@ -178,156 +226,193 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
 
     return SizedBox(
       height: 300,
-      child: Container(
-        padding: EdgeInsets.all(AppSpacing.xl),
-        child: LineChart(
-          LineChartData(
-            gridData: FlGridData(
-              show: true,
-              drawVerticalLine: true,
-              getDrawingVerticalLine: (value) {
-                return FlLine(color: Colors.grey[200]!, strokeWidth: 0.2);
-              },
-              horizontalInterval: _getGridInterval(),
-              getDrawingHorizontalLine: (value) {
-                return FlLine(color: Colors.grey[300]!, strokeWidth: 0.2);
-              },
+      child: Stack(
+        children: [
+          // Global dashed line behind the chart
+          Positioned(
+            left: 40, // Align after left axis labels
+            right: 5,
+            bottom: 36, // Align with date label baseline (45 - 7)
+            child: IgnorePointer(
+              child: CustomPaint(
+                size: const Size(double.infinity, 1),
+                painter: DashedLinePainter(color: Color(0xFF8E8E8E)),
+              ),
             ),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 40,
-                  interval: _getGridInterval(),
-                  getTitlesWidget: (value, meta) {
-                    // Show all grid values plus exact current values
-                    final isCurrentValue = _isCurrentValue(value);
-                    final isGridValue = _isGridValue(value);
-
-                    if (isGridValue || isCurrentValue) {
-                      return Text(
-                        _formatLeftAxisValue(value),
-                        style: AppTypography.callout(
-                          color:
-                              isCurrentValue
-                                  ? AppColors.primary700
-                                  : Colors.grey[600],
-                          fontWeight:
-                              isCurrentValue
-                                  ? FontWeight.w600
-                                  : FontWeight.w400,
-                        ),
-                        textAlign: TextAlign.center,
-                      );
-                    }
-
-                    return const SizedBox();
+          ),
+          // Chart (including date/time labels) painted above
+          Container(
+            padding: EdgeInsets.only(
+              left: AppSpacing.sm,
+              right: AppSpacing.xl4,
+              top: AppSpacing.sm,
+              bottom: AppSpacing.sm,
+            ),
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: true,
+                  getDrawingVerticalLine: (value) {
+                    return FlLine(color: Colors.grey[200]!, strokeWidth: 0.2);
+                  },
+                  horizontalInterval: _getGridInterval(),
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(color: Colors.grey[300]!, strokeWidth: 0.2);
                   },
                 ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 45,
-                  interval: 1,
-                  getTitlesWidget: (value, meta) {
-                    final index = value.toInt();
-                    final maxReadings = _getMaxReadings();
-                    if (index >= 0 && index < maxReadings) {
-                      final reading =
-                          widget.readings[widget.readings.length - 1 - index];
-                      final isToday = _isToday(reading.timestamp);
-                      final showDateLabel = _shouldShowDateLabel(index);
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 50,
+                      interval: _getGridInterval(),
+                      getTitlesWidget: (value, meta) {
+                        // Show all grid values plus exact current values
+                        final isCurrentValue = _isCurrentValue(value);
+                        final isGridValue = _isGridValue(value);
 
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 11),
-                        child: Stack(
-                          children: [
-                            // // Dashed line
-                            // if (index > 0 && showDateLabel)
-                            //   Positioned(
-                            //     left: -20,
-                            //     right: -20,
-                            //     top: 0,
-                            //     child: CustomPaint(
-                            //       painter: DashedLinePainter(
-                            //         color: Colors.grey[300]!,
-                            //       ),
-                            //     ),
-                            //   ),
-                            Column(
+                        if (isGridValue || isCurrentValue) {
+                          return Text(
+                            _formatLeftAxisValue(value),
+                            style: AppTypography.body(
+                              color:
+                                  isCurrentValue
+                                      ? AppColors.primary700
+                                      : Colors.black,
+                              weight:
+                                  isCurrentValue
+                                      ? AppTypographyWeight.semibold
+                                      : AppTypographyWeight.medium,
+                            ),
+                            textAlign: TextAlign.center,
+                          );
+                        }
+
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 45,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        final index = value.toInt();
+                        final maxReadings = _getMaxReadings();
+                        if (index >= 0 && index < maxReadings) {
+                          final reading =
+                              widget.readings[widget.readings.length -
+                                  1 -
+                                  index];
+                          final isToday = _isToday(reading.timestamp);
+                          final showDateLabel = _shouldShowDateLabel(index);
+
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 11),
+                            child: Stack(
                               children: [
-                                SizedBox(
-                                  height: 20, // Fixed height for date area
-                                  child:
-                                      showDateLabel
-                                          ? Text(
-                                            _formatDate(reading.timestamp),
-                                            style: AppTypography.callout(
-                                              color: Colors.grey[600],
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          )
-                                          : null,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _formatTime(reading.timestamp),
-                                  style: AppTypography.callout(
-                                    color: Colors.grey[600],
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                // (Per-cell dashed line removed; a global dashed line is now painted.)
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 15,
+                                      child:
+                                          showDateLabel
+                                              ? Container(
+                                                color: Color(0xFFFAFAFA),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 4,
+                                                    ),
+                                                child: Text(
+                                                  _formatDate(
+                                                    reading.timestamp,
+                                                  ),
+                                                  style: AppTypography.callout(
+                                                    color: const Color(
+                                                      0xFF6B6B6B,
+                                                    ),
+                                                    weight:
+                                                        AppTypographyWeight
+                                                            .medium,
+                                                  ),
+                                                ),
+                                              )
+                                              : null,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      _formatTime(reading.timestamp),
+                                      style: AppTypography.body(
+                                        color: Colors.black,
+                                        weight: AppTypographyWeight.medium,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                 ),
-              ),
-              rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
+                borderData: FlBorderData(show: false),
+                minX: 0,
+                maxX: (_getMaxReadings() - 1).toDouble(),
+                minY: _getMinY(),
+                maxY: _getMaxY(),
+                lineBarsData: chartData,
               ),
             ),
-            borderData: FlBorderData(show: false),
-            minX: 0,
-            maxX: (_getMaxReadings() - 1).toDouble(),
-            minY: _getMinY(),
-            maxY: _getMaxY(),
-            lineBarsData: chartData,
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildEmptyChart() {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(AppRadius.xl2),
-        border: Border.all(color: Colors.grey[200]!, width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Previous readings',
-            style: AppTypography.callout(
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return FadeTransition(
+          opacity: _fadeAnimation,
+          child: SlideTransition(
+            position: _slideAnimation,
+            child: Container(
+              padding: EdgeInsets.all(AppSpacing.lg),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: BorderRadius.circular(AppRadius.xl2),
+                border: Border.all(color: Colors.grey[200]!, width: 1),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Previous readings',
+                    style: AppTypography.callout(
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Expanded(child: _buildEmptyChartContent()),
+                ],
+              ),
             ),
           ),
-          Expanded(child: _buildEmptyChartContent()),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -351,13 +436,54 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
   }
 
   List<LineChartBarData> _generateChartData() {
-    if (widget.vitalType == VitalType.bloodPressure &&
-        selectedParameter == 'BP') {
-      // Generate two lines for systolic and diastolic
-      return [
-        _generateLineChartBarData('Systolic', AppColors.primary700),
-        _generateLineChartBarData('Diastolic', Colors.orange),
-      ];
+    // Always include connection line for smooth transitions across all vital types
+    final chartBars = <LineChartBarData>[];
+
+    // Add connection line first so it appears behind the dots (transparent when not needed)
+    final connectionLine = _generateLatestConnectionLine();
+    if (connectionLine != null) {
+      chartBars.add(connectionLine);
+    }
+
+    if (widget.vitalType == VitalType.bloodPressure) {
+      if (selectedParameter == 'BP') {
+        // Add main lines for systolic and diastolic on top
+        chartBars.addAll([
+          _generateLineChartBarData('Systolic', AppColors.primary700),
+          _generateLineChartBarData('Diastolic', AppColors.accent),
+        ]);
+      } else {
+        // For other parameters, show single line
+        final spots = _generateSpots();
+        if (spots.isNotEmpty) {
+          chartBars.add(
+            LineChartBarData(
+              spots: spots,
+              isCurved: true,
+              curveSmoothness: 0.5,
+              color: AppColors.primary700,
+              barWidth: 1,
+              isStrokeCapRound: true,
+              dotData: FlDotData(
+                show: true,
+                getDotPainter: (spot, percent, barData, index) {
+                  final isLatest = index == spots.length - 1;
+                  return FlDotCirclePainter(
+                    radius: 6,
+                    color: AppColors.primary700,
+                    strokeWidth: isLatest ? 3 : 0,
+                    strokeColor:
+                        isLatest ? Color(0xffFFC107) : Colors.transparent,
+                  );
+                },
+              ),
+              belowBarData: BarAreaData(show: false),
+            ),
+          );
+        }
+      }
+
+      return chartBars;
     } else {
       // Generate single line for other parameters
       final spots = _generateSpots();
@@ -367,7 +493,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         LineChartBarData(
           spots: spots,
           isCurved: true,
-          curveSmoothness: 0.2,
+          curveSmoothness: 0.5,
           color: AppColors.primary700,
           barWidth: 1, // This is where the line width is set for the main chart
           isStrokeCapRound: true,
@@ -376,12 +502,10 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
             getDotPainter: (spot, percent, barData, index) {
               final isLatest = index == spots.length - 1;
               return FlDotCirclePainter(
-                radius: 3,
-                color:
-                    isLatest
-                        ? AppColors.primary700
-                        : AppColors.primary700.withOpacity(0.6),
-                strokeWidth: 0,
+                radius: 6,
+                color: AppColors.primary700,
+                strokeWidth: isLatest ? 3 : 0,
+                strokeColor: isLatest ? Color(0xffFFC107) : Colors.transparent,
               );
             },
           ),
@@ -407,7 +531,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
     return LineChartBarData(
       spots: spots,
       isCurved: true,
-      curveSmoothness: 0.2,
+      curveSmoothness: 0.5,
       color: color,
       barWidth: 1, // This is where the line width is set for BP chart lines
       isStrokeCapRound: true,
@@ -416,14 +540,81 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget> {
         getDotPainter: (spot, percent, barData, index) {
           final isLatest = index == spots.length - 1;
           return FlDotCirclePainter(
-            radius: 3,
-            color: isLatest ? color : color.withOpacity(0.6),
-            strokeWidth: 0,
+            radius: 6,
+            color: color,
+            strokeWidth: isLatest ? 3 : 0,
+            strokeColor: isLatest ? Color(0xffFFC107) : Colors.transparent,
           );
         },
       ),
       belowBarData: BarAreaData(show: false),
     );
+  }
+
+  LineChartBarData? _generateLatestConnectionLine() {
+    if (widget.readings.isEmpty) return null;
+
+    final maxReadings = _getMaxReadings();
+    final latestX = (maxReadings - 1).toDouble();
+
+    // Only show connection line for BP type and BP parameter
+    final isVisible =
+        widget.vitalType == VitalType.bloodPressure &&
+        selectedParameter == 'BP';
+    final lineColor = isVisible ? Color(0xffFFC107) : Colors.transparent;
+
+    if (widget.vitalType == VitalType.bloodPressure) {
+      // Get the latest reading (first in the list, rightmost on chart)
+      final latestReading = widget.readings.first;
+
+      final systolic = _getValueForParameter(latestReading, 'Systolic');
+      final diastolic = _getValueForParameter(latestReading, 'Diastolic');
+
+      if (systolic == null || diastolic == null) {
+        // Create invisible placeholder line for smooth transitions
+        return LineChartBarData(
+          spots: [FlSpot(latestX, 0), FlSpot(latestX, 0)],
+          isCurved: false,
+          color: Colors.transparent,
+          barWidth: 18,
+          isStrokeCapRound: true,
+          dotData: FlDotData(show: false),
+          belowBarData: BarAreaData(show: false),
+          isStepLineChart: false,
+        );
+      }
+
+      // Create a vertical line connecting the systolic and diastolic points
+      // Sort points by Y value to ensure consistent line direction
+      final spots =
+          systolic > diastolic
+              ? [FlSpot(latestX, diastolic), FlSpot(latestX, systolic)]
+              : [FlSpot(latestX, systolic), FlSpot(latestX, diastolic)];
+
+      return LineChartBarData(
+        spots: spots,
+        isCurved: false,
+        color: lineColor,
+        barWidth: 18,
+        isStrokeCapRound: true,
+        dotData: FlDotData(show: false), // Hide dots for connection line
+        belowBarData: BarAreaData(show: false),
+        // Ensure smooth animations
+        isStepLineChart: false,
+      );
+    } else {
+      // For non-BP vital types, create invisible placeholder line for smooth transitions
+      return LineChartBarData(
+        spots: [FlSpot(latestX, 0), FlSpot(latestX, 0)],
+        isCurved: false,
+        color: Colors.transparent,
+        barWidth: 18,
+        isStrokeCapRound: true,
+        dotData: FlDotData(show: false),
+        belowBarData: BarAreaData(show: false),
+        isStepLineChart: false,
+      );
+    }
   }
 
   List<FlSpot> _generateSpots() {

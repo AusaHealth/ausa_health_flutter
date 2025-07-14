@@ -224,7 +224,6 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                   onPressed: () => Get.back(),
                                   variant: ButtonVariant.secondary,
                                   borderColor: AppColors.primary700,
-
                                   textColor: AppColors.primary700,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -241,7 +240,6 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                   variant: ButtonVariant.primary,
                                   backgroundColor: AppColors.primary700,
                                   textColor: Colors.white,
-
                                   text: 'Continue',
                                 ),
                               ),
