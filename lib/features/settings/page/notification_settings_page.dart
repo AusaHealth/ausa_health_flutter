@@ -21,7 +21,10 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   Widget _sectionHeader(String text) {
     return Text(
       text,
-      style: AppTypography.bodyRegular(color: AppColors.textlightColor),
+      style: AppTypography.body(
+        color: AppColors.textlightColor,
+        weight: AppTypographyWeight.regular,
+      ),
     );
   }
 
@@ -54,13 +57,19 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 children: [
                   Text(
                     'Smart Prompt',
-                    style: AppTypography.bodyMedium(color: Colors.white),
+                    style: AppTypography.body(
+                      color: Colors.white,
+                      weight: AppTypographyWeight.medium,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'To alert you when its needed.',
-                    style: AppTypography.bodyRegular(color: Colors.white),
+                    style: AppTypography.body(
+                      color: Colors.white,
+                      weight: AppTypographyWeight.regular,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),

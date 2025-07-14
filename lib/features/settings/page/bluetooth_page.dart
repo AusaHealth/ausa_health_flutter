@@ -31,7 +31,10 @@ class BluetoothPage extends StatelessWidget {
           SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            child: Text('Device status', style: AppTypography.bodyRegular()),
+            child: Text(
+              'Device status',
+              style: AppTypography.body(weight: AppTypographyWeight.regular),
+            ),
           ),
           SizedBox(height: AppSpacing.lg),
 
@@ -47,7 +50,7 @@ class BluetoothPage extends StatelessWidget {
                   statusImagePath: AppImages.connecting,
                   isActive: true,
                 ),
-                SizedBox(width: AppSpacing.xl),
+                SizedBox(width: AppSpacing.lg),
                 DeviceStatusCard(
                   deviceName: 'X',
                   imagePath: AppImages.X,
@@ -55,7 +58,7 @@ class BluetoothPage extends StatelessWidget {
                   statusImagePath: AppImages.notFound,
                   isActive: false,
                 ),
-                SizedBox(width: AppSpacing.xl),
+                SizedBox(width: AppSpacing.lg),
                 DeviceStatusCard(
                   deviceName: 'ECG',
                   imagePath: AppImages.ecg,
@@ -94,7 +97,7 @@ class DeviceStatusCard extends StatelessWidget {
         width: Get.width * 0.22,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(AppRadius.xl3),
           border: Border.all(
             color: isActive ? Color(0xFF1673FF) : Colors.transparent,
             width: 2,
@@ -135,7 +138,10 @@ class DeviceStatusCard extends StatelessWidget {
                   ),
                 ),
 
-                Text(deviceName, style: AppTypography.bodyBold()),
+                Text(
+                  deviceName,
+                  style: AppTypography.body(weight: AppTypographyWeight.medium),
+                ),
                 SizedBox(height: 20),
               ],
             ),

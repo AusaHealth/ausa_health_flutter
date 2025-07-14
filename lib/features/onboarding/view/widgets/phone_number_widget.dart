@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
 import 'package:ausa/features/onboarding/view/phone_input_modal.dart';
@@ -19,79 +20,86 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<OnboardingController>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Phone Number',
-          style: AppTypography.bodyBold(color: AppColors.bodyTextLightColor),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Your phone number is required for verification',
-          style: AppTypography.calloutMedium(color: AppColors.bodyTextColor),
-        ),
-        SizedBox(height: 20),
-        Obx(() {
-          return GestureDetector(
-            onTap: () {
-              Get.to(() => PhoneNumberInputModal());
-            },
-            child: Container(
-              height: 120,
-              width: 500,
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.white),
-              ),
-              alignment: Alignment.centerLeft,
-              child:
-                  controller.phoneController.value.text.isEmpty
-                      ? Text(
-                        controller.phoneController.value.text.isEmpty
-                            ? '+1 (000)-000 0000'
-                            : controller.phoneController.value.text,
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                      : Text(
-                        controller.phoneController.value.text,
-                        style: AppTypography.body(
-                          color: AppColors.bodyTextColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl6,
+        vertical: AppSpacing.xl4,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Phone Number',
+            style: AppTypography.headline(
+              weight: AppTypographyWeight.semibold,
+              color: AppColors.bodyTextLightColor,
             ),
-          );
-        }),
-        SizedBox(height: 20),
-        Expanded(child: SizedBox()),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              AusaButton(
-                backgroundColor: AppColors.primary700,
-                textColor: Colors.white,
-
-                borderRadius: 60,
-                onPressed: () {
-                  controller.completeStep(OnboardingStep.phone);
-                  controller.goToStep(OnboardingStep.otp);
-                },
-                text: 'SEND OTP',
-              ),
-            ],
           ),
-        ),
-        SizedBox(height: 40),
-      ],
+          SizedBox(height: AppSpacing.sm),
+          Text(
+            'Your phone number is required for verification',
+            style: AppTypography.callout(weight: AppTypographyWeight.medium),
+          ),
+          SizedBox(height: AppSpacing.xl2),
+          Obx(() {
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => PhoneNumberInputModal());
+              },
+              child: Container(
+                height: 120,
+                width: 500,
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.white),
+                ),
+                alignment: Alignment.centerLeft,
+                child:
+                    controller.phoneController.value.text.isEmpty
+                        ? Text(
+                          controller.phoneController.value.text.isEmpty
+                              ? '+1 (000)-000 0000'
+                              : controller.phoneController.value.text,
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                        : Text(
+                          controller.phoneController.value.text,
+                          style: AppTypography.body(
+                            color: AppColors.bodyTextColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+              ),
+            );
+          }),
+          SizedBox(height: 20),
+          Expanded(child: SizedBox()),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AusaButton(
+                  backgroundColor: AppColors.primary700,
+                  textColor: Colors.white,
+
+                  onPressed: () {
+                    controller.completeStep(OnboardingStep.phone);
+                    controller.goToStep(OnboardingStep.otp);
+                  },
+                  text: 'Send OTP',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -141,9 +149,6 @@ class PhoneInputField extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.7),
         borderRadius: BorderRadius.circular(40),
-        // boxShadow: [
-        //   BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
-        // ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
       child: Row(

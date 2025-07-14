@@ -76,8 +76,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
             text: 'New Appointment',
             onPressed: controller.navigateToScheduleAppointment,
             variant: ButtonVariant.secondary,
-            icon: Icons.add,
-            iconSize: 16,
+
             height: 40,
           ),
         ],

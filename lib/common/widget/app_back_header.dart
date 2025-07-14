@@ -50,10 +50,7 @@ class AppBackHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       color: backgroundColor,
       child: Row(
         children: [
@@ -82,7 +79,7 @@ class AppBackHeader extends StatelessWidget {
             ),
           ),
 
-          SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.xl2),
 
           // Title
           Text(
@@ -117,8 +114,7 @@ class AppBackHeader extends StatelessWidget {
                               isActive
                                   ? activeStepColor!
                                   : isCompleted
-                                  ? (completedStepColor ??
-                                      AppColors.primary700)
+                                  ? (completedStepColor ?? AppColors.primary700)
                                   : (inactiveStepColor ?? Colors.grey[300]!),
                           width: 1,
                         ),

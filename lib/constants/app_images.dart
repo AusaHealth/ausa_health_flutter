@@ -1,4 +1,5 @@
 class AppImages {
+  static const String familyPerson = 'assets/images/family.png';
   static const String appBarBluetooth = 'assets/icons/bluetooth.png';
   static const String appBarWifi = 'assets/icons/wifi.png';
   static const String appBarBattery = 'assets/icons/battery.png';
@@ -57,6 +58,10 @@ class AppImages {
   static const String notFound = 'assets/icons/setting_icon/not_found.png';
 
   static const String ausaConnect = 'assets/images/ausa_connect.png';
+
+  static const String lock = 'assets/icons/onboarding/lock.svg';
+  static const String wifiSvg = 'assets/icons/onboarding/wifi.svg';
+  static const String info = 'assets/icons/onboarding/info.svg';
 }
 
 class ProfileIcons {
@@ -77,4 +82,6 @@ class ProfileIcons {
       '${_basePath}ausa_content_unselected.png';
 
   static const String ausaLogo = '${_basePath}ausa_logo.png';
+
+  static const String addMember = '${_basePath}add_member.png';
 }

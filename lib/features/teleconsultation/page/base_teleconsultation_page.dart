@@ -15,7 +15,7 @@ class BaseTeleconsultationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseScaffold(
       backgroundColor: backgroundColor,
-      appBar: appBar,
+
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -42,7 +42,7 @@ class BaseTeleconsultationPage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: floatingActionButton,
+      // floatingActionButton: floatingActionButton,
     );
   }
 

@@ -22,21 +22,22 @@ class CarePage extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.xl3,
-        ).copyWith(top: AppSpacing.xl2),
+        padding: EdgeInsets.all(AppSpacing.xl4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+
           children: [
-            Text('Care provider', style: AppTypography.calloutRegular()),
-            const SizedBox(height: 8),
+            Text(
+              'Care provider',
+              style: AppTypography.callout(weight: AppTypographyWeight.regular),
+            ),
+            SizedBox(height: AppSpacing.mdLarge),
             Text(
               'Dr. John Doe, Endocrinologist',
-              style: AppTypography.bodyBold(),
+              style: AppTypography.body(weight: AppTypographyWeight.semibold),
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: AppSpacing.xl2),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -46,40 +47,74 @@ class CarePage extends StatelessWidget {
                   children: [
                     Text(
                       'Next availability',
-                      style: AppTypography.calloutRegular(),
+                      style: AppTypography.callout(
+                        weight: AppTypographyWeight.regular,
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text('Today 3:00 PM', style: AppTypography.bodyBold()),
+                    SizedBox(height: AppSpacing.mdLarge),
+                    Text(
+                      'Today 3:00 PM',
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.semibold,
+                      ),
+                    ),
                   ],
                 ),
                 // Phone
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Phone', style: AppTypography.calloutRegular()),
-                    SizedBox(height: 8),
-                    Text('+1 555-123-4567', style: AppTypography.bodyBold()),
+                    Text(
+                      'Phone',
+                      style: AppTypography.callout(
+                        weight: AppTypographyWeight.regular,
+                      ),
+                    ),
+                    SizedBox(height: AppSpacing.mdLarge),
+                    Text(
+                      '+1 555-123-4567',
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.semibold,
+                      ),
+                    ),
                   ],
                 ),
                 // Email
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Email', style: AppTypography.calloutRegular()),
-                    SizedBox(height: 8),
-                    Text('johndoe@clinic.com', style: AppTypography.bodyBold()),
+                    Text(
+                      'Email',
+                      style: AppTypography.callout(
+                        weight: AppTypographyWeight.regular,
+                      ),
+                    ),
+                    SizedBox(height: AppSpacing.mdLarge),
+                    Text(
+                      'johndoe@clinic.com',
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.semibold,
+                      ),
+                    ),
                   ],
                 ),
                 // Address
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Address', style: AppTypography.calloutRegular()),
-
-                    SizedBox(height: 8),
                     Text(
-                      '123 Main St, Los Angeles,\nCA, 90001',
-                      style: AppTypography.bodyBold(),
+                      'Address',
+                      style: AppTypography.callout(
+                        weight: AppTypographyWeight.regular,
+                      ),
+                    ),
+
+                    SizedBox(height: AppSpacing.mdLarge),
+                    Text(
+                      '123 Main St, Los Angeles, CA, 90001',
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.semibold,
+                      ),
                     ),
                   ],
                 ),

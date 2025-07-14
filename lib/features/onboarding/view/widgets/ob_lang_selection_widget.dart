@@ -1,8 +1,7 @@
-import 'dart:developer';
-
-import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
@@ -18,19 +17,33 @@ class OnboardingLanguagePage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Language',
-          style: AppTypography.bodyBold(color: AppColors.textColor),
-        ),
-        SizedBox(height: AppSpacing.md),
-        Text(
-          'Choose the language familiar to you',
-          style: AppTypography.calloutMedium(color: AppColors.textlightColor),
-        ),
-        const SizedBox(height: 32),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl6,
+            vertical: AppSpacing.xl4,
+          ),
 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Language',
+                style: AppTypography.headline(
+                  weight: AppTypographyWeight.semibold,
+                ),
+              ),
+              SizedBox(height: AppSpacing.sm),
+              Text(
+                'Choose the language familiar to you',
+                style: AppTypography.callout(
+                  weight: AppTypographyWeight.regular,
+                ),
+              ),
+            ],
+          ),
+        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LanguageCard(
               flagImage: AppImages.usFlag,
@@ -74,7 +87,10 @@ class OnboardingLanguagePage extends StatelessWidget {
               SizedBox(height: 12),
               Text(
                 'Tap to speak / Toca para hablar / 点击说话',
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                style: AppTypography.body(
+                  weight: AppTypographyWeight.regular,
+                  color: AppColors.textlightColor,
+                ),
               ),
             ],
           ),
@@ -102,12 +118,13 @@ class LanguageCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        height: 160,
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        margin: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+        height: DesignScaleManager.scaleValue(336),
+        width: DesignScaleManager.scaleValue(336),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppRadius.xl2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
@@ -121,18 +138,21 @@ class LanguageCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Image.asset(
                 flagImage,
-                width: 90,
-                height: 90,
+                width: DesignScaleManager.scaleValue(150),
+                height: DesignScaleManager.scaleValue(150),
                 fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               language,
-              style: AppTypography.bodyMedium(color: AppColors.bodyTextColor),
+              style: AppTypography.body(
+                weight: AppTypographyWeight.medium,
+                color: AppColors.bodyTextColor,
+              ),
             ),
           ],
         ),

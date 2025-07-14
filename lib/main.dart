@@ -1,24 +1,19 @@
-import 'package:ausa/config/config.dart';
+import 'package:ausa/di.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(
-    Container(
-      alignment: Alignment.center,
-      color: Colors.grey,
-      height: 693,
-      width: 1108,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 1108, maxHeight: 693),
-        child: MyApp(),
-      ),
-    ),
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Set full screen mode
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+    overlays: [],
   );
 
-  // runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,8 +22,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Ausa Health',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(

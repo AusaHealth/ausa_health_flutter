@@ -10,7 +10,7 @@ class MealTimesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MealTimesController());
+    final controller = Get.find<MealTimesController>();
 
     return Scaffold(
       backgroundColor: AppColors.gray50,

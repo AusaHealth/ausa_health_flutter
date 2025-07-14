@@ -2,7 +2,6 @@ import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/custom_text_field.dart';
 import 'package:ausa/common/widget/input_bg_container.dart';
 import 'package:ausa/common/widget/on_screen_keyboard_widget.dart';
-import 'package:ausa/constants/constants.dart';
 import 'package:ausa/features/profile/widget/birthday_pickup_dialoge.dart';
 import 'package:ausa/features/profile/widget/bottom_sheet_modal.dart';
 import 'package:ausa/features/profile/widget/height_weight_input.dart';
@@ -176,7 +175,7 @@ class _EditPersonalPageState extends State<EditPersonalPage> {
                 children: [
                   AusaButton(
                     width: 100,
-                    borderRadius: 60,
+
                     onPressed: () {
                       Get.back();
                     },

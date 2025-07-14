@@ -1,5 +1,9 @@
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SettingsNetworkTile extends StatelessWidget {
   final String networkName;
@@ -25,31 +29,42 @@ class SettingsNetworkTile extends StatelessWidget {
     final Color normalBg = Colors.white;
     final Color selectedText = const Color(0xFF00267E);
     final Color normalText = Colors.black;
-    final Color iconColor = Colors.grey;
+    final Color iconColor = const Color(0xff091227);
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        // margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        // decoration: BoxDecoration(color: selected ? selectedBg : normalBg),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 networkName,
-                style: AppTypography.bodyRegular(
+                style: AppTypography.body(
                   color: selected ? selectedText : normalText,
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ),
             if (isSecure) ...[
-              Icon(Icons.lock, size: 20, color: iconColor),
-              const SizedBox(width: 8),
+              SvgPicture.asset(
+                AppImages.lock,
+                height: DesignScaleManager.scaleValue(40),
+                colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+              ),
+              SizedBox(width: AppSpacing.xl),
             ],
-            Icon(Icons.wifi, size: 24, color: iconColor),
-            const SizedBox(width: 8),
-            Icon(Icons.info_outline, size: 22, color: iconColor),
+            SvgPicture.asset(
+              AppImages.wifiSvg,
+              height: DesignScaleManager.scaleValue(40),
+              colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+            ),
+            SizedBox(width: AppSpacing.xl),
+            SvgPicture.asset(
+              AppImages.info,
+              height: DesignScaleManager.scaleValue(40),
+              colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+            ),
           ],
         ),
       ),

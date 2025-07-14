@@ -15,7 +15,7 @@ class HealthSchedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HealthScheduleController());
+    final controller = Get.find<HealthScheduleController>();
 
     return Scaffold(
       backgroundColor: AppColors.gray50,

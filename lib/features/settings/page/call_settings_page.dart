@@ -20,7 +20,10 @@ class _CallSettingsPageState extends State<CallSettingsPage> {
   Widget _sectionHeader(String text) {
     return Text(
       text,
-      style: AppTypography.bodyRegular(color: AppColors.textlightColor),
+      style: AppTypography.body(
+        color: AppColors.textlightColor,
+        weight: AppTypographyWeight.regular,
+      ),
     );
   }
 

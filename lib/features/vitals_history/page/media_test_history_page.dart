@@ -23,7 +23,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(MediaTestHistoryController());
+    controller = Get.find<MediaTestHistoryController>();
   }
 
   @override
@@ -114,17 +114,13 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
               return AusaButton(
                 text: 'Delete',
                 onPressed: hasSelection ? _showDeleteConfirmationDialog : null,
-                variant: ButtonVariant.custom,
-                size: ButtonSize.small,
+
                 backgroundColor:
                     hasSelection
                         ? Colors.orange
                         : Colors.orange.withOpacity(0.4),
                 textColor: Colors.white,
-                borderRadius: 60,
-                icon: Icons.delete_outline,
-                iconColor: Colors.white,
-                iconSpacing: AppSpacing.md,
+
                 isEnabled: hasSelection,
               );
             }),
@@ -306,10 +302,6 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                           variant: ButtonVariant.secondary,
                           borderColor: Colors.orange,
                           textColor: Colors.orange,
-                          borderRadius: 60,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
                         ),
                       ),
                       SizedBox(width: AppSpacing.lg),
@@ -324,10 +316,6 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                           variant: ButtonVariant.primary,
                           backgroundColor: Colors.orange,
                           textColor: Colors.white,
-                          borderRadius: 60,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
                         ),
                       ),
                     ],

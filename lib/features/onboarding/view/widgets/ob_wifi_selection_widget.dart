@@ -1,4 +1,5 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
 import 'package:ausa/features/settings/model/network_info_model.dart';
@@ -39,47 +40,57 @@ class OnboardingWifiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<OnboardingController>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Wi-Fi',
-          style: AppTypography.bodyBold(color: AppColors.bodyTextLightColor),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Select your Wi-Fi network',
-          style: AppTypography.calloutMedium(color: AppColors.bodyTextColor),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          'Available networks',
-          style: AppTypography.bodyRegular(color: Color(0xFF828282)),
-        ),
-        Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.zero,
-            itemCount: networks.length,
-            separatorBuilder:
-                (context, i) =>
-                    const Divider(height: 1, color: Color(0xFFE0E0E0)),
-            itemBuilder: (context, i) {
-              final net = networks[i];
-              return SettingsNetworkTile(
-                networkName: net.name,
-                isSecure: net.isSecure,
-                isConnected: net.isConnected,
-                signalStrength: net.signalStrength,
-                selected: false,
-                onTap: () {
-                  controller.completeStep(OnboardingStep.wifi);
-                  controller.goToStep(OnboardingStep.phone);
-                },
-              );
-            },
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl6,
+        vertical: AppSpacing.xl4,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Wi-Fi',
+            style: AppTypography.headline(weight: AppTypographyWeight.semibold),
           ),
-        ),
-      ],
+          SizedBox(height: AppSpacing.sm),
+          Text(
+            'Select your Wi-Fi network',
+            style: AppTypography.callout(weight: AppTypographyWeight.regular),
+          ),
+          SizedBox(height: AppSpacing.xl2),
+          Text(
+            'Available networks',
+            style: AppTypography.callout(
+              color: Color(0xFF828282),
+              weight: AppTypographyWeight.medium,
+            ),
+          ),
+          SizedBox(height: AppSpacing.sm),
+          Expanded(
+            child: ListView.separated(
+              padding: EdgeInsets.zero,
+              itemCount: networks.length,
+              separatorBuilder:
+                  (context, i) =>
+                      const Divider(height: 1, color: Color(0xFFE0E0E0)),
+              itemBuilder: (context, i) {
+                final net = networks[i];
+                return SettingsNetworkTile(
+                  networkName: net.name,
+                  isSecure: net.isSecure,
+                  isConnected: net.isConnected,
+                  signalStrength: net.signalStrength,
+                  selected: false,
+                  onTap: () {
+                    controller.completeStep(OnboardingStep.wifi);
+                    controller.goToStep(OnboardingStep.phone);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -224,11 +224,9 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                   onPressed: () => Get.back(),
                                   variant: ButtonVariant.secondary,
                                   borderColor: AppColors.primary700,
-                                  borderWidth: 2,
+
                                   textColor: AppColors.primary700,
                                   backgroundColor: Colors.transparent,
-                                  borderRadius: 25,
-                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -243,8 +241,7 @@ class _CategorySelectionDialogState extends State<CategorySelectionDialog> {
                                   variant: ButtonVariant.primary,
                                   backgroundColor: AppColors.primary700,
                                   textColor: Colors.white,
-                                  borderRadius: 25,
-                                  fontWeight: FontWeight.w600,
+
                                   text: 'Continue',
                                 ),
                               ),

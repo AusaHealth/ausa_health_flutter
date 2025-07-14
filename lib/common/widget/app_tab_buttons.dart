@@ -55,12 +55,11 @@ class AppTabButtons extends StatelessWidget {
                         isSelected
                             ? LinearGradient(
                               colors: [
-                                AppColors.primary900,
-                                AppColors.primary700,
+                                AppColors.primary800,
+                                AppColors.primary500,
                               ],
-                              begin: Alignment(-0.5, 0.5),
-                              end: Alignment(1.5, -0.5),
-                              transform: GradientRotation(136 * 3.14159 / 180),
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
                             )
                             : null,
                     color: isSelected ? null : Colors.white,

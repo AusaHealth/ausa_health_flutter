@@ -146,7 +146,6 @@ class _EditContactPageState extends State<EditContactPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   AusaButton(
-                    borderRadius: 60,
                     onPressed: () {
                       Get.back();
                     },

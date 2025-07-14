@@ -63,7 +63,12 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text('Brightness', style: AppTypography.bodyBold()),
+                  Text(
+                    'Brightness',
+                    style: AppTypography.body(
+                      weight: AppTypographyWeight.medium,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -111,7 +116,12 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text('Text Size', style: AppTypography.bodyBold()),
+                  Text(
+                    'Text Size',
+                    style: AppTypography.body(
+                      weight: AppTypographyWeight.medium,
+                    ),
+                  ),
                 ],
               ),
             ),
