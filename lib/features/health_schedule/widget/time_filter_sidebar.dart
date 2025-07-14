@@ -12,7 +12,10 @@ class TimeFilterSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 220,
-      padding: EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.only(
+        right: AppSpacing.lg,
+        bottom: AppSpacing.lg,
+      ),
       child: Column(
         children: [
           // All Day Button
@@ -60,7 +63,7 @@ class TimeFilterSidebar extends StatelessWidget {
     BorderRadius borderRadius;
     if (isFirst) {
       borderRadius = BorderRadius.only(
-        topLeft: Radius.circular(AppRadius.xl * 2.5), // Higher top-left radius
+        topLeft: Radius.circular(AppRadius.xl3), // Higher top-left radius
         topRight: Radius.circular(AppRadius.xl),
         bottomLeft: Radius.circular(AppRadius.xl),
         bottomRight: Radius.circular(AppRadius.xl),
@@ -70,7 +73,7 @@ class TimeFilterSidebar extends StatelessWidget {
         topLeft: Radius.circular(AppRadius.xl),
         topRight: Radius.circular(AppRadius.xl),
         bottomLeft: Radius.circular(
-          AppRadius.xl * 2.5,
+          AppRadius.xl3,
         ), // Higher bottom-left radius
         bottomRight: Radius.circular(AppRadius.xl),
       );
@@ -84,7 +87,7 @@ class TimeFilterSidebar extends StatelessWidget {
         width: double.infinity,
         height: 70,
         padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.xl,
+          horizontal: AppSpacing.xl6,
           vertical: AppSpacing.lg,
         ),
         decoration: BoxDecoration(
@@ -95,31 +98,35 @@ class TimeFilterSidebar extends StatelessWidget {
           boxShadow:
               isSelected
                   ? [
-                    // Light outer shadow (top-left)
-                    BoxShadow(
-                      color: AppColors.primary700.withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: Offset(-3, -4),
-                    ),
-                    // Dark outer shadow (bottom-right)
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.10),
+                    // Drop Shadow 1 – Black @10%
+                    const BoxShadow(
+                      color: Color(0x1A000000), // Black with 10% opacity
                       blurRadius: 10,
                       offset: Offset(5, 6),
+                      spreadRadius: 0,
+                    ),
+                    // Drop Shadow 2 – Light blue highlight
+                    BoxShadow(
+                      color: const Color(0xFFC8D8FF), // #C8D8FF @100%
+                      blurRadius: 10,
+                      offset: const Offset(-3, -4),
+                      spreadRadius: 0,
+                    ),
+                    // Inner Shadow approximation – Blue tint
+                    BoxShadow(
+                      color: const Color(0xFF86AAFF), // #86AAFF @100%
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 0,
                     ),
                   ]
                   : [
-                    // Light grey shadow (top-left)
-                    BoxShadow(
-                      color: Color(0xFFF5F5F5),
+                    // Single shadow for non-selected buttons – Black @10%
+                    const BoxShadow(
+                      color: Color(0x1A000000), // Black with 10% opacity
                       blurRadius: 10,
-                      offset: Offset(-3, -4),
-                    ),
-                    // Dark grey shadow (bottom-right)
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 5,
-                      offset: Offset(5, 6),
+                      offset: Offset(0, 4),
+                      spreadRadius: 0,
                     ),
                   ],
         ),
@@ -128,7 +135,7 @@ class TimeFilterSidebar extends StatelessWidget {
             Icon(
               icon,
               color: isSelected ? Colors.white : Colors.grey[600],
-              size: 22,
+              size: 20,
             ),
             SizedBox(width: AppSpacing.md),
             Text(

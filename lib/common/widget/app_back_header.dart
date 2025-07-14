@@ -56,7 +56,7 @@ class AppBackHeader extends StatelessWidget {
     return Container(
       height: 80, // Fixed height to ensure consistency
       padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
+        horizontal: AppSpacing.xl3,
         vertical: AppSpacing.md,
       ),
       color: backgroundColor,
@@ -87,7 +87,7 @@ class AppBackHeader extends StatelessWidget {
             ),
           ),
 
-          SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.xl),
 
           // Title
           Text(

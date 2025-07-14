@@ -91,7 +91,7 @@ class ReadingCardWidget extends StatelessWidget {
               _formatTime(),
               style: AppTypography.callout(
                 color: Color(0xFF415981),
-                fontWeight: FontWeight.w400,
+                weight: AppTypographyWeight.medium,
               ),
             ),
           ),
@@ -130,11 +130,12 @@ class ReadingCardWidget extends StatelessWidget {
         () => GestureDetector(
           onTap: () => onParameterTap?.call('Systolic'),
           child: Container(
+            
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Systolic') == true ||
                           isParameterSelected?.call('Diastolic') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -143,8 +144,8 @@ class ReadingCardWidget extends StatelessWidget {
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                      vertical: AppSpacing.md,
+                      horizontal: AppSpacing.xl,
+                      vertical: AppSpacing.lg,
                     ),
                     child: _buildDataPoint(
                       'BP Systolic',
@@ -187,13 +188,13 @@ class ReadingCardWidget extends StatelessWidget {
                 onTap: () => onParameterTap?.call('MAP'),
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
+                    horizontal: AppSpacing.xl,
+                    vertical: AppSpacing.lg,
                   ),
                   decoration: BoxDecoration(
                     color:
                         isParameterSelected?.call('MAP') == true
-                            ? AppColors.primary700.withOpacity(0.1)
+                            ? Color(0xFFFFF7DE)
                             : null,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
@@ -220,7 +221,7 @@ class ReadingCardWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         isParameterSelected?.call('Pulse Pressure') == true
-                            ? AppColors.primary700.withOpacity(0.1)
+                            ? Color(0xFFFFF7DE)
                             : null,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
@@ -254,7 +255,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('SpO2') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -284,7 +285,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Glucose Level') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -327,7 +328,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Temperature') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -358,7 +359,7 @@ class ReadingCardWidget extends StatelessWidget {
               color:
                   isParameterSelected?.call('ECG Heart Rate') == true ||
                           isParameterSelected?.call('Rhythm') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
@@ -398,7 +399,7 @@ class ReadingCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Duration') == true
-                      ? AppColors.primary700.withOpacity(0.1)
+                      ? Color(0xFFFFF7DE)
                       : null,
               borderRadius: BorderRadius.circular(AppRadius.xl),
             ),

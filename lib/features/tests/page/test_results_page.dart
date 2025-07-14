@@ -49,9 +49,9 @@ class TestResultsPage extends StatelessWidget {
                 SizedBox(width: AppSpacing.lg),
                 Text(
                   'Success',
-                  style: AppTypography.body(
+                  style: AppTypography.headline(
                     color: Colors.black,
-                    weight: AppTypographyWeight.semibold,
+                    weight: AppTypographyWeight.medium,
                   ),
                 ),
               ],
@@ -171,7 +171,7 @@ class TestResultsPage extends StatelessWidget {
               'Results',
               style: AppTypography.headline(
                 color: Colors.black87,
-                weight: AppTypographyWeight.semibold,
+                weight: AppTypographyWeight.regular,
               ),
             ),
           ),
@@ -240,9 +240,9 @@ class TestResultsPage extends StatelessWidget {
               // Abnormal values warning
               if (result.hasAbnormalValues) ...[
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+                  padding:  EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xl,
+                    vertical: AppSpacing.md,
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xffFFCECB),
@@ -250,9 +250,9 @@ class TestResultsPage extends StatelessWidget {
                   ),
                   child: Text(
                     'Abnormal reading',
-                    style: AppTypography.callout(
+                    style: AppTypography.body(
                       color: Color(0xffD92D20),
-                      fontWeight: FontWeight.w600,
+                      weight: AppTypographyWeight.medium,
                     ),
                   ),
                 ),
@@ -301,9 +301,9 @@ class TestResultsPage extends StatelessWidget {
           children: [
             Text(
               parameter.value,
-              style: AppTypography.body(
+              style: AppTypography.title1(
                 color: parameter.isAbnormal ? Colors.red : Colors.black,
-                weight: AppTypographyWeight.bold,
+                weight: AppTypographyWeight.semibold,
               ),
             ),
             if (parameter.unit.isNotEmpty) ...[
@@ -312,7 +312,7 @@ class TestResultsPage extends StatelessWidget {
                 parameter.unit,
                 style: AppTypography.body(
                   color: Colors.black,
-                  weight: AppTypographyWeight.medium,
+                  weight: AppTypographyWeight.regular,
                 ),
               ),
             ],
@@ -324,7 +324,7 @@ class TestResultsPage extends StatelessWidget {
 
   Widget _buildActionButtonsContent() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
       decoration: BoxDecoration(
         color: Color(0xffEBE9E6),
         borderRadius: BorderRadius.only(
@@ -337,7 +337,7 @@ class TestResultsPage extends StatelessWidget {
         children: [
           Text(
             'Would you like to:',
-            style: AppTypography.body(color: Color(0xff5A7497),),
+            style: AppTypography.headline(color: Color(0xff5A7497), weight: AppTypographyWeight.regular),
           ),
           const SizedBox(height: 16),
           Row(
@@ -356,8 +356,9 @@ class TestResultsPage extends StatelessWidget {
                   color: AppColors.primary700,
                   size: 20,
                 ),
+                size: ButtonSize.lg,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 5),
               AusaButton(
                 text: 'Check Again',
                 onPressed: () => controller.retakeAllTests(),
@@ -369,8 +370,9 @@ class TestResultsPage extends StatelessWidget {
                   color: AppColors.primary700,
                   size: 20,
                 ),
+                size: ButtonSize.lg,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 5),
               AusaButton(
                 text: 'Take another Test',
                 onPressed: () => controller.navigateToTestSelection(),
@@ -382,18 +384,20 @@ class TestResultsPage extends StatelessWidget {
                   color: AppColors.primary700,
                   size: 20,
                 ),
+                size: ButtonSize.lg,
               ),
-              const SizedBox(width: 30),
+              const SizedBox(width: 10),
               AusaButton(
                 text: 'Finish',
-                height: 50,
                 onPressed: () {
                   controller.resetSelections();
                   Get.back();
                 },
                 width: 200,
                 variant: ButtonVariant.primary,
+                size: ButtonSize.lg,
               ),
+
             ],
           ),
         ],

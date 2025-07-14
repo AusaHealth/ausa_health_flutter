@@ -350,7 +350,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'hydrochlorothiazide_1',
         title: 'Hydrochlorothiazide',
-        subtitle: 'Dr. Adnan',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '13.5 mg',
         condition: 'Hypertension',
@@ -358,7 +358,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'hydrochlorothiazide_2',
         title: 'Hydrochlorothiazide',
-        subtitle: 'Dr. Adnan',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '13.5 mg',
         condition: 'Hypertension',
@@ -366,7 +366,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'hydrochlorothiazide_3',
         title: 'Hydrochlorothiazide',
-        subtitle: 'Dr. Adnan',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.n',
         type: HealthActivityType.medication,
         dosage: '13.5 mg',
         condition: 'Hypertension',
@@ -374,7 +374,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'metformin_1',
         title: 'Metformin',
-        subtitle: 'Dr. Smith',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '500 mg',
         condition: 'Type II Diabetes',
@@ -382,7 +382,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'metformin_2',
         title: 'Metformin',
-        subtitle: 'Dr. Smith',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '850 mg',
         condition: 'Type II Diabetes',
@@ -390,7 +390,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'simvastatin_1',
         title: 'Simvastatin',
-        subtitle: 'Dr. Johnson',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '20 mg',
         condition: 'Hyperlipidemia',
@@ -398,7 +398,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'simvastatin_2',
         title: 'Simvastatin',
-        subtitle: 'Dr. Johnson',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '40 mg',
         condition: 'Hyperlipidemia',
@@ -407,7 +407,7 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'levothyroxine_1',
         title: 'Levothyroxine',
-        subtitle: 'Dr. Brown',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '75 mcg',
         condition: 'Hypothyroidism',
@@ -415,23 +415,15 @@ class HealthScheduleController extends GetxController {
       HealthActivity(
         id: 'omeprazole_1',
         title: 'Omeprazole',
-        subtitle: 'Dr. Davis',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '20 mg',
         condition: 'GERD',
       ),
       HealthActivity(
-        id: 'aspirin_1',
-        title: 'Aspirin',
-        subtitle: 'Dr. Wilson',
-        type: HealthActivityType.medication,
-        dosage: '81 mg',
-        condition: 'Cardiovascular Disease',
-      ),
-      HealthActivity(
         id: 'albuterol_1',
         title: 'Albuterol Inhaler',
-        subtitle: 'Dr. Garcia',
+        subtitle: '2 tablets before lunch, 1 tablet before dinner.',
         type: HealthActivityType.medication,
         dosage: '90 mcg',
         condition: 'Asthma',

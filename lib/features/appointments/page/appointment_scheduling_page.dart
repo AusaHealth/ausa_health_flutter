@@ -14,6 +14,7 @@ import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ausa/routes/app_routes.dart';
 
 class AppointmentSchedulingPage extends StatelessWidget {
   const AppointmentSchedulingPage({super.key});
@@ -62,6 +63,20 @@ class AppointmentSchedulingPage extends StatelessWidget {
                       totalSteps: 2,
                     )
                     : null,
+            actionButtons: [
+              AusaButton(
+                text: 'Scheduled appointments',
+                onPressed: () => Get.toNamed(AppRoutes.appointmentScheduled),
+                variant: ButtonVariant.secondary,
+                leadingIcon: Icon(
+                  Icons.calendar_month,
+                  size: 20,
+                  color: AppColors.primary700,
+                ),
+                borderColor: AppColors.white,
+                size: ButtonSize.md,
+              ),
+            ],
           ),
         ),
         AppMainContainer(

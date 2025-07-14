@@ -30,7 +30,8 @@ class ScheduledAppointmentsPage extends StatelessWidget {
                   onPressed: controller.navigateToScheduleAppointment,
                   variant: ButtonVariant.secondary,
                   borderColor: AppColors.white,
-                  leadingIcon: const Icon(Icons.calendar_month, size: 16, color: AppColors.primary700),
+                  leadingIcon: const Icon(Icons.calendar_month, size: 20, color: AppColors.primary700),
+                  size: ButtonSize.md,
                 ),
               ]
               ),
