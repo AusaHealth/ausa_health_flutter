@@ -421,8 +421,8 @@ class AppointmentSchedulingPage extends StatelessWidget {
             return GestureDetector(
               onTap: () => controller.selectDate(date),
               child: Container(
-                width: 60,
-                height: 60,
+                width: 74,
+                height: 74,
                 decoration: BoxDecoration(
                   color:
                       isSelected
