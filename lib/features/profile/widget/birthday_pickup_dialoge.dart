@@ -1,3 +1,6 @@
+import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
 
 class BirthdayPickerDialog extends StatefulWidget {
@@ -41,106 +44,89 @@ class _BirthdayPickerDialogState extends State<BirthdayPickerDialog> {
       child: Container(
         width: 500,
         padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Select Date',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                ),
-                if (selectedDateString != null)
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.cake, color: Colors.blue),
-                    label: Text(
-                      selectedDateString!,
-                      style: TextStyle(color: Colors.blue),
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Select Date',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                   ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Stepper
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _stepButton('Select Month', step == 0, () => goToStep(0)),
-                const SizedBox(width: 8),
-                _stepButton('Select Date', step == 1, () => goToStep(1)),
-                const SizedBox(width: 8),
-                _stepButton(
-                  'Select Year',
-                  step == 2 || step == 3,
-                  () => goToStep(2),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Step content
-            if (step == 0) _monthGrid(),
-            if (step == 1) _calendarView(),
-            if (step == 2) _yearRangeGrid(),
-            if (step == 3) _yearGridInRange(),
-            const SizedBox(height: 32),
-            // Action buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.blue),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
+                  if (selectedDateString != null)
+                    TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.cake, color: Colors.blue),
+                      label: Text(
+                        selectedDateString!,
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 18,
-                    ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Stepper
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _stepButton('Select Month', step == 0, () => goToStep(0)),
+                  const SizedBox(width: 8),
+                  _stepButton('Select Date', step == 1, () => goToStep(1)),
+                  const SizedBox(width: 8),
+                  _stepButton(
+                    'Select Year',
+                    step == 2 || step == 3,
+                    () => goToStep(2),
                   ),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(fontSize: 18, color: Colors.blue),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Step content
+              if (step == 0) _monthGrid(),
+              if (step == 1) _calendarView(),
+              if (step == 2) _yearRangeGrid(),
+              if (step == 3) _yearGridInRange(),
+              const SizedBox(height: 32),
+              // Action buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AusaButton(
+                    size: ButtonSize.lg,
+                    borderColor: AppColors.primary500,
+                    variant: ButtonVariant.secondary,
+                    text: 'Cancel',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ),
-                ElevatedButton(
-                  onPressed:
-                      (selectedMonth != null &&
-                              selectedDay != null &&
-                              selectedYear != null)
-                          ? () {
-                            widget.onDone(
-                              DateTime(
-                                selectedYear!,
-                                selectedMonth!,
-                                selectedDay!,
-                              ),
-                            );
-                            Navigator.of(context).pop();
-                          }
-                          : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 18,
-                    ),
+                  SizedBox(width: AppSpacing.md),
+                  AusaButton(
+                    size: ButtonSize.lg,
+                    text: 'Done',
+                    onPressed:
+                        (selectedMonth != null &&
+                                selectedDay != null &&
+                                selectedYear != null)
+                            ? () {
+                              widget.onDone(
+                                DateTime(
+                                  selectedYear!,
+                                  selectedMonth!,
+                                  selectedDay!,
+                                ),
+                              );
+                              Navigator.of(context).pop();
+                            }
+                            : null,
                   ),
-                  child: const Text(
-                    'Done',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

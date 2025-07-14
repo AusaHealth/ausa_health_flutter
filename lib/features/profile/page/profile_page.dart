@@ -44,12 +44,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: AppSpacing.lg),
-                    child: const AppBackHeader(title: 'Your profile'),
+                    child: const AppBackHeader2(title: 'Your profile'),
                   ),
                   SizedBox(height: AppSpacing.xl2),
 
                   Padding(
-                    padding: EdgeInsets.only(left: AppSpacing.xl5),
+                    padding: EdgeInsets.only(left: AppSpacing.xl6),
                     child: ProfileTabs(
                       selectedIndex: selectedTab,
                       onTabSelected: (i) => setState(() => selectedTab = i),

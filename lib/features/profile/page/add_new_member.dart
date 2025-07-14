@@ -4,6 +4,7 @@ import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/custom_nav.dart';
 import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/icons.dart';
 
 import 'package:ausa/features/profile/controller/family_controller.dart';
 import 'package:ausa/features/profile/page/add_photo_page.dart';
@@ -11,6 +12,7 @@ import 'package:ausa/features/profile/page/family_input_page.dart';
 import 'package:ausa/features/profile/widget/bottom_sheet_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/constants.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -27,12 +29,12 @@ class AddNewMember extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppBackHeader(title: 'Add new member'),
+                AppBackHeader2(title: 'Add new member'),
                 Spacer(),
                 Image.asset(
                   ProfileIcons.ausaLogo,
-                  height: DesignScaleManager.scaleValue(130),
-                  width: DesignScaleManager.scaleValue(130),
+                  height: DesignScaleManager.scaleValue(110),
+                  width: DesignScaleManager.scaleValue(120),
                 ),
               ],
             ),
@@ -72,10 +74,14 @@ class AddNewMember extends StatelessWidget {
                                   ),
                                 ),
                                 child: Center(
-                                  child: Image.asset(
-                                    AppImages.addPhoto,
-                                    height: 200,
-                                    width: 200,
+                                  child: SvgPicture.asset(
+                                    AusaIcons.userPlus01,
+                                    height: DesignScaleManager.scaleValue(150),
+                                    width: DesignScaleManager.scaleValue(150),
+                                    colorFilter: ColorFilter.mode(
+                                      AppColors.primary300,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -134,10 +140,6 @@ class AddNewMember extends StatelessWidget {
                   Expanded(
                     flex: 4,
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 24,
-                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppRadius.xl3),
                         color: Colors.white,
@@ -152,11 +154,11 @@ class AddNewMember extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.xl4,
+                          vertical: AppSpacing.xl6,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: AppSpacing.xl4),
                             Row(
                               children: [
                                 Expanded(
@@ -247,8 +249,14 @@ Widget _buildTextField({
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(label, style: AppTypography.callout(color: AppColors.textColor)),
-      SizedBox(height: 8),
+      Padding(
+        padding: EdgeInsets.only(left: AppSpacing.sm),
+        child: Text(
+          label,
+          style: AppTypography.callout(color: AppColors.textColor),
+        ),
+      ),
+      SizedBox(height: AppSpacing.smMedium),
       Container(
         decoration: BoxDecoration(
           color: Colors.blue.shade50,

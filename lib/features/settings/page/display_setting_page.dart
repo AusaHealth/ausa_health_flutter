@@ -19,115 +19,94 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
   @override
   Widget build(BuildContext context) {
     final settingController = Get.find<SettingController>();
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.xl3),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _DisplayCard(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(
+                  () => Text(
+                    '${(settingController.brightness.value * 100).round()} %',
+                    style: AppTypography.title1(
+                      color: AppColors.primary500,
+                      weight: AppTypographyWeight.regular,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Obx(
+                    () => _CustomSlider(
+                      value: settingController.brightness.value,
+                      onChanged: (v) => settingController.setBrightness(v),
+                      icon: Icons.wb_sunny_rounded,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Text(
+                  'Brightness',
+                  style: AppTypography.body(weight: AppTypographyWeight.medium),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 32),
+          // Text Size Card
+          _DisplayCard(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'A',
+                      style: AppTypography.title1(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w400,
+                      ).copyWith(fontSize: 24),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'A',
+                      style: AppTypography.title1(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w400,
+                      ).copyWith(fontSize: 32),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'A',
+                      style: AppTypography.title1(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w400,
+                      ).copyWith(fontSize: 38),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: _CustomSlider(
+                    value: textSize,
+                    onChanged: (v) => setState(() => textSize = v),
+                    icon: Icons.text_fields_rounded,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Text(
+                  'Text Size',
+                  style: AppTypography.body(weight: AppTypographyWeight.medium),
+                ),
+              ],
+            ),
           ),
         ],
-      ),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Brightness Card
-            _DisplayCard(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Obx(
-                    () => Text(
-                      '${(settingController.brightness.value * 100).round()} %',
-                      style: AppTypography.title1(
-                        color: AppColors.primary500,
-                        weight: AppTypographyWeight.regular,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Obx(
-                      () => _CustomSlider(
-                        value: settingController.brightness.value,
-                        onChanged: (v) => settingController.setBrightness(v),
-                        icon: Icons.wb_sunny_rounded,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    'Brightness',
-                    style: AppTypography.body(
-                      weight: AppTypographyWeight.medium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 32),
-            // Text Size Card
-            _DisplayCard(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'A',
-                        style: AppTypography.title1(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w400,
-                        ).copyWith(fontSize: 24),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'A',
-                        style: AppTypography.title1(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w400,
-                        ).copyWith(fontSize: 32),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'A',
-                        style: AppTypography.title1(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w400,
-                        ).copyWith(fontSize: 38),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _CustomSlider(
-                      value: textSize,
-                      onChanged: (v) => setState(() => textSize = v),
-                      icon: Icons.text_fields_rounded,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    'Text Size',
-                    style: AppTypography.body(
-                      weight: AppTypographyWeight.medium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

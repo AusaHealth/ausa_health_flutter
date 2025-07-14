@@ -17,6 +17,7 @@ class AppColors {
   static const Color bodyTextColor = Color(0xff4F4F4F);
   static const Color textColor = Color(0xff171136);
   static const Color textlightColor = Color(0xff828282);
+  static const Color greyTextColor = Color(0xff717680);
 
   static const Color bodyTextLightColor = Color(0xff021633);
 
@@ -48,7 +49,6 @@ class AppColors {
 
   // Warning colors
   static const Color accent = Color(0xFFDE7600);
- 
 
   // Base colors
   static const Color white = Color(0xFFFFFFFF);
@@ -58,4 +58,3 @@ class AppColors {
   static const Color primaryDarkColor = primary800;
   static const Color primaryLightColor = primary500;
 }
-

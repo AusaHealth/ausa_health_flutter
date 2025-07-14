@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
@@ -21,15 +22,7 @@ class SettingsNetworkList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.xl3),
-      ),
-
-      padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.xl4,
-        horizontal: AppSpacing.xl6,
-      ),
+    return AppSubParentContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

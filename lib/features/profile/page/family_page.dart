@@ -1,12 +1,14 @@
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/profile/page/add_new_member.dart';
 import 'package:ausa/features/profile/page/email_invite_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class FamilyPage extends StatelessWidget {
@@ -57,21 +59,18 @@ class FamilyPage extends StatelessWidget {
                             ],
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // User plus icon
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: const Icon(
-                                  Icons.person_add,
-                                  size: 32,
-                                  color: Color(0xFF2196F3),
+                              SvgPicture.asset(
+                                AusaIcons.userPlus01,
+                                height: DesignScaleManager.scaleValue(40),
+                                width: DesignScaleManager.scaleValue(40),
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.primary700,
+                                  BlendMode.srcIn,
                                 ),
                               ),
-                              const SizedBox(height: 24),
+                              SizedBox(height: AppSpacing.md),
                               Text(
                                 'Add new member\nmanually',
                                 textAlign: TextAlign.center,
@@ -212,10 +211,14 @@ class FamilyPage extends StatelessWidget {
                                 ),
                               ),
                               Spacer(),
-                              Icon(
-                                Icons.person_add,
-                                size: DesignScaleManager.scaleValue(80),
-                                color: Colors.white,
+                              SvgPicture.asset(
+                                AusaIcons.userPlus01,
+                                height: DesignScaleManager.scaleValue(80),
+                                width: DesignScaleManager.scaleValue(80),
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.white,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ],
                           ),

@@ -62,6 +62,8 @@ class AppImages {
   static const String lock = 'assets/icons/onboarding/lock.svg';
   static const String wifiSvg = 'assets/icons/onboarding/wifi.svg';
   static const String info = 'assets/icons/onboarding/info.svg';
+
+  static const String notificationBg = 'assets/images/notification_bg.png';
 }
 
 class ProfileIcons {
