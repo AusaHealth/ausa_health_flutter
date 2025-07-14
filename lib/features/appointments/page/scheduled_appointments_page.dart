@@ -1,6 +1,8 @@
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
@@ -8,6 +10,7 @@ import 'package:ausa/features/appointments/widget/appointment_card_widget.dart';
 import 'package:ausa/features/appointments/widget/no_appointments_widget.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ScheduledAppointmentsPage extends StatelessWidget {
@@ -17,7 +20,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AppointmentsController>();
 
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: const Color(0xFFF0F0F0),
       body: SafeArea(
         child: Column(
@@ -30,11 +33,16 @@ class ScheduledAppointmentsPage extends StatelessWidget {
                   onPressed: controller.navigateToScheduleAppointment,
                   variant: ButtonVariant.secondary,
                   borderColor: AppColors.white,
-                  leadingIcon: const Icon(Icons.calendar_month, size: 20, color: AppColors.primary700),
+                  leadingIcon: SvgPicture.asset(
+                              AusaIcons.calendar,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                   size: ButtonSize.md,
                 ),
-              ]
-              ),
+              ],
+            ),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading) {
@@ -105,7 +113,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 2,
+          childAspectRatio: 2.07,
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
         ),

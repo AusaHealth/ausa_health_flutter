@@ -23,7 +23,7 @@ class BaseScaffold extends StatelessWidget {
       body: Column(
         children: [
           CustomHeader(),
-          SizedBox(height: AppSpacing.xl2),
+          // SizedBox(height: AppSpacing.xl2),
           Expanded(child: body),
         ],
       ),

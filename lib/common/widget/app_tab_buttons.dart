@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/constants.dart';
 
 /// A reusable single tab button widget with beautiful gradient styling
 class AppTabButton extends StatelessWidget {
   final String text;
-  final IconData? icon;
+  final String? iconPath;
   final bool isSelected;
   final VoidCallback onTap;
   final EdgeInsets? padding;
@@ -13,7 +14,7 @@ class AppTabButton extends StatelessWidget {
   const AppTabButton({
     super.key,
     required this.text,
-    this.icon,
+    this.iconPath,
     required this.isSelected,
     required this.onTap,
     this.padding,
@@ -32,6 +33,7 @@ class AppTabButton extends StatelessWidget {
               horizontal: AppSpacing.xl,
               vertical: AppSpacing.lg,
             ),
+        constraints: const BoxConstraints(minWidth: 152),
         decoration: BoxDecoration(
           gradient:
               isSelected
@@ -61,9 +63,9 @@ class AppTabButton extends StatelessWidget {
                   ],
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (icon != null) ...[
+            if (iconPath != null) ...[
               Container(
                 width: 26,
                 height: 26,
@@ -72,10 +74,14 @@ class AppTabButton extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Icon(
-                    icon!,
-                    color: isSelected ? Colors.white : Colors.grey[600],
-                    size: 18,
+                  child: SvgPicture.asset(
+                    iconPath!,
+                    width: 18,
+                    height: 18,
+                    colorFilter: ColorFilter.mode(
+                      isSelected ? Colors.white : Colors.grey[600]!,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),

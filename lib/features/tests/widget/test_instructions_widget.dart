@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ausa/common/model/test.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/icons.dart';
 
 class TestInstructionsWidget extends StatefulWidget {
   final Test test;
@@ -126,12 +128,12 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                 spacing: 16,
                 children: [
                   _buildSmallNavigationButton(
-                    icon: Icons.arrow_back_ios,
+                    iconPath: AusaIcons.chevronLeft,
                     onPressed: canGoPrevious ? _goToPrevious : null,
                     isEnabled: canGoPrevious,
                   ),
                   _buildSmallNavigationButton(
-                    icon: Icons.arrow_forward_ios,
+                    iconPath: AusaIcons.chevronRight,
                     onPressed: canGoNext ? _goToNext : null,
                     isEnabled: canGoNext,
                   ),
@@ -351,7 +353,7 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
   }
 
   Widget _buildSmallNavigationButton({
-    required IconData icon,
+    required String iconPath,
     required VoidCallback? onPressed,
     required bool isEnabled,
   }) {
@@ -361,18 +363,23 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
         borderRadius: BorderRadius.circular(24),
         onTap: isEnabled ? onPressed : null,
         child: Container(
-          padding: EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isEnabled
-                ? AppColors.primary700.withValues(alpha: 0.1)
-                : const Color.fromARGB(255, 238, 238, 238),
+            color:
+                isEnabled
+                    ? AppColors.primary700.withValues(alpha: 0.1)
+                    : const Color.fromARGB(255, 238, 238, 238),
           ),
           child: Center(
-            child: Icon(
-              icon,
-              size: 12,
-              color: isEnabled ? AppColors.primary700 : Colors.grey[400],
+            child: SvgPicture.asset(
+              iconPath,
+              width: 16,
+              height: 16,
+              colorFilter: ColorFilter.mode(
+                isEnabled ? AppColors.primary700 : Colors.grey[400]!,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),
@@ -380,7 +387,6 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
     );
   }
 
-  
   Widget _buildFallbackCollapsed() {
     return Padding(
       padding: const EdgeInsets.all(16),

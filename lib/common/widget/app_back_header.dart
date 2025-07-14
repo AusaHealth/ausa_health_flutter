@@ -1,30 +1,9 @@
+import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../constants/constants.dart';
 
-/// A reusable header widget with back button and page title
-/// Optionally displays a stepper widget and action buttons
-///
-/// Example usage:
-/// ```dart
-/// // Regular header
-/// AppBackHeader(title: 'Settings')
-///
-/// // Header with stepper widget
-/// AppBackHeader(
-///   title: 'Setup Process',
-///   stepperWidget: MyCustomStepper(),
-/// )
-///
-/// // Header with action buttons
-/// AppBackHeader(
-///   title: 'Settings',
-///   actionButtons: [
-///     IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-///     IconButton(icon: Icon(Icons.delete), onPressed: () {}),
-///   ],
-/// )
-/// ```
 class AppBackHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onBackPressed;
@@ -54,10 +33,11 @@ class AppBackHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80, // Fixed height to ensure consistency
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.xl3,
-        vertical: AppSpacing.md,
+      padding: EdgeInsets.only(
+        left: AppSpacing.xl3,
+        right: AppSpacing.xl3,
+        top: AppSpacing.lg,
+        bottom: AppSpacing.xl,
       ),
       color: backgroundColor,
       child: Row(
@@ -68,6 +48,7 @@ class AppBackHeader extends StatelessWidget {
             child: Container(
               width: 40,
               height: 40,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: buttonColor ?? Colors.white,
                 shape: BoxShape.circle,
@@ -79,11 +60,10 @@ class AppBackHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(
-                Icons.arrow_back_ios_new,
-                color: buttonIconColor ?? Colors.black87,
-                size: 16,
-              ),
+              child: SvgPicture.asset(
+                              AusaIcons.chevronLeft,
+                              colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+                            ),
             ),
           ),
 
@@ -101,12 +81,10 @@ class AppBackHeader extends StatelessWidget {
             stepperWidget!,
           ],
 
-          // Spacer to push action buttons to the right
-          const Spacer(),
 
           // Action buttons (if provided)
           if (actionButtons != null && actionButtons!.isNotEmpty) ...[
-            SizedBox(width: AppSpacing.md),
+            Expanded(child: const SizedBox()),
             Row(mainAxisSize: MainAxisSize.min, children: actionButtons!),
           ],
         ],

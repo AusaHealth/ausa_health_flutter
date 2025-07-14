@@ -16,6 +16,9 @@ class HealthScheduleController extends GetxController {
   final RxBool _showFloatingCTA = false.obs;
   final RxString _floatingCTAText = ''.obs;
 
+  // ScrollController for timeline auto-scrolling
+  late ScrollController timelineScrollController;
+
   // Public getters
   int get currentTabIndex => _currentTabIndex.value;
   int get selectedTimeFilter => _selectedTimeFilter.value;
@@ -48,8 +51,65 @@ class HealthScheduleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    timelineScrollController = ScrollController();
     _initializeMockData();
     _checkForPendingTests();
+  }
+
+  @override
+  void onClose() {
+    timelineScrollController.dispose();
+    super.onClose();
+  }
+
+  /// Determines the current time slot index based on the current time of day
+  int getCurrentTimeSlotIndex(List<HealthTimeSlot> timeSlots) {
+    final now = DateTime.now();
+    final currentHour = now.hour;
+
+    // Define time ranges based on meal times
+    // Morning: 4 AM - 12 PM (Breakfast period)
+    // Mid-Day: 12 PM - 5 PM (Lunch period)
+    // Evening: 5 PM - 4 AM (Dinner period)
+
+    TimeOfDay currentTimeOfDay;
+
+    if (currentHour >= 4 && currentHour < 12) {
+      currentTimeOfDay = TimeOfDay.morning;
+    } else if (currentHour >= 12 && currentHour < 17) {
+      currentTimeOfDay = TimeOfDay.midDay;
+    } else {
+      currentTimeOfDay = TimeOfDay.evening;
+    }
+
+    // Find the first time slot that matches the current time of day
+    for (int i = 0; i < timeSlots.length; i++) {
+      if (timeSlots[i].timeOfDay == currentTimeOfDay) {
+        return i;
+      }
+    }
+
+    // Default to first time slot if no match found
+    return 0;
+  }
+
+  /// Auto-scrolls to the current time section in the timeline
+  void autoScrollToCurrentTime() {
+    if (!timelineScrollController.hasClients) return;
+
+    final currentIndex = getCurrentTimeSlotIndex(filteredTimeSlots);
+
+    // Calculate approximate scroll position
+    // Each time slot widget is roughly 200 pixels tall (this is an estimate)
+    const double estimatedTimeSlotHeight = 200.0;
+    final double targetOffset = currentIndex * estimatedTimeSlotHeight;
+
+    // Animate to the calculated position
+    timelineScrollController.animateTo(
+      targetOffset,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.easeInOut,
+    );
   }
 
   // Private update methods
@@ -72,10 +132,23 @@ class HealthScheduleController extends GetxController {
   // Public action methods
   void switchTab(int index) {
     _updateCurrentTabIndex(index);
+
+    // Auto-scroll to current time when switching to Routine tab
+    if (index == 0) {
+      // Add a small delay to ensure the UI has been built
+      Future.delayed(Duration(milliseconds: 100), () {
+        autoScrollToCurrentTime();
+      });
+    }
   }
 
   void setTimeFilter(int index) {
     _updateSelectedTimeFilter(index);
+
+    // Auto-scroll to current time section when filter changes
+    Future.delayed(Duration(milliseconds: 100), () {
+      autoScrollToCurrentTime();
+    });
   }
 
   void setMedicationFilter(int index) {

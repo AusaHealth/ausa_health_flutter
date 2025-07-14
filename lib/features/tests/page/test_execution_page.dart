@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:ausa/features/teleconsultation/widget/animated_test_timer.dart';
@@ -167,7 +168,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: Column(
         children: [
@@ -285,6 +286,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                       text: 'Start Test',
                       onPressed: () => controller.startCurrentTest(),
                       variant: ButtonVariant.primary,
+                      size: ButtonSize.lg,
                     ),
                 ],
               ),
@@ -339,6 +341,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                             backgroundColor: Colors.orange,
                             textColor: Colors.white,
                             text: "Stop Test",
+                            size: ButtonSize.lg,
                           )
                           : const SizedBox(),
                 ),

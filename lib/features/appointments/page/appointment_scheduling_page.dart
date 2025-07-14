@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_stepper_widget.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/constants.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
 import 'package:ausa/features/appointments/widget/calendar_view_widget.dart';
@@ -13,6 +15,7 @@ import 'package:ausa/features/appointments/widget/time_slots_grid.dart';
 import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ausa/routes/app_routes.dart';
 
@@ -23,7 +26,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AppointmentSchedulingController>();
 
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: const Color(0xFFF0F0F0),
       body: SafeArea(
         child: Stack(
@@ -68,11 +71,12 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 text: 'Scheduled appointments',
                 onPressed: () => Get.toNamed(AppRoutes.appointmentScheduled),
                 variant: ButtonVariant.secondary,
-                leadingIcon: Icon(
-                  Icons.calendar_month,
-                  size: 20,
-                  color: AppColors.primary700,
-                ),
+                leadingIcon: SvgPicture.asset(
+                              AusaIcons.calendarCheck01,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 borderColor: AppColors.white,
                 size: ButtonSize.md,
               ),
@@ -298,22 +302,26 @@ class AppointmentSchedulingPage extends StatelessWidget {
                             : null,
                     isEnabled: controller.selectedTimeSlot != null,
                     variant: ButtonVariant.primary,
-                    leadingIcon: Icon(
-                      Icons.keyboard,
-                      size: 20,
-                      color:
-                          controller.selectedTimeSlot != null
-                              ? Colors.white
-                              : Colors.grey[600],
-                    ),
-                    trailingIcon: Icon(
-                      Icons.arrow_forward,
-                      size: 20,
-                      color:
-                          controller.selectedTimeSlot != null
-                              ? Colors.white
-                              : Colors.grey[600],
-                    ),
+                    leadingIcon: SvgPicture.asset(
+                              AusaIcons.keyboard02,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                controller.selectedTimeSlot != null
+                                    ? Colors.white
+                                    : Colors.grey[600]!,
+                                BlendMode.srcIn),
+                            ),
+                    trailingIcon: SvgPicture.asset(
+                              AusaIcons.arrowRight,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                controller.selectedTimeSlot != null
+                                    ? Colors.white
+                                    : Colors.grey[600]!,
+                                BlendMode.srcIn),
+                            ),
                     height: 56,
                   ),
                 ),
@@ -343,11 +351,12 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 text: 'Month View',
                 onPressed: controller.toggleMonthView,
                 variant: ButtonVariant.tertiary,
-                leadingIcon: Icon(
-                  Icons.calendar_view_month,
-                  size: 20,
-                  color: AppColors.primary700,
-                ),
+                leadingIcon: SvgPicture.asset(
+                              AusaIcons.calendar,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 textColor: AppColors.primary700,
               ),
             ],

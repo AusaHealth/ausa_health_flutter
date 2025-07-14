@@ -33,7 +33,7 @@ class VitalsHistoryController extends GetxController {
   // Tab configuration
   final List<Map<String, dynamic>> tabs = [
     {'title': 'Blood Pressure', 'type': VitalType.bloodPressure},
-    {'title': 'SpO₂', 'type': VitalType.spO2HeartRate},
+    {'title': 'Blood Oxygen', 'type': VitalType.spO2HeartRate},
     {'title': 'Blood Glucose', 'type': VitalType.bloodGlucose},
     {'title': 'Body Temperature', 'type': VitalType.bodyTemperature},
     {'title': 'ECG', 'type': VitalType.ecg},

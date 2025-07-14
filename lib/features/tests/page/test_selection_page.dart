@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
@@ -14,7 +15,7 @@ class TestSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: Column(
         children: [
@@ -42,7 +43,7 @@ class TestSelectionPage extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          childAspectRatio: 0.95,
+          childAspectRatio: 1,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
         ),
@@ -79,6 +80,7 @@ class TestSelectionPage extends StatelessWidget {
                   : null,
           isLoading: controller.isLoading,
           variant: ButtonVariant.primary,
+          size: ButtonSize.lg,
         ),
       );
     });

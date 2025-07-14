@@ -1,5 +1,7 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class VoiceInputWidget extends StatefulWidget {
   final bool isRecording;
@@ -66,22 +68,19 @@ class _VoiceInputWidgetState extends State<VoiceInputWidget>
                 child: Container(
                   width: 40,
                   height: 40,
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color:
                         widget.isRecording
                             ? AppColors.primary700
-                            : AppColors.primary700.withOpacity(0.1),
-                    border: Border.all(color: AppColors.primary700, width: 2),
+                            : AppColors.white,
+                    border: Border.all(color: AppColors.primary50, width: 0.5),
                   ),
-                  child: Icon(
-                    widget.isRecording ? Icons.stop : Icons.mic,
-                    color:
-                        widget.isRecording
-                            ? Colors.white
-                            : AppColors.primary700,
-                    size: 20,
-                  ),
+                  child: SvgPicture.asset(
+                              AusaIcons.microphone01,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 ),
               );
             },

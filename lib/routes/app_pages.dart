@@ -125,11 +125,6 @@ abstract class AppPages {
     // Onboarding routes
     GetPage(name: AppRoutes.splash, page: () => const SplashPage()),
     GetPage(
-      name: AppRoutes.onboardingWrapper,
-      page: () => const OnboardingWrapper(),
-      // OnboardingController is registered globally in AppBinding
-    ),
-    GetPage(
       name: AppRoutes.phoneInput,
       page: () => const PhoneNumberInputModal(),
       // OnboardingController is registered globally in AppBinding
@@ -152,11 +147,6 @@ abstract class AppPages {
     ),
 
     // Profile routes
-    GetPage(
-      name: AppRoutes.profile,
-      page: () => const ProfilePage(),
-      // ProfileController is registered globally in AppBinding
-    ),
     GetPage(
       name: AppRoutes.editPersonal,
       page: () => const EditPersonalPage(),
@@ -209,11 +199,6 @@ abstract class AppPages {
     ),
 
     // Settings routes
-    GetPage(
-      name: AppRoutes.settings,
-      page: () => const SettingsPage(),
-      // SettingController is registered globally in AppBinding
-    ),
     GetPage(
       name: AppRoutes.bluetooth,
       page: () => const BluetoothPage(),

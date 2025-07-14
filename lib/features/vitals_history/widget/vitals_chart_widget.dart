@@ -208,12 +208,26 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
   }
 
   Widget _buildLegendItem(String label, Color color) {
-    return Text(
-      label,
-      style: AppTypography.callout(
-        color: color,
-        weight: AppTypographyWeight.medium,
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        SizedBox(width: 4),
+        Text(
+          label,
+          style: AppTypography.callout(
+            color: color,
+            weight: AppTypographyWeight.medium,
+          ),
+        ),
+      ],
     );
   }
 

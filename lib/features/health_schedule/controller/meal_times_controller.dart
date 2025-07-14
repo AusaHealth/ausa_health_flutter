@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../constants/icons.dart';
 
 class MealTimesController extends GetxController {
   // Private observable state
   final RxInt _selectedMealIndex = 0.obs; // 0: Breakfast, 1: Lunch, 2: Dinner
 
-  // Meal times
+  // Time observables
   final RxString _breakfastTime = '7:00 AM'.obs;
   final RxString _lunchTime = '12:30 PM'.obs;
   final RxString _dinnerTime = '8:00 PM'.obs;
+
+  // AM/PM observable for each meal (only dinner is interactive)
+  final RxString _breakfastPeriod = 'AM'.obs; // Fixed
+  final RxString _lunchPeriod = 'PM'.obs; // Fixed
+  final RxString _dinnerPeriod = 'PM'.obs; // Interactive
 
   // Time picker state
   final RxInt _selectedHour = 7.obs;
@@ -23,12 +29,19 @@ class MealTimesController extends GetxController {
   int get selectedHour => _selectedHour.value;
   int get selectedMinute => _selectedMinute.value;
   String get selectedPeriod => _selectedPeriod.value;
+  String get breakfastPeriod => _breakfastPeriod.value;
+  String get lunchPeriod => _lunchPeriod.value;
+  String get dinnerPeriod => _dinnerPeriod.value;
 
-  // Meal data
-  final List<Map<String, dynamic>> meals = [
-    {'name': 'Breakfast', 'icon': Icons.wb_sunny_outlined, 'time': '7:00 AM'},
-    {'name': 'Lunch', 'icon': Icons.lunch_dining, 'time': '12:30 PM'},
-    {'name': 'Dinner', 'icon': Icons.brightness_3_outlined, 'time': '8:00 PM'},
+  // Meals data with SVG icons
+  List<Map<String, dynamic>> get meals => [
+    {
+      'name': 'Breakfast',
+      'iconPath': AusaIcons.sunSetting01,
+      'time': '7:00 AM',
+    },
+    {'name': 'Lunch', 'iconPath': AusaIcons.cloudSun02, 'time': '12:30 PM'},
+    {'name': 'Dinner', 'iconPath': AusaIcons.moon01, 'time': '8:00 PM'},
   ];
 
   @override

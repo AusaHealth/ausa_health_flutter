@@ -1,7 +1,9 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CalendarViewWidget extends StatefulWidget {
   final DateTime selectedDate;
@@ -47,11 +49,12 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                 text: 'Week View',
                 onPressed: widget.onBackToWeekView,
                 variant: ButtonVariant.tertiary,
-                leadingIcon: Icon(
-                  Icons.calendar_view_week,
-                  size: 20,
-                  color: AppColors.primary700,
-                ),
+                leadingIcon: SvgPicture.asset(
+                              AusaIcons.calendar,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 textColor: AppColors.primary700,
               ),
             ],

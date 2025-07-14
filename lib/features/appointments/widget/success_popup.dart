@@ -1,6 +1,8 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SuccessPopup extends StatelessWidget {
   final VoidCallback onClose;
@@ -56,6 +58,7 @@ class SuccessPopup extends StatelessWidget {
               Container(
                 width: 100,
                 height: 100,
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
@@ -67,11 +70,10 @@ class SuccessPopup extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.check,
-                  color: Color(0xFF2B5CE6),
-                  size: 50,
-                ),
+                child: SvgPicture.asset(
+                              AusaIcons.check,
+                              colorFilter: ColorFilter.mode(Color(0xFF2B5CE6), BlendMode.srcIn),
+                            ),
               ),
 
               const SizedBox(height: 32),

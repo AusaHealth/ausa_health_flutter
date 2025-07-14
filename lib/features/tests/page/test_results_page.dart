@@ -1,12 +1,15 @@
 import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:ausa/features/tests/model/test_result.dart';
 import 'package:ausa/common/model/test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class TestResultsPage extends StatelessWidget {
@@ -16,7 +19,7 @@ class TestResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: Column(
         children: [
@@ -32,19 +35,15 @@ class TestResultsPage extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(
-                      255,
-                      15,
-                      203,
-                      140,
-                    ).withValues(alpha: 0.1),
+                    color: const Color(0xff21C373),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    Icons.check_circle,
-                    size: 24,
-                    color: const Color.fromARGB(255, 4, 137, 26),
-                  ),
+                  child: SvgPicture.asset(
+                              AusaIcons.shieldTick,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(Color(0xff046535), BlendMode.srcIn),
+                            ),
                 ),
                 SizedBox(width: AppSpacing.lg),
                 Text(
@@ -70,47 +69,6 @@ class TestResultsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
-      child: SafeArea(
-        child: Row(
-          children: [
-            // Back button
-            GestureDetector(
-              onTap: () {
-                controller.resetSelections();
-                Get.back();
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.arrow_back_ios_new,
-                  color: Colors.black87,
-                  size: 16,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildEmptyState() {
     return Center(
@@ -311,7 +269,7 @@ class TestResultsPage extends StatelessWidget {
               Text(
                 parameter.unit,
                 style: AppTypography.body(
-                  color: Colors.black,
+                 color: parameter.isAbnormal ? Colors.red : Colors.black,
                   weight: AppTypographyWeight.regular,
                 ),
               ),
@@ -351,11 +309,12 @@ class TestResultsPage extends StatelessWidget {
                 variant: ButtonVariant.secondary,
                 borderColor: AppColors.white,
                 textColor: AppColors.primary700,
-                leadingIcon: Icon(
-                  Icons.calendar_month,
-                  color: AppColors.primary700,
-                  size: 20,
-                ),
+                leadingIcon:SvgPicture.asset(
+                              AusaIcons.calendarPlus02,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 size: ButtonSize.lg,
               ),
               const SizedBox(width: 5),
@@ -365,11 +324,12 @@ class TestResultsPage extends StatelessWidget {
                 variant: ButtonVariant.secondary,
                 borderColor: AppColors.white,
                 textColor: AppColors.primary700,
-                leadingIcon: Icon(
-                  Icons.refresh,
-                  color: AppColors.primary700,
-                  size: 20,
-                ),
+                leadingIcon: SvgPicture.asset(
+                              AusaIcons.repeat02,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 size: ButtonSize.lg,
               ),
               const SizedBox(width: 5),
@@ -379,11 +339,12 @@ class TestResultsPage extends StatelessWidget {
                 variant: ButtonVariant.secondary,
                 borderColor: AppColors.white,
                 textColor: AppColors.primary700,
-                leadingIcon: Icon(
-                  Icons.refresh,
-                  color: AppColors.primary700,
-                  size: 20,
-                ),
+                leadingIcon: SvgPicture.asset(
+                              AusaIcons.share05,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
                 size: ButtonSize.lg,
               ),
               const SizedBox(width: 10),

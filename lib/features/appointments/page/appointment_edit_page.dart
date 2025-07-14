@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_stepper_widget.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/controller/appointment_edit_controller.dart';
@@ -15,6 +17,7 @@ import 'package:ausa/features/appointments/widget/time_slots_grid.dart';
 import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class AppointmentEditPage extends StatelessWidget {
@@ -25,7 +28,7 @@ class AppointmentEditPage extends StatelessWidget {
     final appointment = Get.arguments as Appointment;
     final controller = Get.put(AppointmentEditController(appointment));
 
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: const Color(0xFFF0F0F0),
       body: SafeArea(
         child: Stack(
@@ -283,22 +286,26 @@ class AppointmentEditPage extends StatelessWidget {
                           ? controller.goToStep2
                           : null,
                   isEnabled: controller.selectedTimeSlot != null,
-                  leadingIcon: Icon(
-                    Icons.keyboard,
-                    size: 20,
-                    color:
-                        controller.selectedTimeSlot != null
-                            ? Colors.white
-                            : Colors.grey[600],
-                  ),
-                  trailingIcon: Icon(
-                    Icons.arrow_forward,
-                    size: 20,
-                    color:
-                        controller.selectedTimeSlot != null
-                            ? Colors.white
-                            : Colors.grey[600],
-                  ),
+                    leadingIcon: SvgPicture.asset(
+                              AusaIcons.keyboard02,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                controller.selectedTimeSlot != null
+                                    ? Colors.white
+                                    : Colors.grey[600]!,
+                                BlendMode.srcIn),
+                            ),
+                    trailingIcon: SvgPicture.asset(
+                              AusaIcons.arrowRight,
+                              width: 16,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                controller.selectedTimeSlot != null
+                                    ? Colors.white
+                                    : Colors.grey[600]!,
+                                BlendMode.srcIn),
+                            ),
                   height: 56,
                 ),
               ),

@@ -1,4 +1,7 @@
+import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../constants/constants.dart';
 import '../../../common/widget/app_back_header.dart';
@@ -17,7 +20,7 @@ class HealthSchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<HealthScheduleController>();
 
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Stack(
@@ -38,13 +41,13 @@ class HealthSchedulePage extends StatelessWidget {
                       children: [
                         AppTabButton(
                           text: 'Routine',
-                          icon: Icons.person,
+                          iconPath: AusaIcons.repeat02,
                           isSelected: controller.currentTabIndex == 0,
                           onTap: () => controller.switchTab(0),
                         ),
                         AppTabButton(
                           text: 'Medication',
-                          icon: Icons.medication,
+                          iconPath: AusaIcons.shieldPlus,
                           isSelected: controller.currentTabIndex == 1,
                           onTap: () => controller.switchTab(1),
                         ),
@@ -157,7 +160,15 @@ class HealthSchedulePage extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.edit, color: AppColors.primary700, size: 16),
+              SvgPicture.asset(
+                AusaIcons.edit02,
+                width: 16,
+                height: 16,
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary700,
+                  BlendMode.srcIn,
+                ),
+              ),
               SizedBox(width: AppSpacing.md),
               Text(
                 'Meal Times',
@@ -185,6 +196,11 @@ class HealthSchedulePage extends StatelessWidget {
           ),
         );
       }
+
+      // Auto-scroll to current time slot after the widget is built
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.autoScrollToCurrentTime();
+      });
 
       return Stack(
         children: [
@@ -221,8 +237,9 @@ class HealthSchedulePage extends StatelessWidget {
             ),
           ),
 
-          // Original content
+          // Original content with ScrollController from controller
           SingleChildScrollView(
+            controller: controller.timelineScrollController,
             child: Column(
               children:
                   filteredSlots.map((timeSlot) {

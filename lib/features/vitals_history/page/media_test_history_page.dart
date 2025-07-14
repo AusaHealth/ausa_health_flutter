@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants/constants.dart';
@@ -28,7 +29,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Column(

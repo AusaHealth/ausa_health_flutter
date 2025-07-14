@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                   crossAxisCount: 5,
                   crossAxisSpacing: AppSpacing.md,
                   mainAxisSpacing: AppSpacing.md,
-                  childAspectRatio: 0.8,
+                  childAspectRatio: 1,
                   children: [
                     _buildNavigationCard(
                       title: 'Appointments',

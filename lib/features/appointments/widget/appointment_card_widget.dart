@@ -1,8 +1,10 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppointmentCardWidget extends StatelessWidget {
   final Appointment appointment;
@@ -54,10 +56,13 @@ class AppointmentCardWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.access_time,
-                      size: 20,
-                      color: AppColors.primary700,
+                    SvgPicture.asset(
+                      AusaIcons.clock, // or wifi/batteryFull
+                      height: 16,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.primary700,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -78,10 +83,14 @@ class AppointmentCardWidget extends StatelessWidget {
                   onTap: onEdit,
                   child: Container(
                     padding: const EdgeInsets.all(8),
-                    child: Icon(
-                      Icons.edit_outlined,
-                      color: AppColors.primary700,
-                      size: 24,
+                    child: SvgPicture.asset(
+                      AusaIcons.edit01,
+                      width: 16,
+                      height: 16,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.primary700,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),
@@ -123,15 +132,11 @@ class AppointmentCardWidget extends StatelessWidget {
             children: [
               Text(
                 'Symptoms: ',
-                style: AppTypography.body(
-                  color: Colors.grey[600],
-                ),
+                style: AppTypography.body(color: Colors.grey[600]),
               ),
               Text(
                 _getTruncatedSymptoms(appointment.symptoms),
-                style: AppTypography.body(
-                  color: Colors.grey[600],
-                ),
+                style: AppTypography.body(color: Colors.grey[600]),
               ),
               const SizedBox(width: 4),
               if (_shouldShowReadMore(appointment.symptoms))
@@ -139,9 +144,7 @@ class AppointmentCardWidget extends StatelessWidget {
                   onTap: onShowFullSymptoms,
                   child: Text(
                     'read more',
-                    style: AppTypography.body(
-                      color: AppColors.primary700,
-                    ),
+                    style: AppTypography.body(color: AppColors.primary700),
                   ),
                 ),
             ],
@@ -154,29 +157,38 @@ class AppointmentCardWidget extends StatelessWidget {
   Widget _buildStatusChip(AppointmentStatus status) {
     Color textColor;
     String text;
+    String iconPath;
     switch (status) {
       case AppointmentStatus.confirmed:
         textColor = const Color(0xFF2E7D32);
         text = 'Confirmed';
+        iconPath = AusaIcons.checkCircle;
         break;
       case AppointmentStatus.pending:
         textColor = const Color(0xFFE65100);
         text = 'Not confirmed';
+        iconPath = AusaIcons.infoCircle;
         break;
       case AppointmentStatus.cancelled:
         textColor = Colors.red;
         text = 'Cancelled';
+        iconPath = AusaIcons.xCircle;
         break;
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SvgPicture.asset(
+            iconPath,
+            width: 14,
+            height: 14,
+            colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
+          ),
+          const SizedBox(width: 6),
           Text(
             text,
             style: AppTypography.body(

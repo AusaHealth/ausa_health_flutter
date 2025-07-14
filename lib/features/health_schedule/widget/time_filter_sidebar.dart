@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../constants/constants.dart';
+import '../../../constants/icons.dart';
 import '../controller/health_schedule_controller.dart';
 
 class TimeFilterSidebar extends StatelessWidget {
@@ -12,47 +14,48 @@ class TimeFilterSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 220,
-      padding: EdgeInsets.only(
-        right: AppSpacing.lg,
-        bottom: AppSpacing.lg,
-      ),
+      padding: EdgeInsets.only(right: AppSpacing.lg, bottom: AppSpacing.lg),
       child: Column(
         children: [
           // All Day Button
-          Obx(
-            () =>
-                _buildFilterButton('All Day', Icons.schedule, 0, isFirst: true),
-          ),
+          Obx(() => _buildFilterButton('All Day', 0, isFirst: true)),
 
           SizedBox(height: AppSpacing.lg),
 
           // Morning Button
-          Obx(() => _buildFilterButton('Morning', Icons.wb_sunny_outlined, 1)),
+          Obx(() => _buildFilterButton('Morning', 1)),
 
           SizedBox(height: AppSpacing.lg),
 
           // Afternoon Button
-          Obx(() => _buildFilterButton('Afternoon', Icons.wb_sunny, 2)),
+          Obx(() => _buildFilterButton('Afternoon', 2)),
 
           SizedBox(height: AppSpacing.lg),
 
           // Evening Button
-          Obx(
-            () => _buildFilterButton(
-              'Evening',
-              Icons.brightness_3_outlined,
-              3,
-              isLast: true,
-            ),
-          ),
+          Obx(() => _buildFilterButton('Evening', 3, isLast: true)),
         ],
       ),
     );
   }
 
+  String _getSvgIconPath(int index) {
+    switch (index) {
+      case 0: // All Day
+        return AusaIcons.contrast01;
+      case 1: // Morning
+        return AusaIcons.sunSetting01;
+      case 2: // Afternoon
+        return AusaIcons.cloudSun02;
+      case 3: // Evening
+        return AusaIcons.moon01;
+      default:
+        return AusaIcons.clock;
+    }
+  }
+
   Widget _buildFilterButton(
     String title,
-    IconData icon,
     int index, {
     bool isFirst = false,
     bool isLast = false,
@@ -72,9 +75,7 @@ class TimeFilterSidebar extends StatelessWidget {
       borderRadius = BorderRadius.only(
         topLeft: Radius.circular(AppRadius.xl),
         topRight: Radius.circular(AppRadius.xl),
-        bottomLeft: Radius.circular(
-          AppRadius.xl3,
-        ), // Higher bottom-left radius
+        bottomLeft: Radius.circular(AppRadius.xl3), // Higher bottom-left radius
         bottomRight: Radius.circular(AppRadius.xl),
       );
     } else {
@@ -132,11 +133,16 @@ class TimeFilterSidebar extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.grey[600],
-              size: 20,
+            SvgPicture.asset(
+              _getSvgIconPath(index),
+              width: 16,
+              height: 16,
+              colorFilter: ColorFilter.mode(
+                isSelected ? Colors.white : Colors.grey[600]!,
+                BlendMode.srcIn,
+              ),
             ),
+
             SizedBox(width: AppSpacing.md),
             Text(
               title,

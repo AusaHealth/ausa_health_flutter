@@ -1,6 +1,7 @@
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_tab_buttons.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -91,7 +92,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
   Widget build(BuildContext context) {
     // Ensure the UI reflects the selected reading when the page is loaded
 
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Column(

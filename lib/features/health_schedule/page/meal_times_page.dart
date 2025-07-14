@@ -1,4 +1,7 @@
+import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../constants/constants.dart';
 import '../../../common/widget/app_back_header.dart';
@@ -12,7 +15,7 @@ class MealTimesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<MealTimesController>();
 
-    return Scaffold(
+    return BaseScaffold(
       backgroundColor: AppColors.gray50,
       body: SafeArea(
         child: Column(
@@ -81,7 +84,7 @@ class MealTimesPage extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: AppSpacing.md),
                   child: _buildMealButton(
                     meal['name'],
-                    meal['icon'],
+                    meal['iconPath'],
                     index,
                     controller,
                     isFirst: isFirst,
@@ -96,7 +99,7 @@ class MealTimesPage extends StatelessWidget {
 
   Widget _buildMealButton(
     String title,
-    IconData icon,
+    String iconPath,
     int index,
     MealTimesController controller, {
     bool isFirst = false,
@@ -175,10 +178,14 @@ class MealTimesPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.black87,
-              size: 16,
+            SvgPicture.asset(
+              iconPath,
+              width: 16,
+              height: 16,
+              colorFilter: ColorFilter.mode(
+                isSelected ? Colors.white : Colors.black87,
+                BlendMode.srcIn,
+              ),
             ),
             SizedBox(width: AppSpacing.md),
             Expanded(
@@ -243,11 +250,16 @@ class MealTimesPage extends StatelessWidget {
           Container(
             width: 40,
             height: 40,
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary700.withOpacity(0.1),
               shape: BoxShape.circle,
+              color: AppColors.white,
+              border: Border.all(color: AppColors.primary700, width: 0.5),
             ),
-            child: Icon(Icons.mic, color: AppColors.primary700, size: 20),
+            child: SvgPicture.asset(
+                              AusaIcons.microphone01,
+                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
+                            ),
           ),
         ],
       ),

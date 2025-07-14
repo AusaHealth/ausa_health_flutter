@@ -1,5 +1,7 @@
+import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
 import '../../../constants/constants.dart';
 import '../model/media_test_reading.dart';
@@ -439,10 +441,13 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                                 ),
                               ),
                             )
-                            : Icon(
-                              _isPlaying ? Icons.pause : Icons.play_arrow,
-                              color: Colors.white,
-                              size: 28,
+                            : Center(
+                              child: SvgPicture.asset(
+                                _isPlaying ? AusaIcons.stop : AusaIcons.play,
+                                width: 16,
+                                height: 16,
+                                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                              ),
                             ),
                   ),
                 ),
