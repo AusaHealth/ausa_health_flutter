@@ -1,9 +1,13 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/home/page/home_page.dart';
 import 'package:ausa/features/onboarding/view/terms_condtion_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class OnboardingTermsWidget extends StatelessWidget {
@@ -11,23 +15,39 @@ class OnboardingTermsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.xl6,
-        vertical: AppSpacing.xl4,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Title and Expand button
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Title and Expand button
+        Padding(
+          padding: EdgeInsets.only(
+            left: AppSpacing.xl6,
+            right: AppSpacing.xl,
+            top: AppSpacing.xl,
+            bottom: AppSpacing.sm,
+          ),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Terms', style: AppTypography.headline().copyWith()),
+              Padding(
+                padding: EdgeInsets.only(top: AppSpacing.lg),
+                child: Text(
+                  'Terms',
+                  style: AppTypography.headline().copyWith(),
+                ),
+              ),
               AusaButton(
                 borderColor: Colors.transparent,
                 text: 'Expand',
-                leadingIcon: Icon(Icons.open_in_full, color: Colors.blue),
+                leadingIcon: SvgPicture.asset(
+                  AusaIcons.expand06,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary500,
+                    BlendMode.srcIn,
+                  ),
+                  height: DesignScaleManager.scaleValue(40),
+                  width: DesignScaleManager.scaleValue(40),
+                ),
                 variant: ButtonVariant.secondary,
                 onPressed: () {
                   Get.to(() => TermsConditionPage());
@@ -35,36 +55,45 @@ class OnboardingTermsWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Text(
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl6),
+          child: Text(
             'Read through the terms and conditions.',
-            style: TextStyle(fontSize: 18, color: Color(0xFF1A2341)),
+            style: AppTypography.callout(
+              weight: AppTypographyWeight.medium,
+              color: AppColors.bodyTextColor,
+            ),
           ),
-          const SizedBox(height: 16),
-          // Terms content
-          Expanded(
+        ),
+        SizedBox(height: AppSpacing.xl),
+        // Terms content
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.mdLarge),
+          child: Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              // constraints: BoxConstraints(maxHeight: 228),
+              constraints: BoxConstraints(maxHeight: 280),
               child: SingleChildScrollView(
                 child: Text(
                   '''WAIVER OF LIABILITY AND AGREEMENT OF USE
-              
-              Effective Date: Mar 15, 2025
-              
-              PLEASE READ THIS AGREEMENT CAREFULLY. BY USING THIS DEVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREED TO THE FOLLOWING TERMS.
-              
-              1. Acceptance of Terms
-              
-              By proceeding with the use of this medical device ("Device"), you ("User") acknowledge and agree to the terms outlined in this Waiver of Liability and Agreement of Use ("Agreement"). If you do not agree to these terms, do not use the Device.
-              
-              2. Purpose of the Device
-              
-              This Device is designed to collect and monitor vital signs and provide digital access to health resources and analytics for facilitating...''',
+        
+        Effective Date: Mar 15, 2025
+        
+        PLEASE READ THIS AGREEMENT CAREFULLY. BY USING THIS DEVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREED TO THE FOLLOWING TERMS.
+        
+        1. Acceptance of Terms
+        
+        By proceeding with the use of this medical device ("Device"), you ("User") acknowledge and agree to the terms outlined in this Waiver of Liability and Agreement of Use ("Agreement"). If you do not agree to these terms, do not use the Device.
+        
+        2. Purpose of the Device
+        
+        This Device is designed to collect and monitor vital signs and provide digital access to health resources and analytics for facilitating...''',
                   style: AppTypography.body(
                     weight: AppTypographyWeight.regular,
                   ),
@@ -72,12 +101,17 @@ class OnboardingTermsWidget extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          // Buttons
-          Row(
+        ),
+        SizedBox(height: AppSpacing.xl),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl3,
+          ).copyWith(bottom: AppSpacing.xl4),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               AusaButton(
+                size: ButtonSize.lg,
                 text: 'Decline',
                 variant: ButtonVariant.secondary,
                 onPressed: () {},
@@ -85,6 +119,7 @@ class OnboardingTermsWidget extends StatelessWidget {
 
               SizedBox(width: AppSpacing.lg),
               AusaButton(
+                size: ButtonSize.lg,
                 onPressed: () {
                   Get.offAll(() => HomePage());
                 },
@@ -92,8 +127,8 @@ class OnboardingTermsWidget extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

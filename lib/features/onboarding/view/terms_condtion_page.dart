@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/home/page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/typography.dart';
@@ -94,37 +95,17 @@ class TermsConditionPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          OutlinedButton(
-                            onPressed: () {
-                              // Decline logic
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                color: Colors.blue,
-                                width: 2,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(32),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 32,
-                                vertical: 16,
-                              ),
-                            ),
-                            child: const Text(
-                              'Decline',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 24),
                           AusaButton(
-                            width: 130,
+                            size: ButtonSize.lg,
+                            text: 'Decline',
+                            variant: ButtonVariant.secondary,
+                            onPressed: () {},
+                          ),
 
+                          SizedBox(width: AppSpacing.lg),
+                          AusaButton(
+                            size: ButtonSize.lg,
                             onPressed: () {
-                              // Accept logic
                               Get.offAll(() => HomePage());
                             },
                             text: 'Accept',

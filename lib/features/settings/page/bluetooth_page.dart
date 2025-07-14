@@ -1,4 +1,6 @@
+import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
@@ -11,66 +13,52 @@ class BluetoothPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.xl3),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl7,
+            vertical: AppSpacing.sm,
+          ).copyWith(top: AppSpacing.xl3),
+          child: Text(
+            'Device status',
+            style: AppTypography.body(weight: AppTypographyWeight.regular),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            child: Text(
-              'Device status',
-              style: AppTypography.body(weight: AppTypographyWeight.regular),
-            ),
+        ),
+        SizedBox(height: AppSpacing.xl3),
+
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl2),
+          child: Row(
+            children: [
+              DeviceStatusCard(
+                deviceName: 'Blood pressure',
+                imagePath: AppImages.bloodPressure,
+
+                statusImagePath: AppImages.connecting,
+                isActive: true,
+              ),
+              SizedBox(width: AppSpacing.lg),
+              DeviceStatusCard(
+                deviceName: 'X',
+                imagePath: AppImages.X,
+
+                statusImagePath: AppImages.notFound,
+                isActive: false,
+              ),
+              SizedBox(width: AppSpacing.lg),
+              DeviceStatusCard(
+                deviceName: 'ECG',
+                imagePath: AppImages.ecg,
+
+                statusImagePath: AppImages.notFound,
+                isActive: false,
+              ),
+            ],
           ),
-          SizedBox(height: AppSpacing.lg),
-
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            child: Row(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DeviceStatusCard(
-                  deviceName: 'Blood pressure',
-                  imagePath: AppImages.bloodPressure,
-
-                  statusImagePath: AppImages.connecting,
-                  isActive: true,
-                ),
-                SizedBox(width: AppSpacing.lg),
-                DeviceStatusCard(
-                  deviceName: 'X',
-                  imagePath: AppImages.X,
-
-                  statusImagePath: AppImages.notFound,
-                  isActive: false,
-                ),
-                SizedBox(width: AppSpacing.lg),
-                DeviceStatusCard(
-                  deviceName: 'ECG',
-                  imagePath: AppImages.ecg,
-
-                  statusImagePath: AppImages.notFound,
-                  isActive: false,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -110,41 +98,41 @@ class DeviceStatusCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Stack(
-          alignment: Alignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Positioned(
-              top: 12,
-              left: 0,
-              right: -140,
-              child: Image.asset(
-                statusImagePath,
-                width: 56,
-                height: 28,
-                fit: BoxFit.contain,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.xl,
+                vertical: AppSpacing.lg,
+              ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Image.asset(
+                  statusImagePath,
+                  width: DesignScaleManager.scaleValue(266),
+                  height: DesignScaleManager.scaleValue(120),
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             // Device image and label
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 20),
-                Center(
-                  child: Image.asset(
-                    imagePath,
-                    width: 180,
-                    height: 180,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-
-                Text(
-                  deviceName,
-                  style: AppTypography.body(weight: AppTypographyWeight.medium),
-                ),
-                SizedBox(height: 20),
-              ],
+            Center(
+              child: Image.asset(
+                imagePath,
+                width: DesignScaleManager.scaleValue(300),
+                height: DesignScaleManager.scaleValue(310),
+                fit: BoxFit.contain,
+              ),
             ),
+
+            Center(
+              child: Text(
+                deviceName,
+                style: AppTypography.body(weight: AppTypographyWeight.medium),
+              ),
+            ),
+            SizedBox(height: AppSpacing.lg),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
@@ -49,7 +50,7 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
               child: Container(
                 height: 120,
                 width: 500,
-                padding: EdgeInsets.symmetric(horizontal: 24),
+
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
@@ -58,14 +59,30 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
                 alignment: Alignment.centerLeft,
                 child:
                     controller.phoneController.value.text.isEmpty
-                        ? Text(
-                          controller.phoneController.value.text.isEmpty
-                              ? '+1 (000)-000 0000'
-                              : controller.phoneController.value.text,
-                          style: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w400,
+                        ? Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xl6,
+                          ),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '+1 ',
+                                  style: AppTypography.headline(
+                                    color: AppColors.bodyTextColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+
+                                TextSpan(
+                                  text: '  (000)-000 0000',
+                                  style: AppTypography.headline(
+                                    color: AppColors.greyTextColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         )
                         : Text(
@@ -86,6 +103,9 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 AusaButton(
+                  size: ButtonSize.lg,
+                  // height: DesignScaleManager.scaleValue(128),
+                  // width: DesignScaleManager.scaleValue(400),
                   backgroundColor: AppColors.primary700,
                   textColor: Colors.white,
 

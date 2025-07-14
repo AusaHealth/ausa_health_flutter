@@ -16,7 +16,7 @@ Future<String?> showBottomSheetModal(
     builder: (context) {
       return Container(
         padding: const EdgeInsets.fromLTRB(32, 32, 32, 32),
-        height: Get.height * 0.3,
+
         width: Get.width,
         child: Column(
           // mainAxisSize: MainAxisSize.min,

@@ -42,21 +42,26 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
       decoration: defaultPinTheme.decoration?.copyWith(color: Colors.white),
     );
 
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.xl6,
-        vertical: AppSpacing.xl4,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            left: AppSpacing.xl6,
+            right: AppSpacing.xl,
+            top: AppSpacing.xl,
+            bottom: AppSpacing.sm,
+          ),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Phone Number',
-                style: AppTypography.headline(
-                  weight: AppTypographyWeight.semibold,
+              Padding(
+                padding: EdgeInsets.only(top: AppSpacing.lg),
+                child: Text(
+                  'Phone Number',
+                  style: AppTypography.headline(
+                    weight: AppTypographyWeight.semibold,
+                  ),
                 ),
               ),
               AusaButton(
@@ -71,96 +76,117 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
               ),
             ],
           ),
-          Obx(() {
-            return Text(
-              'Enter code sent to ${controller.phoneController.value.text}',
-              style: AppTypography.callout(
-                weight: AppTypographyWeight.medium,
-                color: AppColors.bodyTextColor,
-              ),
-            );
-          }),
+        ),
 
-          const SizedBox(height: 32),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl6),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Obx(() {
-                  return Pinput(
-                    onTap: () {
-                      Get.to(() => OtpVerificationView());
-                    },
-                    controller: controller.otpController,
-                    focusNode: controller.otpFocusNode,
-                    length: 6,
-                    obscureText: controller.obscureOtp.value,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    defaultPinTheme: defaultPinTheme,
-                    focusedPinTheme: focusedPinTheme,
-                    submittedPinTheme: submittedPinTheme,
-                    onChanged: (value) {
-                      controller.handleOtpInputChange(value);
-                    },
-                    onCompleted: (pin) {
-                      // Handle completion if needed
-                    },
-                  );
-                }),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: InkWell(
-                  onTap: () => controller.toggleOtpVisibility(),
-                  borderRadius: BorderRadius.circular(32),
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.5),
-                      shape: BoxShape.circle,
-                    ),
+              Obx(() {
+                return Text(
+                  'Enter code sent to ${controller.phoneController.value.text}',
+                  style: AppTypography.callout(
+                    weight: AppTypographyWeight.medium,
+                    color: AppColors.bodyTextColor,
+                  ),
+                );
+              }),
+
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
                     child: Obx(() {
-                      return Icon(
-                        controller.obscureOtp.value
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: Colors.blueGrey,
-                        size: 28,
+                      return Pinput(
+                        onTap: () {
+                          Get.to(() => OtpVerificationView());
+                        },
+                        controller: controller.otpController,
+                        focusNode: controller.otpFocusNode,
+                        length: 6,
+                        obscureText: controller.obscureOtp.value,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        defaultPinTheme: defaultPinTheme,
+                        focusedPinTheme: focusedPinTheme,
+                        submittedPinTheme: submittedPinTheme,
+                        onChanged: (value) {
+                          controller.handleOtpInputChange(value);
+                        },
+                        onCompleted: (pin) {
+                          // Handle completion if needed
+                        },
                       );
                     }),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: InkWell(
+                      onTap: () => controller.toggleOtpVisibility(),
+                      borderRadius: BorderRadius.circular(32),
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Obx(() {
+                          return Icon(
+                            controller.obscureOtp.value
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: AppColors.primary500,
+                            size: 28,
+                          );
+                        }),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSpacing.xl3),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Obx(() {
+                    return Text(
+                      'OTP expires in 0:${controller.otpSeconds.value.toString().padLeft(2, '0')} seconds',
+                      style: AppTypography.body(
+                        color: AppColors.bodyTextColor,
+                      ).copyWith(fontWeight: FontWeight.w500),
+                    );
+                  }),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 18),
-          Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Obx(() {
-                return Text(
-                  'OTP expires in 0:${controller.otpSeconds.value.toString().padLeft(2, '0')} seconds',
-                  style: AppTypography.body(
-                    color: AppColors.bodyTextColor,
-                  ).copyWith(fontWeight: FontWeight.w500),
-                );
-              }),
-            ),
-          ),
-          const Spacer(),
+        ),
+        const Spacer(),
 
-          Align(
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl3,
+            vertical: AppSpacing.xl4,
+          ),
+          child: Align(
             alignment: Alignment.bottomRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 AusaButton(
-                  width: 160,
+                  trailingIcon: Icon(Icons.arrow_forward, color: Colors.white),
+                  size: ButtonSize.lg,
                   onPressed: () {
                     controller.completeStep(OnboardingStep.otp);
                     controller.goToStep(OnboardingStep.personalDetails);
@@ -170,8 +196,8 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

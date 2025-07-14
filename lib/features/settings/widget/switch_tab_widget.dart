@@ -1,4 +1,5 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -31,19 +32,18 @@ class SwitchTabWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 24),
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: SizedBox(
-            child: Switch(
-              value: value,
-              onChanged: onChanged,
-              activeColor: AppColors.white,
-              activeTrackColor: AppColors.primary500,
-              trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-              inactiveTrackColor: const Color(0xFFE9E9E9),
-              inactiveThumbColor: Colors.white,
-            ),
+        SizedBox(width: AppSpacing.md),
+        Transform.scale(
+          scale: 0.7,
+          child: Switch(
+            padding: EdgeInsets.zero,
+            value: value,
+            onChanged: onChanged,
+            activeColor: AppColors.white,
+            activeTrackColor: AppColors.primary500,
+            trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
+            inactiveTrackColor: const Color(0xFFE9E9E9),
+            inactiveThumbColor: Colors.white,
           ),
         ),
       ],

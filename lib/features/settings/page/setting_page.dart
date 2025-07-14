@@ -75,11 +75,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: AppSpacing.lg),
-                    child: const AppBackHeader(title: 'Settings'),
+                    child: const AppBackHeader2(title: 'Settings'),
                   ),
                   SizedBox(height: AppSpacing.xl2),
                   Padding(
-                    padding: EdgeInsets.only(left: AppSpacing.xl5),
+                    padding: EdgeInsets.only(left: AppSpacing.xl6),
                     child: SettingsTabs(
                       selectedIndex: selectedTab,
                       onTabSelected: (i) => setState(() => selectedTab = i),

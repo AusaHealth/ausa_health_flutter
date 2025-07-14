@@ -2,6 +2,7 @@ import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/constants.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_lang_selection_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_personal_detail_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_terms_widget.dart';
@@ -9,6 +10,7 @@ import 'package:ausa/features/onboarding/view/widgets/ob_wifi_selection_widget.d
 import 'package:ausa/features/onboarding/view/widgets/otp_verification_widget.dart';
 import 'package:ausa/features/onboarding/view/widgets/phone_number_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../controller/onboarding_controller.dart';
 
@@ -129,40 +131,23 @@ class OnboardingStepList extends StatelessWidget {
     final steps = [
       {
         'label': 'Language',
-        'image': AppImages.langSelected,
+
         'step': OnboardingStep.language,
-        'unselectedImage': AppImages.langSelected,
+        'icon': AusaIcons.translate01,
       },
-      {
-        'label': 'Wi-Fi',
-        'image': AppImages.wifiSelected,
-        'step': OnboardingStep.wifi,
-        'unselectedImage': AppImages.wifiUnSelected,
-      },
-      {
-        'label': 'Phone',
-        'image': AppImages.phoneSelected,
-        'step': OnboardingStep.phone,
-        'unselectedImage': AppImages.phoneUnSelected,
-      },
+      {'label': 'Wi-Fi', 'step': OnboardingStep.wifi, 'icon': AusaIcons.wifi},
+      {'label': 'Phone', 'step': OnboardingStep.phone, 'icon': AusaIcons.phone},
       {
         'label': 'Personal Details',
-        'image': AppImages.personalDetails,
+
         'step': OnboardingStep.personalDetails,
-        'unselectedImage': AppImages.personalDetailsUnselected,
+        'icon': AusaIcons.user01,
       },
       {
         'label': 'Terms',
-        'image': AppImages.termsSelected,
+        'icon': AusaIcons.file02,
         'step': OnboardingStep.terms,
-        'unselectedImage': AppImages.termsUnSelected,
       },
-      // {'label': 'Face-ID', 'icon': Icons.face, 'step': OnboardingStep.faceId},
-      // {
-      //   'label': 'Gestures',
-      //   'icon': Icons.pan_tool,
-      //   'step': OnboardingStep.gestures,
-      // },
     ];
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -184,24 +169,75 @@ class OnboardingStepList extends StatelessWidget {
           for (int i = 0; i < steps.length; i++) ...[
             Row(
               children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.transparent,
-                  child:
-                      completedSteps.contains(steps[i]['step'])
-                          ? Image.asset(AppImages.done, width: 50, height: 50)
-                          : steps[i]['step'] == currentStep
-                          ? Image.asset(
-                            steps[i]['image'] as String,
-                            width: 50,
-                            height: 50,
-                          )
-                          : Image.asset(
-                            steps[i]['unselectedImage'] as String,
-                            width: 50,
-                            height: 50,
-                          ),
+                Container(
+                  width: DesignScaleManager.scaleValue(80),
+                  height: DesignScaleManager.scaleValue(80),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+
+                    border:
+                        (completedSteps.contains(steps[i]['step']) ||
+                                steps[i]['step'] == currentStep)
+                            ? Border.all(color: Colors.white, width: 2)
+                            : null,
+                  ),
+
+                  child: Container(
+                    height: DesignScaleManager.scaleValue(68),
+                    width: DesignScaleManager.scaleValue(68),
+                    decoration: BoxDecoration(
+                      color:
+                          completedSteps.contains(steps[i]['step'])
+                              ? Colors.green
+                              : steps[i]['step'] == currentStep
+                              ? Colors.blue
+                              : Colors.white,
+                      shape: BoxShape.circle,
+                      border:
+                          (completedSteps.contains(steps[i]['step']) ||
+                                  steps[i]['step'] == currentStep)
+                              ? Border.all(color: Colors.white, width: 2)
+                              : null,
+                    ),
+                    child: Center(
+                      child:
+                          completedSteps.contains(steps[i]['step'])
+                              ? SvgPicture.asset(
+                                AusaIcons.check,
+                                width: DesignScaleManager.scaleValue(40),
+                                height: DesignScaleManager.scaleValue(40),
+                                color: Colors.white,
+                              )
+                              : SvgPicture.asset(
+                                steps[i]['icon'].toString(),
+                                width: DesignScaleManager.scaleValue(40),
+                                height: DesignScaleManager.scaleValue(40),
+                                color:
+                                    steps[i]['step'] == currentStep
+                                        ? Colors.white
+                                        : Colors.grey,
+                              ),
+                    ),
+                  ),
                 ),
+                // CircleAvatar(
+                //   radius: 20,
+                //   backgroundColor: Colors.transparent,
+                //   child:
+                //       completedSteps.contains(steps[i]['step'])
+                //           ? Image.asset(AppImages.done, width: 50, height: 50)
+                //           : steps[i]['step'] == currentStep
+                //           ? Image.asset(
+                //             steps[i]['image'] as String,
+                //             width: 50,
+                //             height: 50,
+                //           )
+                //           : Image.asset(
+                //             steps[i]['unselectedImage'] as String,
+                //             width: 50,
+                //             height: 50,
+                //           ),
+                // ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

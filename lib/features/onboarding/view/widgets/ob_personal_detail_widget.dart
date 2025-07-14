@@ -15,112 +15,125 @@ class ObPersonalDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<OnboardingController>();
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.xl6,
-        vertical: AppSpacing.xl4,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Personal Details',
-            style: AppTypography.headline(weight: AppTypographyWeight.semibold),
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            top: AppSpacing.xl4,
+            left: AppSpacing.xl6,
+            right: AppSpacing.xl6,
           ),
-          SizedBox(height: AppSpacing.sm),
-          Text(
-            'Let’s this device to your name.',
-            style: AppTypography.callout(),
-          ),
-          SizedBox(height: AppSpacing.xl),
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.firstNameController.value,
-                  label: 'First name*',
-                  placeholder: 'Enter',
+              Text(
+                'Personal Details',
+                style: AppTypography.headline(
+                  weight: AppTypographyWeight.semibold,
                 ),
               ),
-              SizedBox(width: 20),
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.lastNameController.value,
-                  label: 'Last name*',
-                  placeholder: 'Enter',
-                ),
+              SizedBox(height: AppSpacing.sm),
+              Text(
+                'Let’s this device to your name.',
+                style: AppTypography.callout(),
               ),
-              SizedBox(width: 20),
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.nickNameController.value,
-                  label: 'Nickname',
-                  placeholder: 'Enter',
-                ),
+              SizedBox(height: AppSpacing.xl2),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.firstNameController.value,
+                      label: 'First name*',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.lastNameController.value,
+                      label: 'Last name*',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.nickNameController.value,
+                      label: 'Nickname',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSpacing.xl4),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.emailIdController.value,
+                      label: 'Email ID',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.birthDateController.value,
+                      label: 'Birthday',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.ageController.value,
+                      label: 'Age',
+                      placeholder: 'Auto',
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSpacing.xl4),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.heightController.value,
+                      label: 'Height',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.weightController.value,
+                      label: 'Weight',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: controller.genderController.value,
+                      label: 'Gender',
+                      placeholder: 'Enter',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.xl4),
-          Row(
-            children: [
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.emailIdController.value,
-                  label: 'Email ID',
-                  placeholder: 'Enter',
-                ),
-              ),
-              SizedBox(width: 20),
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.birthDateController.value,
-                  label: 'Birthday',
-                  placeholder: 'Enter',
-                ),
-              ),
-              SizedBox(width: 20),
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.ageController.value,
-                  label: 'Age',
-                  placeholder: 'Auto',
-                ),
-              ),
-            ],
+        ),
+        Expanded(child: SizedBox()),
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: AppSpacing.xl4,
+            right: AppSpacing.xl3,
           ),
-          SizedBox(height: AppSpacing.xl4),
-          Row(
-            children: [
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.heightController.value,
-                  label: 'Height',
-                  placeholder: 'Enter',
-                ),
-              ),
-              SizedBox(width: 20),
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.weightController.value,
-                  label: 'Weight',
-                  placeholder: 'Enter',
-                ),
-              ),
-              SizedBox(width: 20),
-              Expanded(
-                child: _buildTextField(
-                  controller: controller.genderController.value,
-                  label: 'Gender',
-                  placeholder: 'Enter',
-                ),
-              ),
-            ],
-          ),
-          // SizedBox(height: AppSpacing.xl7),
-          Expanded(child: SizedBox()),
-          Align(
+          child: Align(
             alignment: Alignment.bottomRight,
             child: AusaButton(
+              size: ButtonSize.lg,
               trailingIcon: Icon(Icons.arrow_forward, color: Colors.white),
               onPressed: () {
                 controller.completeStep(OnboardingStep.personalDetails);
@@ -129,8 +142,8 @@ class ObPersonalDetailWidget extends StatelessWidget {
               text: 'Proceed',
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -143,14 +156,19 @@ class ObPersonalDetailWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTypography.callout(color: AppColors.textColor)),
-        SizedBox(height: 8),
+        Padding(
+          padding: EdgeInsets.only(left: AppSpacing.xl),
+          child: Text(
+            label,
+            style: AppTypography.callout(color: AppColors.textColor),
+          ),
+        ),
+        SizedBox(height: AppSpacing.smMedium),
         Container(
-          height: DesignScaleManager.scaleValue(80),
+          // height: DesignScaleManager.scaleValue(80),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppRadius.xl2),
-            // border: Border.all(color: Colors.grey[300]!),
           ),
           child: TextFormField(
             onTap: () {

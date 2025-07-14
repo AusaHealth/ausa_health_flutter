@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
@@ -29,82 +30,70 @@ class _CallSettingsPageState extends State<CallSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.xl3),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
+    return AppSubParentContainer(
+      padding: EdgeInsets.symmetric(
+        vertical: AppSpacing.xl4,
+        horizontal: AppSpacing.xl3,
+      ),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          SizedBox(height: AppSpacing.smMedium),
+          _sectionHeader('Privacy'),
+          SizedBox(height: AppSpacing.xl),
+          Obx(
+            () => SwitchTabWidget(
+              title: 'Blur background during call',
+              value: _settingController.blurBackground.value,
+              onChanged: (v) => _settingController.updateBlurBackground(v),
+            ),
+          ),
+          SizedBox(height: AppSpacing.xl),
+          Obx(
+            () => SwitchTabWidget(
+              title: 'Automatically hide video when taking tests',
+              value: _settingController.hideVideoWhenTesting.value,
+              onChanged:
+                  (v) => _settingController.updateHideVideoWhenTesting(v),
+            ),
+          ),
+          SizedBox(height: AppSpacing.xl),
+          Obx(
+            () => SwitchTabWidget(
+              title: 'Keep camera off when joining calls',
+              value: _settingController.keepCameraOff.value,
+              onChanged: (v) => _settingController.updateKeepCameraOff(v),
+            ),
+          ),
+          SizedBox(height: AppSpacing.xl),
+          Obx(
+            () => SwitchTabWidget(
+              title: 'Disable call transcription',
+              value: _settingController.disableTranscription.value,
+              onChanged:
+                  (v) => _settingController.updateDisableTranscription(v),
+            ),
+          ),
+          SizedBox(height: AppSpacing.xl),
+          _sectionHeader('General'),
+          SizedBox(height: AppSpacing.xl),
+          Obx(
+            () => SwitchTabWidget(
+              title: 'Enable closed captions',
+              value: _settingController.enableClosedCaptions.value,
+              onChanged:
+                  (v) => _settingController.updateEnableClosedCaptions(v),
+            ),
+          ),
+          SizedBox(height: AppSpacing.xl),
+          Obx(
+            () => SwitchTabWidget(
+              title: 'Display AR guides for tests',
+              value: _settingController.enableARGuides.value,
+              onChanged: (v) => _settingController.updateEnableARGuides(v),
+            ),
           ),
         ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: ListView(
-          padding: const EdgeInsets.all(24),
-          children: [
-            _sectionHeader('Privacy'),
-            const SizedBox(height: 8),
-            Obx(
-              () => SwitchTabWidget(
-                title: 'Blur background during call',
-                value: _settingController.blurBackground.value,
-                onChanged: (v) => _settingController.updateBlurBackground(v),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Obx(
-              () => SwitchTabWidget(
-                title: 'Automatically hide video when taking tests',
-                value: _settingController.hideVideoWhenTesting.value,
-                onChanged:
-                    (v) => _settingController.updateHideVideoWhenTesting(v),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Obx(
-              () => SwitchTabWidget(
-                title: 'Keep camera off when joining calls',
-                value: _settingController.keepCameraOff.value,
-                onChanged: (v) => _settingController.updateKeepCameraOff(v),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Obx(
-              () => SwitchTabWidget(
-                title: 'Disable call transcription',
-                value: _settingController.disableTranscription.value,
-                onChanged:
-                    (v) => _settingController.updateDisableTranscription(v),
-              ),
-            ),
-            const SizedBox(height: 20),
-            _sectionHeader('General'),
-            const SizedBox(height: 8),
-            Obx(
-              () => SwitchTabWidget(
-                title: 'Enable closed captions',
-                value: _settingController.enableClosedCaptions.value,
-                onChanged:
-                    (v) => _settingController.updateEnableClosedCaptions(v),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Obx(
-              () => SwitchTabWidget(
-                title: 'Display AR guides for tests',
-                value: _settingController.enableARGuides.value,
-                onChanged: (v) => _settingController.updateEnableARGuides(v),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

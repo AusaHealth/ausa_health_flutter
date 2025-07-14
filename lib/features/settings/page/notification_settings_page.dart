@@ -1,4 +1,8 @@
+import 'package:ausa/common/widget/app_sub_parent_container.dart';
+import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
@@ -37,22 +41,20 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
           flex: 1,
           child: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF0B1836),
-                  Color(0xFF1B2B4A),
-                  Color(0xFF1B2B4A),
-                  Color(0xFF0B1836),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
               borderRadius: BorderRadius.circular(AppRadius.xl3),
+              image: DecorationImage(
+                image: AssetImage(AppImages.notificationBg),
+                fit: BoxFit.cover,
+              ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: EdgeInsets.only(
+                top: AppSpacing.xl6,
+                left: AppSpacing.xl2,
+                right: AppSpacing.xl2,
+                bottom: AppSpacing.xl4,
+              ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -63,7 +65,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+
                   Text(
                     'To alert you when its needed.',
                     style: AppTypography.body(
@@ -72,50 +74,25 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 32),
+                  Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
+                      AusaButton(
+                        size: ButtonSize.lg,
+                        backgroundColor: AppColors.bodyTextColor,
+                        textColor: Colors.white,
+                        variant: ButtonVariant.secondary,
+                        text: 'Know more',
+                        borderColor: Colors.white,
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1B2B4A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 28,
-                            vertical: 16,
-                          ),
-                        ),
-                        child: Text(
-                          'Know more',
-                          style: AppTypography.body(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
-                      SizedBox(width: AppSpacing.xl),
-                      ElevatedButton(
+                      SizedBox(width: AppSpacing.md),
+                      AusaButton(
+                        size: ButtonSize.lg,
+                        variant: ButtonVariant.primary,
+                        text: 'Turn On',
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 36,
-                            vertical: 16,
-                          ),
-                        ),
-                        child: Text(
-                          'Turn On',
-                          style: AppTypography.body(
-                            color: const Color(0xFF1B2B4A),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -124,74 +101,82 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
             ),
           ),
         ),
+
+        SizedBox(width: AppSpacing.lg),
+
         // Right panel
         Expanded(
           flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 12,
-                    offset: const Offset(0, 2),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.xl4,
+              vertical: AppSpacing.xl4,
+            ),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(40),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 12,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                _sectionHeader('Or enter code below to authenticate'),
+                SizedBox(height: AppSpacing.xl),
+                Obx(
+                  () => SwitchTabWidget(
+                    title: 'Alert wifi issues',
+                    value: _settingController.alertWifiIssues.value,
+                    onChanged:
+                        (v) => _settingController.updateAlertWifiIssues(v),
                   ),
-                ],
-              ),
-              child: ListView(
-                padding: const EdgeInsets.all(24),
-                children: [
-                  _sectionHeader('Or enter code below to authenticate'),
-                  SizedBox(height: 8),
-                  Obx(
-                    () => SwitchTabWidget(
-                      title: 'Alert wifi issues',
-                      value: _settingController.alertWifiIssues.value,
-                      onChanged:
-                          (v) => _settingController.updateAlertWifiIssues(v),
-                    ),
+                ),
+                SizedBox(height: AppSpacing.xl),
+
+                Obx(
+                  () => SwitchTabWidget(
+                    title: 'Voice alerts',
+                    value: _settingController.voiceAlerts.value,
+                    onChanged: (v) => _settingController.updateVoiceAlerts(v),
                   ),
-                  Obx(
-                    () => SwitchTabWidget(
-                      title: 'Voice alerts',
-                      value: _settingController.voiceAlerts.value,
-                      onChanged: (v) => _settingController.updateVoiceAlerts(v),
-                    ),
+                ),
+
+                SizedBox(height: AppSpacing.xl),
+                _sectionHeader('When health condition critical'),
+                SizedBox(height: AppSpacing.xl),
+                Obx(
+                  () => SwitchTabWidget(
+                    title: 'Alert care team',
+                    value: _settingController.alertCareTeam.value,
+                    onChanged: (v) => _settingController.updateAlertCareTeam(v),
                   ),
-                  const SizedBox(height: 20),
-                  _sectionHeader('When health condition critical'),
-                  SizedBox(height: 8),
-                  Obx(
-                    () => SwitchTabWidget(
-                      title: 'Alert care team',
-                      value: _settingController.alertCareTeam.value,
-                      onChanged:
-                          (v) => _settingController.updateAlertCareTeam(v),
-                    ),
+                ),
+                SizedBox(height: AppSpacing.xl),
+                Obx(
+                  () => SwitchTabWidget(
+                    title: 'Alert family',
+                    value: _settingController.alertFamily.value,
+                    onChanged: (v) => _settingController.updateAlertFamily(v),
                   ),
-                  Obx(
-                    () => SwitchTabWidget(
-                      title: 'Alert family',
-                      value: _settingController.alertFamily.value,
-                      onChanged: (v) => _settingController.updateAlertFamily(v),
-                    ),
+                ),
+                SizedBox(height: AppSpacing.xl),
+
+                _sectionHeader('Mode of Alert'),
+                SizedBox(height: AppSpacing.xl),
+                Obx(
+                  () => SwitchTabWidget(
+                    title: 'SMS',
+                    value: _settingController.smsAlert.value,
+                    onChanged: (v) => _settingController.updateSmsAlert(v),
                   ),
-                  const SizedBox(height: 20),
-                  _sectionHeader('Mode of Alert'),
-                  SizedBox(height: 8),
-                  Obx(
-                    () => SwitchTabWidget(
-                      title: 'SMS',
-                      value: _settingController.smsAlert.value,
-                      onChanged: (v) => _settingController.updateSmsAlert(v),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
