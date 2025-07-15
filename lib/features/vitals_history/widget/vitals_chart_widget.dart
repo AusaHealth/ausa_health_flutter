@@ -783,46 +783,78 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
     return widget.readings.length < 5 ? widget.readings.length : 5;
   }
 
+  /// Convenience helper that aggregates every numeric value that should be
+  /// displayed on the Y-axis for the current vital type / parameter.
+  List<double> _getAxisDataValues() {
+    final List<double> values = [];
+
+    final maxReadings = _getMaxReadings();
+
+    if (widget.vitalType == VitalType.bloodPressure &&
+        selectedParameter == 'BP') {
+      for (final reading in widget.readings.take(maxReadings)) {
+        final s = _getValueForParameter(reading, 'Systolic');
+        final d = _getValueForParameter(reading, 'Diastolic');
+        if (s != null) values.add(s);
+        if (d != null) values.add(d);
+      }
+    } else {
+      for (final reading in widget.readings.take(maxReadings)) {
+        final v = _getValueForParameter(reading, selectedParameter);
+        if (v != null) values.add(v);
+      }
+    }
+
+    return values;
+  }
+
+  /// Returns a fixed padding (in the unit of the current vital) that will be
+  /// added below the minimum and above the maximum data values so the first
+  /// and last Y-axis ticks are not exactly equal to the extremal data points.
+  double _getAxisPadding() {
+    switch (widget.vitalType) {
+      case VitalType.bloodPressure:
+        return 40; // mmHg padding
+      case VitalType.spO2HeartRate:
+        return 2; // % SpO2 padding
+      case VitalType.bloodGlucose:
+        return 20; // mg/dL padding
+      case VitalType.bodyTemperature:
+        return selectedParameter == '°C' ? 0.5 : 1; // °C / °F padding
+      case VitalType.ecg:
+        return 10; // bpm padding
+    }
+  }
+
   double _getMinY() {
-    // Always start from 0 for all vital types
-    return 0;
+    final values = _getAxisDataValues();
+    if (values.isEmpty) return _getDefaultMinY();
+
+    final double dataMin = values.reduce((a, b) => a < b ? a : b);
+
+    final double interval = _getGridInterval();
+    final double padding = _getAxisPadding();
+
+    // Apply padding below the data minimum, then align down to the nearest
+    // multiple of the interval.
+    final double tentativeMin = dataMin - padding;
+    final double minY = (tentativeMin / interval).floor() * interval;
+
+    return minY;
   }
 
   double _getMaxY() {
-    if (widget.readings.isEmpty) {
-      return _getDefaultMaxY();
-    }
-
-    // Get actual data range
-    final values = <double>[];
-
-    final maxReadings = _getMaxReadings();
-    if (widget.vitalType == VitalType.bloodPressure &&
-        selectedParameter == 'BP') {
-      // For BP chart, include both systolic and diastolic values
-      for (final reading in widget.readings.take(maxReadings)) {
-        final systolic = _getValueForParameter(reading, 'Systolic');
-        final diastolic = _getValueForParameter(reading, 'Diastolic');
-        if (systolic != null) values.add(systolic);
-        if (diastolic != null) values.add(diastolic);
-      }
-    } else {
-      // For single parameter charts
-      for (final reading in widget.readings.take(maxReadings)) {
-        final value = _getValueForParameter(reading, selectedParameter);
-        if (value != null) values.add(value);
-      }
-    }
-
+    final values = _getAxisDataValues();
     if (values.isEmpty) return _getDefaultMaxY();
 
-    final maxValue = values.reduce((a, b) => a > b ? a : b);
-    final defaultMax = _getDefaultMaxY();
+    final double interval = _getGridInterval();
+    final double minY = _getMinY();
 
-    // Add some padding above the maximum value, but don't go below the default maximum
-    final paddedMax =
-        maxValue + (maxValue - values.reduce((a, b) => a < b ? a : b)) * 0.1;
-    return paddedMax > defaultMax ? paddedMax : defaultMax;
+    // Because the Y-axis must show exactly 5 ticks, the top tick is simply
+    // four intervals above the bottom tick.
+    final double maxY = minY + interval * 4;
+
+    return maxY;
   }
 
   double _getDefaultMinY() {
@@ -864,28 +896,35 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
   }
 
   double _getGridInterval() {
-    final range = _getMaxY() - _getMinY();
+    final values = _getAxisDataValues();
 
-    // Calculate an appropriate interval that gives us 4-6 grid lines
-    final targetLines = 5;
-    double interval = range / targetLines;
+    if (values.isEmpty) return 1;
 
-    // Round to nice numbers
-    if (interval <= 1) return 1;
-    if (interval <= 2) return 2;
-    if (interval <= 5) return 5;
-    if (interval <= 10) return 10;
-    if (interval <= 20) return 20;
-    if (interval <= 25) return 25;
-    if (interval <= 50) return 50;
+    double dataMin = values.reduce((a, b) => a < b ? a : b);
+    double dataMax = values.reduce((a, b) => a > b ? a : b);
 
-    // For larger intervals, round to nearest 10, 25, or 50
-    if (interval <= 100) {
-      return ((interval / 25).round() * 25).toDouble();
+    final double padding = _getAxisPadding();
+
+    final double paddedMin = dataMin - padding;
+    final double paddedMax = dataMax + padding;
+
+    final double targetInterval =
+        (paddedMax - paddedMin) / 4; // 4 intervals -> 5 ticks
+
+    final List<double> niceSteps =
+        widget.vitalType == VitalType.bodyTemperature
+            ? <double>[0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 25, 50, 100]
+            : <double>[1, 2, 5, 10, 20, 25, 50, 100];
+
+    // Choose the first "nice" step that is larger than or equal to targetInterval.
+    for (final step in niceSteps) {
+      if (step >= targetInterval) {
+        return step;
+      }
     }
 
-    final rounded = (interval / 50).round() * 50;
-    return rounded.toDouble();
+    // If none matched, fall back to the largest.
+    return niceSteps.last;
   }
 
   bool _isToday(DateTime timestamp) {
@@ -912,9 +951,17 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
   }
 
   bool _isGridValue(double value) {
-    // Check if value is a regular grid interval
-    final interval = _getGridInterval();
-    return (value % interval).abs() < 0.1;
+    // A value is on a grid line if it sits on one of the 5 ticks that start at
+    // _getMinY() and increment by _getGridInterval().
+    final double interval = _getGridInterval();
+    final double minY = _getMinY();
+
+    final double distanceFromFirstTick = (value - minY).abs();
+
+    // Because of floating-point arithmetic we allow a tiny epsilon.
+    const double epsilon = 1e-6;
+    return (distanceFromFirstTick % interval).abs() < epsilon ||
+        interval - (distanceFromFirstTick % interval).abs() < epsilon;
   }
 
   bool _isCurrentValue(double value) {
