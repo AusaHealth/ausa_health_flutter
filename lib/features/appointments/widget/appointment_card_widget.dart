@@ -127,7 +127,7 @@ class AppointmentCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.xl4),
+          SizedBox(height: AppSpacing.xl),
           Row(
             children: [
               Text(

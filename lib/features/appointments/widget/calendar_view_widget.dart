@@ -49,6 +49,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
               Text('Select Date', style: AppTypography.body()),
               AusaButton(
                 text: 'Week View',
+                size: ButtonSize.md,
                 onPressed: widget.onBackToWeekView,
                 variant: ButtonVariant.tertiary,
                 leadingIcon: SvgPicture.asset(

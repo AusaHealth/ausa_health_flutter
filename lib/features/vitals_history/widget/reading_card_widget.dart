@@ -40,7 +40,7 @@ class ReadingCardWidget extends StatelessWidget {
         padding: EdgeInsets.only(
           right: AppSpacing.lg,
           top: AppSpacing.lg,
-          bottom: AppSpacing.lg
+          bottom: AppSpacing.lg,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -130,7 +130,6 @@ class ReadingCardWidget extends StatelessWidget {
         () => GestureDetector(
           onTap: () => onParameterTap?.call('Systolic'),
           child: Container(
-            
             decoration: BoxDecoration(
               color:
                   isParameterSelected?.call('Systolic') == true ||

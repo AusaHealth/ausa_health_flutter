@@ -103,9 +103,10 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
             // Tab buttons
             Obx(
               () => Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xl6,
-                  vertical: AppSpacing.lg,
+                padding: EdgeInsets.only(
+                  left: AppSpacing.xl6,
+                  right: AppSpacing.xl6,
+                  bottom: AppSpacing.xl,
                 ),
                 child: Row(children: _buildTabButtons(controller)),
               ),

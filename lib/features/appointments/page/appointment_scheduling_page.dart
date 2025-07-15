@@ -358,6 +358,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
               Text('Select Date', style: AppTypography.body()),
               AusaButton(
                 text: 'Month View',
+                size: ButtonSize.md,
                 onPressed: controller.toggleMonthView,
                 variant: ButtonVariant.tertiary,
                 leadingIcon: SvgPicture.asset(

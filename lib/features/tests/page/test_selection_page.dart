@@ -19,7 +19,13 @@ class TestSelectionPage extends StatelessWidget {
       backgroundColor: AppColors.gray50,
       body: Column(
         children: [
-          const AppBackHeader(title: 'Your Tests'),
+          AppBackHeader(
+            title: 'Your Tests',
+            onBackPressed: () {
+              controller.resetSelections();
+              Get.back();
+            },
+          ),
           Expanded(
             child: Stack(
               children: [

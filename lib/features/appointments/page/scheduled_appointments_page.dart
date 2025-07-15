@@ -34,11 +34,14 @@ class ScheduledAppointmentsPage extends StatelessWidget {
                   variant: ButtonVariant.secondary,
                   borderColor: AppColors.white,
                   leadingIcon: SvgPicture.asset(
-                              AusaIcons.calendar,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                    AusaIcons.calendar,
+                    width: 16,
+                    height: 16,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.primary700,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   size: ButtonSize.md,
                 ),
               ],
@@ -113,7 +116,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 2.07,
+          childAspectRatio: 2.2,
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
         ),

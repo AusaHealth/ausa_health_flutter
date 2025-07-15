@@ -39,9 +39,10 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
             AppBackHeader(title: 'Media', onBackPressed: () => Get.back()),
             Obx(
               () => Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xl6,
-                  vertical: AppSpacing.lg,
+                padding: EdgeInsets.only(
+                  left: AppSpacing.xl6,
+                  right: AppSpacing.xl6,
+                  bottom: AppSpacing.xl,
                 ),
                 child: Row(children: _buildTabButtons(controller)),
               ),
@@ -299,7 +300,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                       Container(
                         width: 96,
                         height: 96,
-                        padding: EdgeInsets.all(AppSpacing.xl5),
+                        padding: EdgeInsets.all(AppSpacing.xl4),
                         decoration: BoxDecoration(
                           color: AppColors.accent.withOpacity(0.15),
                           shape: BoxShape.circle,

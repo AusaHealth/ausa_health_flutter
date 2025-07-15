@@ -151,13 +151,6 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.05),
               borderRadius: BorderRadius.circular(AppRadius.xl3),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.black.withOpacity(0.1),
-              //     blurRadius: 10,
-              //     offset: Offset(0, 2),
-              //   ),
-              // ],
             ),
 
             child: Row(
@@ -240,17 +233,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
       child: Stack(
         children: [
           // Global dashed line behind the chart
-          Positioned(
-            left: 40, // Align after left axis labels
-            right: 5,
-            bottom: 36, // Align with date label baseline (45 - 7)
-            child: IgnorePointer(
-              child: CustomPaint(
-                size: const Size(double.infinity, 1),
-                painter: DashedLinePainter(color: Color(0xFF8E8E8E)),
-              ),
-            ),
-          ),
+
           // Chart (including date/time labels) painted above
           Container(
             padding: EdgeInsets.only(
@@ -277,27 +260,47 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 50,
-                      interval: _getGridInterval(),
+                      interval:
+                          widget.vitalType == VitalType.bodyTemperature
+                              ? 0.1
+                              : 1, // Fine interval for temperature
                       getTitlesWidget: (value, meta) {
                         // Show all grid values plus exact current values
                         final isCurrentValue = _isCurrentValue(value);
                         final isGridValue = _isGridValue(value);
 
                         if (isGridValue || isCurrentValue) {
-                          return Text(
-                            _formatLeftAxisValue(value),
-                            style: AppTypography.body(
-                              color:
-                                  isCurrentValue
-                                      ? AppColors.primary700
-                                      : Colors.black,
-                              weight:
-                                  isCurrentValue
-                                      ? AppTypographyWeight.semibold
-                                      : AppTypographyWeight.medium,
-                            ),
-                            textAlign: TextAlign.center,
-                          );
+                          if (isCurrentValue) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md,
+                                vertical: AppSpacing.sm,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFC107),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.full,
+                                ),
+                              ),
+                              child: Text(
+                                _formatLeftAxisValue(value),
+                                style: AppTypography.callout(
+                                  color: Colors.black,
+                                  weight: AppTypographyWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              _formatLeftAxisValue(value),
+                              style: AppTypography.callout(
+                                color: Color(0xff59739E),
+                                weight: AppTypographyWeight.medium,
+                              ),
+                              textAlign: TextAlign.center,
+                            );
+                          }
                         }
 
                         return const SizedBox();
@@ -327,6 +330,43 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
                                 // (Per-cell dashed line removed; a global dashed line is now painted.)
                                 Column(
                                   children: [
+                                    // const SizedBox(height: 4),
+                                    // Check if this is the latest reading (rightmost on chart)
+                                    index == maxReadings - 1
+                                        ? Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: AppSpacing.lg,
+                                            vertical: AppSpacing.sm,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFFFC107),
+                                            borderRadius: BorderRadius.circular(
+                                              AppRadius.full,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            _formatTime(reading.timestamp),
+                                            style: AppTypography.callout(
+                                              color: Colors.black,
+                                              weight: AppTypographyWeight.bold,
+                                            ),
+                                          ),
+                                        )
+                                        : Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: AppSpacing.lg,
+                                            vertical: AppSpacing.sm,
+                                          ),
+                                          child: Text(
+                                            _formatTime(reading.timestamp),
+                                            style: AppTypography.callout(
+                                              color: Color(0xff59739E),
+                                              weight:
+                                                  AppTypographyWeight.medium,
+                                            ),
+                                          ),
+                                        ),
+                                    const SizedBox(height: 4),
                                     SizedBox(
                                       height: 15,
                                       child:
@@ -352,14 +392,6 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
                                                 ),
                                               )
                                               : null,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      _formatTime(reading.timestamp),
-                                      style: AppTypography.body(
-                                        color: Colors.black,
-                                        weight: AppTypographyWeight.medium,
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -480,7 +512,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
                 getDotPainter: (spot, percent, barData, index) {
                   final isLatest = index == spots.length - 1;
                   return FlDotCirclePainter(
-                    radius: 6,
+                    radius: 4,
                     color: AppColors.primary700,
                     strokeWidth: isLatest ? 3 : 0,
                     strokeColor:
@@ -513,7 +545,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
             getDotPainter: (spot, percent, barData, index) {
               final isLatest = index == spots.length - 1;
               return FlDotCirclePainter(
-                radius: 6,
+                radius: 4,
                 color: AppColors.primary700,
                 strokeWidth: isLatest ? 3 : 0,
                 strokeColor: isLatest ? Color(0xffFFC107) : Colors.transparent,
@@ -551,7 +583,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
         getDotPainter: (spot, percent, barData, index) {
           final isLatest = index == spots.length - 1;
           return FlDotCirclePainter(
-            radius: 6,
+            radius: 4,
             color: color,
             strokeWidth: isLatest ? 3 : 0,
             strokeColor: isLatest ? Color(0xffFFC107) : Colors.transparent,
@@ -587,7 +619,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
           spots: [FlSpot(latestX, 0), FlSpot(latestX, 0)],
           isCurved: false,
           color: Colors.transparent,
-          barWidth: 18,
+          barWidth: 14,
           isStrokeCapRound: true,
           dotData: FlDotData(show: false),
           belowBarData: BarAreaData(show: false),
@@ -605,8 +637,22 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
       return LineChartBarData(
         spots: spots,
         isCurved: false,
-        color: lineColor,
-        barWidth: 18,
+        gradient:
+            isVisible
+                ? LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xffFFC107), // #FFC107
+                    Color(0x80FFC107), // #FFC10780
+                    Color(0x80FFC107), // #FFC10780
+                    Color(0xffFFC107), // #FFC107
+                  ],
+                  stops: [0.0, 0.33, 0.67, 1.0],
+                )
+                : null,
+        color: isVisible ? null : Colors.transparent,
+        barWidth: 14,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false), // Hide dots for connection line
         belowBarData: BarAreaData(show: false),
@@ -619,7 +665,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
         spots: [FlSpot(latestX, 0), FlSpot(latestX, 0)],
         isCurved: false,
         color: Colors.transparent,
-        barWidth: 18,
+        barWidth: 14,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
@@ -668,10 +714,32 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
         break;
       case VitalType.bloodGlucose:
         final glucoseReading = reading as BloodGlucoseReading;
-        return glucoseReading.glucoseLevel;
+        switch (parameter) {
+          case 'Fasting':
+            // Only return value if this reading is a fasting measurement
+            if (glucoseReading.measurementType ==
+                GlucoseMeasurementType.fasting) {
+              return glucoseReading.glucoseLevel;
+            }
+            return null;
+          case 'Post meal':
+            // Only return value if this reading is a post meal measurement
+            if (glucoseReading.measurementType ==
+                GlucoseMeasurementType.postMeal) {
+              return glucoseReading.glucoseLevel;
+            }
+            return null;
+        }
+        break;
       case VitalType.bodyTemperature:
         final tempReading = reading as BodyTemperatureReading;
-        return tempReading.temperature;
+        switch (parameter) {
+          case '°C':
+            return tempReading.convertToCelsius();
+          case '°F':
+            return tempReading.convertToFahrenheit();
+        }
+        break;
       case VitalType.ecg:
         final ecgReading = reading as ECGReading;
         return ecgReading.heartRate.toDouble();
@@ -698,9 +766,9 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
       case VitalType.spO2HeartRate:
         return ['SpO2'];
       case VitalType.bloodGlucose:
-        return ['Glucose'];
+        return ['Fasting', 'Post meal'];
       case VitalType.bodyTemperature:
-        return ['Temperature'];
+        return ['°C', '°F'];
       case VitalType.ecg:
         return ['Heart Rate'];
     }
@@ -770,7 +838,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
       case VitalType.bloodGlucose:
         return 70;
       case VitalType.bodyTemperature:
-        return 35;
+        return selectedParameter == '°C' ? 35 : 95; // 35°C = 95°F
       case VitalType.ecg:
         return 40;
     }
@@ -789,7 +857,7 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
       case VitalType.bloodGlucose:
         return 200;
       case VitalType.bodyTemperature:
-        return 42;
+        return selectedParameter == '°C' ? 42 : 108; // 42°C = 107.6°F
       case VitalType.ecg:
         return 120;
     }
@@ -833,11 +901,11 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
       case VitalType.bloodPressure:
         return value.toInt().toString();
       case VitalType.spO2HeartRate:
-        return '${value.toInt()}%'; // Only SpO2 values with percentage
+        return value.toInt().toString(); // Remove percentage symbol
       case VitalType.bloodGlucose:
         return value.toInt().toString();
       case VitalType.bodyTemperature:
-        return '${value.toStringAsFixed(1)}°';
+        return value.toStringAsFixed(1); // Remove unit symbols
       case VitalType.ecg:
         return value.toInt().toString();
     }
@@ -854,23 +922,52 @@ class _VitalsChartWidgetState extends State<VitalsChartWidget>
 
     // Get the latest reading values
     final latestReading = widget.readings.first;
-    final tolerance = 0.5; // Allow some tolerance for floating point comparison
+
+    // Different tolerance based on vital type
+    double tolerance = 0.1;
+    if (widget.vitalType == VitalType.bodyTemperature) {
+      tolerance = 0.05; // Precise tolerance for exact temperature values
+    } else if (widget.vitalType == VitalType.spO2HeartRate) {
+      tolerance = 0.5; // SpO2 might have decimal precision
+    }
 
     if (widget.vitalType == VitalType.bloodPressure &&
         selectedParameter == 'BP') {
       final systolic = _getValueForParameter(latestReading, 'Systolic');
       final diastolic = _getValueForParameter(latestReading, 'Diastolic');
 
-      if (systolic != null && (value - systolic).abs() < tolerance) return true;
-      if (diastolic != null && (value - diastolic).abs() < tolerance)
+      // Check exact match first, then with tolerance
+      if (systolic != null &&
+          (value == systolic.toDouble() ||
+              (value - systolic).abs() < tolerance)) {
         return true;
+      }
+      if (diastolic != null &&
+          (value == diastolic.toDouble() ||
+              (value - diastolic).abs() < tolerance)) {
+        return true;
+      }
     } else {
       final currentValue = _getValueForParameter(
         latestReading,
         selectedParameter,
       );
-      if (currentValue != null && (value - currentValue).abs() < tolerance)
-        return true;
+
+      if (currentValue != null) {
+        // For integer values (like SpO2), check integer match
+        if (widget.vitalType == VitalType.spO2HeartRate) {
+          final intValue = value.toInt().toDouble();
+          final intCurrentValue = currentValue.toInt().toDouble();
+          if (intValue == intCurrentValue) {
+            return true;
+          }
+        }
+
+        // Standard tolerance check
+        if (value == currentValue || (value - currentValue).abs() < tolerance) {
+          return true;
+        }
+      }
     }
 
     return false;
