@@ -214,12 +214,21 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final borderWidth = widget.isSelected ? 1.0 : 0.0;
+    final outerRadius = AppRadius.xl2;
+    final innerRadius =
+        widget.isSelected ? AppRadius.xl2 - borderWidth : AppRadius.xl2;
+
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
         height: 180,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.xl2),
+          borderRadius: BorderRadius.circular(outerRadius),
+          border:
+              widget.isSelected
+                  ? Border.all(color: AppColors.primary700, width: borderWidth)
+                  : null,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -229,7 +238,7 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppRadius.xl2),
+          borderRadius: BorderRadius.circular(innerRadius),
           child:
               widget.reading.type == MediaTestType.ent
                   ? _buildEntLayout()
@@ -306,6 +315,7 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                     child: Container(
                       width: 48,
                       height: 48,
+                      padding: EdgeInsets.all(13),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
@@ -322,10 +332,12 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                                   ),
                                 ),
                               )
-                              : Icon(
-                                _isPlaying ? Icons.pause : Icons.play_arrow,
-                                color: Colors.white,
-                                size: 28,
+                              : SvgPicture.asset(
+                                _isPlaying ? AusaIcons.stop : AusaIcons.play,
+                                colorFilter: ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                     ),
                   ),
@@ -446,7 +458,10 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
                                 _isPlaying ? AusaIcons.stop : AusaIcons.play,
                                 width: 16,
                                 height: 16,
-                                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                                colorFilter: ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                   ),

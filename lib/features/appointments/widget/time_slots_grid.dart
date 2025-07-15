@@ -18,6 +18,8 @@ class TimeSlotsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final availableSlots = timeSlots.where((slot) => slot.isAvailable).toList();
+
     return Container(
       padding: EdgeInsets.only(
         left: AppSpacing.xl5,
@@ -39,9 +41,9 @@ class TimeSlotsGrid extends StatelessWidget {
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),
-              itemCount: timeSlots.length,
+              itemCount: availableSlots.length,
               itemBuilder: (context, index) {
-                final timeSlot = timeSlots[index];
+                final timeSlot = availableSlots[index];
                 return _buildTimeSlotButton(timeSlot);
               },
             ),
@@ -56,15 +58,11 @@ class TimeSlotsGrid extends StatelessWidget {
 
     return AusaButton(
       text: timeSlot.formattedTime,
-       backgroundColor: isSelected
-                        ? AppColors.black
-                        : AppColors.primary25,
-                    borderColor: AppColors.primary25,
-                    textColor: isSelected ? AppColors.white : AppColors.primary700,
+      backgroundColor: isSelected ? AppColors.black : AppColors.primary25,
+      borderColor: AppColors.primary25,
+      textColor: isSelected ? AppColors.white : AppColors.primary700,
       variant: isSelected ? ButtonVariant.primary : ButtonVariant.secondary,
-      onPressed:
-          timeSlot.isAvailable ? () => onTimeSlotSelected(timeSlot) : null,
-      isEnabled: timeSlot.isAvailable,
+      onPressed: () => onTimeSlotSelected(timeSlot),
     );
   }
 }

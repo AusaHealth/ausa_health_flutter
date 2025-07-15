@@ -1,6 +1,6 @@
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
-import 'package:ausa/features/appointments/service/appointment_service.dart';
+
 import 'package:ausa/features/auth/controller/auth_controller.dart';
 import 'package:ausa/features/health_schedule/controller/health_schedule_controller.dart';
 import 'package:ausa/features/health_schedule/controller/meal_times_controller.dart';
@@ -19,15 +19,11 @@ import 'package:get/get.dart';
 class AppBinding extends Bindings {
   @override
   void dependencies() {
-    // Register services
-    Get.put<AppointmentService>(AppointmentServiceImpl(), permanent: true);
-
     // Register core controllers (permanent)
     Get.put(HomeController(), permanent: true);
     Get.put(TeleconsultationController(), permanent: true);
     Get.put(AppointmentsController(), permanent: true);
     Get.put(TestController(), permanent: true);
-
 
     // Register feature controllers
     Get.put(AuthController(), permanent: true);

@@ -1,16 +1,13 @@
 import 'package:ausa/features/appointments/model/appointment.dart';
-import 'package:ausa/features/appointments/service/appointment_service.dart';
 import 'package:get/get.dart';
 
 class AppointmentsController extends GetxController {
-  final AppointmentService _appointmentService = Get.find<AppointmentService>();
-
-  // Observable state
+  // Private observable state
   final RxBool _isLoading = false.obs;
   final RxList<Appointment> _appointments = <Appointment>[].obs;
   final RxString _errorMessage = ''.obs;
 
-  // Getters
+  // Public getters
   bool get isLoading => _isLoading.value;
   List<Appointment> get appointments => _appointments;
   String get errorMessage => _errorMessage.value;
@@ -22,10 +19,12 @@ class AppointmentsController extends GetxController {
     loadAppointments();
   }
 
-  // Event-based state updates 
+  // Private update methods
   void _updateIsLoading(bool loading) => _isLoading.value = loading;
   void _updateAppointments(List<Appointment> appointments) =>
-      _appointments.value = appointments;
+      _appointments
+        ..assignAll(appointments)
+        ..refresh();
   void _updateErrorMessage(String message) => _errorMessage.value = message;
   void _addAppointment(Appointment appointment) =>
       _appointments.add(appointment);
@@ -42,13 +41,16 @@ class AppointmentsController extends GetxController {
     }
   }
 
-  // Business logic
+  // Public action methods
   Future<void> loadAppointments() async {
     try {
       _updateIsLoading(true);
       _updateErrorMessage('');
 
-      final appointments = await _appointmentService.getScheduledAppointments();
+      // Simulate API delay
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      final appointments = _generateMockAppointments();
       _updateAppointments(appointments);
     } catch (e) {
       _updateErrorMessage('Failed to load appointments');
@@ -66,7 +68,6 @@ class AppointmentsController extends GetxController {
     await loadAppointments();
   }
 
-  // Add new appointment to the list (called from scheduling controller)
   void addNewAppointment(Appointment appointment) {
     _addAppointment(appointment);
   }
@@ -94,7 +95,9 @@ class AppointmentsController extends GetxController {
     try {
       _updateIsLoading(true);
 
-      await _appointmentService.cancelAppointment(appointmentId);
+      // Simulate API delay
+      await Future.delayed(const Duration(seconds: 1));
+
       _removeAppointment(appointmentId);
 
       Get.snackbar(
@@ -132,5 +135,62 @@ class AppointmentsController extends GetxController {
     final now = DateTime.now();
     return _appointments.where((apt) => apt.dateTime.isBefore(now)).toList()
       ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+  }
+
+  // Mock data generation
+  List<Appointment> _generateMockAppointments() {
+    final now = DateTime.now();
+
+    return [
+      Appointment(
+        id: '1',
+        dateTime: DateTime(now.year, now.month, now.day + 2, 10, 30),
+        doctorName: 'Dr. Grace Williams',
+        doctorType: 'General Medicine',
+        symptoms: 'Severe headache & fatigue',
+        status: AppointmentStatus.confirmed,
+      ),
+      Appointment(
+        id: '2',
+        dateTime: DateTime(now.year, now.month, now.day + 5, 14, 0),
+        doctorName: 'Dr. Michael Smith',
+        doctorType: 'Cardiology',
+        symptoms: 'Chest pain and shortness of breath during exercise',
+        status: AppointmentStatus.pending,
+      ),
+      Appointment(
+        id: '3',
+        dateTime: DateTime(now.year, now.month, now.day + 7, 11, 15),
+        doctorName: 'Dr. Sarah Johnson',
+        doctorType: 'Dermatology',
+        symptoms: 'Skin rash on arms and legs',
+        status: AppointmentStatus.confirmed,
+      ),
+      Appointment(
+        id: '4',
+        dateTime: DateTime(now.year, now.month, now.day + 10, 15, 30),
+        doctorName: 'Dr. Robert Davis',
+        doctorType: 'Orthopedics',
+        symptoms: 'Knee pain after jogging',
+        status: AppointmentStatus.confirmed,
+      ),
+      Appointment(
+        id: '5',
+        dateTime: DateTime(now.year, now.month, now.day + 14, 9, 45),
+        doctorName: 'Dr. Emily Chen',
+        doctorType: 'Endocrinology',
+        symptoms: 'Diabetes follow-up and blood sugar monitoring',
+        status: AppointmentStatus.pending,
+      ),
+      // Past appointment for testing
+      Appointment(
+        id: '6',
+        dateTime: DateTime(now.year, now.month, now.day - 3, 16, 0),
+        doctorName: 'Dr. James Wilson',
+        doctorType: 'General Medicine',
+        symptoms: 'Annual health checkup',
+        status: AppointmentStatus.confirmed,
+      ),
+    ];
   }
 }

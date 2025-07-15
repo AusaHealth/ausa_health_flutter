@@ -1,4 +1,7 @@
+import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../constants/icons.dart';
 
@@ -10,6 +13,19 @@ class MealTimesController extends GetxController {
   final RxString _breakfastTime = '7:00 AM'.obs;
   final RxString _lunchTime = '12:30 PM'.obs;
   final RxString _dinnerTime = '8:00 PM'.obs;
+
+  // Original times for comparison (to detect changes)
+  final RxString _originalBreakfastTime = '7:00 AM'.obs;
+  final RxString _originalLunchTime = '12:30 PM'.obs;
+  final RxString _originalDinnerTime = '8:00 PM'.obs;
+
+  // Dialog state
+  final RxBool _isDialogShowing = false.obs;
+
+  // Scroll controllers for time picker
+  FixedExtentScrollController? _hourScrollController;
+  FixedExtentScrollController? _minuteScrollController;
+  FixedExtentScrollController? _periodScrollController;
 
   // AM/PM observable for each meal (only dinner is interactive)
   final RxString _breakfastPeriod = 'AM'.obs; // Fixed
@@ -26,12 +42,23 @@ class MealTimesController extends GetxController {
   String get breakfastTime => _breakfastTime.value;
   String get lunchTime => _lunchTime.value;
   String get dinnerTime => _dinnerTime.value;
+  String get originalBreakfastTime => _originalBreakfastTime.value;
+  String get originalLunchTime => _originalLunchTime.value;
+  String get originalDinnerTime => _originalDinnerTime.value;
   int get selectedHour => _selectedHour.value;
   int get selectedMinute => _selectedMinute.value;
   String get selectedPeriod => _selectedPeriod.value;
   String get breakfastPeriod => _breakfastPeriod.value;
   String get lunchPeriod => _lunchPeriod.value;
   String get dinnerPeriod => _dinnerPeriod.value;
+
+  // Scroll controller getters
+  FixedExtentScrollController? get hourScrollController =>
+      _hourScrollController;
+  FixedExtentScrollController? get minuteScrollController =>
+      _minuteScrollController;
+  FixedExtentScrollController? get periodScrollController =>
+      _periodScrollController;
 
   // Meals data with SVG icons
   List<Map<String, dynamic>> get meals => [
@@ -48,6 +75,55 @@ class MealTimesController extends GetxController {
   void onInit() {
     super.onInit();
     _initializeTime();
+    _initializeScrollControllers();
+  }
+
+  @override
+  void onClose() {
+    _hourScrollController?.dispose();
+    _minuteScrollController?.dispose();
+    _periodScrollController?.dispose();
+    super.onClose();
+  }
+
+  // Initialize scroll controllers
+  void _initializeScrollControllers() {
+    _hourScrollController = FixedExtentScrollController(
+      initialItem: currentHourIndex,
+    );
+    _minuteScrollController = FixedExtentScrollController(
+      initialItem: currentMinuteIndex,
+    );
+    _periodScrollController = FixedExtentScrollController(
+      initialItem: currentPeriodIndex,
+    );
+  }
+
+  // Update scroll controllers to center the selected values
+  void _updateScrollControllers() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_hourScrollController?.hasClients == true) {
+        _hourScrollController!.animateToItem(
+          currentHourIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+      if (_minuteScrollController?.hasClients == true) {
+        _minuteScrollController!.animateToItem(
+          currentMinuteIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+      if (_periodScrollController?.hasClients == true) {
+        _periodScrollController!.animateToItem(
+          currentPeriodIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   // Private update methods
@@ -60,14 +136,266 @@ class MealTimesController extends GetxController {
   void _updateSelectedPeriod(String period) => _selectedPeriod.value = period;
 
   void _initializeTime() {
+    // Store original times
+    _originalBreakfastTime.value = _breakfastTime.value;
+    _originalLunchTime.value = _lunchTime.value;
+    _originalDinnerTime.value = _dinnerTime.value;
+
     // Initialize time picker with current breakfast time
     updateTimePickerFromMeal(0);
+  }
+
+  // Method to update initial times (useful when navigating from other screens)
+  void updateInitialTimes({
+    String? breakfastTime,
+    String? lunchTime,
+    String? dinnerTime,
+  }) {
+    if (breakfastTime != null) {
+      _breakfastTime.value = breakfastTime;
+      _originalBreakfastTime.value = breakfastTime;
+      meals[0]['time'] = breakfastTime;
+    }
+    if (lunchTime != null) {
+      _lunchTime.value = lunchTime;
+      _originalLunchTime.value = lunchTime;
+      meals[1]['time'] = lunchTime;
+    }
+    if (dinnerTime != null) {
+      _dinnerTime.value = dinnerTime;
+      _originalDinnerTime.value = dinnerTime;
+      meals[2]['time'] = dinnerTime;
+    }
+
+    // Update time picker if needed
+    updateTimePickerFromMeal(_selectedMealIndex.value);
+    _updateScrollControllers();
+  }
+
+  // Check if any meal times have been changed
+  bool get hasChanges {
+    return _breakfastTime.value != _originalBreakfastTime.value ||
+        _lunchTime.value != _originalLunchTime.value ||
+        _dinnerTime.value != _originalDinnerTime.value;
+  }
+
+  // Get list of changed meal times for the confirmation dialog
+  List<Map<String, String>> get changedMealTimes {
+    List<Map<String, String>> changes = [];
+
+    if (_breakfastTime.value != _originalBreakfastTime.value) {
+      changes.add({'name': 'Breakfast', 'time': _breakfastTime.value});
+    }
+
+    if (_lunchTime.value != _originalLunchTime.value) {
+      changes.add({'name': 'Lunch', 'time': _lunchTime.value});
+    }
+
+    if (_dinnerTime.value != _originalDinnerTime.value) {
+      changes.add({'name': 'Dinner', 'time': _dinnerTime.value});
+    }
+
+    return changes;
+  }
+
+  // Handle back button press
+  void handleBackPress() {
+    if (_isDialogShowing.value) return; // Prevent multiple dialogs
+
+    if (hasChanges) {
+      _showConfirmationDialog();
+    } else {
+      Get.back();
+    }
+  }
+
+  // Show confirmation dialog
+  void _showConfirmationDialog() {
+    final changes = changedMealTimes;
+
+    _isDialogShowing.value = true;
+    Get.dialog(
+      _buildConfirmationDialog(changes),
+      barrierDismissible: false,
+    ).then((_) {
+      _isDialogShowing.value = false;
+    });
+  }
+
+  // Build confirmation dialog widget
+  Widget _buildConfirmationDialog(List<Map<String, String>> changes) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        width: 440,
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl6,
+          vertical: AppSpacing.xl4,
+        ),
+        decoration: BoxDecoration(
+          color: Color(0xffF0F0F0),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon
+            Container(
+              width: 96,
+              height: 96,
+              padding: EdgeInsets.all(AppSpacing.xl4),
+              decoration: BoxDecoration(
+                color: AppColors.primary700.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(AppRadius.full),
+                border: Border.all(color: AppColors.primary100, width: 1),
+              ),
+              child: SvgPicture.asset(
+                AusaIcons.save03,
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary700,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Title
+            Text(
+              'Save Changes?',
+              style: AppTypography.headline(
+                color: AppColors.primary700,
+                weight: AppTypographyWeight.medium,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Description
+            Text(
+              'You\'ve edited the following meal times, do you want to save these changes?',
+              textAlign: TextAlign.left,
+              style: AppTypography.body(
+                color: AppColors.gray700,
+                weight: AppTypographyWeight.medium,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Changed meal times list
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.xl3,
+                vertical: AppSpacing.xl4,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.xl3),
+              ),
+              child: Column(
+                children:
+                    changes
+                        .map(
+                          (change) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  change['name']!,
+                                  style: AppTypography.body(
+                                    color: AppColors.gray700,
+                                    weight: AppTypographyWeight.medium,
+                                  ),
+                                ),
+                                Text(
+                                  change['time']!,
+                                  style: AppTypography.body(
+                                    color: AppColors.gray700,
+                                    weight: AppTypographyWeight.medium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Action buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // Cancel button
+                AusaButton(
+                  text: 'Cancel',
+                  onPressed: () {
+                    Get.back(); // Close dialog
+                    _discardChanges();
+                    Get.back(); // Go back to previous screen
+                  },
+                  variant: ButtonVariant.secondary,
+                  size: ButtonSize.lg,
+                ),
+
+                const SizedBox(width: 12),
+
+                AusaButton(
+                  text: 'Confirm',
+                  onPressed: () {
+                    Get.back(); // Close dialog
+                    _saveChanges();
+                    Get.back(); // Go back to previous screen
+                  },
+                  variant: ButtonVariant.primary,
+                  size: ButtonSize.lg,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Discard changes and restore original times
+  void _discardChanges() {
+    _breakfastTime.value = _originalBreakfastTime.value;
+    _lunchTime.value = _originalLunchTime.value;
+    _dinnerTime.value = _originalDinnerTime.value;
+
+    // Update meals list
+    meals[0]['time'] = _originalBreakfastTime.value;
+    meals[1]['time'] = _originalLunchTime.value;
+    meals[2]['time'] = _originalDinnerTime.value;
+  }
+
+  // Save changes and update original times
+  void _saveChanges() {
+    _originalBreakfastTime.value = _breakfastTime.value;
+    _originalLunchTime.value = _lunchTime.value;
+    _originalDinnerTime.value = _dinnerTime.value;
+
+    // Show success message
+    Get.snackbar(
+      'Success',
+      'Meal times updated successfully!',
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
   }
 
   void selectMeal(int index) {
     _updateSelectedMealIndex(index);
     updateTimePickerFromMeal(index);
     _validateAndAdjustTime();
+    _updateScrollControllers();
   }
 
   void updateTimePickerFromMeal(int mealIndex) {

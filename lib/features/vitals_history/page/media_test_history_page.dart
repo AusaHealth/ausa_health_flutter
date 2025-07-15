@@ -1,7 +1,9 @@
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../constants/constants.dart';
+import '../../../constants/icons.dart';
 import '../controller/media_test_history_controller.dart';
 import '../model/media_test_reading.dart';
 import '../widget/media_test_card_widget.dart';
@@ -34,10 +36,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBackHeader(
-              title: 'Media',
-              onBackPressed: () => Get.back(),
-            ),
+            AppBackHeader(title: 'Media', onBackPressed: () => Get.back()),
             Obx(
               () => Padding(
                 padding: EdgeInsets.symmetric(
@@ -87,44 +86,65 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
               if (!controller.isSelectionMode.value) {
                 return GestureDetector(
                   onTap: () => controller.enterSelectionMode(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.circle_outlined,
-                        size: 16.0,
-                        color: AppColors.primary700,
-                      ),
-                      SizedBox(width: AppSpacing.md),
-                      Text(
-                        'Select',
-                        style: AppTypography.body(color: AppColors.primary700),
-                      ),
-                    ],
+                  child: Text(
+                    'Select',
+                    style: AppTypography.body(color: AppColors.primary700),
                   ),
                 );
               }
 
-              // In selection mode : show DELETE button
+              // In selection mode : show Cancel and Delete buttons
               final bool hasSelection =
                   controller.selectedReadingIds.isNotEmpty;
 
-              return AusaButton(
-                text: 'Delete',
-                onPressed: hasSelection ? _showDeleteConfirmationDialog : null,
-                variant: ButtonVariant.primary,
-                backgroundColor:
-                    hasSelection
-                        ? Colors.orange
-                        : Colors.orange.withOpacity(0.4),
-                textColor: Colors.white,
-                leadingIcon: Icon(
-                  Icons.delete_outline,
-                  size: 20,
-                  color: Colors.white,
-                ),
-                isEnabled: hasSelection,
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Cancel Button
+               
+                  // Delete Button
+                  AusaButton(
+                    text: 'Delete',
+                    size: ButtonSize.md,
+                    onPressed:
+                        hasSelection ? _showDeleteConfirmationDialog : null,
+                    variant: ButtonVariant.primary,
+                    backgroundColor:
+                        hasSelection
+                            ? Colors.orange
+                            : Colors.orange.withOpacity(0.4),
+                    textColor: Colors.white,
+                    leadingIcon: SvgPicture.asset(
+                      AusaIcons.trash01,
+                      width: 20,
+                      height: 20,
+                      colorFilter: ColorFilter.mode(
+                        hasSelection ? Colors.white : Colors.grey[500]!,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    isEnabled: hasSelection,
+                  ),
+                  SizedBox(width: AppSpacing.lg),
+                     AusaButton(
+                    text: 'Cancel',
+                    showShadow: true,
+                    size: ButtonSize.md,
+                    onPressed: () => controller.exitSelectionMode(),
+                    variant: ButtonVariant.secondary,
+                    borderColor: AppColors.white,
+                    textColor: AppColors.primary700,
+                    leadingIcon: SvgPicture.asset(
+                      AusaIcons.x,
+                      width: 20,
+                      height: 20,
+                      colorFilter: ColorFilter.mode(
+                       AppColors.primary700 ,
+                        BlendMode.srcIn,
+                      ),
+                    )
+                  ),
+                ],
               );
             }),
           ),
@@ -261,7 +281,7 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
           child: Material(
             color: Colors.transparent,
             child: Container(
-              width: 300,
+              width: 400,
               padding: EdgeInsets.all(AppSpacing.xl2),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -272,34 +292,40 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Icon + title
-                  Row(
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 40,
-                        height: 40,
+                        width: 96,
+                        height: 96,
+                        padding: EdgeInsets.all(AppSpacing.xl5),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.15),
+                          color: AppColors.accent.withOpacity(0.15),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
-                          Icons.delete_outline,
-                          color: Colors.orange,
+                        child: SvgPicture.asset(
+                          AusaIcons.trash01,
+                          colorFilter: ColorFilter.mode(
+                            AppColors.accent,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
-                      SizedBox(width: AppSpacing.md),
+                      SizedBox(height: AppSpacing.xl3),
                       Text(
-                        'Delete?',
-                        style: AppTypography.callout(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w600,
+                        'Delete Media?',
+                        style: AppTypography.headline(
+                          color: AppColors.accent,
+                          weight: AppTypographyWeight.medium,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: AppSpacing.md),
                   Text(
-                    'Are you sure you want to delete?',
-                    style: AppTypography.body(color: Colors.black54),
+                    'Are you sure you want to delete the selected media?',
+                    style: AppTypography.body(color: Colors.black54, weight: AppTypographyWeight.medium),
                   ),
                   SizedBox(height: AppSpacing.xl2),
                   Row(
@@ -309,25 +335,27 @@ class _MediaTestHistoryPageState extends State<MediaTestHistoryPage> {
                       Expanded(
                         child: AusaButton(
                           text: 'Cancel',
+                          size: ButtonSize.lg,
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                           variant: ButtonVariant.secondary,
-                          borderColor: Colors.orange,
-                          textColor: Colors.orange,
+                          borderColor: AppColors.primary700,
+                          textColor: AppColors.primary700,
                         ),
                       ),
                       SizedBox(width: AppSpacing.lg),
                       // Yes Delete Button
                       Expanded(
                         child: AusaButton(
-                          text: 'Yes, delete',
+                          text: 'Yes',
+                             size: ButtonSize.lg,
                           onPressed: () async {
                             Navigator.of(context).pop();
                             await controller.deleteSelectedReadings();
                           },
                           variant: ButtonVariant.primary,
-                          backgroundColor: Colors.orange,
+                          backgroundColor: AppColors.primary700,
                           textColor: Colors.white,
                         ),
                       ),

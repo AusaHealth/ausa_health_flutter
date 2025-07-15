@@ -33,6 +33,7 @@ class AppBackHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 80,
       padding: EdgeInsets.only(
         left: AppSpacing.xl3,
         right: AppSpacing.xl3,
@@ -61,9 +62,9 @@ class AppBackHeader extends StatelessWidget {
                 ],
               ),
               child: SvgPicture.asset(
-                              AusaIcons.chevronLeft,
-                              colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
-                            ),
+                AusaIcons.chevronLeft,
+                colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+              ),
             ),
           ),
 
@@ -80,7 +81,6 @@ class AppBackHeader extends StatelessWidget {
             SizedBox(width: AppSpacing.lg),
             stepperWidget!,
           ],
-
 
           // Action buttons (if provided)
           if (actionButtons != null && actionButtons!.isNotEmpty) ...[

@@ -9,12 +9,14 @@ class CalendarViewWidget extends StatefulWidget {
   final DateTime selectedDate;
   final Function(DateTime) onDateSelected;
   final VoidCallback onBackToWeekView;
+  final bool Function(DateTime)? hasAvailableTimeSlots;
 
   const CalendarViewWidget({
     super.key,
     required this.selectedDate,
     required this.onDateSelected,
     required this.onBackToWeekView,
+    this.hasAvailableTimeSlots,
   });
 
   @override
@@ -50,11 +52,14 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                 onPressed: widget.onBackToWeekView,
                 variant: ButtonVariant.tertiary,
                 leadingIcon: SvgPicture.asset(
-                              AusaIcons.calendar,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                  AusaIcons.calendar,
+                  width: 16,
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary700,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 textColor: AppColors.primary700,
               ),
             ],
@@ -197,6 +202,11 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
     final isPast = date.isBefore(
       DateTime.now().subtract(const Duration(days: 1)),
     );
+    final hasSlots =
+        isCurrentMonth &&
+        !isPast &&
+        widget.hasAvailableTimeSlots != null &&
+        widget.hasAvailableTimeSlots!(date);
 
     return GestureDetector(
       onTap:
@@ -214,6 +224,10 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget> {
                       ? AppColors.primary700.withOpacity(0.1)
                       : Colors.transparent,
               shape: BoxShape.circle,
+              border:
+                  hasSlots
+                      ? Border.all(color: Color(0xFF1B1B3B), width: 1)
+                      : null,
             ),
             child: Center(
               child: Text(

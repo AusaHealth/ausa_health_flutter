@@ -20,6 +20,7 @@ class AusaButton extends StatelessWidget {
   final double? width;
   final ButtonSize size;
   final double? height;
+  final bool showShadow;
 
   const AusaButton({
     super.key,
@@ -36,6 +37,7 @@ class AusaButton extends StatelessWidget {
     this.isLoading = false,
     this.width,
     this.height,
+    this.showShadow = false,
   });
 
   @override
@@ -79,13 +81,14 @@ class AusaButton extends StatelessWidget {
                       : null,
               borderRadius: BorderRadius.circular(9999),
               boxShadow:
-                  variant == ButtonVariant.primary && isButtonEnabled
+                  isButtonEnabled &&
+                          showShadow &&
+                          variant != ButtonVariant.tertiary
                       ? [
                         BoxShadow(
-                          color: (style.backgroundColor ?? Colors.grey)
-                              .withOpacity(0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
                         ),
                       ]
                       : null,

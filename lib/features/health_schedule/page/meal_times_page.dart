@@ -15,52 +15,63 @@ class MealTimesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<MealTimesController>();
 
-    return BaseScaffold(
-      backgroundColor: AppColors.gray50,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            const AppBackHeader(title: 'Edit Meal Times'),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          controller.handleBackPress();
+        }
+      },
+      child: BaseScaffold(
+        backgroundColor: AppColors.gray50,
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              AppBackHeader(
+                title: 'Edit Meal Times',
+                onBackPressed: () => controller.handleBackPress(),
+              ),
 
-            // Main content
-            AppMainContainer(
-              child: Row(
-                children: [
-                  // Left sidebar with meal options
-                  Expanded(flex: 2, child: _buildMealsSidebar(controller)),
+              // Main content
+              AppMainContainer(
+                child: Row(
+                  children: [
+                    // Left sidebar with meal options
+                    Expanded(flex: 2, child: _buildMealsSidebar(controller)),
 
-                  // Right content area with time picker
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(AppRadius.xl2),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl4,
-                        vertical: AppSpacing.xl,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: AppSpacing.lg),
+                    // Right content area with time picker
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppRadius.xl2),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xl4,
+                          vertical: AppSpacing.xl,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: AppSpacing.lg),
 
-                          // Set meal time header
-                          _buildSetTimeHeader(controller),
+                            // Set meal time header
+                            _buildSetTimeHeader(controller),
 
-                          SizedBox(height: AppSpacing.xl4),
+                            SizedBox(height: AppSpacing.xl4),
 
-                          // Time picker
-                          Expanded(child: _buildTimePicker(controller)),
-                        ],
+                            // Time picker
+                            Expanded(child: _buildTimePicker(controller)),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -257,9 +268,12 @@ class MealTimesPage extends StatelessWidget {
               border: Border.all(color: AppColors.primary700, width: 0.5),
             ),
             child: SvgPicture.asset(
-                              AusaIcons.microphone01,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+              AusaIcons.microphone01,
+              colorFilter: ColorFilter.mode(
+                AppColors.primary700,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ],
       ),
@@ -287,6 +301,7 @@ class MealTimesPage extends StatelessWidget {
                   controller.updateHour(selectedHour);
                 },
                 width: 100,
+                scrollController: controller.hourScrollController,
               ),
 
               SizedBox(width: AppSpacing.lg),
@@ -304,6 +319,7 @@ class MealTimesPage extends StatelessWidget {
                   controller.updateMinute(selectedMinute);
                 },
                 width: 100,
+                scrollController: controller.minuteScrollController,
               ),
 
               SizedBox(width: AppSpacing.lg),
@@ -360,6 +376,7 @@ class MealTimesPage extends StatelessWidget {
               : (index) {}, // Empty function for non-interactive
       width: 100,
       isInteractive: isInteractive,
+      scrollController: controller.periodScrollController,
     );
   }
 
@@ -370,6 +387,7 @@ class MealTimesPage extends StatelessWidget {
     required Function(int) onChanged,
     required double width,
     bool isInteractive = true,
+    FixedExtentScrollController? scrollController,
   }) {
     return Container(
       width: width,
@@ -390,9 +408,11 @@ class MealTimesPage extends StatelessWidget {
                       ? FixedExtentScrollPhysics()
                       : NeverScrollableScrollPhysics(),
               onSelectedItemChanged: isInteractive ? onChanged : null,
-              controller: FixedExtentScrollController(
-                initialItem: selectedIndex.clamp(0, items.length - 1),
-              ),
+              controller:
+                  scrollController ??
+                  FixedExtentScrollController(
+                    initialItem: selectedIndex.clamp(0, items.length - 1),
+                  ),
               childDelegate: ListWheelChildBuilderDelegate(
                 builder: (context, index) {
                   if (index < 0 || index >= items.length) return null;

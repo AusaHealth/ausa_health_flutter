@@ -72,11 +72,14 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 onPressed: () => Get.toNamed(AppRoutes.appointmentScheduled),
                 variant: ButtonVariant.secondary,
                 leadingIcon: SvgPicture.asset(
-                              AusaIcons.calendarCheck01,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                  AusaIcons.calendarCheck01,
+                  width: 16,
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary700,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 borderColor: AppColors.white,
                 size: ButtonSize.md,
               ),
@@ -106,7 +109,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
             currentStep: controller.currentStep,
             totalSteps: 2,
           ),
-          onBackPressed: controller.handleBackPressed,
+          onBackPressed: controller.goBackToStep1,
         ),
 
         AppMainContainer(
@@ -256,6 +259,7 @@ class AppointmentSchedulingPage extends StatelessWidget {
             selectedDate: controller.selectedDate,
             onDateSelected: controller.selectDate,
             onBackToWeekView: controller.toggleMonthView,
+            hasAvailableTimeSlots: controller.hasAvailableTimeSlots,
           );
         } else {
           return _buildDateTimeSelectionCard(controller);
@@ -282,10 +286,13 @@ class AppointmentSchedulingPage extends StatelessWidget {
           return Column(
             children: [
               Expanded(
-                child: TimeSlotsGrid(
-                  timeSlots: controller.availableTimeSlots,
-                  selectedTimeSlot: controller.selectedTimeSlot,
-                  onTimeSlotSelected: controller.selectTimeSlot,
+                child: Obx(
+                  () => TimeSlotsGrid(
+                    key: ValueKey(controller.selectedDate.toIso8601String()),
+                    timeSlots: controller.availableTimeSlots.toList(),
+                    selectedTimeSlot: controller.selectedTimeSlot,
+                    onTimeSlotSelected: controller.selectTimeSlot,
+                  ),
                 ),
               ),
               Padding(
@@ -303,25 +310,27 @@ class AppointmentSchedulingPage extends StatelessWidget {
                     isEnabled: controller.selectedTimeSlot != null,
                     variant: ButtonVariant.primary,
                     leadingIcon: SvgPicture.asset(
-                              AusaIcons.keyboard02,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(
-                                controller.selectedTimeSlot != null
-                                    ? Colors.white
-                                    : Colors.grey[600]!,
-                                BlendMode.srcIn),
-                            ),
+                      AusaIcons.keyboard02,
+                      width: 16,
+                      height: 16,
+                      colorFilter: ColorFilter.mode(
+                        controller.selectedTimeSlot != null
+                            ? Colors.white
+                            : Colors.grey[600]!,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                     trailingIcon: SvgPicture.asset(
-                              AusaIcons.arrowRight,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(
-                                controller.selectedTimeSlot != null
-                                    ? Colors.white
-                                    : Colors.grey[600]!,
-                                BlendMode.srcIn),
-                            ),
+                      AusaIcons.arrowRight,
+                      width: 16,
+                      height: 16,
+                      colorFilter: ColorFilter.mode(
+                        controller.selectedTimeSlot != null
+                            ? Colors.white
+                            : Colors.grey[600]!,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                     height: 56,
                   ),
                 ),
@@ -352,11 +361,14 @@ class AppointmentSchedulingPage extends StatelessWidget {
                 onPressed: controller.toggleMonthView,
                 variant: ButtonVariant.tertiary,
                 leadingIcon: SvgPicture.asset(
-                              AusaIcons.calendar,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                  AusaIcons.calendar,
+                  width: 16,
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary700,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 textColor: AppColors.primary700,
               ),
             ],
@@ -367,19 +379,23 @@ class AppointmentSchedulingPage extends StatelessWidget {
           Text('Select Time Slot', style: AppTypography.body()),
           const SizedBox(height: 20),
           Expanded(
-            child: Obx(
-              () => GridView.builder(
+            child: Obx(() {
+              final selectedId = controller.selectedTimeSlot?.id;
+              final availableSlots =
+                  controller.availableTimeSlots
+                      .where((s) => s.isAvailable)
+                      .toList();
+              return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisExtent: 47,
                   crossAxisSpacing: 24,
                   mainAxisSpacing: 20,
                 ),
-                itemCount: controller.availableTimeSlots.length,
+                itemCount: availableSlots.length,
                 itemBuilder: (context, index) {
-                  final timeSlot = controller.availableTimeSlots[index];
-                  final isSelected =
-                      controller.selectedTimeSlot?.id == timeSlot.id;
+                  final timeSlot = availableSlots[index];
+                  final isSelected = selectedId == timeSlot.id;
 
                   return AusaButton(
                     key: ValueKey('${timeSlot.id}_$isSelected'),
@@ -393,15 +409,11 @@ class AppointmentSchedulingPage extends StatelessWidget {
                         isSelected
                             ? ButtonVariant.primary
                             : ButtonVariant.secondary,
-                    isEnabled: timeSlot.isAvailable,
-                    onPressed:
-                        timeSlot.isAvailable
-                            ? () => controller.selectTimeSlot(timeSlot)
-                            : null,
+                    onPressed: () => controller.selectTimeSlot(timeSlot),
                   );
                 },
-              ),
-            ),
+              );
+            }),
           ),
         ],
       ),

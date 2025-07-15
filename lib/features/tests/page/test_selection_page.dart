@@ -43,7 +43,7 @@ class TestSelectionPage extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          childAspectRatio: 1,
+          childAspectRatio: 1.1,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
         ),

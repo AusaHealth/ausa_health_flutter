@@ -245,7 +245,7 @@ class TestResultsPage extends StatelessWidget {
           parameter.name,
           style: AppTypography.body(
            color: Color(0xff5A7497),
-            weight: AppTypographyWeight.medium,
+            weight: AppTypographyWeight.semibold,
           ),
           textAlign: TextAlign.center,
           maxLines: 2,
