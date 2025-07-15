@@ -27,18 +27,10 @@ class FamilyPage extends StatelessWidget {
                   padding: EdgeInsets.all(AppSpacing.smMedium).copyWith(),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(AppRadius.xl2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.07),
-                        blurRadius: 16,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+                    borderRadius: BorderRadius.circular(AppRadius.xl3),
                   ),
                   child: Column(
                     children: [
-                      // Add new member card
                       InkWell(
                         onTap: () {
                           Get.to(() => AddNewMember());
@@ -114,11 +106,11 @@ class FamilyPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: AppSpacing.xl2),
+                      SizedBox(height: AppSpacing.xl5),
                       // const SizedBox(height: 12),
 
                       // Email invitation button
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           Get.to(() => EmailInvitePage());
                         },
@@ -161,7 +153,7 @@ class FamilyPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: AppSpacing.xl2),
+                      SizedBox(height: AppSpacing.xl4),
                     ],
                   ),
                 ),
@@ -171,77 +163,89 @@ class FamilyPage extends StatelessWidget {
                 flex: 4,
                 child: Stack(
                   children: [
-                    Image.asset(AppImages.familyPerson),
-                    Container(
-                      width: 280,
-                      margin: EdgeInsets.all(AppSpacing.smMedium),
-                      height: 400,
-                      padding: EdgeInsets.only(
-                        left: AppSpacing.xl4,
-                        right: AppSpacing.xl3,
-                        top: AppSpacing.xl6,
-                        bottom: AppSpacing.xl6,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(AppRadius.xl3),
+                      child: Image.asset(
+                        AppImages.familyPerson,
+                        height: double.infinity,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Color(0xFF64B5F6), Color(0xFF1976D2)],
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.all(AppSpacing.smMedium),
+                      child: Container(
+                        width: 260,
+                        margin: EdgeInsets.all(AppSpacing.smMedium),
+                        padding: EdgeInsets.only(
+                          left: AppSpacing.xl4,
+                          right: AppSpacing.xl3,
+                          top: AppSpacing.xl6,
+                          bottom: AppSpacing.xl6,
                         ),
-                        borderRadius: BorderRadius.circular(AppRadius.xl3),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blue.withOpacity(0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xFF64B5F6), Color(0xFF1976D2)],
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // User icon
-                          Row(
-                            children: [
-                              Text(
-                                'Add a family\nmember.',
-                                style: AppTypography.headline(
-                                  color: Colors.white,
-                                  weight: AppTypographyWeight.medium,
-                                ),
-                              ),
-                              Spacer(),
-                              SvgPicture.asset(
-                                AusaIcons.userPlus01,
-                                height: DesignScaleManager.scaleValue(80),
-                                width: DesignScaleManager.scaleValue(80),
-                                colorFilter: ColorFilter.mode(
-                                  AppColors.white,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          SizedBox(height: AppSpacing.xl2),
-
-                          Text(
-                            'Get your family member to download\nAusa Health App and scan the QR code.',
-                            style: AppTypography.callout(
-                              color: Colors.white,
-                              weight: AppTypographyWeight.medium,
+                          borderRadius: BorderRadius.circular(AppRadius.xl3),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.3),
+                              blurRadius: 20,
+                              offset: const Offset(0, 10),
                             ),
-                          ),
-
-                          SizedBox(height: AppSpacing.xl5),
-                          Text(
-                            'This will enable them to join your family.',
-                            style: AppTypography.callout(
-                              color: Colors.white,
-                              weight: AppTypographyWeight.medium,
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // User icon
+                            Row(
+                              children: [
+                                Text(
+                                  'Add a family\nmember.',
+                                  style: AppTypography.headline(
+                                    color: Colors.white,
+                                    weight: AppTypographyWeight.medium,
+                                  ),
+                                ),
+                                Spacer(),
+                                SvgPicture.asset(
+                                  AusaIcons.userPlus01,
+                                  height: DesignScaleManager.scaleValue(80),
+                                  width: DesignScaleManager.scaleValue(80),
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.white,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+
+                            SizedBox(height: AppSpacing.xl2),
+
+                            Text(
+                              'Get your family member to download\nAusa Health App and scan the QR code.',
+                              style: AppTypography.callout(
+                                color: Colors.white,
+                                weight: AppTypographyWeight.medium,
+                              ),
+                            ),
+
+                            SizedBox(height: AppSpacing.xl5),
+                            Text(
+                              'This will enable them to join your family.',
+                              style: AppTypography.callout(
+                                color: Colors.white,
+                                weight: AppTypographyWeight.medium,
+                              ),
+                            ),
+                            // SizedBox(height: AppSpacing.xl2),
+                          ],
+                        ),
                       ),
                     ),
                   ],

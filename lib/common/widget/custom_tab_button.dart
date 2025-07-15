@@ -4,18 +4,17 @@ import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomTabButton extends StatelessWidget {
-  final String selectedImagePath;
-  final String unselectedImagePath;
+  final String icon;
   final String label;
   final bool selected;
   final VoidCallback? onTap;
 
   const CustomTabButton({
     super.key,
-    required this.selectedImagePath,
-    required this.unselectedImagePath,
+    required this.icon,
     required this.label,
     this.selected = false,
     this.onTap,
@@ -26,7 +25,7 @@ class CustomTabButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.only(
           left: AppSpacing.lg,
           top: AppSpacing.lg,
@@ -55,7 +54,6 @@ class CustomTabButton extends StatelessWidget {
               color: Colors.black.withOpacity(0.1),
               blurRadius: 20,
               spreadRadius: 0,
-
               offset: Offset(0, 6),
             ),
           ],
@@ -63,15 +61,27 @@ class CustomTabButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              selected ? selectedImagePath : unselectedImagePath,
+            Container(
               width: DesignScaleManager.scaleValue(48),
               height: DesignScaleManager.scaleValue(48),
+              decoration: BoxDecoration(
+                color: selected ? AppColors.primary500 : Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.xl2),
+              ),
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                icon,
+                width: DesignScaleManager.scaleValue(32),
+                height: DesignScaleManager.scaleValue(32),
+                colorFilter: ColorFilter.mode(
+                  selected ? Colors.white : Colors.black,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
             SizedBox(width: AppSpacing.smMedium),
             Text(
               label,
-
               style:
                   selected
                       ? AppTypography.body(

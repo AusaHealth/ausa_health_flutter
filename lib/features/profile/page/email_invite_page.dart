@@ -1,10 +1,14 @@
-import 'package:ausa/common/widget/input_bg_container.dart';
-import 'package:ausa/common/widget/on_screen_keyboard_widget.dart';
+import 'dart:ui';
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 class EmailInvitePage extends StatelessWidget {
   const EmailInvitePage({super.key});
@@ -12,132 +16,178 @@ class EmailInvitePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ProfileController>();
-    return InputBgContainer(
-      child: Stack(
-        children: [
-          Positioned(
-            top: 80,
-            left: 32,
-            right: 32,
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
+    final TextEditingController emailController = TextEditingController();
 
-                // Content area
-                Row(
-                  children: [
-                    // Left side - Description and illustration
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Known member will onboard themselves and see your health profile from their app.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              height: 1.5,
-                            ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 31.2, sigmaY: 31.2),
+            child: Container(
+              color: const Color.fromRGBO(14, 36, 87, 0.70),
+              height: Get.height,
+              width: Get.width,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(AppSpacing.xl),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                Get.back();
+              },
+              icon: SvgPicture.asset(
+                AusaIcons.xClose,
+                height: DesignScaleManager.scaleValue(40),
+                width: DesignScaleManager.scaleValue(40),
+                colorFilter: ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 120,
+          left: 0,
+          right: 32,
+          child: Container(
+            width: DesignScaleManager.scaleValue(1824),
+            height: DesignScaleManager.scaleValue(524),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.xl3),
+              image: DecorationImage(
+                image: AssetImage(AppImages.emailInviteBg),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Material(
+              borderRadius: BorderRadius.circular(AppRadius.xl3),
+              color: Colors.transparent,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Left side: Title and description
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Email invitation',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 32,
                           ),
-
-                          const SizedBox(height: 32),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: AppSpacing.xl2),
+                        Text(
+                          'Known member will onboard\nthemselves and see your health profile\nfrom their app.',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-
-                    // Right side - Form
-                    Expanded(
-                      flex: 1,
+                  ),
+                  // Right side: Email label, field, error, and button
+                  Expanded(
+                    flex: 3,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: AppSpacing.xl3,
+                        horizontal: AppSpacing.xl3,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             'Email',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
-
-                          const SizedBox(height: 12),
-
-                          // Email input field
+                          SizedBox(height: AppSpacing.mdLarge),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 16,
-                            ),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.xl2,
+                              ),
+                              border: Border.all(
+                                color: Colors.redAccent,
+                                width: 2,
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.xl2,
                             ),
                             child: Row(
                               children: [
                                 Icon(
                                   Icons.email_outlined,
-                                  color: Colors.grey[400],
-                                  size: 20,
+                                  color: Colors.black54,
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: AppSpacing.mdLarge),
                                 Expanded(
                                   child: TextField(
-                                    controller:
-                                        controller.emailInviteController,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    ),
+                                    controller: emailController,
                                     decoration: InputDecoration(
-                                      hintText: 'Enter',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 16,
-                                      ),
                                       border: InputBorder.none,
-                                      contentPadding: EdgeInsets.zero,
+                                      hintText: 'olivia@untitledui.com',
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: AppSpacing.mdLarge,
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-
-                          const SizedBox(height: 24),
-
-                          // Send button
-                          Container(
-                            width: double.infinity,
+                          SizedBox(height: AppSpacing.smMedium),
+                          Text(
+                            'Invalid email',
+                            style: TextStyle(
+                              color: Colors.redAccent,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(height: AppSpacing.xl2),
+                          Align(
+                            alignment: Alignment.centerRight,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Handle send invitation
-                                if (controller
-                                    .emailInviteController
-                                    .text
-                                    .isNotEmpty) {
-                                  // Add your send logic here
-                                  print(
-                                    'Sending invitation to: ${controller.emailInviteController.text}',
-                                  );
-                                }
-                              },
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white.withOpacity(0.3),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
+                                backgroundColor: Color(0xFF1563FF),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.xl2,
+                                  ),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.xl2,
+                                  vertical: AppSpacing.mdLarge,
                                 ),
                                 elevation: 0,
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Send Invitation',
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -145,64 +195,13 @@ class EmailInvitePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: OnScreenKeyboardWidget(
-              controller: controller.emailInviteController,
-              type: VirtualKeyboardType.Alphanumeric,
-              color: Color(0xffE3E6EE),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
-}
-
-class CurvedArrowPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = Colors.white.withOpacity(0.6)
-          ..strokeWidth = 2
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round;
-
-    final path = Path();
-    path.moveTo(0, size.height * 0.8);
-    path.quadraticBezierTo(
-      size.width * 0.5,
-      size.height * 0.2,
-      size.width * 0.9,
-      size.height * 0.4,
-    );
-
-    canvas.drawPath(path, paint);
-
-    // Draw arrowhead
-    final arrowPaint =
-        Paint()
-          ..color = Colors.white.withOpacity(0.6)
-          ..strokeWidth = 2
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round;
-
-    final arrowPath = Path();
-    arrowPath.moveTo(size.width * 0.85, size.height * 0.3);
-    arrowPath.lineTo(size.width * 0.9, size.height * 0.4);
-    arrowPath.lineTo(size.width * 0.95, size.height * 0.35);
-
-    canvas.drawPath(arrowPath, arrowPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

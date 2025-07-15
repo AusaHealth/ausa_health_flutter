@@ -14,6 +14,7 @@ import 'package:ausa/features/profile/page/care_page.dart';
 import 'package:ausa/features/profile/page/condition_page.dart';
 
 import 'package:ausa/features/profile/page/family_page.dart';
+import 'package:ausa/features/profile/page/family_view_page.dart';
 import 'package:ausa/features/profile/widget/profile_tabs.dart';
 import 'package:ausa/features/profile/widget/profile_widget.dart';
 import 'package:ausa/features/settings/page/setting_page.dart';
@@ -58,22 +59,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               Spacer(),
-              SizedBox(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xl,
-                  ).copyWith(top: 12),
-                  child: Image.asset(
-                    ProfileIcons.ausaLogo,
-                    height: DesignScaleManager.scaleValue(207),
-                  ),
-                ),
-              ),
             ],
           ),
 
           SizedBox(height: AppSpacing.lg),
           AppMainContainer(
+            backgroundColor: Colors.orangeAccent,
             child: Builder(
               builder: (context) {
                 if (selectedTab == 0) {
@@ -83,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 } else if (selectedTab == 2) {
                   return CarePage();
                 } else if (selectedTab == 3) {
-                  return FamilyPage();
+                  return FamilyViewPage();
                 } else if (selectedTab == 4) {
                   return AusaConnect();
                 } else {
@@ -91,7 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
               },
             ),
-            // ),
           ),
         ],
       ),

@@ -64,6 +64,9 @@ class AppImages {
   static const String info = 'assets/icons/onboarding/info.svg';
 
   static const String notificationBg = 'assets/images/notification_bg.png';
+
+  static const String knowMorePage = 'assets/images/know_more_background.png';
+  static const String emailInviteBg = 'assets/images/email_invite_bg.png';
 }
 
 class ProfileIcons {

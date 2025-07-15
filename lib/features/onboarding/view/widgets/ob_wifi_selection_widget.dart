@@ -1,4 +1,3 @@
-import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';

@@ -3,6 +3,8 @@ import 'package:screen_brightness/screen_brightness.dart';
 
 class SettingController extends GetxController {
   // Notification settings
+
+  RxBool isSmartPrompt = false.obs;
   final RxBool alertWifiIssues = false.obs;
   final RxBool voiceAlerts = true.obs;
   final RxBool alertCareTeam = false.obs;
@@ -36,6 +38,16 @@ class SettingController extends GetxController {
   void updateEnableARGuides(bool value) => enableARGuides.value = value;
 
   RxDouble brightness = 0.5.obs;
+
+  final RxBool isSmartPromptOn = false.obs;
+
+  void toggleSmartPrompt() {
+    isSmartPromptOn.value = !isSmartPromptOn.value;
+  }
+
+  void setSmartPrompt(bool value) {
+    isSmartPromptOn.value = value;
+  }
 
   @override
   void onInit() {

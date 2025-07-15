@@ -47,6 +47,13 @@ class AppSpacing {
   /// 7x extra large spacing (96px base)
   static double get xl7 => DesignScaleManager.scaleValue(96);
 
+  static double get xl8 => DesignScaleManager.scaleValue(112);
+
+  /// 8x extra large spacing (128px base)
+  static double get xl9 => DesignScaleManager.scaleValue(128);
+
+  static double get xl10 => DesignScaleManager.scaleValue(144);
+
   /// Example usage:
   /// ```
   /// Container(

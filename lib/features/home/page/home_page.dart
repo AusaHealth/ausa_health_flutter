@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
@@ -105,13 +106,7 @@ class HomePage extends StatelessWidget {
                       color: Colors.deepPurple,
                       onTap: () => Get.toNamed(AppRoutes.profile),
                     ),
-                    // _buildNavigationCard(
-                    //   title: 'Teleconsultation',
-                    //   subtitle: 'Video Call',
-                    //   iconPath: AusaIcons.phoneCall01,
-                    //   color: Colors.pink,
-                    //   onTap: () => Get.toNamed(AppRoutes.teleconsultation),
-                    // ),
+
                     _buildNavigationCard(
                       title: 'Onboarding',
                       subtitle: 'Page',

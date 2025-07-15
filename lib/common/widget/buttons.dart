@@ -82,8 +82,7 @@ class AusaButton extends StatelessWidget {
                   variant == ButtonVariant.primary && isButtonEnabled
                       ? [
                         BoxShadow(
-                          color: (style.backgroundColor ?? Colors.grey)
-                              .withOpacity(0.3),
+                          color: (style.backgroundColor).withAlpha(30),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),

@@ -286,26 +286,28 @@ class AppointmentEditPage extends StatelessWidget {
                           ? controller.goToStep2
                           : null,
                   isEnabled: controller.selectedTimeSlot != null,
-                    leadingIcon: SvgPicture.asset(
-                              AusaIcons.keyboard02,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(
-                                controller.selectedTimeSlot != null
-                                    ? Colors.white
-                                    : Colors.grey[600]!,
-                                BlendMode.srcIn),
-                            ),
-                    trailingIcon: SvgPicture.asset(
-                              AusaIcons.arrowRight,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(
-                                controller.selectedTimeSlot != null
-                                    ? Colors.white
-                                    : Colors.grey[600]!,
-                                BlendMode.srcIn),
-                            ),
+                  leadingIcon: SvgPicture.asset(
+                    AusaIcons.keyboard02,
+                    width: 16,
+                    height: 16,
+                    colorFilter: ColorFilter.mode(
+                      controller.selectedTimeSlot != null
+                          ? Colors.white
+                          : Colors.grey[600]!,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  trailingIcon: SvgPicture.asset(
+                    AusaIcons.arrowRight,
+                    width: 16,
+                    height: 16,
+                    colorFilter: ColorFilter.mode(
+                      controller.selectedTimeSlot != null
+                          ? Colors.white
+                          : Colors.grey[600]!,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   height: 56,
                 ),
               ),

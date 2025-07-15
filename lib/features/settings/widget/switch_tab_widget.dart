@@ -1,4 +1,5 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class SwitchTabWidget extends StatelessWidget {
           title,
           style: AppTypography.body(weight: AppTypographyWeight.regular),
         ),
-        SizedBox(width: 24),
+        SizedBox(width: AppSpacing.lg),
         Expanded(
           child: Container(
             height: 1.4,
@@ -33,17 +34,40 @@ class SwitchTabWidget extends StatelessWidget {
           ),
         ),
         SizedBox(width: AppSpacing.md),
-        Transform.scale(
-          scale: 0.7,
-          child: Switch(
-            padding: EdgeInsets.zero,
-            value: value,
-            onChanged: onChanged,
-            activeColor: AppColors.white,
-            activeTrackColor: AppColors.primary500,
-            trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-            inactiveTrackColor: const Color(0xFFE9E9E9),
-            inactiveThumbColor: Colors.white,
+        GestureDetector(
+          onTap: () => onChanged(!value),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            width: DesignScaleManager.scaleValue(86),
+            height: DesignScaleManager.scaleValue(52),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+            decoration: BoxDecoration(
+              color: value ? AppColors.primary500 : Color(0xFFE9E9E9),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: value ? AppColors.primary500 : Color(0xFFE0E0E0),
+                width: 1.2,
+              ),
+            ),
+            child: Align(
+              alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                width: DesignScaleManager.scaleValue(32),
+                height: DesignScaleManager.scaleValue(32),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 2,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ],

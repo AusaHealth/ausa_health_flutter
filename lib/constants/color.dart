@@ -54,7 +54,20 @@ class AppColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
+  static const Color valueColor = Color(0xff415981);
+
   // Legacy colors (keeping for backward compatibility)
   static const Color primaryDarkColor = primary800;
   static const Color primaryLightColor = primary500;
+
+  //Toast colors
+  static const Color toastSuccessColor = Color(0xFF21C373);
+  static const Color toastErrorColor = Color(0xFfE15959);
+  static const Color toastWarningColor = Color(0xFFFFA100);
+
+  //
+
+  static const Color toastSuccessIconColor = Color(0xFf75D4A5);
+  static const Color toastErrorIconColor = Color(0xFfE15959);
+  static const Color toastWarningIconColor = Color(0xFfF09800);
 }

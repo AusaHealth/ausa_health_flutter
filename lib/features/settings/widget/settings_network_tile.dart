@@ -1,5 +1,6 @@
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
@@ -48,21 +49,21 @@ class SettingsNetworkTile extends StatelessWidget {
             ),
             if (isSecure) ...[
               SvgPicture.asset(
-                AppImages.lock,
-                height: DesignScaleManager.scaleValue(40),
+                AusaIcons.lock01,
+                height: DesignScaleManager.scaleValue(32),
                 colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
               ),
               SizedBox(width: AppSpacing.xl),
             ],
             SvgPicture.asset(
-              AppImages.wifiSvg,
-              height: DesignScaleManager.scaleValue(40),
+              AusaIcons.wifi,
+              height: DesignScaleManager.scaleValue(32),
               colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
             ),
             SizedBox(width: AppSpacing.xl),
             SvgPicture.asset(
-              AppImages.info,
-              height: DesignScaleManager.scaleValue(40),
+              AusaIcons.infoCircle,
+              height: DesignScaleManager.scaleValue(32),
               colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
             ),
           ],

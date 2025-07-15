@@ -51,6 +51,7 @@ dependencies:
   pinput: ^3.0.1
   screen_brightness: ^2.1.5
   rive: ^0.13.20
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

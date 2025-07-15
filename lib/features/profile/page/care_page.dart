@@ -2,20 +2,24 @@ import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class CarePage extends StatelessWidget {
   const CarePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.xl3),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.07),
+            color: Colors.black.withAlpha(7),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -25,7 +29,6 @@ class CarePage extends StatelessWidget {
         padding: EdgeInsets.all(AppSpacing.xl4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
             Text(
               'Care provider',
@@ -33,90 +36,86 @@ class CarePage extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.mdLarge),
             Text(
-              'Dr. John Doe, Endocrinologist',
+              profileController.care.careProviderName,
               style: AppTypography.body(weight: AppTypographyWeight.semibold),
             ),
-
             SizedBox(height: AppSpacing.xl2),
+            // Headers Row
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Next availability
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Next availability',
-                      style: AppTypography.callout(
-                        weight: AppTypographyWeight.regular,
-                      ),
+                Expanded(
+                  child: Text(
+                    'Next availability',
+                    style: AppTypography.callout(
+                      weight: AppTypographyWeight.regular,
                     ),
-                    SizedBox(height: AppSpacing.mdLarge),
-                    Text(
-                      'Today 3:00 PM',
-                      style: AppTypography.body(
-                        weight: AppTypographyWeight.semibold,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                // Phone
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Phone',
-                      style: AppTypography.callout(
-                        weight: AppTypographyWeight.regular,
-                      ),
+                Expanded(
+                  child: Text(
+                    'Phone',
+                    style: AppTypography.callout(
+                      weight: AppTypographyWeight.regular,
                     ),
-                    SizedBox(height: AppSpacing.mdLarge),
-                    Text(
-                      '+1 555-123-4567',
-                      style: AppTypography.body(
-                        weight: AppTypographyWeight.semibold,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                // Email
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email',
-                      style: AppTypography.callout(
-                        weight: AppTypographyWeight.regular,
-                      ),
+                Expanded(
+                  child: Text(
+                    'Email',
+                    style: AppTypography.callout(
+                      weight: AppTypographyWeight.regular,
                     ),
-                    SizedBox(height: AppSpacing.mdLarge),
-                    Text(
-                      'johndoe@clinic.com',
-                      style: AppTypography.body(
-                        weight: AppTypographyWeight.semibold,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                // Address
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Address',
-                      style: AppTypography.callout(
-                        weight: AppTypographyWeight.regular,
-                      ),
+                Expanded(
+                  child: Text(
+                    'Address',
+                    style: AppTypography.callout(
+                      weight: AppTypographyWeight.regular,
                     ),
-
-                    SizedBox(height: AppSpacing.mdLarge),
-                    Text(
-                      '123 Main St, Los Angeles, CA, 90001',
-                      style: AppTypography.body(
-                        weight: AppTypographyWeight.semibold,
-                      ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppSpacing.mdLarge),
+            // Values Row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    profileController.care.nextAvailability,
+                    style: AppTypography.body(
+                      weight: AppTypographyWeight.semibold,
                     ),
-                  ],
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    profileController.care.phone,
+                    style: AppTypography.body(
+                      weight: AppTypographyWeight.semibold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    profileController.care.email,
+                    style: AppTypography.body(
+                      weight: AppTypographyWeight.semibold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    profileController.care.address,
+                    style: AppTypography.body(
+                      weight: AppTypographyWeight.semibold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

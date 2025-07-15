@@ -1,6 +1,5 @@
 import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
 
 class BaseScaffold extends StatelessWidget {
@@ -20,13 +19,7 @@ class BaseScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: Column(
-        children: [
-          CustomHeader(),
-          // SizedBox(height: AppSpacing.xl2),
-          Expanded(child: body),
-        ],
-      ),
+      body: Column(children: [CustomHeader(), Expanded(child: body)]),
     );
   }
 }

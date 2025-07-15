@@ -1,3 +1,5 @@
+import 'package:ausa/features/settings/page/wifi_connected_page.dart';
+import 'package:ausa/features/settings/widget/wifi_input_password_widget.dart';
 import 'package:get/get.dart';
 import '../model/network_info_model.dart';
 
@@ -18,20 +20,37 @@ class WifiController extends GetxController {
   void onNetworkTap(int index) {
     selectedNetworkIndex.value = index;
     final net = networks[index];
+    // Get.to(() => WifiConnectedPage());
+    Get.to(() => WifiInputPasswordWidget());
     if (net.isConnected) {
       // Disconnect
-      Get.showSnackbar(const GetSnackBar(message: 'Disconnecting...', duration: Duration(seconds: 1)));
+      Get.showSnackbar(
+        const GetSnackBar(
+          message: 'Disconnecting...',
+          duration: Duration(seconds: 1),
+        ),
+      );
       _disconnect(index);
     } else if (net.isSecure && savedPasswords.containsKey(net.name)) {
       // Connect with saved password
-      Get.showSnackbar(const GetSnackBar(message: 'Connecting...', duration: Duration(seconds: 1)));
+      Get.showSnackbar(
+        const GetSnackBar(
+          message: 'Connecting...',
+          duration: Duration(seconds: 1),
+        ),
+      );
       _connect(index, savedPasswords[net.name]!);
     } else if (net.isSecure) {
       // Show password modal
       showPasswordSheet.value = true;
     } else {
       // Open network, connect directly
-      Get.showSnackbar(const GetSnackBar(message: 'Connecting...', duration: Duration(seconds: 1)));
+      Get.showSnackbar(
+        const GetSnackBar(
+          message: 'Connecting...',
+          duration: Duration(seconds: 1),
+        ),
+      );
       _connect(index, '');
     }
   }
@@ -41,10 +60,16 @@ class WifiController extends GetxController {
     if (idx == null) return;
     final net = networks[idx];
     // Simulate password check
-    if (password == 'password123') { // Replace with real check
+    if (password == 'password123') {
+      // Replace with real check
       savedPasswords[net.name] = password;
       showPasswordSheet.value = false;
-      Get.showSnackbar(const GetSnackBar(message: 'Connecting...', duration: Duration(seconds: 1)));
+      Get.showSnackbar(
+        const GetSnackBar(
+          message: 'Connecting...',
+          duration: Duration(seconds: 1),
+        ),
+      );
       _connect(idx, password);
     } else {
       showWrongPasswordPopup.value = true;
@@ -60,7 +85,7 @@ class WifiController extends GetxController {
       for (int i = 0; i < networks.length; i++)
         i == index
             ? networks[i].copyWith(isConnected: true)
-            : networks[i].copyWith(isConnected: false)
+            : networks[i].copyWith(isConnected: false),
     ];
     showConnectedPopup.value = true;
     await Future.delayed(const Duration(seconds: 2));
@@ -71,13 +96,11 @@ class WifiController extends GetxController {
   void _disconnect(int index) async {
     networks.value = [
       for (int i = 0; i < networks.length; i++)
-        i == index
-            ? networks[i].copyWith(isConnected: false)
-            : networks[i]
+        i == index ? networks[i].copyWith(isConnected: false) : networks[i],
     ];
   }
 
   void closeWrongPasswordPopup() {
     showWrongPasswordPopup.value = false;
   }
-} 
+}

@@ -2,10 +2,11 @@ import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:ausa/features/profile/widget/reading_value_widget.dart';
 
 class ConditionPage extends StatefulWidget {
   const ConditionPage({super.key});
@@ -18,7 +19,6 @@ class _ConditionPageState extends State<ConditionPage> {
   int selectedTab = 0;
   final List<String> tabItems = [
     'Blood Pressure',
-    // 'ECG',
     'Body temperature',
     'SpO2 & Heart Rate',
     'Blood glucose',
@@ -26,6 +26,7 @@ class _ConditionPageState extends State<ConditionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,9 +44,7 @@ class _ConditionPageState extends State<ConditionPage> {
               ],
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.xl3,
-              ).copyWith(top: AppSpacing.xl2),
+              padding: EdgeInsets.all(AppSpacing.xl4),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +58,7 @@ class _ConditionPageState extends State<ConditionPage> {
                   ),
                   SizedBox(height: AppSpacing.mdLarge),
                   Text(
-                    'Diabetes, heart condition, cholestrol',
+                    profileController.condition.diagonedWith,
                     style: AppTypography.body(
                       color: Colors.black,
                       weight: AppTypographyWeight.semibold,
@@ -89,8 +88,6 @@ class _ConditionPageState extends State<ConditionPage> {
                     ),
                   ),
                   Spacer(),
-
-                  // SizedBox(height: AppSpacing.xl7),
                   Padding(
                     padding: EdgeInsets.all(AppSpacing.xl4),
                     child: _buildReadingCard(),
@@ -106,276 +103,65 @@ class _ConditionPageState extends State<ConditionPage> {
   }
 
   Widget _buildReadingCard() {
-    final valueColor = const Color(0xff415981);
+    final profileController = Get.find<ProfileController>();
+
     switch (selectedTab) {
       case 0:
         return Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'BP Systolic',
-                  style: AppTypography.callout(
-                    color: valueColor,
-                    weight: AppTypographyWeight.regular,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '128 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'mmHg',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'BP Systolic',
+              value: profileController.condition.bloodPressure.systolic,
+              unit: 'mmHg',
             ),
             SizedBox(width: DesignScaleManager.scaleValue(200)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'BP Diastolic',
-                  style: AppTypography.callout(
-                    color: valueColor,
-                    weight: AppTypographyWeight.regular,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '95 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'mmHg',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'BP Diastolic',
+              value: profileController.condition.bloodPressure.diastolic,
+              unit: 'mmHg',
             ),
           ],
         );
-      case 1: // ECG
+      case 1:
         return Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Fahrenheit',
-                  style: AppTypography.callout(
-                    color: valueColor,
-                    weight: AppTypographyWeight.regular,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '96 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '°F',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'Fahrenheit',
+              value: profileController.condition.bodyTemperature.temperatureF,
+              unit: '°F',
             ),
             SizedBox(width: DesignScaleManager.scaleValue(200)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Celsius',
-                  style: AppTypography.callout(
-                    color: valueColor,
-                    weight: AppTypographyWeight.regular,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '37 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '°C',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'Celsius',
+              value: profileController.condition.bodyTemperature.temperatureC,
+              unit: '°C',
             ),
           ],
         );
-
-      case 2: // Body temperature
+      case 2:
         return Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'SpO',
-                        style: AppTypography.callout(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '2',
-                        style: AppTypography.callout(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ).copyWith(
-                          fontSize: AppTypography.callout().fontSize! * 0.7,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '98 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '%',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'SpO',
+              value: profileController.condition.heartRate.heartRate,
+              unit: '%',
+              isBloodSugar: true,
             ),
           ],
         );
-
-      case 3: // SpO2 & Heart Rate
+      case 3:
         return Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Fasting',
-                  style: AppTypography.callout(
-                    color: valueColor,
-                    weight: AppTypographyWeight.regular,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '80 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'mg/dL',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'Fasting',
+              value: profileController.condition.bloodSugar.fasting,
+              unit: 'mg/dL',
             ),
             SizedBox(width: DesignScaleManager.scaleValue(200)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Post Meal',
-                  style: AppTypography.callout(
-                    color: valueColor,
-                    weight: AppTypographyWeight.regular,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.smMedium),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '120 ',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'mg/dL',
-                        style: AppTypography.body(
-                          color: valueColor,
-                          weight: AppTypographyWeight.regular,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            ReadingValueWidget(
+              label: 'Post Meal',
+              value: profileController.condition.bloodSugar.postPrandial,
+              unit: 'mg/dL',
             ),
           ],
         );

@@ -17,46 +17,40 @@ class BluetoothPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.xl7,
-            vertical: AppSpacing.sm,
-          ).copyWith(top: AppSpacing.xl3),
+          padding: EdgeInsets.only(
+            left: AppSpacing.xl6,
+            bottom: AppSpacing.xl2,
+            top: AppSpacing.xl,
+          ),
           child: Text(
             'Device status',
             style: AppTypography.body(weight: AppTypographyWeight.regular),
           ),
         ),
-        SizedBox(height: AppSpacing.xl3),
 
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl2),
-          child: Row(
-            children: [
-              DeviceStatusCard(
-                deviceName: 'Blood pressure',
-                imagePath: AppImages.bloodPressure,
-
-                statusImagePath: AppImages.connecting,
-                isActive: true,
-              ),
-              SizedBox(width: AppSpacing.lg),
-              DeviceStatusCard(
-                deviceName: 'X',
-                imagePath: AppImages.X,
-
-                statusImagePath: AppImages.notFound,
-                isActive: false,
-              ),
-              SizedBox(width: AppSpacing.lg),
-              DeviceStatusCard(
-                deviceName: 'ECG',
-                imagePath: AppImages.ecg,
-
-                statusImagePath: AppImages.notFound,
-                isActive: false,
-              ),
-            ],
-          ),
+        Row(
+          children: [
+            DeviceStatusCard(
+              deviceName: 'Blood pressure',
+              imagePath: AppImages.bloodPressure,
+              statusImagePath: AppImages.connecting,
+              isActive: true,
+            ),
+            SizedBox(width: AppSpacing.lg),
+            DeviceStatusCard(
+              deviceName: 'X',
+              imagePath: AppImages.X,
+              statusImagePath: AppImages.notFound,
+              isActive: false,
+            ),
+            SizedBox(width: AppSpacing.lg),
+            DeviceStatusCard(
+              deviceName: 'ECG',
+              imagePath: AppImages.ecg,
+              statusImagePath: AppImages.notFound,
+              isActive: false,
+            ),
+          ],
         ),
       ],
     );
@@ -82,7 +76,6 @@ class DeviceStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        width: Get.width * 0.22,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.xl3),
@@ -92,7 +85,7 @@ class DeviceStatusCard extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withOpacity(0.08),
               blurRadius: 12,
               offset: Offset(0, 2),
             ),
@@ -120,11 +113,11 @@ class DeviceStatusCard extends StatelessWidget {
             Center(
               child: Image.asset(
                 imagePath,
-                width: DesignScaleManager.scaleValue(300),
-                height: DesignScaleManager.scaleValue(310),
-                fit: BoxFit.contain,
+                height: DesignScaleManager.scaleValue(328),
+                fit: BoxFit.fill,
               ),
             ),
+            SizedBox(height: AppSpacing.sm),
 
             Center(
               child: Text(
@@ -132,7 +125,7 @@ class DeviceStatusCard extends StatelessWidget {
                 style: AppTypography.body(weight: AppTypographyWeight.medium),
               ),
             ),
-            SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.xl6),
           ],
         ),
       ),

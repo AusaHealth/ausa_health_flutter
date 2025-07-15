@@ -7,6 +7,6 @@ class AusaConnect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: Image.asset(AppImages.ausaConnect));
+    return Image.asset(AppImages.ausaConnect);
   }
 }

@@ -26,6 +26,7 @@ enum DesignScale {
 
 /// Design scale manager to handle current scale across the application
 class DesignScaleManager {
+  static const keyboardHeight = 200;
   static DesignScale _currentScale = DesignScale.defaultScale;
 
   /// Get the current design scale
