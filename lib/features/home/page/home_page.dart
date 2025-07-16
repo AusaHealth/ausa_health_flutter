@@ -4,6 +4,7 @@ import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/utils.dart';
 // import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +113,31 @@ class HomePage extends StatelessWidget {
                       subtitle: 'Page',
                       iconPath: AusaIcons.arrowRight,
                       color: Colors.cyan,
-                      onTap: () => Get.toNamed(AppRoutes.onboarding),
+                      onTap: () {
+                        // Show a success toast
+                        // CustomToast.show(
+                        //   message: 'Profile updated successfully!',
+                        //   type: ToastType.success,
+                        // );
+
+                        // Show an error toast
+                        // CustomToast.show(
+                        //   message: 'Something went wrong!',
+                        //   type: ToastType.error,
+                        // );
+
+                        // Show a warning toast
+                        CustomToast.show(
+                          message: 'Please check your input.',
+                          type: ToastType.warning,
+                        );
+                        // CustomToast.show(
+                        //   message: 'Coming Soon',
+                        //   type: ToastType.error,
+                        // );
+                      },
+
+                      // Get.toNamed(AppRoutes.onboarding),
                     ),
                   ],
                 ),

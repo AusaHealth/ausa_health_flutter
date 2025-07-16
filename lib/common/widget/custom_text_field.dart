@@ -1,3 +1,5 @@
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -44,21 +46,25 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null && label!.isNotEmpty)
-          Text(
-            label ?? '',
+          Padding(
+            padding: EdgeInsets.only(left: AppSpacing.xl4),
+            child: Text(
+              label ?? '',
 
-            style: AppTypography.body(
-              color: errorText != null ? Colors.deepOrange : Colors.white,
-            ).copyWith(
-              decoration:
-                  errorText == null && isFocused
-                      ? TextDecoration.underline
-                      : null,
-              decorationColor: Colors.deepPurple,
-              decorationThickness: 2,
+              style: AppTypography.body(
+                weight: AppTypographyWeight.regular,
+                color: errorText != null ? Colors.deepOrange : Colors.white,
+              ).copyWith(
+                decoration:
+                    errorText == null && isFocused
+                        ? TextDecoration.underline
+                        : null,
+                decorationColor: Colors.deepPurple,
+                decorationThickness: 2,
+              ),
             ),
           ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.mdLarge),
         GestureDetector(
           onTap: () {
             // Ensure focus and keyboard show when tapping anywhere on the field
@@ -77,17 +83,31 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               border: Border.all(color: borderColor, width: 2),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.xl4,
+              vertical: AppSpacing.xl4,
+            ),
+
             child: TextField(
               controller: controller,
               focusNode: focusNode,
               keyboardType: keyboardType,
               maxLines: multiline ? null : 1,
               minLines: multiline ? 4 : 1,
-              style: const TextStyle(color: Colors.black, fontSize: 18),
+              style: AppTypography.body(weight: AppTypographyWeight.regular),
               decoration: InputDecoration(
+                prefixIcon: Text(
+                  '+1',
+                  style: AppTypography.body(
+                    weight: AppTypographyWeight.regular,
+                    color: AppColors.bodyTextLightColor,
+                  ),
+                ),
                 hintText: hint,
-                hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
+                hintStyle: AppTypography.body(
+                  weight: AppTypographyWeight.regular,
+                  color: AppColors.bodyTextLightColor,
+                ),
                 border: InputBorder.none,
                 isCollapsed: true,
                 contentPadding: EdgeInsets.zero,

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';
@@ -8,10 +6,13 @@ import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:syncfusion_flutter_core/theme.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class DisplaySettingPage extends StatefulWidget {
   const DisplaySettingPage({super.key});
@@ -76,7 +77,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Colors.blue,
+                        color: Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
                       ).copyWith(fontSize: 24),
                     ),
@@ -84,7 +85,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Colors.blue,
+                        color: Color(0xff0F54C7),
                         fontWeight: FontWeight.w400,
                       ).copyWith(fontSize: 32),
                     ),
@@ -92,7 +93,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Colors.blue,
+                        color: Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
                       ).copyWith(fontSize: 38),
                     ),
@@ -201,129 +202,32 @@ class CustomSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        trackHeight: 6.0,
-        activeTrackColor:
-            activeTrackColor ?? Theme.of(context).colorScheme.secondary,
-        inactiveTrackColor: AppColors.gray200,
-        thumbColor: activeTrackColor ?? Theme.of(context).colorScheme.secondary,
-        thumbShape: SvgThumbShape(
-          assetPath: image,
-          size: 48,
-        ), // <-- Use your SVG asset
-        overlayShape: const RoundSliderOverlayShape(overlayRadius: 0.0),
+    return SfSliderTheme(
+      data: SfSliderThemeData(
+        thumbColor: Colors.white,
+        thumbRadius: DesignScaleManager.scaleValue(42),
+        thumbStrokeColor: AppColors.primary500,
       ),
-      child: Slider(
+      child: SfSlider(
+        thumbIcon: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SvgPicture.asset(
+            image,
+            width: DesignScaleManager.scaleValue(20),
+            height: DesignScaleManager.scaleValue(20),
+            colorFilter: ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+          ),
+        ),
+        inactiveColor: AppColors.gray200,
+        activeColor: AppColors.primary500,
+        thumbShape: SfThumbShape(),
+
         value: value,
-        onChanged: onChanged,
-        min: minValue,
-        max: maxValue,
+
+        onChanged: (dynamic value) {
+          onChanged(value);
+        },
       ),
     );
-  }
-}
-
-class SvgThumbShape extends SliderComponentShape {
-  final String assetPath;
-  final double size;
-
-  SvgThumbShape({required this.assetPath, this.size = 48});
-
-  @override
-  Size getPreferredSize(bool isEnabled, bool isDiscrete) => Size(size, size);
-
-  @override
-  void paint(
-    PaintingContext context,
-    Offset center, {
-    required Animation<double> activationAnimation,
-    required Animation<double> enableAnimation,
-    required bool isDiscrete,
-    required TextPainter labelPainter,
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required TextDirection textDirection,
-    required double value,
-    required double textScaleFactor,
-    required Size sizeWithOverflow,
-  }) {
-    final canvas = context.canvas;
-    final picture = SvgPicture.asset(
-      assetPath,
-      width: size,
-      height: size,
-      colorFilter: ColorFilter.mode(
-        sliderTheme.thumbColor ?? Colors.white,
-        BlendMode.srcIn,
-      ),
-    );
-    // Use a PictureRecorder to draw SVG synchronously
-    final recorder = PictureRecorder();
-    final tempCanvas = Canvas(recorder);
-    // picture(tempCanvas, Offset(size / 2, size / 2));
-    final pic = recorder.endRecording();
-    canvas.drawPicture(pic);
-    // Or, for a simpler approach, use a circle as a placeholder:
-    // canvas.drawCircle(center, size / 2, Paint()..color = sliderTheme.thumbColor ?? Colors.white);
-  }
-}
-
-class SvgCircleThumbShape extends SliderComponentShape {
-  final String assetPath;
-  final double size;
-  final Color fillColor;
-
-  SvgCircleThumbShape({
-    required this.assetPath,
-    this.size = 48,
-    required this.fillColor,
-  });
-
-  @override
-  Size getPreferredSize(bool isEnabled, bool isDiscrete) => Size(size, size);
-
-  @override
-  void paint(
-    PaintingContext context,
-    Offset center, {
-    required Animation<double> activationAnimation,
-    required Animation<double> enableAnimation,
-    required bool isDiscrete,
-    required TextPainter labelPainter,
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required TextDirection textDirection,
-    required double value,
-    required double textScaleFactor,
-    required Size sizeWithOverflow,
-  }) {
-    final canvas = context.canvas;
-
-    // Draw the filled circle
-    final paint = Paint()..color = fillColor;
-    canvas.drawCircle(center, size / 2, paint);
-
-    // Draw the SVG icon centered in the thumb
-    // This is a workaround: use a PictureRecorder to render the SVG to an image, then draw it
-    // (This is synchronous and works for small icons)
-    final pictureRecorder = PictureRecorder();
-    final tempCanvas = Canvas(pictureRecorder);
-    final svgWidget = SvgPicture.asset(
-      assetPath,
-      width: size * 0.5,
-      height: size * 0.5,
-      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-    );
-    // Render the widget to an image
-    final RenderRepaintBoundary boundary = RenderRepaintBoundary();
-    final BuildContext? buildContext = context as BuildContext?;
-    if (buildContext != null) {
-      // This is a hack, but for a real app, use a precached PNG or use flutter_svg's DrawableRoot
-    }
-    // Instead, recommend using a PNG for the icon, or use a custom painter for simple icons.
-    // For now, you can draw a placeholder:
-    // canvas.drawCircle(center, size * 0.2, Paint()..color = Colors.white);
-    // For a real SVG, see the note below.
   }
 }

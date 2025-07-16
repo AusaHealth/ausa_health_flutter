@@ -1,21 +1,17 @@
+import 'package:ausa/common/custom_text_field.dart';
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
-import 'package:ausa/common/widget/toast.dart';
-import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/utils.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/widget/add_photo_popup_widget.dart';
-import 'package:ausa/features/profile/page/input_model.dart';
-import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:ausa/features/profile/widget/member_summary_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'dart:ui';
 
 class AddNewMember extends StatefulWidget {
   const AddNewMember({super.key});
@@ -100,6 +96,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                           ),
                           child: Center(
                             child: AusaButton(
+                              size: ButtonSize.md,
                               backgroundColor: Colors.white,
                               leadingIcon: SvgPicture.asset(
                                 AusaIcons.imageUser,
@@ -116,7 +113,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                             ),
                           ),
                         ),
-                        SizedBox(height: AppSpacing.xl4),
+                        SizedBox(height: AppSpacing.xl3),
                       ],
                     ),
                   ),
@@ -153,24 +150,21 @@ class _AddNewMemberState extends State<AddNewMember> {
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: _buildTextField(
-                                            name: 'Enter',
+                                          child: ProfileCustomTextField(
                                             label: 'Short Name',
                                             placeholder: 'Enter',
                                           ),
                                         ),
                                         SizedBox(width: AppSpacing.xl4),
                                         Expanded(
-                                          child: _buildTextField(
-                                            name: 'Enter',
+                                          child: ProfileCustomTextField(
                                             label: 'Full name',
                                             placeholder: 'Enter',
                                           ),
                                         ),
                                         SizedBox(width: AppSpacing.xl4),
                                         Expanded(
-                                          child: _buildTextField(
-                                            name: 'Select',
+                                          child: ProfileCustomTextField(
                                             label: 'Relation',
                                             placeholder: 'Enter',
                                           ),
@@ -182,16 +176,14 @@ class _AddNewMemberState extends State<AddNewMember> {
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: _buildTextField(
-                                            name: '+1 (000) 000-0000',
+                                          child: ProfileCustomTextField(
                                             label: 'Phone Number',
                                             placeholder: '+1 (000) 000-0000',
                                           ),
                                         ),
                                         SizedBox(width: AppSpacing.xl4),
                                         Expanded(
-                                          child: _buildTextField(
-                                            name: 'Enter',
+                                          child: ProfileCustomTextField(
                                             label: 'Email',
                                             placeholder: 'Enter',
                                           ),
@@ -203,8 +195,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: _buildTextField(
-                                            name: 'Enter',
+                                          child: ProfileCustomTextField(
                                             label: 'Address',
                                             placeholder: 'Enter',
                                           ),
@@ -229,101 +220,138 @@ class _AddNewMemberState extends State<AddNewMember> {
   }
 }
 
-Widget _buildTextField({
-  required String name,
-  required String label,
-  required String placeholder,
-  int maxLines = 1,
-}) {
-  final ProfileController controller = Get.find<ProfileController>();
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: EdgeInsets.only(left: AppSpacing.sm),
-        child: Text(
-          label,
-          style: AppTypography.callout(
-            color: AppColors.textColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-      SizedBox(height: AppSpacing.smMedium),
-      Container(
-        decoration: BoxDecoration(
-          color: Color(0xff1570EF).withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(AppRadius.xl2),
-          // border: Border.all(color: Colors.grey[300]!),
-        ),
-        child: TextFormField(
-          onTap: () async {
-            final inputs = [
-              InputModel(
-                name: 'shortName',
-                label: 'Short Name',
-                inputType: InputTypeEnum.text,
-                value: '',
-              ),
-              InputModel(
-                name: 'fullName',
-                label: 'Full Name',
-                inputType: InputTypeEnum.text,
-                value: '',
-              ),
-              InputModel(
-                name: 'relationship',
-                label: 'Relationship',
-                inputType: InputTypeEnum.selector,
-                value: '',
-                inputSource: [
-                  'Spouse',
-                  'Child',
-                  'Grandchild',
-                  'Parent',
-                  'Friend',
-                  'Other',
-                ],
-              ),
-              InputModel(
-                name: 'phone',
-                label: 'Phone Number',
-                inputType: InputTypeEnum.text,
-                value: '',
-              ),
-              InputModel(
-                name: 'email',
-                label: 'Email',
-                inputType: InputTypeEnum.text,
-                value: '',
-              ),
-              InputModel(
-                name: 'address',
-                label: 'Address',
-                inputType: InputTypeEnum.text,
-                value: '',
-              ),
-            ];
-            final result = await Get.to(() => InputPage(inputs: inputs));
-            CustomToast.show('Profile added', type: ToastType.success);
+// Widget _buildTextField({
+//   required String name,
+//   required String label,
+//   required String placeholder,
+//   int maxLines = 1,
+// }) {
+//   final ProfileController controller = Get.find<ProfileController>();
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       Padding(
+//         padding: EdgeInsets.only(left: AppSpacing.sm),
+//         child: Text(
+//           label,
+//           style: AppTypography.callout(
+//             color: AppColors.textColor,
+//             fontWeight: FontWeight.w500,
+//           ),
+//         ),
+//       ),
+//       SizedBox(height: AppSpacing.smMedium),
+//       Container(
+//         decoration: BoxDecoration(
+//           color: Color(0xff1570EF).withValues(alpha: 0.05),
+//           borderRadius: BorderRadius.circular(AppRadius.xl2),
+//           // border: Border.all(color: Colors.grey[300]!),
+//         ),
+//         child: TextFormField(
+//           onTap: () async {
+//             final inputs = [
+//               InputModel(
+//                 name: 'shortName',
+//                 label: 'Short Name',
+//                 inputType: InputTypeEnum.text,
+//                 value: '',
+//               ),
+//               InputModel(
+//                 name: 'fullName',
+//                 label: 'Full Name',
+//                 inputType: InputTypeEnum.text,
+//                 value: '',
+//               ),
+//               InputModel(
+//                 name: 'relationship',
+//                 label: 'Relationship',
+//                 inputType: InputTypeEnum.selector,
+//                 value: '',
+//                 inputSource: [
+//                   'Spouse',
+//                   'Child',
+//                   'Grandchild',
+//                   'Parent',
+//                   'Friend',
+//                   'Other',
+//                 ],
+//               ),
+//               InputModel(
+//                 name: 'phone',
+//                 label: 'Phone Number',
+//                 inputType: InputTypeEnum.text,
+//                 value: '',
+//               ),
+//               InputModel(
+//                 name: 'email',
+//                 label: 'Email',
+//                 inputType: InputTypeEnum.text,
+//                 value: '',
+//               ),
+//               InputModel(
+//                 name: 'address',
+//                 label: 'Address',
+//                 inputType: InputTypeEnum.text,
+//                 value: '',
+//               ),
+//             ];
+//             final result = await Get.to(() => InputPage(inputs: inputs));
+//             log('result: $result');
 
-            if (result != null && result is List<InputModel>) {
-              controller.member.updateFromInputs(result);
-              controller.showSummary.value = true;
-            }
-          },
+//             for (final input in result) {
+//               print('Input: ${input.name}, Value: "${input.value}"');
+//             }
 
-          maxLines: maxLines,
+//             log('result is List<InputModel>: ${result is List<InputModel>}');
+//             log('result is not null: ${result != null}');
+//             log('result is not empty: ${result.isNotEmpty}');
+//             if (result != null &&
+//                 result is List<InputModel> &&
+//                 result.isNotEmpty) {
+//               final normalizedResult =
+//                   result
+//                       .map(
+//                         (input) => input.copyWith(
+//                           value: Utils.emptyToNull(input.value),
+//                         ),
+//                       )
+//                       .toList();
+//               for (final input in normalizedResult) {
+//                 print('Normalized Input: ${input.name}, Value: ${input.value}');
+//               }
+//               final hasAnyValue = normalizedResult.any(
+//                 (input) =>
+//                     input.value != null &&
+//                     input.value.toString().trim().isNotEmpty,
+//               );
 
-          decoration: InputDecoration(
-            hintText: placeholder,
-            hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            border: InputBorder.none,
-          ),
-          style: TextStyle(fontSize: 14, color: Colors.black87),
-        ),
-      ),
-    ],
-  );
-}
+//               if (hasAnyValue) {
+//                 CustomToast.show(
+//                   message: 'Profile added',
+//                   type: ToastType.success,
+//                 );
+//                 controller.member.updateFromInputs(normalizedResult);
+//                 controller.showSummary.value = true;
+//               } else {
+//                 CustomToast.show(
+//                   message: 'Please fill at least one field to add a profile.',
+//                   type: ToastType.warning,
+//                 );
+//               }
+//             }
+//           },
+
+//           maxLines: maxLines,
+
+//           decoration: InputDecoration(
+//             hintText: placeholder,
+//             hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
+//             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+//             border: InputBorder.none,
+//           ),
+//           style: TextStyle(fontSize: 14, color: Colors.black87),
+//         ),
+//       ),
+//     ],
+//   );
+// }

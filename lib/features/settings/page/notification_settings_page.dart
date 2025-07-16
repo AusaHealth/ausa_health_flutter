@@ -1,8 +1,6 @@
-import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/settings/page/know_more_page.dart';
@@ -91,13 +89,16 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                           },
                         ),
                         SizedBox(width: AppSpacing.md),
-                        AusaButton(
-                          size: ButtonSize.lg,
-                          variant: ButtonVariant.primary,
-                          text: isOn ? 'Turn Off' : 'Turn On',
-                          onPressed: () {
-                            _settingController.toggleSmartPrompt();
-                          },
+                        SizedBox(
+                          width: 120, // Adjust as needed to fit your design
+                          child: AusaButton(
+                            size: ButtonSize.lg,
+                            variant: ButtonVariant.primary,
+                            text: isOn ? 'Turn Off' : 'Turn On',
+                            onPressed: () {
+                              _settingController.toggleSmartPrompt();
+                            },
+                          ),
                         ),
                       ],
                     ),

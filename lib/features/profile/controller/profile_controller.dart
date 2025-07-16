@@ -43,4 +43,31 @@ class ProfileController extends GetxController {
     weight: "176",
     phone: '+1555-123-4567',
   );
+
+  final List<FamilyModel> familyMembers = [
+    FamilyModel(
+      shortName: 'Chris',
+      fullName: 'Christopher Chavez',
+      phone: '+1 555-123-4567',
+      email: 'johndoes@clinic.com',
+      relationship: 'Friend',
+      address: '1234 Maplewood Lane Springfield, IL 62704',
+    ),
+    FamilyModel(
+      shortName: 'Jenny',
+      fullName: 'Jenny Doe',
+      phone: '+1 555-123-4568',
+      email: 'jennydoe@clinic.com',
+      relationship: 'Mother',
+      address: '1234 Maplewood Lane Springfield, IL 62704',
+    ),
+    FamilyModel(
+      shortName: 'John',
+      fullName: 'John Doe',
+      phone: '+1 555-123-4569',
+      email: 'johndoe@clinic.com',
+      relationship: 'Father',
+      address: '1234 Maplewood Lane Springfield, IL 62704',
+    ),
+  ];
 }

@@ -8,17 +8,20 @@ class AppSubParentContainer extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? backgroundColor;
   final BorderRadius? borderRadius;
+  final EdgeInsets? margin;
   const AppSubParentContainer({
     super.key,
     required this.child,
     this.padding,
     this.backgroundColor,
     this.borderRadius,
+    this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: margin,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

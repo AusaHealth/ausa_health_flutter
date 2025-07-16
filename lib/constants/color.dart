@@ -15,11 +15,13 @@ class AppColors {
   static const Color primary900 = Color(0xFF082465);
 
   static const Color bodyTextColor = Color(0xff4F4F4F);
+  static const Color hintTextColor = Color(0xff090C13);
   static const Color textColor = Color(0xff171136);
   static const Color textlightColor = Color(0xff828282);
   static const Color greyTextColor = Color(0xff717680);
 
   static const Color bodyTextLightColor = Color(0xff021633);
+  static const Color blackColor = Color(0xff040A18);
 
   // Gray colors
   static const Color gray25 = Color(0xFFFCFCFD);
@@ -70,4 +72,8 @@ class AppColors {
   static const Color toastSuccessIconColor = Color(0xFf75D4A5);
   static const Color toastErrorIconColor = Color(0xFfE15959);
   static const Color toastWarningIconColor = Color(0xFfF09800);
+
+  static const Color lightGreen = Color(0xFF00FF2F);
+
+  static const Color lightRed = Color(0xFFF04438);
 }

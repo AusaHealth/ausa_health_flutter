@@ -1,4 +1,12 @@
-enum InputTypeEnum { text, number, dateTime, date, selector }
+enum InputTypeEnum {
+  text,
+  number,
+  dateTime,
+  date,
+  selector,
+  password,
+  phoneNumber,
+}
 
 class InputModel {
   final String name;
@@ -6,7 +14,6 @@ class InputModel {
   final InputTypeEnum inputType;
   final List<dynamic>? inputSource; // For selector types
   dynamic value;
-  final String? key; // New field for special recognition
 
   InputModel({
     required this.name,
@@ -14,7 +21,6 @@ class InputModel {
     required this.inputType,
     this.inputSource,
     this.value,
-    this.key,
   });
 
   InputModel copyWith({
@@ -23,7 +29,6 @@ class InputModel {
     InputTypeEnum? inputType,
     List<dynamic>? inputSource,
     dynamic value,
-    String? key,
   }) {
     return InputModel(
       name: name ?? this.name,
@@ -31,7 +36,6 @@ class InputModel {
       inputType: inputType ?? this.inputType,
       inputSource: inputSource ?? this.inputSource,
       value: value ?? this.value,
-      key: key ?? this.key,
     );
   }
 }

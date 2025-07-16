@@ -1,3 +1,6 @@
+import 'package:ausa/common/widget/toast.dart';
+import 'package:ausa/features/profile/page/input_model.dart';
+import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:ausa/features/settings/page/wifi_connected_page.dart';
 import 'package:ausa/features/settings/widget/wifi_input_password_widget.dart';
 import 'package:get/get.dart';
@@ -17,41 +20,81 @@ class WifiController extends GetxController {
     networks.value = nets;
   }
 
-  void onNetworkTap(int index) {
+  void onNetworkTap(int index) async {
     selectedNetworkIndex.value = index;
     final net = networks[index];
-    // Get.to(() => WifiConnectedPage());
-    Get.to(() => WifiInputPasswordWidget());
+
+    // "Other..." network (usually last in the list)
+    if (net.name == 'Other...') {
+      // Open the custom input page for other networks
+      final result = await Get.to(
+        () => InputPage(
+          inputs: [
+            InputModel(
+              name: 'networkName',
+              value: '',
+              label: 'Name',
+              inputType: InputTypeEnum.text,
+            ),
+            InputModel(
+              name: 'Password',
+              value: '',
+              label: 'Password',
+              inputType: InputTypeEnum.password,
+            ),
+            InputModel(
+              inputSource: [
+                'None',
+                'WEP',
+                'WPA',
+                'WPA 2 or WPA 3',
+                'WPA Enterprise',
+                'WPA 2 Enterprise',
+                'WPA 3 Enterprise',
+              ],
+              name: 'Security',
+              value: '',
+              label: 'Security',
+              inputType: InputTypeEnum.selector,
+            ),
+          ],
+          isOtherWifiNetwork: true,
+        ),
+      );
+      // Handle result if needed (result will be a List<InputModel>)
+      return;
+    }
+    // Already connected
     if (net.isConnected) {
-      // Disconnect
-      Get.showSnackbar(
-        const GetSnackBar(
-          message: 'Disconnecting...',
-          duration: Duration(seconds: 1),
-        ),
-      );
-      _disconnect(index);
-    } else if (net.isSecure && savedPasswords.containsKey(net.name)) {
-      // Connect with saved password
-      Get.showSnackbar(
-        const GetSnackBar(
-          message: 'Connecting...',
-          duration: Duration(seconds: 1),
-        ),
-      );
+      Get.to(() => WifiConnectedPage());
+      return;
+    }
+    if (net.name == 'DIRECT_37129t4bg937') {
+      final result = await Get.to(() => WifiInputPasswordWidget());
+      if (result != null) {
+        _connect(index, result);
+      }
+      return;
+    }
+
+    // Secure network with saved password
+    if (net.isSecure && savedPasswords.containsKey(net.name)) {
+      // Optionally show a connecting UI
       _connect(index, savedPasswords[net.name]!);
-    } else if (net.isSecure) {
-      // Show password modal
+      return;
+    }
+
+    // Secure network, no saved password
+    if (net.isSecure) {
+      // Show password modal/page
       showPasswordSheet.value = true;
-    } else {
-      // Open network, connect directly
-      Get.showSnackbar(
-        const GetSnackBar(
-          message: 'Connecting...',
-          duration: Duration(seconds: 1),
-        ),
-      );
+      return;
+    }
+
+    // Open network, connect directly
+    if (!net.isSecure) {
       _connect(index, '');
+      return;
     }
   }
 
@@ -59,38 +102,59 @@ class WifiController extends GetxController {
     final idx = selectedNetworkIndex.value;
     if (idx == null) return;
     final net = networks[idx];
-    // Simulate password check
-    if (password == 'password123') {
-      // Replace with real check
-      savedPasswords[net.name] = password;
-      showPasswordSheet.value = false;
-      Get.showSnackbar(
-        const GetSnackBar(
-          message: 'Connecting...',
-          duration: Duration(seconds: 1),
-        ),
-      );
-      _connect(idx, password);
-    } else {
-      showWrongPasswordPopup.value = true;
-    }
+
+    // Show connecting toast immediately
+    CustomToast.show(
+      message: 'Connecting to ${net.name}',
+      type: ToastType.warning,
+    );
+
+    // Simulate password check with a short delay
+    Future.delayed(const Duration(seconds: 2), () {
+      if (password == 'password123') {
+        savedPasswords[net.name] = password;
+        showPasswordSheet.value = false;
+        _connect(idx, password);
+      } else {
+        Future.delayed(const Duration(seconds: 3), () {
+          CustomToast.show(message: 'Wrong Password', type: ToastType.error);
+          showWrongPasswordPopup.value = true;
+        });
+      }
+    });
   }
 
   void _connect(int index, String password) async {
     isConnecting.value = true;
-    await Future.delayed(const Duration(seconds: 1));
+
+    // Optionally, show a connecting toast here
+    CustomToast.show(message: 'Connecting...', type: ToastType.warning);
+
+    // Simulate connection delay
+    await Future.delayed(const Duration(seconds: 2));
     isConnecting.value = false;
-    // Update state
+
+    // Update connected network
     networks.value = [
       for (int i = 0; i < networks.length; i++)
         i == index
             ? networks[i].copyWith(isConnected: true)
             : networks[i].copyWith(isConnected: false),
     ];
+
     showConnectedPopup.value = true;
+
+    // Show success toast
+    CustomToast.show(
+      message: 'Connected Successfully',
+      type: ToastType.success,
+    );
+
+    // Delay closing the modal/page to allow toast to show
     await Future.delayed(const Duration(seconds: 2));
+
     showConnectedPopup.value = false;
-    Get.back(); // Close modal/page
+    Get.back(); // Close modal/page AFTER toast is shown
   }
 
   void _disconnect(int index) async {

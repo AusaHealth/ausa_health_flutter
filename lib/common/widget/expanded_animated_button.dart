@@ -67,7 +67,7 @@ class ExpandedAnimatedButtonState extends State<ExpandedAnimatedButton> {
                   onTap: widget.onPressed,
                   child: Container(
                     margin: EdgeInsets.all(AppSpacing.smMedium),
-                    // padding: EdgeInsets.all(AppSpacing.xl2),
+
                     width: DesignScaleManager.scaleValue(48),
                     height: DesignScaleManager.scaleValue(48),
                     alignment: Alignment.center,

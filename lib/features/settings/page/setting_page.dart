@@ -88,17 +88,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               Spacer(),
-              // SizedBox(
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: AppSpacing.xl,
-              //     ).copyWith(top: 12),
-              //     child: Image.asset(
-              //       ProfileIcons.ausaLogo,
-              //       height: DesignScaleManager.scaleValue(207),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
           SizedBox(height: AppSpacing.lg),

@@ -54,6 +54,8 @@ class AppSpacing {
 
   static double get xl10 => DesignScaleManager.scaleValue(144);
 
+  static double get xl11 => DesignScaleManager.scaleValue(160);
+
   /// Example usage:
   /// ```
   /// Container(

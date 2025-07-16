@@ -5,18 +5,15 @@ import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/utils.dart';
-import 'package:ausa/features/profile/model/family_model.dart';
-import 'package:ausa/features/profile/page/add_new_member.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
+import 'package:ausa/features/profile/page/input_model.dart';
+import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:ausa/features/profile/widget/add_family_dialouge.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
 import 'package:ausa/features/profile/widget/member_summary_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
-import 'dart:ui';
-
-import 'package:get/get_core/src/get_main.dart';
 
 class FamilyViewPage extends StatefulWidget {
   const FamilyViewPage({super.key});
@@ -27,7 +24,10 @@ class FamilyViewPage extends StatefulWidget {
 
 class _FamilyViewPageState extends State<FamilyViewPage> {
   int selectedTab = 0;
-  final List<String> tabItems = ['Chris', 'Monica', 'Santiago', 'Ashwin'];
+  final List<String> tabItems =
+      Get.find<ProfileController>().familyMembers
+          .map((e) => e.shortName)
+          .toList();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,9 +35,13 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
       children: [
         Row(
           children: [
-            SizedBox(
-              height: DesignScaleManager.scaleValue(96),
-              width: DesignScaleManager.scaleValue(900),
+            Container(
+              constraints: BoxConstraints(
+                minHeight: DesignScaleManager.scaleValue(96),
+                maxHeight: DesignScaleManager.scaleValue(96),
+                maxWidth: DesignScaleManager.scaleValue(900),
+                minWidth: DesignScaleManager.scaleValue(220),
+              ),
               child: HorizontalTabBar(
                 items: tabItems,
                 selectedIndex: selectedTab,
@@ -55,7 +59,7 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
               textColor: AppColors.primary400,
               backgroundColor: Colors.white,
               leadingIcon: SvgPicture.asset(
-                AusaIcons.placeholder,
+                AusaIcons.userPlus01,
                 height: DesignScaleManager.scaleValue(48),
                 width: DesignScaleManager.scaleValue(48),
                 colorFilter: ColorFilter.mode(
@@ -84,7 +88,7 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                     child: Image.asset(
                       'assets/images/profile.png',
                       fit: BoxFit.fill,
-                      height: 400,
+                      height: DesignScaleManager.scaleValue(640),
                     ),
                   ),
                 ),
@@ -126,15 +130,9 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                                 children: [
                                   MemberSummaryCardWidget(
                                     isFamily: true,
-                                    member: FamilyModel(
-                                      shortName: 'Chris',
-                                      fullName: 'Christopher Chavez',
-                                      phone: '+1 555-123-4567',
-                                      email: 'johndoes@clinic.com',
-                                      relationship: 'Friend',
-                                      address:
-                                          '1234 Maplewood Lane Springfield, IL 62704',
-                                    ),
+                                    member:
+                                        Get.find<ProfileController>()
+                                            .familyMembers[selectedTab],
                                   ),
                                 ],
                               ),
@@ -144,7 +142,21 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                               top: 14,
                               child: AusaButton(
                                 height: DesignScaleManager.scaleValue(100),
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  final inputs = [
+                                    InputModel(
+                                      name: 'name',
+                                      label: 'Name',
+                                      inputType: InputTypeEnum.text,
+                                    ),
+                                    InputModel(
+                                      name: 'phone',
+                                      label: 'Phone',
+                                      inputType: InputTypeEnum.text,
+                                    ),
+                                  ];
+                                  Get.to(InputPage(inputs: inputs));
+                                },
                                 variant: ButtonVariant.tertiary,
                                 leadingIcon: SvgPicture.asset(
                                   height: DesignScaleManager.scaleValue(32),

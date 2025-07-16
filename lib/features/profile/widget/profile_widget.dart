@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/utils.dart';
@@ -22,6 +23,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,7 +93,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       right: AppSpacing.xl,
                       top: 14,
                       child: AusaButton(
-                        height: DesignScaleManager.scaleValue(100),
+                        height: DesignScaleManager.scaleValue(80),
                         onPressed: () async {
                           if (showPersonal) {
                             List<InputModel> inputs = [
@@ -99,7 +101,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 name: 'name',
                                 label: 'Name',
                                 inputType: InputTypeEnum.text,
-                                value: '',
+                                value: profileController.user.name,
                               ),
                               InputModel(
                                 name: 'birthday',
@@ -111,20 +113,20 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 name: 'gender',
                                 label: 'Gender',
                                 inputType: InputTypeEnum.selector,
-                                value: '',
+                                value: profileController.user.gender,
                                 inputSource: ['Male', 'Female', 'Other'],
                               ),
                               InputModel(
                                 name: 'height',
                                 label: 'Height',
                                 inputType: InputTypeEnum.number,
-                                value: '',
+                                value: profileController.user.height,
                               ),
                               InputModel(
                                 name: 'weight',
                                 label: 'Weight',
                                 inputType: InputTypeEnum.number,
-                                value: '',
+                                value: profileController.user.weight,
                               ),
                             ];
                             final result = await Get.to(
@@ -142,26 +144,32 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     .map((e) => '${e.name}: ${e.value}')
                                     .join(', '),
                               );
+                              profileController.user.updateFromInputs(result);
+                              CustomToast.show(
+                                message: 'Profile updated',
+                                type: ToastType.success,
+                              );
+                              setState(() {});
                             }
                           } else {
                             List<InputModel> inputs = [
                               InputModel(
                                 name: 'phone',
                                 label: 'Phone',
-                                inputType: InputTypeEnum.text,
-                                value: '',
+                                inputType: InputTypeEnum.phoneNumber,
+                                value: profileController.user.phone,
                               ),
                               InputModel(
                                 name: 'email',
                                 label: 'Email',
                                 inputType: InputTypeEnum.text,
-                                value: '',
+                                value: profileController.user.email,
                               ),
                               InputModel(
                                 name: 'address',
                                 label: 'Address',
                                 inputType: InputTypeEnum.text,
-                                value: '',
+                                value: profileController.user.address,
                               ),
                             ];
                             final result = await Get.to(
@@ -179,13 +187,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     .map((e) => '${e.name}: ${e.value}')
                                     .join(', '),
                               );
+                              profileController.user.updateFromInputs(result);
+                              CustomToast.show(
+                                message: 'Profile updated',
+                                type: ToastType.success,
+                              );
+                              setState(() {});
                             }
                           }
                         },
                         variant: ButtonVariant.tertiary,
                         leadingIcon: SvgPicture.asset(
-                          height: DesignScaleManager.scaleValue(32),
-                          width: DesignScaleManager.scaleValue(32),
+                          height: DesignScaleManager.scaleValue(24),
+                          width: DesignScaleManager.scaleValue(24),
                           AusaIcons.edit01,
                           colorFilter: ColorFilter.mode(
                             AppColors.primary500,
@@ -333,12 +347,7 @@ class _ContactDetails extends StatelessWidget {
           ),
         ),
 
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _ProfileDetail(label: 'Email', value: profileController.user.email),
-          ],
-        ),
+        _ProfileDetail(label: 'Email', value: profileController.user.email),
       ],
     );
   }

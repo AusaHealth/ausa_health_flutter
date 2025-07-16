@@ -1,5 +1,4 @@
 import 'package:ausa/common/widget/app_back_header.dart';
-import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
@@ -42,7 +41,10 @@ class WifiConnectedPage extends StatelessWidget {
             ],
           ),
           SizedBox(height: AppSpacing.xl4),
-          AppMainContainer(
+          AppSubParentContainer(
+            margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            padding: EdgeInsets.all(AppSpacing.lg),
+            // backgroundColor: Colors.orange,
             child: Column(
               children: [
                 AppSubParentContainer(
@@ -92,7 +94,7 @@ Widget _statusWidget(String label, String value, bool isLast) {
       ),
       if (!isLast) ...[
         SizedBox(height: AppSpacing.xl),
-        Divider(color: Color(0xff818181).withOpacity(0.2), thickness: 1),
+        Container(color: Color(0xff818181).withOpacity(0.2), height: 1),
         SizedBox(height: AppSpacing.xl),
       ],
     ],

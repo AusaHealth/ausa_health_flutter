@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
@@ -14,8 +15,13 @@ import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.
 import 'input_model.dart';
 
 class InputPage extends StatefulWidget {
+  final bool isOtherWifiNetwork;
   final List<InputModel> inputs;
-  const InputPage({Key? key, required this.inputs}) : super(key: key);
+  const InputPage({
+    Key? key,
+    required this.inputs,
+    this.isOtherWifiNetwork = false,
+  }) : super(key: key);
 
   @override
   State<InputPage> createState() => _InputPageState();
@@ -41,18 +47,23 @@ class _InputPageState extends State<InputPage> {
     super.dispose();
   }
 
+  bool isEmailValid = false;
+  bool isEmailDirty = false; // To show error only after user types
+  bool _obscureText = true;
+
   Widget _buildInputCard(InputModel model, int index) {
     final isFocused = focusedIndex == index;
     final isKeyboardField =
         model.inputType == InputTypeEnum.text ||
-        model.inputType == InputTypeEnum.number;
+        model.inputType == InputTypeEnum.number ||
+        model.inputType == InputTypeEnum.password;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(
-            left: index == 0 ? AppSpacing.xl10 : AppSpacing.xl6,
+            left: index == 0 ? AppSpacing.xl6 : AppSpacing.xl6,
             right: index == _inputs.length - 1 ? AppSpacing.xl6 : 0,
             bottom: AppSpacing.mdLarge,
           ),
@@ -61,106 +72,159 @@ class _InputPageState extends State<InputPage> {
             style: AppTypography.body(color: Colors.white),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: index == 0 ? AppSpacing.xl6 : 0,
-            right: index == _inputs.length - 1 ? AppSpacing.xl6 : 0,
-          ),
-          child: GestureDetector(
-            onTap: () async {
-              setState(() => focusedIndex = index);
-              if (isKeyboardField) {
-                FocusScope.of(context).requestFocus(_focusNodes[index]);
+        GestureDetector(
+          onTap: () async {
+            setState(() => focusedIndex = index);
+            if (isKeyboardField) {
+              FocusScope.of(context).requestFocus(_focusNodes[index]);
+            }
+            if (model.inputType == InputTypeEnum.selector) {
+              final selected = await showBottomSheetModal(
+                inputs: _inputs,
+                isOtherWifiNetwork: widget.isOtherWifiNetwork,
+                context,
+                selected: model.value?.toString(),
+                listItems:
+                    model.inputSource?.map((e) => e.toString()).toList() ?? [],
+              );
+              if (selected != null) {
+                setState(() {
+                  model.value = selected;
+                });
               }
-              if (model.inputType == InputTypeEnum.selector) {
-                final selected = await showBottomSheetModal(
-                  context,
-                  selected: model.value?.toString(),
-                  listItems:
-                      model.inputSource?.map((e) => e.toString()).toList() ??
-                      [],
-                );
-                if (selected != null) {
-                  setState(() {
-                    model.value = selected;
-                  });
-                }
-              }
-              if (model.inputType == InputTypeEnum.date) {
-                showDialog<DateTime>(
-                  context: context,
-                  builder:
-                      (context) => BirthdayPickerDialog(
-                        initialDate:
-                            model.value is DateTime ? model.value : null,
-                        onDone: (date) {
-                          print(date);
-                          setState(() => model.value = date);
-                          // Navigator.of(context).pop(date);
-                        },
-                      ),
-                );
-              }
-            },
-            child: AnimatedContainer(
-              height: DesignScaleManager.scaleValue(256),
-              duration: Duration(milliseconds: 200),
-              width: DesignScaleManager.scaleValue(512),
-              margin: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-              padding: EdgeInsets.all(AppSpacing.xl4),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
-                borderRadius: BorderRadius.circular(AppRadius.xl2),
-                border: Border.all(
-                  color: isFocused ? Color(0xFFFF9900) : Colors.transparent,
-                  width: 2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.07),
-                    blurRadius: 12,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (isKeyboardField)
-                    TextField(
-                      focusNode: _focusNodes[index],
-                      controller: TextEditingController(
-                          text: model.value?.toString() ?? "",
-                        )
-                        ..selection = TextSelection.collapsed(
-                          offset: (model.value?.toString() ?? "").length,
-                        ),
-                      onChanged: (v) => setState(() => model.value = v),
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: _getHint(model.name),
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    )
-                  else if (model.inputType == InputTypeEnum.selector)
-                    Text(
-                      model.value?.toString().isNotEmpty == true
-                          ? model.value.toString()
-                          : 'Select',
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
-                    )
-                  else if (model.inputType == InputTypeEnum.date)
-                    Text(
-                      model.value is DateTime
-                          ? _formatDate(model.value)
-                          : 'MM/DD/YYYY',
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
+            }
+            if (model.inputType == InputTypeEnum.date) {
+              showDialog<DateTime>(
+                context: context,
+                builder:
+                    (context) => BirthdayPickerDialouge(
+                      initialDate: model.value is DateTime ? model.value : null,
+                      onDone: (date) {
+                        print(date);
+                        setState(() => model.value = date);
+                        // Navigator.of(context).pop(date);
+                      },
                     ),
-                ],
+              );
+            }
+          },
+          child: AnimatedContainer(
+            height: DesignScaleManager.scaleValue(256),
+            duration: Duration(milliseconds: 200),
+            width: DesignScaleManager.scaleValue(512),
+            margin: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl4),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.85),
+              borderRadius: BorderRadius.circular(AppRadius.xl2),
+              border: Border.all(
+                color: isFocused ? Color(0xFFFF9900) : Colors.transparent,
+                width: 2,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.07),
+                  blurRadius: 12,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (isKeyboardField)
+                  TextField(
+                    readOnly: true,
+                    obscureText:
+                        model.inputType == InputTypeEnum.password
+                            ? _obscureText
+                            : false,
+                    focusNode: _focusNodes[index],
+                    controller: TextEditingController(
+                        text: model.value?.toString() ?? "",
+                      )
+                      ..selection = TextSelection.collapsed(
+                        offset: (model.value?.toString() ?? "").length,
+                      ),
+                    onChanged: (v) => setState(() => model.value = v),
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                    decoration: InputDecoration(
+                      suffixIcon:
+                          (model.inputType == InputTypeEnum.password)
+                              ? IconButton(
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: Colors.black54,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                              )
+                              : null,
+                      border: InputBorder.none,
+                      hintMaxLines: 2,
+                      hintText: _getHint(model.name),
+                      hintStyle: AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: AppColors.hintTextColor,
+                      ),
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  )
+                else if (model.inputType == InputTypeEnum.selector)
+                  Text(
+                    model.value?.toString().isNotEmpty == true
+                        ? model.value.toString()
+                        : 'Select',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  )
+                else if (model.inputType == InputTypeEnum.date)
+                  Text(
+                    model.value is DateTime
+                        ? _formatDate(model.value)
+                        : 'YYYY/MM/DD',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
+                if (model.inputType == InputTypeEnum.phoneNumber)
+                  TextField(
+                    keyboardType: TextInputType.phone,
+                    focusNode: _focusNodes[index],
+                    controller: TextEditingController(
+                        text:
+                            model.value?.toString().startsWith('+1') ?? false
+                                ? model.value.toString()
+                                : '+1${model.value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? ''}',
+                      )
+                      ..selection = TextSelection.collapsed(
+                        offset: (model.value?.toString().length ?? 2),
+                      ),
+                    onChanged: (v) {
+                      // Remove all non-digit characters except the leading '+1'
+                      String digits = v.replaceAll(RegExp(r'[^0-9]'), '');
+                      // Remove the leading '1' if present (since we always add it)
+                      if (digits.startsWith('1')) {
+                        digits = digits.substring(1);
+                      }
+                      setState(() => model.value = '+1 $digits');
+                    },
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '+1 (000) 000 - 0000',
+                      hintStyle: AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: AppColors.hintTextColor,
+                      ),
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -190,22 +254,28 @@ class _InputPageState extends State<InputPage> {
       case "phone":
         return "+1 (000) 000 - 0000";
       case "email":
-        return "Type an email address";
+        return "johndoe@email.com";
       case "address":
-        return "Type your address";
+        return "1234 Maplewood Lane,\n Springfield, IL 62704";
       case "name":
         return "Type your name";
       case "shortName":
         return "John";
       case "fullName":
         return "John Doe";
+      case "networkName":
+        return "Network Name";
+      case "Password":
+        return "Password...";
+      case "security":
+        return "Security";
       default:
         return "";
     }
   }
 
   String _formatDate(DateTime date) {
-    return "${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}/${date.year.toString().padLeft(4, '0')}";
+    return "${date.year.toString().padLeft(4, '0')}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}";
   }
 
   @override
@@ -213,7 +283,8 @@ class _InputPageState extends State<InputPage> {
     final showKeyboard =
         focusedIndex != null &&
         (_inputs[focusedIndex!].inputType == InputTypeEnum.text ||
-            _inputs[focusedIndex!].inputType == InputTypeEnum.number);
+            _inputs[focusedIndex!].inputType == InputTypeEnum.number ||
+            _inputs[focusedIndex!].inputType == InputTypeEnum.password);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: BackdropFilter(
@@ -228,6 +299,33 @@ class _InputPageState extends State<InputPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               InputPageCloseButton(),
+              if (widget.isOtherWifiNetwork) ...[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl3),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        AusaIcons.wifi,
+                        width: DesignScaleManager.scaleValue(40),
+                        height: DesignScaleManager.scaleValue(40),
+                        colorFilter: ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      SizedBox(width: AppSpacing.smMedium),
+                      Text(
+                        'Other Networks',
+                        style: AppTypography.headline(
+                          weight: AppTypographyWeight.medium,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: AppSpacing.xl2),
+              ],
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -237,7 +335,7 @@ class _InputPageState extends State<InputPage> {
                   ],
                 ),
               ),
-
+              // if (!widget.isOtherWifiNetwork)
               Padding(
                 padding: EdgeInsets.only(
                   top: AppSpacing.xl8,
@@ -245,22 +343,20 @@ class _InputPageState extends State<InputPage> {
                 ),
                 child: InputPageSaveButton(inputs: _inputs),
               ),
+              Spacer(),
               if (showKeyboard)
-                Expanded(
-                  child: Container(
-                    color: Colors.white,
-                    child: VirtualKeyboard(
-                      fontSize: 16,
-                      // height: 250,
-                      textColor: Colors.black,
-                      defaultLayouts: [VirtualKeyboardDefaultLayouts.English],
-                      type:
-                          _inputs[focusedIndex!].inputType ==
-                                  InputTypeEnum.number
-                              ? VirtualKeyboardType.Numeric
-                              : VirtualKeyboardType.Alphanumeric,
-                      postKeyPress: _onKeyboardInput,
-                    ),
+                Container(
+                  color: Colors.white,
+                  child: VirtualKeyboard(
+                    fontSize: 16,
+                    height: DesignScaleManager.keyboardHeight.toDouble(),
+                    textColor: Colors.black,
+                    defaultLayouts: [VirtualKeyboardDefaultLayouts.English],
+                    type:
+                        _inputs[focusedIndex!].inputType == InputTypeEnum.number
+                            ? VirtualKeyboardType.Numeric
+                            : VirtualKeyboardType.Alphanumeric,
+                    postKeyPress: _onKeyboardInput,
                   ),
                 ),
             ],
@@ -272,8 +368,15 @@ class _InputPageState extends State<InputPage> {
 }
 
 class InputPageSaveButton extends StatelessWidget {
-  final List<InputModel> inputs;
-  const InputPageSaveButton({super.key, required this.inputs});
+  final List<InputModel>? inputs;
+  final String buttonText;
+  final VoidCallback? onPressed;
+  const InputPageSaveButton({
+    this.onPressed,
+    super.key,
+    this.inputs,
+    this.buttonText = 'Save',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -282,8 +385,9 @@ class InputPageSaveButton extends StatelessWidget {
       children: [
         AusaButton(
           size: ButtonSize.lg,
-          text: 'Save',
+          text: buttonText,
           onPressed: () {
+            onPressed?.call();
             Get.back(result: inputs);
           },
         ),

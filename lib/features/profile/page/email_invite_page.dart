@@ -1,23 +1,37 @@
 import 'dart:ui';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
-import 'package:ausa/features/profile/controller/profile_controller.dart';
+import 'package:ausa/constants/typography.dart';
+import 'package:ausa/constants/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class EmailInvitePage extends StatelessWidget {
+class EmailInvitePage extends StatefulWidget {
   const EmailInvitePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<ProfileController>();
-    final TextEditingController emailController = TextEditingController();
+  State<EmailInvitePage> createState() => _EmailInvitePageState();
+}
 
+class _EmailInvitePageState extends State<EmailInvitePage> {
+  final TextEditingController emailController = TextEditingController();
+  bool isEmailValid = false;
+  bool isEmailDirty = false; // To show error only after user types
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Positioned.fill(
@@ -49,9 +63,9 @@ class EmailInvitePage extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 120,
-          left: 0,
-          right: 32,
+          top: AppSpacing.xl9,
+          left: AppSpacing.xl3,
+          right: AppSpacing.xl3,
           child: Container(
             width: DesignScaleManager.scaleValue(1824),
             height: DesignScaleManager.scaleValue(524),
@@ -70,34 +84,38 @@ class EmailInvitePage extends StatelessWidget {
                 children: [
                   // Left side: Title and description
                   Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Email invitation',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 32,
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: AppSpacing.xl5,
+                        horizontal: AppSpacing.xl9,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Email invitation',
+                            style: AppTypography.headline(
+                              weight: AppTypographyWeight.medium,
+                              color: AppColors.white,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: AppSpacing.xl2),
-                        Text(
-                          'Known member will onboard\nthemselves and see your health profile\nfrom their app.',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                          SizedBox(height: AppSpacing.xl2),
+                          Text(
+                            'Known member will onboard\nthemselves and see your health profile\nfrom their app.',
+                            style: AppTypography.body(
+                              weight: AppTypographyWeight.semibold,
+                              color: AppColors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   // Right side: Email label, field, error, and button
                   Expanded(
-                    flex: 3,
+                    flex: 1,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         vertical: AppSpacing.xl3,
@@ -107,19 +125,31 @@ class EmailInvitePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Email',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          Padding(
+                            padding: EdgeInsets.only(left: AppSpacing.xl3),
+                            child: Text(
+                              'Email',
+                              style: AppTypography.body(
+                                weight: AppTypographyWeight.regular,
+                                color: AppColors.white,
+                              ),
+                            ),
                           ),
                           SizedBox(height: AppSpacing.mdLarge),
                           Container(
+                            height: DesignScaleManager.scaleValue(160),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(
                                 AppRadius.xl2,
                               ),
                               border: Border.all(
-                                color: Colors.redAccent,
+                                color:
+                                    !isEmailDirty
+                                        ? Colors.white
+                                        : isEmailValid
+                                        ? AppColors.lightGreen
+                                        : AppColors.lightRed,
                                 width: 2,
                               ),
                             ),
@@ -128,28 +158,42 @@ class EmailInvitePage extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.email_outlined,
-                                  color: Colors.black54,
+                                SvgPicture.asset(
+                                  AusaIcons.mail01,
+                                  height: DesignScaleManager.scaleValue(40),
+                                  width: DesignScaleManager.scaleValue(40),
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.bodyTextColor,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
+
                                 SizedBox(width: AppSpacing.mdLarge),
                                 Expanded(
                                   child: TextField(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isEmailDirty = true;
+                                        isEmailValid = Utils.isValidEmail(
+                                          value.trim(),
+                                        );
+                                      });
+                                    },
                                     controller: emailController,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'olivia@untitledui.com',
+                                      hintText: 'Enter ',
                                       hintStyle: TextStyle(
-                                        color: Colors.black54,
+                                        color: AppColors.bodyTextColor,
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
                                         vertical: AppSpacing.mdLarge,
                                       ),
                                       isDense: true,
                                     ),
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 18,
+                                    style: AppTypography.body(
+                                      weight: AppTypographyWeight.regular,
+                                      color: AppColors.bodyTextColor,
                                     ),
                                   ),
                                 ),
@@ -157,39 +201,37 @@ class EmailInvitePage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: AppSpacing.smMedium),
-                          Text(
-                            'Invalid email',
-                            style: TextStyle(
-                              color: Colors.redAccent,
-                              fontSize: 14,
+                          if (isEmailDirty)
+                            Padding(
+                              padding: EdgeInsets.only(left: AppSpacing.xl3),
+                              child: Text(
+                                isEmailValid
+                                    ? 'Email verified'
+                                    : 'Invalid email',
+                                style: AppTypography.body(
+                                  weight: AppTypographyWeight.medium,
+                                  color:
+                                      isEmailValid
+                                          ? AppColors.lightGreen
+                                          : AppColors.lightRed,
+                                ),
+                              ),
                             ),
-                          ),
                           SizedBox(height: AppSpacing.xl2),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF1563FF),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppRadius.xl2,
-                                  ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                AusaButton(
+                                  isEnabled: isEmailValid,
+                                  onPressed: () {},
+
+                                  text: 'Send Invitation',
+                                  backgroundColor: AppColors.accent,
+                                  textColor: AppColors.white,
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.xl2,
-                                  vertical: AppSpacing.mdLarge,
-                                ),
-                                elevation: 0,
-                              ),
-                              child: Text(
-                                'Send Invitation',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              ],
                             ),
                           ),
                         ],
