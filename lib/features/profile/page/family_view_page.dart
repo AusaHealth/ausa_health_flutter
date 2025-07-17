@@ -101,7 +101,6 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
               ),
               SizedBox(width: AppSpacing.lg),
 
-              // Profile Details Card with Gradient Background
               Expanded(
                 flex: 4,
                 child: Padding(
@@ -113,11 +112,11 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                         child: Stack(
                           children: [
                             Container(
-                              padding: EdgeInsets.only(
-                                left: AppSpacing.xl4,
-                                right: AppSpacing.xl4,
-                                top: AppSpacing.xl4,
-                              ),
+                              // padding: EdgeInsets.only(
+                              //   left: AppSpacing.xl4,
+                              //   right: AppSpacing.xl4,
+                              //   top: AppSpacing.xl4,
+                              // ),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(

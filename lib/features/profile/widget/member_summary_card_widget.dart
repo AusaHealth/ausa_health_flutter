@@ -22,48 +22,72 @@ class MemberSummaryCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProfileController controller = Get.find<ProfileController>();
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LabelValueRow(
-          items: [
-            LabelValueColumn(label: "Short name", value: member.shortName),
-            LabelValueColumn(label: "Full name", value: member.fullName),
-            const SizedBox.shrink(),
-          ],
-          spacing: AppSpacing.xl,
-        ),
-        SizedBox(height: AppSpacing.xl2),
-        LabelValueRow(
-          items: [
-            LabelValueColumn(label: "Phone", value: member.phone),
-            LabelValueColumn(label: "Email", value: member.email),
-            LabelValueColumn(label: "Relation", value: member.relationship),
-          ],
-          spacing: AppSpacing.xl,
-        ),
-        SizedBox(height: AppSpacing.xl2),
-        LabelValueColumn(
-          label: "Address",
-          value: member.address,
-          isAddress: true,
-        ),
-
-        if (isFamily) ...[
-          SizedBox(height: AppSpacing.xl4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+        Padding(
+          padding:
+              isFamily
+                  ? EdgeInsets.only(
+                    left: AppSpacing.xl4,
+                    right: AppSpacing.xl4,
+                    top: AppSpacing.xl4,
+                  )
+                  : EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ExpandedAnimatedButton(
-                buttonText: 'Delete Member',
-                icon: AusaIcons.trash01,
-                onPressed: () {
-                  // Call your delete logic here
-                  // For example: controller.deleteMember(member);
-                },
+              LabelValueRow(
+                items: [
+                  LabelValueColumn(
+                    label: "Short name",
+                    value: member.shortName,
+                  ),
+                  LabelValueColumn(label: "Full name", value: member.fullName),
+                  const SizedBox.shrink(),
+                ],
+                spacing: AppSpacing.xl,
+              ),
+              SizedBox(height: AppSpacing.xl2),
+              LabelValueRow(
+                items: [
+                  LabelValueColumn(label: "Phone", value: member.phone),
+                  LabelValueColumn(label: "Email", value: member.email),
+                  LabelValueColumn(
+                    label: "Relation",
+                    value: member.relationship,
+                  ),
+                ],
+                spacing: AppSpacing.xl,
+              ),
+              SizedBox(height: AppSpacing.xl2),
+              LabelValueColumn(
+                label: "Address",
+                value: member.address,
+                isAddress: true,
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.xl),
+        ),
+        if (isFamily) ...[
+          SizedBox(height: AppSpacing.xl5),
+          Padding(
+            padding: EdgeInsets.only(
+              right: AppSpacing.xl,
+              // bottom: AppSpacing.xl,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ExpandedAnimatedButton(
+                  buttonText: 'Delete Member',
+                  icon: AusaIcons.trash01,
+                  onPressed: () {
+                    // Call your delete logic here
+                    // For example: controller.deleteMember(member);
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ],
     );
