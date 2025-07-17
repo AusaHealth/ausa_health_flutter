@@ -114,6 +114,8 @@ class HomePage extends StatelessWidget {
                       iconPath: AusaIcons.arrowRight,
                       color: Colors.cyan,
                       onTap: () {
+                        // CustomLoader.show(message: "Loading, please wait...");
+                        Get.toNamed(AppRoutes.onboarding);
                         // Show a success toast
                         // CustomToast.show(
                         //   message: 'Profile updated successfully!',
@@ -127,17 +129,15 @@ class HomePage extends StatelessWidget {
                         // );
 
                         // Show a warning toast
-                        CustomToast.show(
-                          message: 'Please check your input.',
-                          type: ToastType.warning,
-                        );
+                        // CustomToast.show(
+                        //   message: 'Please check your input.',
+                        //   type: ToastType.warning,
+                        // );
                         // CustomToast.show(
                         //   message: 'Coming Soon',
                         //   type: ToastType.error,
                         // );
                       },
-
-                      // Get.toNamed(AppRoutes.onboarding),
                     ),
                   ],
                 ),

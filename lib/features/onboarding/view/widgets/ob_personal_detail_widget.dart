@@ -1,13 +1,14 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class ObPersonalDetailWidget extends StatelessWidget {
   const ObPersonalDetailWidget({super.key});
@@ -134,7 +135,12 @@ class ObPersonalDetailWidget extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: AusaButton(
               size: ButtonSize.lg,
-              trailingIcon: Icon(Icons.arrow_forward, color: Colors.white),
+              trailingIcon: SvgPicture.asset(
+                AusaIcons.arrowRight,
+                width: DesignScaleManager.scaleValue(40),
+                height: DesignScaleManager.scaleValue(40),
+                colorFilter: ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+              ),
               onPressed: () {
                 controller.completeStep(OnboardingStep.personalDetails);
                 controller.goToStep(OnboardingStep.terms);

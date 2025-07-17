@@ -64,10 +64,12 @@ class ExpandedAnimatedButtonState extends State<ExpandedAnimatedButton> {
                 elevation: 2,
                 child: InkWell(
                   customBorder: const CircleBorder(),
-                  onTap: widget.onPressed,
+                  onTap: () {
+                    // widget.onPressed();
+                    setState(() => showFull = true);
+                  },
                   child: Container(
                     margin: EdgeInsets.all(AppSpacing.smMedium),
-
                     width: DesignScaleManager.scaleValue(48),
                     height: DesignScaleManager.scaleValue(48),
                     alignment: Alignment.center,

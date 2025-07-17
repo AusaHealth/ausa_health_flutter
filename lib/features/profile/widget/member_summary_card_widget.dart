@@ -48,18 +48,23 @@ class MemberSummaryCardWidget extends StatelessWidget {
           isAddress: true,
         ),
 
-        if (isFamily)
-          Align(
-            alignment: Alignment.bottomRight,
-            child: ExpandedAnimatedButton(
-              buttonText: 'Delete Member',
-              icon: AusaIcons.trash01,
-              onPressed: () {
-                // Call your delete logic here
-                // For example: controller.deleteMember(member);
-              },
-            ),
+        if (isFamily) ...[
+          SizedBox(height: AppSpacing.xl4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ExpandedAnimatedButton(
+                buttonText: 'Delete Member',
+                icon: AusaIcons.trash01,
+                onPressed: () {
+                  // Call your delete logic here
+                  // For example: controller.deleteMember(member);
+                },
+              ),
+            ],
           ),
+          SizedBox(height: AppSpacing.xl),
+        ],
       ],
     );
   }

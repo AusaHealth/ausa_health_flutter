@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 /// Enum representing each onboarding step.
 enum OnboardingStep { language, wifi, phone, otp, personalDetails, terms }
@@ -10,13 +11,30 @@ class OnboardingController extends GetxController {
   var currentStep = OnboardingStep.language.obs;
   var completedSteps = <OnboardingStep>{}.obs;
 
-  final phoneController = TextEditingController().obs;
+  final TextEditingController phoneController = TextEditingController();
+
+  RxString phoneNumber = ''.obs;
 
   // OTP Verification properties
   final otpController = TextEditingController();
+
   final otpFocusNode = FocusNode();
   var obscureOtp = false.obs;
   var otpSeconds = 59.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Listen to controller changes and update reactive variable
+    phoneController.addListener(() {
+      phoneNumber.value = phoneController.value.text;
+    });
+  }
+
+  void updatePhoneNumber(String number) {
+    phoneController.text = number;
+    phoneNumber.value = number; // This will trigger Obx
+  }
 
   /// Mark a step as completed.
   void completeStep(OnboardingStep step) {
@@ -65,6 +83,7 @@ class OnboardingController extends GetxController {
 
   void handleOtpInputChange(String value) {
     // Pinput handles focus automatically
+    log('otpValue: $value');
   }
 
   String get otpValue => otpController.text;

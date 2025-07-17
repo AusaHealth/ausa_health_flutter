@@ -15,6 +15,7 @@ class AppColors {
   static const Color primary900 = Color(0xFF082465);
 
   static const Color bodyTextColor = Color(0xff4F4F4F);
+
   static const Color hintTextColor = Color(0xff090C13);
   static const Color textColor = Color(0xff171136);
   static const Color textlightColor = Color(0xff828282);
@@ -22,6 +23,9 @@ class AppColors {
 
   static const Color bodyTextLightColor = Color(0xff021633);
   static const Color blackColor = Color(0xff040A18);
+  static const Color blackColor2 = Color(0xff4A5574);
+
+  static const Color textColor2 = Color(0xff102163);
 
   // Gray colors
   static const Color gray25 = Color(0xFFFCFCFD);

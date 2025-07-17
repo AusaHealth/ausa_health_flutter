@@ -1,3 +1,4 @@
+import 'package:ausa/constants/design_scale.dart';
 import 'package:flutter/material.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
@@ -5,11 +6,13 @@ class OnScreenKeyboardWidget extends StatefulWidget {
   final TextEditingController controller;
   final VirtualKeyboardType type;
   final Color color;
+  final Function(String)? onTap;
   const OnScreenKeyboardWidget({
     super.key,
     required this.controller,
     required this.type,
     required this.color,
+    this.onTap,
   });
 
   @override
@@ -39,7 +42,7 @@ class _OnScreenKeyboardWidgetState extends State<OnScreenKeyboardWidget> {
       color: widget.color,
       child: VirtualKeyboard(
         fontSize: 16,
-        height: 250,
+        height: DesignScaleManager.keyboardHeight.toDouble(),
         textColor: Colors.black,
         textController: _controller,
 
@@ -47,7 +50,7 @@ class _OnScreenKeyboardWidgetState extends State<OnScreenKeyboardWidget> {
         type: widget.type,
 
         postKeyPress: (key) {
-          print(key);
+          widget.onTap?.call(key.text ?? '');
         },
       ),
     );

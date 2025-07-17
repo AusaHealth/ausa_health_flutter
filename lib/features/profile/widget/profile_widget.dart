@@ -107,7 +107,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 name: 'birthday',
                                 label: 'Birthday',
                                 inputType: InputTypeEnum.date,
-                                value: '',
+                                // value: profileController.user.dateOfBirth,
                               ),
                               InputModel(
                                 name: 'gender',
@@ -119,13 +119,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               InputModel(
                                 name: 'height',
                                 label: 'Height',
-                                inputType: InputTypeEnum.number,
+                                inputType: InputTypeEnum.height,
                                 value: profileController.user.height,
                               ),
                               InputModel(
                                 name: 'weight',
                                 label: 'Weight',
-                                inputType: InputTypeEnum.number,
+                                inputType: InputTypeEnum.weight,
                                 value: profileController.user.weight,
                               ),
                             ];
@@ -134,16 +134,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             );
 
                             if (result != null && result is List<InputModel>) {
-                              // Print all values
-                              for (final input in result) {
-                                print('${input.name}: ${input.value}');
-                              }
-                              // Or print the whole list
-                              print(
-                                result
-                                    .map((e) => '${e.name}: ${e.value}')
-                                    .join(', '),
-                              );
                               profileController.user.updateFromInputs(result);
                               CustomToast.show(
                                 message: 'Profile updated',
@@ -177,16 +167,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             );
 
                             if (result != null && result is List<InputModel>) {
-                              // Print all values
-                              for (final input in result) {
-                                print('${input.name}: ${input.value}');
-                              }
-                              // Or print the whole list
-                              print(
-                                result
-                                    .map((e) => '${e.name}: ${e.value}')
-                                    .join(', '),
-                              );
                               profileController.user.updateFromInputs(result);
                               CustomToast.show(
                                 message: 'Profile updated',

@@ -28,6 +28,7 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
       Get.find<ProfileController>().familyMembers
           .map((e) => e.shortName)
           .toList();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,23 +36,28 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
       children: [
         Row(
           children: [
-            Container(
-              constraints: BoxConstraints(
-                minHeight: DesignScaleManager.scaleValue(96),
-                maxHeight: DesignScaleManager.scaleValue(96),
-                maxWidth: DesignScaleManager.scaleValue(900),
-                minWidth: DesignScaleManager.scaleValue(220),
-              ),
-              child: HorizontalTabBar(
-                items: tabItems,
-                selectedIndex: selectedTab,
-                onSelected: (index) {
-                  setState(() {
-                    selectedTab = index;
-                  });
-                },
-              ),
-            ),
+            tabItems.length > 1
+                ? Expanded(
+                  child: HorizontalTabBar(
+                    items: tabItems,
+                    selectedIndex: selectedTab,
+                    onSelected: (index) {
+                      setState(() {
+                        selectedTab = index;
+                      });
+                    },
+                  ),
+                )
+                : HorizontalTabBar(
+                  items: tabItems,
+                  selectedIndex: selectedTab,
+                  onSelected: (index) {
+                    setState(() {
+                      selectedTab = index;
+                    });
+                  },
+                ),
+
             Spacer(),
             AusaButton(
               variant: ButtonVariant.secondary,

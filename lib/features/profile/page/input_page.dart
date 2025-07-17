@@ -1,13 +1,16 @@
 import 'dart:ui';
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/close_button_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/constants/utils.dart';
 import 'package:ausa/features/profile/widget/birthday_pickup_dialoge.dart';
 import 'package:ausa/features/profile/widget/bottom_sheet_modal.dart';
+import 'package:ausa/features/profile/widget/height_weight_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -72,162 +75,185 @@ class _InputPageState extends State<InputPage> {
             style: AppTypography.body(color: Colors.white),
           ),
         ),
-        GestureDetector(
-          onTap: () async {
-            setState(() => focusedIndex = index);
-            if (isKeyboardField) {
-              FocusScope.of(context).requestFocus(_focusNodes[index]);
-            }
-            if (model.inputType == InputTypeEnum.selector) {
-              final selected = await showBottomSheetModal(
-                inputs: _inputs,
-                isOtherWifiNetwork: widget.isOtherWifiNetwork,
-                context,
-                selected: model.value?.toString(),
-                listItems:
-                    model.inputSource?.map((e) => e.toString()).toList() ?? [],
-              );
-              if (selected != null) {
-                setState(() {
-                  model.value = selected;
-                });
+        if (model.inputType != InputTypeEnum.height &&
+            model.inputType != InputTypeEnum.weight)
+          GestureDetector(
+            onTap: () async {
+              setState(() => focusedIndex = index);
+              if (isKeyboardField) {
+                FocusScope.of(context).requestFocus(_focusNodes[index]);
               }
-            }
-            if (model.inputType == InputTypeEnum.date) {
-              showDialog<DateTime>(
-                context: context,
-                builder:
-                    (context) => BirthdayPickerDialouge(
-                      initialDate: model.value is DateTime ? model.value : null,
-                      onDone: (date) {
-                        print(date);
-                        setState(() => model.value = date);
-                        // Navigator.of(context).pop(date);
-                      },
-                    ),
-              );
-            }
-          },
-          child: AnimatedContainer(
-            height: DesignScaleManager.scaleValue(256),
-            duration: Duration(milliseconds: 200),
-            width: DesignScaleManager.scaleValue(512),
-            margin: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            padding: EdgeInsets.all(AppSpacing.xl4),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              borderRadius: BorderRadius.circular(AppRadius.xl2),
-              border: Border.all(
-                color: isFocused ? Color(0xFFFF9900) : Colors.transparent,
-                width: 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.07),
-                  blurRadius: 12,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (isKeyboardField)
-                  TextField(
-                    readOnly: true,
-                    obscureText:
-                        model.inputType == InputTypeEnum.password
-                            ? _obscureText
-                            : false,
-                    focusNode: _focusNodes[index],
-                    controller: TextEditingController(
-                        text: model.value?.toString() ?? "",
-                      )
-                      ..selection = TextSelection.collapsed(
-                        offset: (model.value?.toString() ?? "").length,
-                      ),
-                    onChanged: (v) => setState(() => model.value = v),
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
-                    decoration: InputDecoration(
-                      suffixIcon:
-                          (model.inputType == InputTypeEnum.password)
-                              ? IconButton(
-                                icon: Icon(
-                                  _obscureText
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: Colors.black54,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                              )
-                              : null,
-                      border: InputBorder.none,
-                      hintMaxLines: 2,
-                      hintText: _getHint(model.name),
-                      hintStyle: AppTypography.body(
-                        weight: AppTypographyWeight.regular,
-                        color: AppColors.hintTextColor,
-                      ),
-                      isDense: true,
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  )
-                else if (model.inputType == InputTypeEnum.selector)
-                  Text(
-                    model.value?.toString().isNotEmpty == true
-                        ? model.value.toString()
-                        : 'Select',
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
-                  )
-                else if (model.inputType == InputTypeEnum.date)
-                  Text(
-                    model.value is DateTime
-                        ? _formatDate(model.value)
-                        : 'YYYY/MM/DD',
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
-                  ),
-                if (model.inputType == InputTypeEnum.phoneNumber)
-                  TextField(
-                    keyboardType: TextInputType.phone,
-                    focusNode: _focusNodes[index],
-                    controller: TextEditingController(
-                        text:
-                            model.value?.toString().startsWith('+1') ?? false
-                                ? model.value.toString()
-                                : '+1${model.value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? ''}',
-                      )
-                      ..selection = TextSelection.collapsed(
-                        offset: (model.value?.toString().length ?? 2),
-                      ),
-                    onChanged: (v) {
-                      // Remove all non-digit characters except the leading '+1'
-                      String digits = v.replaceAll(RegExp(r'[^0-9]'), '');
-                      // Remove the leading '1' if present (since we always add it)
-                      if (digits.startsWith('1')) {
-                        digits = digits.substring(1);
-                      }
-                      setState(() => model.value = '+1 $digits');
+              if (model.inputType == InputTypeEnum.selector) {
+                final selected = await showBottomSheetModal(
+                  inputs: _inputs,
+                  isOtherWifiNetwork: widget.isOtherWifiNetwork,
+                  context,
+                  selected: model.value?.toString(),
+                  listItems:
+                      model.inputSource?.map((e) => e.toString()).toList() ??
+                      [],
+                );
+                if (selected != null) {
+                  setState(() {
+                    model.value = selected;
+                  });
+                }
+              }
+              if (model.inputType == InputTypeEnum.date) {
+                Utils.showBlurredDialog(
+                  context,
+                  BirthdayPickerDialouge(
+                    initialDate: model.value is DateTime ? model.value : null,
+                    onDone: (date) {
+                      print(date);
+                      setState(() => model.value = date);
                     },
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '+1 (000) 000 - 0000',
-                      hintStyle: AppTypography.body(
-                        weight: AppTypographyWeight.regular,
-                        color: AppColors.hintTextColor,
-                      ),
-                      isDense: true,
-                      contentPadding: EdgeInsets.zero,
-                    ),
                   ),
-              ],
+                );
+              }
+            },
+            child: AnimatedContainer(
+              height: DesignScaleManager.scaleValue(256),
+              duration: Duration(milliseconds: 200),
+              width: DesignScaleManager.scaleValue(512),
+              margin: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              padding: EdgeInsets.all(AppSpacing.xl4),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.85),
+                borderRadius: BorderRadius.circular(AppRadius.xl2),
+                border: Border.all(
+                  color: isFocused ? Color(0xFFFF9900) : Colors.transparent,
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.07),
+                    blurRadius: 12,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (isKeyboardField)
+                    TextField(
+                      readOnly: true,
+                      obscureText:
+                          model.inputType == InputTypeEnum.password
+                              ? _obscureText
+                              : false,
+                      focusNode: _focusNodes[index],
+                      controller: TextEditingController(
+                          text: model.value?.toString() ?? "",
+                        )
+                        ..selection = TextSelection.collapsed(
+                          offset: (model.value?.toString() ?? "").length,
+                        ),
+                      onChanged: (v) => setState(() => model.value = v),
+                      style: TextStyle(fontSize: 18, color: Colors.black87),
+                      decoration: InputDecoration(
+                        suffixIcon:
+                            (model.inputType == InputTypeEnum.password)
+                                ? IconButton(
+                                  icon: Icon(
+                                    _obscureText
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                    color: Colors.black54,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                )
+                                : null,
+                        border: InputBorder.none,
+                        hintMaxLines: 2,
+                        hintText: _getHint(model.name),
+                        hintStyle: AppTypography.body(
+                          weight: AppTypographyWeight.regular,
+                          color: AppColors.bodyTextColor,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    )
+                  else if (model.inputType == InputTypeEnum.selector)
+                    Text(
+                      model.value?.toString().isNotEmpty == true
+                          ? model.value.toString()
+                          : 'Select',
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: AppColors.bodyTextColor,
+                      ),
+                    )
+                  else if (model.inputType == InputTypeEnum.date)
+                    Text(
+                      model.value is DateTime
+                          ? _formatDate(model.value)
+                          : 'YYYY/MM/DD',
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: AppColors.bodyTextColor,
+                      ),
+                    ),
+                  if (model.inputType == InputTypeEnum.phoneNumber)
+                    TextField(
+                      keyboardType: TextInputType.phone,
+                      focusNode: _focusNodes[index],
+                      controller: TextEditingController(
+                          text:
+                              model.value?.toString().startsWith('+1') ?? false
+                                  ? model.value.toString()
+                                  : '+1${model.value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? ''}',
+                        )
+                        ..selection = TextSelection.collapsed(
+                          offset: (model.value?.toString().length ?? 2),
+                        ),
+                      onChanged: (v) {
+                        // Remove all non-digit characters except the leading '+1'
+                        String digits = v.replaceAll(RegExp(r'[^0-9]'), '');
+                        // Remove the leading '1' if present (since we always add it)
+                        if (digits.startsWith('1')) {
+                          digits = digits.substring(1);
+                        }
+                        setState(() => model.value = '+1 $digits');
+                      },
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: AppColors.bodyTextColor,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '+1 (000) 000 - 0000',
+                        hintStyle: AppTypography.body(
+                          weight: AppTypographyWeight.regular,
+                          color: AppColors.hintTextColor,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
-        ),
+
+        if (model.inputType == InputTypeEnum.height)
+          HeightInput(
+            value: model.value?.toString() ?? '',
+            label: model.label,
+            onChanged: (value) => setState(() => model.value = value),
+          ),
+        if (model.inputType == InputTypeEnum.weight)
+          WeightInput(
+            value: model.value?.toString() ?? '',
+            label: model.label,
+            onChanged: (value) => setState(() => model.value = value),
+          ),
       ],
     );
   }
@@ -401,25 +427,6 @@ class InputPageCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.back();
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.xl,
-          vertical: AppSpacing.xl,
-        ),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: SvgPicture.asset(
-            AusaIcons.xClose,
-            width: DesignScaleManager.scaleValue(40),
-            height: DesignScaleManager.scaleValue(40),
-            colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-          ),
-        ),
-      ),
-    );
+    return Align(alignment: Alignment.topRight, child: CloseButtonWidget());
   }
 }

@@ -2,10 +2,10 @@ import 'dart:developer' show log;
 
 import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/helpers.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:ausa/constants/utils.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/page/input_model.dart';
 import 'package:ausa/features/profile/page/input_page.dart';
@@ -111,7 +111,7 @@ class ProfileCustomTextField extends StatelessWidget {
                     result
                         .map(
                           (input) => input.copyWith(
-                            value: Utils.emptyToNull(input.value),
+                            value: Helpers.emptyToNull(input.value),
                           ),
                         )
                         .toList();

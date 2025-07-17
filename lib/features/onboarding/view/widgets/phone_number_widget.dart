@@ -1,6 +1,7 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/helpers.dart';
+import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
@@ -51,14 +52,15 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
                 height: 120,
                 width: 500,
 
+                padding: EdgeInsets.all(AppSpacing.xl3),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(AppRadius.xl3),
                   border: Border.all(color: Colors.white),
                 ),
                 alignment: Alignment.centerLeft,
                 child:
-                    controller.phoneController.value.text.isEmpty
+                    controller.phoneNumber.value.isEmpty
                         ? Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.xl6,
@@ -85,17 +87,23 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
                             ),
                           ),
                         )
-                        : Text(
-                          controller.phoneController.value.text,
-                          style: AppTypography.body(
-                            color: AppColors.bodyTextColor,
-                            fontWeight: FontWeight.w500,
+                        : Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xl,
+                          ),
+                          child: Text(
+                            Helpers.formatPhoneNumber(
+                              controller.phoneNumber.value,
+                            ),
+                            style: AppTypography.body(
+                              weight: AppTypographyWeight.medium,
+                            ),
                           ),
                         ),
               ),
             );
           }),
-          SizedBox(height: 20),
+
           Expanded(child: SizedBox()),
           Align(
             alignment: Alignment.bottomRight,
@@ -104,8 +112,6 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget> {
               children: [
                 AusaButton(
                   size: ButtonSize.lg,
-                  // height: DesignScaleManager.scaleValue(128),
-                  // width: DesignScaleManager.scaleValue(400),
                   backgroundColor: AppColors.primary700,
                   textColor: Colors.white,
 
@@ -132,36 +138,13 @@ class PhoneInputField extends StatelessWidget {
   final FocusNode? focusNode;
 
   const PhoneInputField({
-    Key? key,
+    super.key,
     this.countryCode = '+1',
     required this.controller,
     this.errorText,
     this.onChanged,
     this.focusNode,
-  }) : super(key: key);
-
-  String _formatNumber(String input) {
-    // Remove all non-digit characters
-    final digits = input.replaceAll(RegExp(r'\D'), '');
-    String formatted = '';
-    if (digits.length >= 1) {
-      formatted += '(';
-      formatted += digits.substring(0, digits.length >= 3 ? 3 : digits.length);
-    }
-    if (digits.length >= 4) {
-      formatted += ')';
-      formatted += '-';
-      formatted += digits.substring(3, digits.length >= 6 ? 6 : digits.length);
-    }
-    if (digits.length >= 7) {
-      formatted += ' ';
-      formatted += digits.substring(
-        6,
-        digits.length >= 10 ? 10 : digits.length,
-      );
-    }
-    return formatted;
-  }
+  });
 
   @override
   Widget build(BuildContext context) {

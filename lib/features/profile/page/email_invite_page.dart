@@ -3,11 +3,11 @@ import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/helpers.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:ausa/constants/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -174,7 +174,7 @@ class _EmailInvitePageState extends State<EmailInvitePage> {
                                     onChanged: (value) {
                                       setState(() {
                                         isEmailDirty = true;
-                                        isEmailValid = Utils.isValidEmail(
+                                        isEmailValid = Helpers.isValidEmail(
                                           value.trim(),
                                         );
                                       });

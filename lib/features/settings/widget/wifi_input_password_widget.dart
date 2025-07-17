@@ -88,40 +88,38 @@ class _WifiInputPasswordWidgetState extends State<WifiInputPasswordWidget> {
                 padding: EdgeInsets.all(AppSpacing.xl3),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.85),
-                  borderRadius: BorderRadius.circular(AppRadius.xl3),
+                  borderRadius: BorderRadius.circular(AppRadius.xl2),
                   border: Border.all(
                     color: Colors.orange,
                     width: 2,
                   ), // Orange border
                 ),
-                child: Center(
-                  child: TextField(
-                    readOnly: true,
-                    controller: _controller,
-                    obscureText: _obscureText,
-                    style: AppTypography.body(
-                      weight: AppTypographyWeight.regular,
-                      color: AppColors.black,
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Password...',
-                      hintStyle: TextStyle(color: Colors.grey[400]),
-                      isDense: true,
-                      contentPadding: EdgeInsets.zero,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureText
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                          color: Colors.black54,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
+                child: TextField(
+                  readOnly: true,
+                  controller: _controller,
+                  obscureText: _obscureText,
+                  style: AppTypography.body(
+                    weight: AppTypographyWeight.regular,
+                    color: AppColors.black,
+                  ),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Password...',
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        color: Colors.black54,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -137,7 +135,7 @@ class _WifiInputPasswordWidgetState extends State<WifiInputPasswordWidget> {
                     ),
                     child: AusaButton(
                       size: ButtonSize.lg,
-                      text: 'Connect',
+                      text: 'Save',
                       onPressed: () {
                         controller.submitPassword(_controller.text);
                       },
@@ -145,7 +143,7 @@ class _WifiInputPasswordWidgetState extends State<WifiInputPasswordWidget> {
                   ),
                 ],
               ),
-              // if (showKeyboard)
+
               Spacer(),
               Container(
                 color: Colors.white,

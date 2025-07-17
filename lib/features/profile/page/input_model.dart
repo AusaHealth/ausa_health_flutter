@@ -6,6 +6,8 @@ enum InputTypeEnum {
   selector,
   password,
   phoneNumber,
+  height,
+  weight,
 }
 
 class InputModel {

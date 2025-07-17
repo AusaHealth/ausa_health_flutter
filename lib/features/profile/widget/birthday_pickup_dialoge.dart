@@ -33,6 +33,9 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
   final int maxYear = DateTime.now().year;
   late DateTime _currentMonth;
 
+  // Validation message
+  String? validationMessage;
+
   @override
   void initState() {
     super.initState();
@@ -41,13 +44,29 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
       selectedMonth = widget.initialDate!.month;
       selectedDay = widget.initialDate!.day;
       _currentMonth = DateTime(selectedYear!, selectedMonth!, 1);
-      step = 0; // Start at year selection
+      step = 0;
     } else {
-      _currentMonth = DateTime(DateTime.now().year, DateTime.now().month, 1);
+      selectedYear = null;
+      selectedMonth = null;
+      selectedDay = null;
+      // Do not set _currentMonth, keep it uninitialized until a year/month is picked
     }
   }
 
-  void goToStep(int s) => setState(() => step = s);
+  void goToStep(int s) {
+    setState(() {
+      if (s == 1 && selectedYear == null) {
+        validationMessage = 'Please select Year first';
+        return;
+      }
+      if (s == 2 && selectedMonth == null) {
+        validationMessage = 'Please select month first';
+        return;
+      }
+      validationMessage = null;
+      step = s;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,6 +224,17 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
 
             // Step content
             SizedBox(height: AppSpacing.xl),
+            if (validationMessage != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: Text(
+                  validationMessage!,
+                  style: AppTypography.body(
+                    color: Colors.red,
+                    weight: AppTypographyWeight.medium,
+                  ),
+                ),
+              ),
             if (step == 0)
               selectedRangeStart == null
                   ? _yearRangeGrid()
@@ -368,6 +398,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
               selectedYear = y;
               step = 1;
               selectedRangeStart = null;
+              validationMessage = null; // Clear validation after year selection
             });
           },
           child: Container(
@@ -431,6 +462,8 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
                     i + 1,
                     1,
                   );
+                  validationMessage =
+                      null; // Clear validation after month selection
                 });
               },
               child: Container(
@@ -556,7 +589,7 @@ class DayGridSelector extends StatelessWidget {
             crossAxisCount: 7,
             mainAxisSpacing: 14,
             crossAxisSpacing: 6,
-            childAspectRatio: 1.6,
+            childAspectRatio: 1.9,
           ),
           itemCount: totalGridCount,
           itemBuilder: (context, index) {
@@ -571,8 +604,8 @@ class DayGridSelector extends StatelessWidget {
                 height: DesignScaleManager.scaleValue(70),
                 width: DesignScaleManager.scaleValue(70),
                 decoration: BoxDecoration(
+                  shape: BoxShape.circle,
                   color: isSelected ? Colors.black : Colors.white,
-                  borderRadius: BorderRadius.circular(AppRadius.xl3),
                 ),
                 alignment: Alignment.center,
                 child: Text(
