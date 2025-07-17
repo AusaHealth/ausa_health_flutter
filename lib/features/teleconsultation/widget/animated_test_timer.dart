@@ -33,7 +33,7 @@ class _AnimatedTestTimerWidgetState extends State<AnimatedTestTimerWidget>
 
     _rotationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 6),
+      duration: const Duration(seconds: 2000),
     )..repeat();
 
     _pulseController = AnimationController(

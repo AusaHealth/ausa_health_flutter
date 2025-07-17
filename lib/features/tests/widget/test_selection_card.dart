@@ -57,6 +57,17 @@ class TestSelectionCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  if (onCategoryTap != null) ...[
+                    const SizedBox(height: 6),
+                    GestureDetector(
+                      onTap: onCategoryTap,
+                      child: Icon(
+                        Icons.tune,
+                        size: 18,
+                        color: AppColors.primary700,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

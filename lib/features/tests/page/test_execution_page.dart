@@ -1,4 +1,5 @@
-import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
@@ -6,12 +7,67 @@ import 'package:ausa/features/teleconsultation/widget/animated_test_timer.dart';
 import 'package:ausa/common/enums/test_status.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/buttons.dart';
-import 'package:ausa/features/tests/widget/category_selection_dialog.dart';
+import 'package:ausa/common/model/test.dart';
+import 'package:ausa/features/tests/widget/subtype_selection_dialog.dart';
 import 'package:ausa/features/tests/widget/prerequisite_check_dialog.dart';
 import 'package:ausa/features/tests/widget/test_instructions_widget.dart';
 import 'package:ausa/features/tests/model/test_prerequisites.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ausa/features/tests/page/test_interrupted_page.dart';
+
+/// Visual progress indicator for multi-select groups (Body Sounds, ENT).
+class _GroupStepper extends StatelessWidget {
+  final int total;
+  final int index;
+
+  const _GroupStepper({required this.total, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    if (total <= 1) return const SizedBox.shrink();
+
+    return Container(
+      width: 250,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            Get.find<TestController>().currentTest?.name ?? '',
+            style: AppTypography.body(
+              color: Colors.white,
+              weight: AppTypographyWeight.medium,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(total, (i) {
+              final bool active = i <= index;
+              return Expanded(
+                child: Container(
+                  // width: 28,
+                  height: 4,
+                  margin: EdgeInsets.only(right: i < total - 1 ? 6 : 0),
+                  decoration: BoxDecoration(
+                    color: active ? AppColors.accent : Colors.white,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class TestExecutionPage extends StatefulWidget {
   const TestExecutionPage({super.key});
@@ -29,6 +85,11 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
       false; // Track if all required dialogs are completed
   late Worker
   _dialogWorker; // Worker to manage the ever listener and dispose properly
+
+  // ---------------- ECG 6-Lead stepper state ----------------
+  TestType? _previousTestType; // Track when the current test changes
+  int _ecgStepIndex = 0; // 0-based index of the current ECG step (0-2)
+  bool _ecgStepCompleted = false; // Has the timer finished for this step?
 
   @override
   void initState() {
@@ -55,17 +116,17 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
     final currentTest = controller.currentTest;
     if (currentTest == null) {
       _allDialogsCompleted = true;
+      controller.markDialogsAsShown();
       setState(() {});
       return;
     }
 
-    final needsCategory =
-        currentTest.hasCategories && currentTest.selectedCategory == null;
+    final needsSubType =
+        currentTest.hasSubTypes && currentTest.selectedSubTypeIds.isEmpty;
     final needsPrerequisites = currentTest.hasPrerequisites;
-
-    // If no dialogs are needed, mark as completed immediately
-    if (!needsCategory && !needsPrerequisites) {
+    if (!needsSubType && !needsPrerequisites) {
       _allDialogsCompleted = true;
+      controller.markDialogsAsShown();
       setState(() {});
       return;
     }
@@ -86,6 +147,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
       _pendingDialogRequest = true;
       return;
     }
+    debugPrint('[DEBUG] showTestDialogs for ${controller.currentTest?.type}');
 
     // Guard clauses – return early if dialogs are not required or we are not
     // in a valid state to present them.
@@ -105,25 +167,24 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
 
     final currentTest = controller.currentTest!;
 
-    // 1. Category selection (if required)
-    if (currentTest.hasCategories && currentTest.selectedCategory == null) {
-      final selectedCategory = await Get.dialog<String>(
-        CategorySelectionDialog(test: currentTest),
+    // 1. Sub-type selection (if required)
+    if (currentTest.hasSubTypes && currentTest.selectedSubTypeIds.isEmpty) {
+      final selectedIds = await Get.dialog<List<String>>(
+        SubTypeSelectionDialog(test: currentTest),
         barrierDismissible: false,
       );
 
-      if (selectedCategory == null) {
-        // User cancelled category selection – abort session.
+      if (selectedIds == null || selectedIds.isEmpty) {
+        // User cancelled selection – abort session.
         _isShowingDialogs = false;
         _allDialogsCompleted = false;
         setState(() {});
-        controller.cancelSession();
-        // A session cancel means no further dialogs will be needed.
+        await controller.skipCurrentTest();
+        // Continue flow with next test instead of cancelling session.
         return;
       }
 
-      // Update the test with the selected category.
-      controller.selectTestCategory(currentTest, selectedCategory);
+      controller.selectTestSubTypes(currentTest, selectedIds);
     }
 
     // 2. Prerequisite check (if required)
@@ -144,8 +205,8 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
           _isShowingDialogs = false;
           _allDialogsCompleted = false;
           setState(() {});
-          controller.cancelSession();
-          // No further dialogs in this session.
+          await controller.skipCurrentTest();
+          // Continue with next test.
           return;
         }
       }
@@ -166,56 +227,166 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
     }
   }
 
+  void _handleCancel() {
+    // Interrupt current test and navigate to interruption screen.
+    controller.interruptCurrentTest();
+    // Replace the current execution page with the interruption screen so the
+    // old page (and its reactive listeners) are disposed. This prevents
+    // hidden dialogs appearing behind new screens.
+    Get.off(() => TestInterruptedPage());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
-      backgroundColor: AppColors.gray50,
-      body: Column(
-        children: [
-          Obx(
-            () => AppBackHeader(
-              title: controller.currentTest?.name ?? 'Your Tests',
-              onBackPressed: () => controller.cancelSession(),
-            ),
-          ),
-          Expanded(
-            child: Obx(() {
-              if (controller.currentTest == null) {
-                return const Center(child: Text('No test available'));
-              }
+    return Obx(() {
+      // Reset ECG stepper when navigating to a new test --------------------
+      if (controller.currentTest?.type != _previousTestType) {
+        _previousTestType = controller.currentTest?.type;
+        _ecgStepIndex = 0;
+        _ecgStepCompleted = false;
+      }
 
-              switch (controller.currentTestStatus) {
-                case TestStatus.ready:
-                case TestStatus.requested:
-                  return _buildTestReady();
-                case TestStatus.started:
-                case TestStatus.completed:
-                  return _buildTestInProgress();
-                default:
-                  return const Center(child: CircularProgressIndicator());
-              }
-            }),
+      if (controller.currentTest == null) {
+        // Empty state – simple scaffold
+        return BaseScaffold(
+          body: Column(
+            children: [
+              _buildHeader(),
+              const Expanded(child: Center(child: Text('No test available'))),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      }
+
+      final test = controller.currentTest!;
+
+      // Determine AR usage
+      final bool usesArDuring =
+          test.arUsage == ARUsageType.duringTestOnly ||
+          test.arUsage == ARUsageType.both;
+      final bool usesArInstructions =
+          test.arUsage == ARUsageType.instructionsOnly ||
+          test.arUsage == ARUsageType.both;
+
+      final bool isReadyState =
+          controller.currentTestStatus == TestStatus.ready ||
+          controller.currentTestStatus == TestStatus.requested;
+      final bool isRunningState =
+          controller.currentTestStatus == TestStatus.started ||
+          controller.currentTestStatus == TestStatus.completed;
+
+      final bool showFullScreenAr =
+          (usesArDuring && isRunningState) ||
+          (usesArInstructions && isReadyState);
+
+      // Decide background widget
+      final Widget? backgroundWidget =
+          showFullScreenAr
+              ? Image.asset('assets/sample/ar.jpg', fit: BoxFit.cover)
+              : null;
+
+      Widget content;
+      switch (controller.currentTestStatus) {
+        case TestStatus.ready:
+        case TestStatus.requested:
+          content = _buildTestReady();
+          break;
+        case TestStatus.started:
+        case TestStatus.completed:
+          content = _buildTestInProgress();
+          break;
+        default:
+          content = const Center(child: CircularProgressIndicator());
+      }
+
+      return BaseScaffold(
+        background: backgroundWidget,
+        backgroundColor: showFullScreenAr ? Colors.black : AppColors.gray50,
+        body: Column(children: [_buildHeader(), Expanded(child: content)]),
+      );
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  /// Lightweight header that replaces `AppBackHeader`.
+  /// Shows a back button and either the test name or the group stepper.
+  Widget _buildHeader() {
+    return Obx(() {
+      final ctrl = controller;
+      final bool isEcg6Lead = ctrl.currentTest?.type == TestType.ecg6Lead;
+      final bool showGroupStepper = ctrl.isCurrentGroupMultiSelect;
+      final bool showStepper = showGroupStepper || isEcg6Lead;
+
+      Widget titleWidget;
+      if (showStepper) {
+        if (showGroupStepper) {
+          titleWidget = _GroupStepper(
+            total: ctrl.currentGroupStepTotal,
+            index: ctrl.currentGroupStepIndex,
+          );
+        } else {
+          // ECG 6-Lead internal 3-step flow
+          titleWidget = _GroupStepper(total: 3, index: _ecgStepIndex);
+        }
+      } else {
+        titleWidget = Text(
+          ctrl.currentTest?.name ?? 'Your Tests',
+          style: AppTypography.headline(),
+        );
+      }
+
+      return Container(
+        height: 80,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Back button
+            GestureDetector(
+              onTap: () => _handleCancel(),
+              child: Container(
+                width: 40,
+                height: 40,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: SvgPicture.asset(
+                  AusaIcons.chevronLeft,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            titleWidget,
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildTestReady() {
     final test = controller.currentTest!;
 
-    // Determine if AR should be shown
-    bool usesAR = test.usesAR;
-    if (!usesAR && test.selectedCategory != null && test.categories != null) {
-      final matchedCat = test.categories!.firstWhere(
-        (c) => c.id == test.selectedCategory,
-        orElse: () => test.categories!.first,
-      );
-      usesAR = matchedCat.metadata?['usesAR'] == true;
-    }
+    // Determine if AR should be shown based on arUsage
+    final bool usesAR =
+        test.arUsage == ARUsageType.instructionsOnly ||
+        test.arUsage == ARUsageType.both;
 
     return Stack(
       children: [
+        // Foreground controls / content
         Container(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -225,24 +396,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (usesAR)
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          // height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'AR View Placeholder',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      )
-                    else
+                    if (!usesAR)
                       Expanded(
                         child: Image.asset(
                           controller.currentTest!.image,
@@ -251,29 +405,6 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                         ),
                       ),
                     const SizedBox(height: 32),
-
-                    if (controller.currentTest!.selectedCategory != null) ...[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary700.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: AppColors.primary700.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Text(
-                          'Category: ${controller.currentTest!.selectedCategory}',
-                          style: AppTypography.callout(
-                            color: AppColors.primary700,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
                   ],
                 ),
               ),
@@ -281,7 +412,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if (_allDialogsCompleted)
+                  if (_allDialogsCompleted && !controller.shouldShowDialogs)
                     AusaButton(
                       text: 'Start Test',
                       onPressed: () => controller.startCurrentTest(),
@@ -295,8 +426,243 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
         ),
 
         // Instructions button positioned at bottom left, outside layout flow
-        if (_allDialogsCompleted)
+        if (_allDialogsCompleted && !controller.shouldShowDialogs)
           Positioned(bottom: 16, left: 16, child: _buildInstructionsButton()),
+
+        // Inline Next button for multi-select group flow (after completion)
+        Obx(() {
+          if (!controller.awaitingNextInGroup) return const SizedBox.shrink();
+
+          final nextName = controller.nextTestInGroup?.name ?? 'Next';
+          return Positioned(
+            bottom: 26,
+            right: 24,
+            child: Row(
+              children: [
+                AusaButton(
+                  text: 'Cancel',
+                  onPressed: () => _handleCancel(),
+                  variant: ButtonVariant.secondary,
+                  borderColor: AppColors.primary700,
+                  textColor: AppColors.primary700,
+                  backgroundColor: Colors.transparent,
+                ),
+                const SizedBox(width: 16),
+                AusaButton(
+                  text: 'Next: $nextName',
+                  onPressed: () => controller.continueToNextInGroup(),
+                  variant: ButtonVariant.primary,
+                  size: ButtonSize.lg,
+                ),
+              ],
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  /// Bottom-right control row shown during in-progress tests.
+  Widget _buildBottomControls() {
+    // Special handling for ECG 6-Lead internal 3-step flow ------------------
+    if (controller.currentTest?.type == TestType.ecg6Lead &&
+        _ecgStepIndex < 2) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          AusaButton(
+            text: 'Cancel',
+            size: ButtonSize.lg,
+            onPressed: () => _handleCancel(),
+            variant: ButtonVariant.secondary,
+            borderColor: AppColors.primary700,
+            textColor: AppColors.primary700,
+          ),
+          const SizedBox(width: 16),
+          AusaButton(
+            text: 'Next Step',
+            onPressed:
+                _ecgStepCompleted
+                    ? () {
+                      setState(() {
+                        _ecgStepIndex++;
+                        _ecgStepCompleted = false;
+                      });
+                    }
+                    : null,
+            variant: ButtonVariant.primary,
+            size: ButtonSize.lg,
+            isEnabled: _ecgStepCompleted,
+          ),
+        ],
+      );
+    }
+
+    // If session completed – show Finish button
+    if (controller.isSessionCompleted) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          AusaButton(
+            text: 'Cancel',
+            size: ButtonSize.lg,
+            isEnabled: false,
+            onPressed: null,
+            variant: ButtonVariant.secondary,
+            borderColor: AppColors.primary700,
+            textColor: AppColors.primary700,
+          ),
+          const SizedBox(width: 16),
+          AusaButton(
+            text: 'Finish',
+            onPressed: () => controller.navigateToResults(),
+            variant: ButtonVariant.primary,
+            size: ButtonSize.lg,
+          ),
+        ],
+      );
+    }
+
+    // If this is the last test (no further tests after the current one) and the
+    // overall session has not yet been marked as completed, we want to show a
+    // disabled "Finish" button (instead of "Next Test"). Once the test
+    // finishes, `isSessionCompleted` will flip to true and the block above
+    // will take precedence, enabling the button.
+
+    final bool isLastTestRunning =
+        controller.isLastTestInSession && !controller.isSessionCompleted;
+
+    if (isLastTestRunning) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          AusaButton(
+            text: 'Cancel',
+            size: ButtonSize.lg,
+            onPressed: () => _handleCancel(),
+            variant: ButtonVariant.secondary,
+            borderColor: AppColors.primary700,
+            textColor: AppColors.primary700,
+          ),
+          const SizedBox(width: 16),
+          AusaButton(
+            text: 'Finish',
+            onPressed: null,
+            variant: ButtonVariant.primary,
+            size: ButtonSize.lg,
+            isEnabled: false,
+          ),
+        ],
+      );
+    }
+
+    // If there are more tests queued after the current one, continue with
+    // existing logic.
+    final bool hasNextTest = controller.currentSession?.hasMoreTests ?? false;
+
+    if (!hasNextTest && !controller.isSessionCompleted) {
+      // Fallback safety: should not be reached due to isLastTestRunning but
+      // retained for robustness.
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          AusaButton(
+            text: 'Cancel',
+            size: ButtonSize.lg,
+            onPressed: () => _handleCancel(),
+            variant: ButtonVariant.secondary,
+            borderColor: AppColors.primary700,
+            textColor: AppColors.primary700,
+          ),
+          const SizedBox(width: 16),
+          AusaButton(
+            text: 'Finish',
+            onPressed: null,
+            variant: ButtonVariant.primary,
+            size: ButtonSize.lg,
+            isEnabled: false,
+          ),
+        ],
+      );
+    }
+
+    final bool isMulti = controller.isCurrentGroupMultiSelect;
+
+    if (isMulti) {
+      // Determine label
+      final bool waitingGroup = controller.awaitingNextInGroup;
+      final bool waitingSingle = controller.awaitingNextSingle;
+
+      final String? nextSame = controller.nextTestSameGroup?.name;
+      // Always show the concrete upcoming test name (if available) so users
+      // know what is coming next, even while the button is disabled during
+      // the current test run.
+      final String nextLabel =
+          (nextSame != null && nextSame.isNotEmpty)
+              ? 'Next: $nextSame'
+              : 'Next Test';
+
+      final bool nextEnabled =
+          (waitingGroup || waitingSingle) &&
+          controller.currentTestStatus == TestStatus.completed;
+
+      return Row(
+        children: [
+          AusaButton(
+            text: 'Cancel',
+            size: ButtonSize.lg,
+            onPressed: () => _handleCancel(),
+            variant: ButtonVariant.secondary,
+            borderColor: AppColors.primary700,
+            textColor: AppColors.primary700,
+          ),
+          const SizedBox(width: 16),
+          AusaButton(
+            text: nextLabel,
+            onPressed:
+                nextEnabled
+                    ? () {
+                      if (waitingGroup) {
+                        controller.continueToNextInGroup();
+                      } else {
+                        controller.continueToNextSingle();
+                      }
+                    }
+                    : null,
+            variant: ButtonVariant.primary,
+            size: ButtonSize.lg,
+            isEnabled: nextEnabled,
+          ),
+        ],
+      );
+    }
+
+    // Non-multi-select flow --------------------------------------------------
+    final bool nextEnabled =
+        controller.awaitingNextSingle &&
+        controller.currentTestStatus == TestStatus.completed;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        AusaButton(
+          text: 'Cancel',
+          size: ButtonSize.lg,
+          onPressed: () => _handleCancel(),
+          variant: ButtonVariant.secondary,
+          borderColor: AppColors.primary700,
+          textColor: AppColors.primary700,
+        ),
+        const SizedBox(width: 16),
+        AusaButton(
+          text: 'Next Test',
+          onPressed:
+              nextEnabled ? () => controller.continueToNextSingle() : null,
+          variant: ButtonVariant.primary,
+          size: ButtonSize.lg,
+          isEnabled: nextEnabled,
+        ),
       ],
     );
   }
@@ -306,47 +672,68 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
   }
 
   Widget _buildTestInProgress() {
+    final test = controller.currentTest!;
+    final bool usesArDuring =
+        test.arUsage == ARUsageType.duringTestOnly ||
+        test.arUsage == ARUsageType.both;
+
+    // Helper to build the animated timer with ECG stepper awareness
+    AnimatedTestTimerWidget _buildTimerWidget() {
+      return AnimatedTestTimerWidget(
+        key: ValueKey('${controller.currentTest?.type}_$_ecgStepIndex'),
+        duration: 2,
+        centerWidget: Image.asset(test.image),
+        completedWidget: const Icon(Icons.check, color: Colors.green),
+        onCompleted: () {
+          if (test.type == TestType.ecg6Lead && _ecgStepIndex < 2) {
+            // Mark current step finished – wait for user to press "Next Step"
+            setState(() {
+              _ecgStepCompleted = true;
+            });
+          } else {
+            // Regular completion flow
+            controller.completeCurrentTestWithMockResult();
+          }
+        },
+      );
+    }
+
+    if (usesArDuring) {
+      // ---------------- Full-screen AR preview --------------------------
+      return Stack(
+        children: [
+          // (Stepper removed – now part of header)
+
+          // Timer (top-right)
+          Positioned(
+            top: 16,
+            right: 27,
+            child: SizedBox(width: 160, child: _buildTimerWidget()),
+          ),
+
+          // Bottom controls (Cancel / Next or Stop)
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: Obx(() => _buildBottomControls()),
+          ),
+        ],
+      );
+    }
+
+    // ---------------- Standard (non-AR) layout --------------------------
     return Container(
       width: double.infinity,
       height: double.infinity,
       color: AppColors.gray50,
       child: Column(
         children: [
-          // const Spacer(),
-          Expanded(
-            flex: 1,
-            child: AnimatedTestTimerWidget(
-              duration: 10,
-              centerWidget: Image.asset(controller.currentTest!.image),
-              completedWidget: const Icon(Icons.check, color: Colors.green),
-              onCompleted: () {
-                // Complete the current test with mock result
-                // The controller will handle showing the "continue to next test" dialog
-                controller.completeCurrentTestWithMockResult();
-              },
-            ),
-          ),
+          Expanded(child: Center(child: _buildTimerWidget())),
+
+          // Unified bottom controls for non-AR layout
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                // Only show stop button when test is in progress, not completed
-                Obx(
-                  () =>
-                      controller.currentTestStatus == TestStatus.started
-                          ? AusaButton(
-                            onPressed: () => controller.cancelCurrentTest(),
-                            variant: ButtonVariant.primary,
-                            backgroundColor: Colors.orange,
-                            textColor: Colors.white,
-                            text: "Stop Test",
-                            size: ButtonSize.lg,
-                          )
-                          : const SizedBox(),
-                ),
-              ],
-            ),
+            child: Obx(() => _buildBottomControls()),
           ),
         ],
       ),

@@ -11,6 +11,7 @@ import 'package:ausa/common/model/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ausa/routes/app_routes.dart';
 
 class TestResultsPage extends StatelessWidget {
   TestResultsPage({super.key});
@@ -39,11 +40,14 @@ class TestResultsPage extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: SvgPicture.asset(
-                              AusaIcons.shieldTick,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(Color(0xff046535), BlendMode.srcIn),
-                            ),
+                    AusaIcons.shieldTick,
+                    width: 16,
+                    height: 16,
+                    colorFilter: ColorFilter.mode(
+                      Color(0xff046535),
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
                 SizedBox(width: AppSpacing.lg),
                 Text(
@@ -69,7 +73,6 @@ class TestResultsPage extends StatelessWidget {
     );
   }
 
-
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -89,6 +92,19 @@ class TestResultsPage extends StatelessWidget {
           Text(
             'Complete some tests to see results here',
             style: AppTypography.body(color: Colors.grey[500]),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AusaButton(
+                text: 'Home',
+                variant: ButtonVariant.tertiary,
+                onPressed: () {
+                  Get.toNamed(AppRoutes.home);
+                },
+              ),
+            ],
           ),
         ],
       ),
@@ -198,7 +214,7 @@ class TestResultsPage extends StatelessWidget {
               // Abnormal values warning
               if (result.hasAbnormalValues) ...[
                 Container(
-                  padding:  EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.xl,
                     vertical: AppSpacing.md,
                   ),
@@ -244,7 +260,7 @@ class TestResultsPage extends StatelessWidget {
         Text(
           parameter.name,
           style: AppTypography.body(
-           color: Color(0xff5A7497),
+            color: Color(0xff5A7497),
             weight: AppTypographyWeight.semibold,
           ),
           textAlign: TextAlign.center,
@@ -269,7 +285,7 @@ class TestResultsPage extends StatelessWidget {
               Text(
                 parameter.unit,
                 style: AppTypography.body(
-                 color: parameter.isAbnormal ? Colors.red : Colors.black,
+                  color: parameter.isAbnormal ? Colors.red : Colors.black,
                   weight: AppTypographyWeight.regular,
                 ),
               ),
@@ -295,7 +311,10 @@ class TestResultsPage extends StatelessWidget {
         children: [
           Text(
             'Would you like to:',
-            style: AppTypography.headline(color: Color(0xff5A7497), weight: AppTypographyWeight.regular),
+            style: AppTypography.headline(
+              color: Color(0xff5A7497),
+              weight: AppTypographyWeight.regular,
+            ),
           ),
           const SizedBox(height: 16),
           Row(
@@ -304,61 +323,75 @@ class TestResultsPage extends StatelessWidget {
               AusaButton(
                 text: 'Schedule Appointment',
                 onPressed: () {
-                  // TODO: Navigate to appointment scheduling
+                  Get.toNamed(AppRoutes.appointmentSchedule);
                 },
                 variant: ButtonVariant.secondary,
                 borderColor: AppColors.white,
                 textColor: AppColors.primary700,
-                leadingIcon:SvgPicture.asset(
-                              AusaIcons.calendarPlus02,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                leadingIcon: SvgPicture.asset(
+                  AusaIcons.calendarPlus02,
+                  width: 16,
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary700,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 size: ButtonSize.lg,
               ),
               const SizedBox(width: 5),
               AusaButton(
                 text: 'Check Again',
-                onPressed: () => controller.retakeAllTests(),
+                onPressed: () {
+                  controller.retakeAllTests();
+                },
                 variant: ButtonVariant.secondary,
                 borderColor: AppColors.white,
                 textColor: AppColors.primary700,
                 leadingIcon: SvgPicture.asset(
-                              AusaIcons.repeat02,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                  AusaIcons.repeat02,
+                  width: 16,
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary700,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 size: ButtonSize.lg,
               ),
               const SizedBox(width: 5),
               AusaButton(
                 text: 'Take another Test',
-                onPressed: () => controller.navigateToTestSelection(),
+                onPressed:
+                    () => {
+                      controller.resetFlow(),
+                      controller.navigateToTestSelection(),
+                    },
                 variant: ButtonVariant.secondary,
                 borderColor: AppColors.white,
                 textColor: AppColors.primary700,
                 leadingIcon: SvgPicture.asset(
-                              AusaIcons.share05,
-                              width: 16,
-                              height: 16,
-                              colorFilter: ColorFilter.mode(AppColors.primary700, BlendMode.srcIn),
-                            ),
+                  AusaIcons.share05,
+                  width: 16,
+                  height: 16,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary700,
+                    BlendMode.srcIn,
+                  ),
+                ),
                 size: ButtonSize.lg,
               ),
               const SizedBox(width: 10),
               AusaButton(
                 text: 'Finish',
                 onPressed: () {
-                  controller.resetSelections();
-                  Get.back();
+                  controller.resetFlow();
+                  controller.navigateToTestSelection();
                 },
                 width: 200,
                 variant: ButtonVariant.primary,
                 size: ButtonSize.lg,
               ),
-
             ],
           ),
         ],

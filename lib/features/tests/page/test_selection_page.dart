@@ -4,7 +4,7 @@ import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
-import 'package:ausa/features/tests/widget/test_selection_card.dart';
+import 'package:ausa/features/tests/widget/group_selection_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,14 +26,38 @@ class TestSelectionPage extends StatelessWidget {
               Get.back();
             },
           ),
-          Expanded(
+          AppMainContainer(
             child: Stack(
               children: [
                 Obx(
                   () =>
                       controller.isLoading
                           ? const Center(child: CircularProgressIndicator())
-                          : _buildTestGrid(),
+                          :  GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    childAspectRatio: 1.1,
+                                    crossAxisSpacing: 16,
+                                    mainAxisSpacing: 16,
+                                  ),
+                              itemCount: controller.availableGroups.length,
+                              itemBuilder: (context, index) {
+                                final group = controller.availableGroups[index];
+                                return Obx(() {
+                                  final isSelected = controller.selectedGroups
+                                      .any((g) => g.id == group.id);
+                                  return GroupSelectionCard(
+                                    group: group,
+                                    isSelected: isSelected,
+                                    onTap:
+                                        () => controller.toggleGroupSelection(
+                                          group,
+                                        ),
+                                  );
+                                });
+                              },
+                            ),
                 ),
                 _buildActionButton(),
               ],
@@ -44,34 +68,9 @@ class TestSelectionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTestGrid() {
-    return AppMainContainer(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          childAspectRatio: 1.1,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: controller.availableTests.length,
-        itemBuilder: (context, index) {
-          final test = controller.availableTests[index];
-          return TestSelectionCard(
-            test: test,
-            onTap: () => controller.toggleTestSelection(test),
-            onCategoryTap:
-                test.hasCategories
-                    ? () => controller.showCategorySelectionDialog(test)
-                    : null,
-          );
-        },
-      ),
-    );
-  }
-
   Widget _buildActionButton() {
     return Obx(() {
-      if (!controller.hasSelectedTests) {
+      if (!controller.hasSelectedGroups) {
         return const SizedBox.shrink();
       }
 
@@ -79,7 +78,7 @@ class TestSelectionPage extends StatelessWidget {
         bottom: 26,
         right: 24,
         child: AusaButton(
-          text: 'Start Test${controller.selectedTestsCount == 1 ? '' : 's'}',
+          text: 'Start Test${controller.selectedGroupsCount == 1 ? '' : 's'}',
           onPressed:
               controller.canStartSession
                   ? () => controller.startTestSession()
