@@ -5,6 +5,7 @@ import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/icons.dart';
+import 'dart:async';
 
 class TestInstructionsWidget extends StatefulWidget {
   final Test test;
@@ -21,6 +22,10 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
   int currentInstructionIndex = 0;
   bool isExpanded = false;
   late AnimationController _expandController;
+  Timer? _autoTimer;
+  Timer? _countdownTimer;
+  bool _showCompletionCard = false;
+  int _countdownSeconds = 3;
 
   List<TestInstruction> get instructions => widget.test.instructions ?? [];
   bool get hasInstructions => instructions.isNotEmpty;
@@ -40,12 +45,58 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
+
+    // If the test should auto-start, begin auto progression.
+    if (widget.test.startBehavior == TestStartBehavior.auto) {
+      if (hasInstructions) {
+        _startAutoProgress();
+      } else {
+        _triggerCompletion();
+      }
+    }
   }
 
   @override
   void dispose() {
+    _autoTimer?.cancel();
+    _countdownTimer?.cancel();
     _expandController.dispose();
     super.dispose();
+  }
+
+  void _startAutoProgress() {
+    _autoTimer?.cancel();
+    _autoTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (canGoNext) {
+        setState(() {
+          currentInstructionIndex++;
+        });
+      } else {
+        timer.cancel();
+        _triggerCompletion();
+      }
+    });
+  }
+
+  void _triggerCompletion() {
+    setState(() {
+      _showCompletionCard = true;
+    });
+
+    _countdownSeconds = 3;
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_countdownSeconds > 1) {
+        setState(() {
+          _countdownSeconds--;
+        });
+      } else {
+        timer.cancel();
+        if (widget.onClose != null) {
+          widget.onClose!();
+        }
+      }
+    });
   }
 
   void _goToPrevious() {
@@ -77,13 +128,17 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (_showCompletionCard) {
+      return _buildCompletionCard();
+    }
+
     return Material(
       elevation: isExpanded ? 16 : 4,
       borderRadius: BorderRadius.circular(16),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         width: isExpanded ? 300 : 300,
-        height: isExpanded ? 400 : 160,
+        height: isExpanded ? 400 : (!hasImages ? 130 : 160),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -123,22 +178,24 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
               ),
 
               // Navigation row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                spacing: 16,
-                children: [
-                  _buildSmallNavigationButton(
-                    iconPath: AusaIcons.chevronLeft,
-                    onPressed: canGoPrevious ? _goToPrevious : null,
-                    isEnabled: canGoPrevious,
-                  ),
-                  _buildSmallNavigationButton(
-                    iconPath: AusaIcons.chevronRight,
-                    onPressed: canGoNext ? _goToNext : null,
-                    isEnabled: canGoNext,
-                  ),
-                ],
-              ),
+              if (hasInstructions && instructions.length > 1) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  spacing: 16,
+                  children: [
+                    _buildSmallNavigationButton(
+                      iconPath: AusaIcons.chevronLeft,
+                      onPressed: canGoPrevious ? _goToPrevious : null,
+                      isEnabled: canGoPrevious,
+                    ),
+                    _buildSmallNavigationButton(
+                      iconPath: AusaIcons.chevronRight,
+                      onPressed: canGoNext ? _goToNext : null,
+                      isEnabled: canGoNext,
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
 
@@ -162,22 +219,26 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
 
           SizedBox(height: AppSpacing.sm),
 
-          // Show More button
-          GestureDetector(
-            onTap: _toggleExpansion,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppColors.primary700.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Text(
-                'Show More',
-                textAlign: TextAlign.left,
-                style: AppTypography.callout(color: AppColors.primary700),
+          // Show More button (only if images available)
+          if (hasImages)
+            GestureDetector(
+              onTap: _toggleExpansion,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primary700.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Text(
+                  'Show More',
+                  textAlign: TextAlign.left,
+                  style: AppTypography.callout(color: AppColors.primary700),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -415,26 +476,27 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
             ),
           ),
 
-          // Show More button
-          GestureDetector(
-            onTap: _toggleExpansion,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: AppColors.primary700,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                'Show More',
-                textAlign: TextAlign.center,
-                style: AppTypography.body(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+          // Show More button only if images are present in instructions list
+          if (hasImages)
+            GestureDetector(
+              onTap: _toggleExpansion,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppColors.primary700,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Show More',
+                  textAlign: TextAlign.center,
+                  style: AppTypography.body(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -485,6 +547,54 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCompletionCard() {
+    return Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        width: 300,
+        height: 160,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: const DecorationImage(
+            image: AssetImage('assets/images/success_info_bg.png'),
+            fit: BoxFit.cover,
+          ),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF6B8DFB), Color(0xFF23A4F2)],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'You are all set!',
+                style: AppTypography.body(
+                  weight: AppTypographyWeight.medium,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Test starting automatically in',
+                style: AppTypography.body(color: Colors.white, weight: AppTypographyWeight.regular),
+              ),
+              Text(
+                '$_countdownSeconds seconds.',
+                style: AppTypography.body(color: Colors.white, weight: AppTypographyWeight.regular),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

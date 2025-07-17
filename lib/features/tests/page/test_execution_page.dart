@@ -3,7 +3,7 @@ import 'package:ausa/constants/icons.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
-import 'package:ausa/features/teleconsultation/widget/animated_test_timer.dart';
+import 'package:ausa/features/tests/widget/animated_test_timer.dart';
 import 'package:ausa/common/enums/test_status.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/buttons.dart';
@@ -316,6 +316,9 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
       final bool isEcg6Lead = ctrl.currentTest?.type == TestType.ecg6Lead;
       final bool showGroupStepper = ctrl.isCurrentGroupMultiSelect;
       final bool showStepper = showGroupStepper || isEcg6Lead;
+      final bool isTestStarted =
+          ctrl.currentTestStatus == TestStatus.started ||
+          ctrl.currentTestStatus == TestStatus.completed;
 
       Widget titleWidget;
       if (showStepper) {
@@ -341,34 +344,39 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Back button
-            GestureDetector(
-              onTap: () => _handleCancel(),
-              child: Container(
-                width: 40,
-                height: 40,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+            // Back button - only show when test is not started
+            if (!isTestStarted) ...[
+              GestureDetector(
+                onTap: () => {
+                  controller.resetSelections(),
+                  Get.back()
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: SvgPicture.asset(
+                    AusaIcons.chevronLeft,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.black,
+                      BlendMode.srcIn,
                     ),
-                  ],
-                ),
-                child: SvgPicture.asset(
-                  AusaIcons.chevronLeft,
-                  colorFilter: const ColorFilter.mode(
-                    Colors.black,
-                    BlendMode.srcIn,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 16),
+              const SizedBox(width: 16),
+            ],
             titleWidget,
           ],
         ),
@@ -668,7 +676,10 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
   }
 
   Widget _buildInstructionsButton() {
-    return TestInstructionsWidget(test: controller.currentTest!);
+    return TestInstructionsWidget(
+      test: controller.currentTest!,
+      onClose: () => controller.startCurrentTest(),
+    );
   }
 
   Widget _buildTestInProgress() {

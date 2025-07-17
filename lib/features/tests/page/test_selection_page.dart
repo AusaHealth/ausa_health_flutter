@@ -78,7 +78,7 @@ class TestSelectionPage extends StatelessWidget {
         bottom: 26,
         right: 24,
         child: AusaButton(
-          text: 'Start Test${controller.selectedGroupsCount == 1 ? '' : 's'}',
+          text: 'Start${controller.selectedGroupsCount == 1 ? '' : ' ${controller.selectedGroupsCount}'} Test${controller.selectedGroupsCount == 1 ? '' : 's'}',
           onPressed:
               controller.canStartSession
                   ? () => controller.startTestSession()

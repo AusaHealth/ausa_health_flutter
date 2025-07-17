@@ -1,3 +1,4 @@
+import 'package:ausa/constants/radius.dart';
 import 'package:flutter/material.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
@@ -22,7 +23,7 @@ class GroupSelectionCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppRadius.xl2),
           border: Border.all(
             color: isSelected ? AppColors.primary700 : Colors.transparent,
             width: isSelected ? 1 : 0,
@@ -35,24 +36,21 @@ class GroupSelectionCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Image.asset(group.image, fit: BoxFit.contain),
-              ),
-            ),
-            const SizedBox(height: 12),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
+              padding: const EdgeInsets.all(12),
+              child: Image.asset(group.image, fit: BoxFit.contain),
+            ),
+            Positioned(
+              bottom: 15,
+              left: 6,
+              right: 6,
               child: Text(
                 group.name,
-                style: AppTypography.body(fontWeight: FontWeight.w600),
+                style: AppTypography.body(weight: AppTypographyWeight.medium),
                 textAlign: TextAlign.center,
-                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

@@ -6,8 +6,7 @@ enum ARUsageType { none, instructionsOnly, duringTestOnly, both }
 /// Determines how the user proceeds from the READY state into the RUNNING state of a test
 enum TestStartBehavior {
   manual, // User manually presses a button
-  autoOnSensorDetection, // Hardware triggers start as soon as a signal is detected
-  autoAfterInstructions, // Starts automatically after the last instruction step is completed
+  auto, // Automatically starts, triggered by either AR marker or sensor detection
 }
 
 /// Defines if (and how) the user must choose between multiple sub-tests
@@ -50,14 +49,14 @@ enum TestType {
 class TestInstruction {
   final String title;
   final String content;
-  final String image;
+  final String? image;
   final bool isCompleted;
   final int stepNumber;
 
   const TestInstruction({
     required this.title,
     required this.content,
-    required this.image,
+    this.image,
     this.isCompleted = false,
     required this.stepNumber,
   });

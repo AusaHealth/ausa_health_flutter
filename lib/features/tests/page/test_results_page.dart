@@ -274,7 +274,11 @@ class TestResultsPage extends StatelessWidget {
           textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
-              parameter.value,
+              parameter.value.contains('.') 
+                  ? double.tryParse(parameter.value) != null 
+                      ? double.parse(parameter.value).toStringAsFixed(2)
+                      : parameter.value
+                  : parameter.value,
               style: AppTypography.title1(
                 color: parameter.isAbnormal ? Colors.red : Colors.black,
                 weight: AppTypographyWeight.semibold,

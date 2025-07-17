@@ -15,7 +15,7 @@ class TestDefinitions {
         'Sit comfortably with your back supported and feet flat on the floor.',
       ],
       arUsage: ARUsageType.instructionsOnly,
-      startBehavior: TestStartBehavior.manual,
+      startBehavior: TestStartBehavior.auto,
       estimatedDurationSeconds: 60,
       order: 1,
       instruction: 'Place your arm in the cuff and remain still.',
@@ -51,7 +51,7 @@ class TestDefinitions {
       image: 'assets/products/51.png',
       prerequisites: ['Ensure your finger is clean and warm.'],
       arUsage: ARUsageType.none,
-      startBehavior: TestStartBehavior.autoOnSensorDetection,
+      startBehavior: TestStartBehavior.auto,
       estimatedDurationSeconds: 30,
       order: 2,
       instruction: 'Place your finger in the sensor and remain still.',
@@ -60,19 +60,16 @@ class TestDefinitions {
           stepNumber: 1,
           title: 'Preparation',
           content: 'Remove any nail polish and warm your hands.',
-          image: 'assets/images/test_ins.png',
         ),
         TestInstruction(
           stepNumber: 2,
           title: 'Positioning',
           content: 'Place your finger completely in the sensor.',
-          image: 'assets/images/test_ins.png',
         ),
         TestInstruction(
           stepNumber: 3,
           title: 'Measurement',
           content: 'Keep your finger still until the reading is complete.',
-          image: 'assets/images/test_ins.png',
         ),
       ],
     ),
@@ -85,7 +82,7 @@ class TestDefinitions {
       description: 'Measure fasting blood glucose levels',
       image: 'assets/products/51.png',
       arUsage: ARUsageType.none,
-      startBehavior: TestStartBehavior.autoOnSensorDetection,
+      startBehavior: TestStartBehavior.auto,
       estimatedDurationSeconds: 45,
       order: 3,
       instruction: 'Insert test strip and apply blood sample.',
@@ -94,19 +91,16 @@ class TestDefinitions {
           stepNumber: 1,
           title: 'Preparation',
           content: 'Wash your hands thoroughly with soap and water.',
-          image: 'assets/images/test_ins.png',
         ),
         TestInstruction(
           stepNumber: 2,
           title: 'Test Strip',
           content: 'Insert a test strip into the meter.',
-          image: 'assets/images/test_ins.png',
         ),
         TestInstruction(
           stepNumber: 3,
           title: 'Blood Sample',
           content: 'Prick your finger and apply blood to the test strip.',
-          image: 'assets/images/test_ins.png',
         ),
       ],
     ),
@@ -119,7 +113,7 @@ class TestDefinitions {
       description: 'Measure blood glucose 2 hours after eating',
       image: 'assets/products/51.png',
       arUsage: ARUsageType.none,
-      startBehavior: TestStartBehavior.autoOnSensorDetection,
+      startBehavior: TestStartBehavior.auto,
       estimatedDurationSeconds: 45,
       order: 4,
       instruction: 'Insert test strip and apply blood sample.',
@@ -128,19 +122,16 @@ class TestDefinitions {
           stepNumber: 1,
           title: 'Preparation',
           content: 'Wash your hands thoroughly with soap and water.',
-          image: 'assets/images/test_ins.png',
         ),
         TestInstruction(
           stepNumber: 2,
           title: 'Test Strip',
           content: 'Insert a test strip into the meter.',
-          image: 'assets/images/test_ins.png',
         ),
         TestInstruction(
           stepNumber: 3,
           title: 'Blood Sample',
           content: 'Prick your finger and apply blood to the test strip.',
-          image: 'assets/images/test_ins.png',
         ),
       ],
     ),
@@ -162,19 +153,6 @@ class TestDefinitions {
           stepNumber: 1,
           title: 'Preparation',
           content: 'Ensure the thermometer is clean and ready.',
-          image: 'assets/images/test_ins.png',
-        ),
-        TestInstruction(
-          stepNumber: 2,
-          title: 'Positioning',
-          content: 'Place the thermometer in your ear or under your tongue.',
-          image: 'assets/images/test_ins.png',
-        ),
-        TestInstruction(
-          stepNumber: 3,
-          title: 'Reading',
-          content: 'Wait for the beep and read the temperature.',
-          image: 'assets/images/test_ins.png',
         ),
       ],
     ),
@@ -196,19 +174,6 @@ class TestDefinitions {
           stepNumber: 1,
           title: 'Preparation',
           content: 'Remove any metal objects from your chest area.',
-          image: 'assets/images/test_ins.png',
-        ),
-        TestInstruction(
-          stepNumber: 2,
-          title: 'Electrodes',
-          content: 'Attach electrodes to your chest as instructed.',
-          image: 'assets/images/test_ins.png',
-        ),
-        TestInstruction(
-          stepNumber: 3,
-          title: 'Recording',
-          content: 'Lie still and breathe normally during recording.',
-          image: 'assets/images/test_ins.png',
         ),
       ],
     ),
@@ -230,19 +195,6 @@ class TestDefinitions {
           stepNumber: 1,
           title: 'Preparation',
           content: 'Remove any metal objects from your chest area.',
-          image: 'assets/images/test_ins.png',
-        ),
-        TestInstruction(
-          stepNumber: 2,
-          title: 'Electrodes',
-          content: 'Attach electrodes to your chest as instructed.',
-          image: 'assets/images/test_ins.png',
-        ),
-        TestInstruction(
-          stepNumber: 3,
-          title: 'Recording',
-          content: 'Lie still and breathe normally during recording.',
-          image: 'assets/images/test_ins.png',
         ),
       ],
     ),
@@ -343,6 +295,68 @@ class TestDefinitions {
     ),
   };
 
+  /// Maps test types to their variant names (just the variant part, not the full name)
+  static final Map<TestType, String> TestVariantNames = {
+    // Blood Pressure - no variant
+    TestType.bloodPressure: '',
+
+    // Blood Oxygen - no variant
+    TestType.bloodOxygen: '',
+
+    // Blood Glucose variants
+    TestType.bloodGlucoseFasting: 'Fasting',
+    TestType.bloodGlucosePostMeal: 'Post-Meal',
+
+    // Body Temperature - no variant
+    TestType.bodyTemperature: '',
+
+    // ECG variants
+    TestType.ecg2Lead: '2-Lead',
+    TestType.ecg6Lead: '6-Lead',
+
+    // Body Sounds variants
+    TestType.bodySoundHeart: 'Heart',
+    TestType.bodySoundLungs: 'Lungs',
+    TestType.bodySoundStomach: 'Stomach',
+    TestType.bodySoundBowel: 'Bowel',
+
+    // ENT variants
+    TestType.entEar: 'Ear',
+    TestType.entNose: 'Nose',
+    TestType.entThroat: 'Throat',
+
+    // Legacy types - no variants
+    TestType.ecg: '',
+    TestType.bloodGlucose: '',
+    TestType.bodySound: '',
+    TestType.ent: '',
+    TestType.heartSignal: '',
+    TestType.bloodSaturation: '',
+    TestType.bodyImage: '',
+  };
+
+  /// Maps subtype names to prettier display names
+  static final Map<String, String> SubTypeDisplayNames = {
+    // ECG subtypes
+    'ECG – 2-Lead': '2-Lead',
+    'ECG – 6-Lead': '6-Lead',
+
+    // Blood Glucose subtypes
+    'Blood Glucose – Fasting': 'Fasting',
+    'Blood Glucose – Post-Meal': 'Post-Meal',
+
+    // Body Sounds subtypes
+    'Heart Sounds': 'Heart',
+    'Lung Sounds': 'Lungs',
+    'Stomach Sounds': 'Stomach',
+    'Bowel Sounds': 'Bowel',
+
+    // ENT subtypes
+    'Ear Examination': 'Ear',
+    'Nose Examination': 'Nose',
+    'Throat Examination': 'Throat',
+  };
+
   // --------------------------------------------------------------------------------------------
   /// Generic instruction templates reused by several tests
   static final List<TestInstruction> _bodySoundInstructions = [
@@ -352,18 +366,6 @@ class TestDefinitions {
       content: "Ensure you're in a quiet environment.",
       image: 'assets/images/test_ins.png',
     ),
-    TestInstruction(
-      stepNumber: 2,
-      title: 'Positioning',
-      content: 'Place the stethoscope on the specified body area.',
-      image: 'assets/images/test_ins.png',
-    ),
-    TestInstruction(
-      stepNumber: 3,
-      title: 'Listening',
-      content: 'Breathe normally and remain still during recording.',
-      image: 'assets/images/test_ins.png',
-    ),
   ];
 
   static final List<TestInstruction> _entInstructions = [
@@ -371,19 +373,16 @@ class TestDefinitions {
       stepNumber: 1,
       title: 'Preparation',
       content: 'Ensure the examination area is well-lit.',
-      image: 'assets/images/test_ins.png',
     ),
     TestInstruction(
       stepNumber: 2,
       title: 'Positioning',
       content: 'Position yourself comfortably for examination.',
-      image: 'assets/images/test_ins.png',
     ),
     TestInstruction(
       stepNumber: 3,
       title: 'Examination',
       content: "Follow the examiner's instructions during the procedure.",
-      image: 'assets/images/test_ins.png',
     ),
   ];
 
@@ -392,14 +391,6 @@ class TestDefinitions {
     final list = allTests.values.toList();
     list.sort((a, b) => (a.order ?? 0).compareTo(b.order ?? 0));
     return list;
-  }
-
-  static bool _isLegacyTest(TestType type) {
-    return [
-      TestType.heartSignal,
-      TestType.bloodSaturation,
-      TestType.bodyImage,
-    ].contains(type);
   }
 
   static Test? getTestByType(TestType type) => allTests[type];

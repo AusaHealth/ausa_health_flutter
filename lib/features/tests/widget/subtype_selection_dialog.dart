@@ -1,7 +1,6 @@
 import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/constants.dart';
-import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,19 +32,17 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
-        constraints: BoxConstraints(
-          maxWidth: 600,
-          maxHeight: MediaQuery.of(context).size.height * 0.8,
-        ),
+        constraints: BoxConstraints(maxWidth: 640, maxHeight: 400),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Main content with image and text
             Expanded(
               child: Row(
                 children: [
-                  // Left side image placeholder (reuse category dialog style)
+                  // Left side - Image with orange background
                   Container(
-                    width: 250,
+                    width: 240,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -62,11 +59,11 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                     ),
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(12),
                         child: Image.asset(
                           widget.test.image,
-                          width: 200,
-                          height: 400,
+                          width: 300,
+                          height: 300,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -85,40 +82,33 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Next test',
-                            style: AppTypography.callout(
-                              color: Colors.grey.shade600,
-                              fontWeight: FontWeight.w500,
+                            widget.test.name,
+                            style: AppTypography.largeTitle(
+                              color: Colors.black,
+                              weight: AppTypographyWeight.medium,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            widget.test.name,
-                            style: AppTypography.headline(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey.shade900,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
                             'Select test ${_isMultiSelect ? 'types' : 'type'}:',
-                            style: AppTypography.callout(
-                              color: Colors.grey.shade800,
-                              fontWeight: FontWeight.w500,
+                            style: AppTypography.body(
+                              color: Colors.black,
+                              weight: AppTypographyWeight.semibold,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
                           // Grid list
                           Expanded(
                             child: GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 12,
-                                    childAspectRatio: 1.2,
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 8,
+                                    childAspectRatio: 2,
                                   ),
                               itemCount: widget.test.subTypes!.length,
                               itemBuilder: (context, index) {
@@ -132,7 +122,10 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                                     borderRadius: BorderRadius.circular(12),
                                     onTap: () => _toggleSelection(subType.id),
                                     child: Container(
-                                      padding: const EdgeInsets.all(10),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
                                       decoration: BoxDecoration(
                                         color:
                                             isSelected
@@ -149,31 +142,23 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                                         ),
                                       ),
                                       child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            width: 50,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  isSelected
-                                                      ? AppColors.primary700
-                                                      : Colors.grey.shade400,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                subType.icon ?? '📋',
-                                                style: const TextStyle(
-                                                  fontSize: 24,
-                                                ),
-                                              ),
+                                          Text(
+                                            subType.icon ?? '📋',
+                                            style: const TextStyle(
+                                              fontSize: 20,
                                             ),
                                           ),
-                                          const SizedBox(height: 12),
+                                          const SizedBox(height: 8),
                                           Text(
-                                            subType.name,
+                                            TestDefinitions
+                                                    .SubTypeDisplayNames[subType
+                                                    .name] ??
+                                                subType.name,
                                             style: AppTypography.callout(
                                               fontWeight: FontWeight.w600,
                                               color:
@@ -191,12 +176,14 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                               },
                             ),
                           ),
-                          // Buttons
+
+                          // Action Buttons
                           Row(
                             children: [
                               Expanded(
                                 child: AusaButton(
                                   text: 'Cancel',
+                                  size: ButtonSize.lg,
                                   onPressed: () => Get.back(),
                                   variant: ButtonVariant.secondary,
                                   borderColor: AppColors.primary700,
@@ -207,6 +194,7 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: AusaButton(
+                                  size: ButtonSize.lg,
                                   onPressed:
                                       _selectedIds.isNotEmpty
                                           ? () => Get.back(
