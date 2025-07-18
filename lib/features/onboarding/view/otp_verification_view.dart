@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:ausa/common/custom_keyboard.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/close_button_widget.dart';
-import 'package:ausa/common/widget/on_screen_keyboard_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/helpers.dart';
@@ -14,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
-import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 import 'package:pinput/pinput.dart';
 import 'package:ausa/common/widget/otp_input_widget.dart';
 
@@ -144,10 +142,22 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: OnScreenKeyboardWidget(
-              controller: controller.otpController,
-              type: VirtualKeyboardType.Numeric,
-              color: AppColors.white,
+            child: CustomKeyboard(
+              height: DesignScaleManager.keyboardHeight.toDouble(),
+              fontSize: 14,
+              keyboardType: CustomKeyboardType.numeric,
+              onKeyPressed: (v) {
+                controller.otpController.text += v;
+              },
+              onEnterPressed: () {
+                controller.completeStep(OnboardingStep.otp);
+                controller.goToStep(OnboardingStep.personalDetails);
+                Get.to(() => OnboardingWrapper());
+              },
+              onBackspacePressed: () {
+                controller.otpController.text = controller.otpController.text
+                    .substring(0, controller.otpController.text.length - 1);
+              },
             ),
           ),
         ],

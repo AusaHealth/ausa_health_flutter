@@ -1,6 +1,5 @@
 import 'dart:ui';
-
-import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/custom_keyboard.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';
@@ -12,8 +11,6 @@ import 'package:ausa/features/settings/controller/wifi_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 class WifiInputPasswordWidget extends StatefulWidget {
   const WifiInputPasswordWidget({super.key});
@@ -124,37 +121,24 @@ class _WifiInputPasswordWidgetState extends State<WifiInputPasswordWidget> {
                   ),
                 ),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: AppSpacing.xl2,
-                      right: AppSpacing.xl3,
-                    ),
-                    child: AusaButton(
-                      size: ButtonSize.lg,
-                      text: 'Save',
-                      onPressed: () {
-                        controller.submitPassword(_controller.text);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-
-              Spacer(),
-              Container(
-                color: Colors.white,
-                child: VirtualKeyboard(
-                  textController: _controller,
-                  fontSize: 16,
+              SizedBox(height: AppSpacing.xl2),
+              Expanded(
+                child: CustomKeyboard(
                   height: DesignScaleManager.keyboardHeight.toDouble(),
-                  textColor: Colors.black,
-                  defaultLayouts: [VirtualKeyboardDefaultLayouts.English],
-                  type: VirtualKeyboardType.Alphanumeric,
-                  postKeyPress: (v) {},
+                  fontSize: 14,
+                  keyboardType: CustomKeyboardType.alphanumeric,
+                  onKeyPressed: (v) {
+                    _controller.text += v;
+                  },
+                  onEnterPressed: () {
+                    controller.submitPassword(_controller.text);
+                  },
+                  onBackspacePressed: () {
+                    _controller.text = _controller.text.substring(
+                      0,
+                      _controller.text.length - 1,
+                    );
+                  },
                 ),
               ),
             ],
@@ -162,6 +146,5 @@ class _WifiInputPasswordWidgetState extends State<WifiInputPasswordWidget> {
         ),
       ),
     );
-    ;
   }
 }

@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:ui';
+import 'package:ausa/common/custom_keyboard.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/close_button_widget.dart';
-
-import 'package:ausa/common/widget/on_screen_keyboard_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/helpers.dart';
@@ -14,7 +12,6 @@ import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
 import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 class PhoneNumberInputModal extends StatefulWidget {
   const PhoneNumberInputModal({super.key});
@@ -27,13 +24,13 @@ class _PhoneNumberInputModalState extends State<PhoneNumberInputModal> {
   final controller = Get.find<OnboardingController>();
   bool isPhoneNumberValid = false;
 
-  void _validatePhoneNumber(String phoneNumber) {
-    setState(() {
-      isPhoneNumberValid = Helpers.isPhoneNumberValid(phoneNumber);
+  // void _validatePhoneNumber(String phoneNumber) {
+  //   setState(() {
+  //     isPhoneNumberValid = Helpers.isPhoneNumberValid(phoneNumber);
 
-      print('Valid: $isPhoneNumberValid, Value: $phoneNumber');
-    });
-  }
+  //     print('Valid: $isPhoneNumberValid, Value: $phoneNumber');
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -155,11 +152,13 @@ class _PhoneNumberInputModalState extends State<PhoneNumberInputModal> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: OnScreenKeyboardWidget(
-              onTap: (value) {},
-              controller: controller.phoneController,
-              type: VirtualKeyboardType.Numeric,
-              color: Color(0xffE3E6EE),
+            child: CustomKeyboard(
+              height: DesignScaleManager.keyboardHeight.toDouble(),
+              fontSize: 14,
+              keyboardType: CustomKeyboardType.numeric,
+              onKeyPressed: (v) {
+                controller.otpController.text += v;
+              },
             ),
           ),
         ],

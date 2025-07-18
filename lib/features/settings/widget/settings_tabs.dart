@@ -17,8 +17,8 @@ class SettingsTabs extends StatelessWidget {
       {'icon': AusaIcons.wifi, 'label': 'Wifi'},
       {'icon': AusaIcons.tv01, 'label': 'Display'},
       {'icon': AusaIcons.bluetoothOn, 'label': 'Bluetooth'},
-      {'icon': AusaIcons.bankNote01, 'label': 'Notifications'},
-      {'icon': AusaIcons.navigationPointerOff01, 'label': 'Call Settings'},
+      {'icon': AusaIcons.bell02, 'label': 'Notifications'},
+      {'icon': AusaIcons.phoneCall02, 'label': 'Call Settings'},
     ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

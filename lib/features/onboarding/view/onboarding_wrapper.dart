@@ -1,6 +1,5 @@
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/custom_header.dart';
-import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/features/onboarding/view/widgets/ob_lang_selection_widget.dart';
@@ -100,9 +99,6 @@ class OnboardingWrapper extends StatelessWidget {
                             return ObPersonalDetailWidget();
                           case OnboardingStep.terms:
                             return OnboardingTermsWidget();
-
-                          default:
-                            return Container();
                         }
                       }),
                     ),

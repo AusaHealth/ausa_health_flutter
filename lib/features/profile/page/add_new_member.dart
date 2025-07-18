@@ -151,6 +151,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                       children: [
                                         Expanded(
                                           child: ProfileCustomTextField(
+                                            focusFieldName: 'shortName',
                                             label: 'Short Name',
                                             placeholder: 'Enter',
                                           ),
@@ -158,6 +159,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                         SizedBox(width: AppSpacing.xl4),
                                         Expanded(
                                           child: ProfileCustomTextField(
+                                            focusFieldName: 'shortName',
                                             label: 'Full name',
                                             placeholder: 'Enter',
                                           ),
@@ -165,6 +167,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                         SizedBox(width: AppSpacing.xl4),
                                         Expanded(
                                           child: ProfileCustomTextField(
+                                            focusFieldName: 'relationship',
                                             label: 'Relation',
                                             placeholder: 'Enter',
                                           ),
@@ -177,6 +180,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                       children: [
                                         Expanded(
                                           child: ProfileCustomTextField(
+                                            focusFieldName: 'phone',
                                             label: 'Phone Number',
                                             placeholder: '+1 (000) 000-0000',
                                           ),
@@ -184,6 +188,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                         SizedBox(width: AppSpacing.xl4),
                                         Expanded(
                                           child: ProfileCustomTextField(
+                                            focusFieldName: 'email',
                                             label: 'Email',
                                             placeholder: 'Enter',
                                           ),
@@ -196,6 +201,7 @@ class _AddNewMemberState extends State<AddNewMember> {
                                       children: [
                                         Expanded(
                                           child: ProfileCustomTextField(
+                                            focusFieldName: 'address',
                                             label: 'Address',
                                             placeholder: 'Enter',
                                           ),

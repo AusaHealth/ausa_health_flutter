@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/custom_loader.dart';
 import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/features/profile/page/input_model.dart';
 import 'package:ausa/features/profile/page/input_page.dart';
@@ -104,10 +105,10 @@ class WifiController extends GetxController {
     final net = networks[idx];
 
     // Show connecting toast immediately
-    CustomToast.show(
-      message: 'Connecting to ${net.name}',
-      type: ToastType.warning,
-    );
+    CustomLoader.show(message: "Connecting to ${net.name}");
+    Future.delayed(const Duration(seconds: 2), () {
+      CustomLoader.hide();
+    });
 
     // Simulate password check with a short delay
     Future.delayed(const Duration(seconds: 2), () {

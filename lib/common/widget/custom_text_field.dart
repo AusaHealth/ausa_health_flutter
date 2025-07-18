@@ -16,11 +16,14 @@ class ProfileCustomTextField extends StatelessWidget {
   final String label;
   final String placeholder;
   final int maxLines;
+  final String? focusFieldName; // Add this parameter
+
   const ProfileCustomTextField({
     super.key,
     required this.label,
     required this.placeholder,
     this.maxLines = 1,
+    this.focusFieldName, // Add this parameter
   });
 
   @override
@@ -44,7 +47,6 @@ class ProfileCustomTextField extends StatelessWidget {
           decoration: BoxDecoration(
             color: Color(0xff1570EF).withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(AppRadius.xl2),
-            // border: Border.all(color: Colors.grey[300]!),
           ),
           child: TextFormField(
             onTap: () async {
@@ -66,14 +68,7 @@ class ProfileCustomTextField extends StatelessWidget {
                   label: 'Relationship',
                   inputType: InputTypeEnum.selector,
                   value: '',
-                  inputSource: [
-                    'Spouse',
-                    'Child',
-                    'Grandchild',
-                    'Parent',
-                    'Friend',
-                    'Other',
-                  ],
+                  inputSource: Helpers.relationshipOptions,
                 ),
                 InputModel(
                   name: 'phone',
@@ -94,16 +89,19 @@ class ProfileCustomTextField extends StatelessWidget {
                   value: '',
                 ),
               ];
-              final result = await Get.to(() => InputPage(inputs: inputs));
+
+              final result = await Get.to(
+                () => InputPage(
+                  inputs: inputs,
+                  initialFocusFieldName:
+                      focusFieldName, // Pass the focus field name
+                ),
+              );
+
               log('result: $result');
-
-              // for (final input in result) {
-              //   print('Input: ${input.name}, Value: "${input.value}"');
-              // }
-
               log('result is List<InputModel>: ${result is List<InputModel>}');
               log('result is not null: ${result != null}');
-              log('result is not empty: ${result.isNotEmpty}');
+
               if (result != null &&
                   result is List<InputModel> &&
                   result.isNotEmpty) {
@@ -142,9 +140,7 @@ class ProfileCustomTextField extends StatelessWidget {
                 }
               }
             },
-
             maxLines: maxLines,
-
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),

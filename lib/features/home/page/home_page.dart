@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/custom_loader.dart';
 import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
@@ -114,7 +115,6 @@ class HomePage extends StatelessWidget {
                       iconPath: AusaIcons.arrowRight,
                       color: Colors.cyan,
                       onTap: () {
-                        // CustomLoader.show(message: "Loading, please wait...");
                         Get.toNamed(AppRoutes.onboarding);
                         // Show a success toast
                         // CustomToast.show(

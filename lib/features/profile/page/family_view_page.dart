@@ -1,6 +1,8 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/helpers.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
@@ -164,17 +166,74 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                                 onPressed: () async {
                                   final inputs = [
                                     InputModel(
-                                      name: 'name',
-                                      label: 'Name',
+                                      name: 'shortName',
+                                      label: 'Short Name',
                                       inputType: InputTypeEnum.text,
+                                      value:
+                                          controller
+                                              .familyMembers[selectedTab]
+                                              .shortName,
+                                    ),
+                                    InputModel(
+                                      name: 'fullName',
+                                      label: 'Full Name',
+                                      inputType: InputTypeEnum.text,
+                                      value:
+                                          controller
+                                              .familyMembers[selectedTab]
+                                              .fullName,
+                                    ),
+                                    InputModel(
+                                      name: 'relationship',
+                                      label: 'Relationship',
+                                      inputType: InputTypeEnum.selector,
+                                      value:
+                                          controller
+                                              .familyMembers[selectedTab]
+                                              .relationship,
+                                      inputSource: Helpers.relationshipOptions,
                                     ),
                                     InputModel(
                                       name: 'phone',
-                                      label: 'Phone',
+                                      label: 'Phone Number',
+                                      inputType: InputTypeEnum.number,
+                                      value:
+                                          controller
+                                              .familyMembers[selectedTab]
+                                              .phone,
+                                    ),
+                                    InputModel(
+                                      name: 'email',
+                                      label: 'Email',
                                       inputType: InputTypeEnum.text,
+                                      value:
+                                          controller
+                                              .familyMembers[selectedTab]
+                                              .email,
+                                    ),
+                                    InputModel(
+                                      name: 'address',
+                                      label: 'Address',
+                                      inputType: InputTypeEnum.text,
+                                      value:
+                                          controller
+                                              .familyMembers[selectedTab]
+                                              .address,
                                     ),
                                   ];
-                                  Get.to(InputPage(inputs: inputs));
+                                  final result = await Get.to(
+                                    () => InputPage(inputs: inputs),
+                                  );
+                                  if (result != null &&
+                                      result is List<InputModel>) {
+                                    controller.familyMembers[selectedTab]
+                                        .updateFromInputs(result);
+                                    CustomToast.show(
+                                      message: 'Member updated',
+                                      type: ToastType.success,
+                                    );
+                                    setState(() {});
+                                  }
                                 },
                                 variant: ButtonVariant.tertiary,
                                 leadingIcon: SvgPicture.asset(

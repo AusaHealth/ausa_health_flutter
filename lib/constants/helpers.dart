@@ -1,4 +1,12 @@
 class Helpers {
+  static List<String> relationshipOptions = [
+    'Spouse',
+    'Child',
+    'Grandchild',
+    'Parent',
+    'Friend',
+    'Other',
+  ];
   static bool isPhoneNumberValid(String phone) {
     final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
     return digits.length == 10;
