@@ -1,3 +1,4 @@
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/features/profile/model/care_model.dart';
 import 'package:ausa/features/profile/model/condition_model.dart';
 import 'package:ausa/features/profile/model/family_model.dart';
@@ -6,8 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
-  // Controllers
-
   RxBool showSummary = false.obs;
 
   RxBool hideKeyboard = false.obs;
@@ -44,30 +43,40 @@ class ProfileController extends GetxController {
     phone: '+1555-123-4567',
   );
 
-  final List<FamilyModel> familyMembers = [
-    FamilyModel(
-      shortName: 'Chris',
-      fullName: 'Christopher Chavez',
-      phone: '+1 555-123-4567',
-      email: 'johndoes@clinic.com',
-      relationship: 'Friend',
-      address: '1234 Maplewood Lane Springfield, IL 62704',
-    ),
-    FamilyModel(
-      shortName: 'Jenny',
-      fullName: 'Jenny Doe',
-      phone: '+1 555-123-4568',
-      email: 'jennydoe@clinic.com',
-      relationship: 'Mother',
-      address: '1234 Maplewood Lane Springfield, IL 62704',
-    ),
-    FamilyModel(
-      shortName: 'John',
-      fullName: 'John Doe',
-      phone: '+1 555-123-4569',
-      email: 'johndoe@clinic.com',
-      relationship: 'Father',
-      address: '1234 Maplewood Lane Springfield, IL 62704',
-    ),
-  ];
+  final RxList<FamilyModel> familyMembers =
+      <FamilyModel>[
+        FamilyModel(
+          shortName: 'Chris',
+          fullName: 'Christopher Chavez',
+          phone: '+1 555-123-4567',
+          email: 'johndoes@clinic.com',
+          relationship: 'Friend',
+          address: '1234 Maplewood Lane Springfield, IL 62704',
+        ),
+        FamilyModel(
+          shortName: 'Jenny',
+          fullName: 'Jenny Doe',
+          phone: '+1 555-123-4568',
+          email: 'jennydoe@clinic.com',
+          relationship: 'Mother',
+          address: '1234 Maplewood Lane Springfield, IL 62704',
+        ),
+        FamilyModel(
+          shortName: 'John',
+          fullName: 'John Doe',
+          phone: '+1 555-123-4569',
+          email: 'johndoe@clinic.com',
+          relationship: 'Father',
+          address: '1234 Maplewood Lane Springfield, IL 62704',
+        ),
+      ].obs;
+
+  void addFamilyMember(FamilyModel member) {
+    familyMembers.add(member);
+  }
+
+  void removeFamilyMember(FamilyModel member) {
+    familyMembers.remove(member);
+    CustomToast.show(message: 'Member removed');
+  }
 }

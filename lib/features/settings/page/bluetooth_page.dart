@@ -1,12 +1,9 @@
-import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class BluetoothPage extends StatelessWidget {
   const BluetoothPage({super.key});
@@ -28,29 +25,31 @@ class BluetoothPage extends StatelessWidget {
           ),
         ),
 
-        Row(
-          children: [
-            DeviceStatusCard(
-              deviceName: 'Blood pressure',
-              imagePath: AppImages.bloodPressure,
-              statusImagePath: AppImages.connecting,
-              isActive: true,
-            ),
-            SizedBox(width: AppSpacing.lg),
-            DeviceStatusCard(
-              deviceName: 'X',
-              imagePath: AppImages.X,
-              statusImagePath: AppImages.notFound,
-              isActive: false,
-            ),
-            SizedBox(width: AppSpacing.lg),
-            DeviceStatusCard(
-              deviceName: 'ECG',
-              imagePath: AppImages.ecg,
-              statusImagePath: AppImages.notFound,
-              isActive: false,
-            ),
-          ],
+        Expanded(
+          child: Row(
+            children: [
+              DeviceStatusCard(
+                deviceName: 'Blood pressure',
+                imagePath: AppImages.bloodPressure,
+                statusImagePath: AppImages.connecting,
+                isActive: true,
+              ),
+              SizedBox(width: AppSpacing.lg),
+              DeviceStatusCard(
+                deviceName: 'X',
+                imagePath: AppImages.X,
+                statusImagePath: AppImages.notFound,
+                isActive: false,
+              ),
+              SizedBox(width: AppSpacing.lg),
+              DeviceStatusCard(
+                deviceName: 'ECG',
+                imagePath: AppImages.ecg,
+                statusImagePath: AppImages.notFound,
+                isActive: false,
+              ),
+            ],
+          ),
         ),
       ],
     );

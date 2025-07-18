@@ -5,7 +5,7 @@ enum InputTypeEnum {
   date,
   selector,
   password,
-  phoneNumber,
+
   height,
   weight,
 }

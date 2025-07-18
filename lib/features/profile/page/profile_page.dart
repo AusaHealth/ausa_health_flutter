@@ -52,7 +52,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
           SizedBox(height: AppSpacing.lg),
           AppMainContainer(
-            backgroundColor: Colors.orangeAccent,
             child: Builder(
               builder: (context) {
                 if (selectedTab == 0) {

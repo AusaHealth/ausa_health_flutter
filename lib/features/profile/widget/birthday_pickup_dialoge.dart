@@ -31,7 +31,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
   int? selectedRangeEnd;
   final int minYear = 1901;
   final int maxYear = DateTime.now().year;
-  late DateTime _currentMonth;
+  late DateTime currentMonth;
 
   // Validation message
   String? validationMessage;
@@ -43,7 +43,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
       selectedYear = widget.initialDate!.year;
       selectedMonth = widget.initialDate!.month;
       selectedDay = widget.initialDate!.day;
-      _currentMonth = DateTime(selectedYear!, selectedMonth!, 1);
+      currentMonth = DateTime(selectedYear!, selectedMonth!, 1);
       step = 0;
     } else {
       selectedYear = null;
@@ -457,7 +457,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
                 setState(() {
                   selectedMonth = i + 1;
                   step = 2;
-                  _currentMonth = DateTime(
+                  currentMonth = DateTime(
                     selectedYear ?? DateTime.now().year,
                     i + 1,
                     1,

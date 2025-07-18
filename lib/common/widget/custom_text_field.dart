@@ -78,7 +78,7 @@ class ProfileCustomTextField extends StatelessWidget {
                 InputModel(
                   name: 'phone',
                   label: 'Phone Number',
-                  inputType: InputTypeEnum.phoneNumber,
+                  inputType: InputTypeEnum.number,
                   value: '',
                 ),
                 InputModel(
@@ -97,9 +97,9 @@ class ProfileCustomTextField extends StatelessWidget {
               final result = await Get.to(() => InputPage(inputs: inputs));
               log('result: $result');
 
-              for (final input in result) {
-                print('Input: ${input.name}, Value: "${input.value}"');
-              }
+              // for (final input in result) {
+              //   print('Input: ${input.name}, Value: "${input.value}"');
+              // }
 
               log('result is List<InputModel>: ${result is List<InputModel>}');
               log('result is not null: ${result != null}');
@@ -133,6 +133,7 @@ class ProfileCustomTextField extends StatelessWidget {
                   );
                   controller.member.updateFromInputs(normalizedResult);
                   controller.showSummary.value = true;
+                  controller.familyMembers.add(controller.member);
                 } else {
                   CustomToast.show(
                     message: 'Please fill at least one field to add a profile.',

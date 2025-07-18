@@ -1,5 +1,4 @@
 import 'package:ausa/common/widget/custom_tab_button.dart';
-import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 

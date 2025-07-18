@@ -21,10 +21,10 @@ class InputPage extends StatefulWidget {
   final bool isOtherWifiNetwork;
   final List<InputModel> inputs;
   const InputPage({
-    Key? key,
+    super.key,
     required this.inputs,
     this.isOtherWifiNetwork = false,
-  }) : super(key: key);
+  });
 
   @override
   State<InputPage> createState() => _InputPageState();
@@ -119,7 +119,7 @@ class _InputPageState extends State<InputPage> {
               margin: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
               padding: EdgeInsets.all(AppSpacing.xl4),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
+                color: Colors.white.withValues(alpha: 0.85),
                 borderRadius: BorderRadius.circular(AppRadius.xl2),
                 border: Border.all(
                   color: isFocused ? Color(0xFFFF9900) : Colors.transparent,
@@ -127,7 +127,7 @@ class _InputPageState extends State<InputPage> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.07),
+                    color: Colors.black.withValues(alpha: 0.07),
                     blurRadius: 12,
                     offset: Offset(0, 2),
                   ),
@@ -138,7 +138,11 @@ class _InputPageState extends State<InputPage> {
                 children: [
                   if (isKeyboardField)
                     TextField(
-                      readOnly: true,
+                      keyboardType:
+                          model.inputType == InputTypeEnum.number
+                              ? TextInputType.number
+                              : TextInputType.text,
+                      // readOnly: true,
                       obscureText:
                           model.inputType == InputTypeEnum.password
                               ? _obscureText
@@ -151,8 +155,16 @@ class _InputPageState extends State<InputPage> {
                           offset: (model.value?.toString() ?? "").length,
                         ),
                       onChanged: (v) => setState(() => model.value = v),
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
+                      style: AppTypography.body(
+                        weight: AppTypographyWeight.regular,
+                        color: AppColors.bodyTextColor,
+                      ),
+
                       decoration: InputDecoration(
+                        prefixText:
+                            model.inputType == InputTypeEnum.number
+                                ? '+1 '
+                                : null,
                         suffixIcon:
                             (model.inputType == InputTypeEnum.password)
                                 ? IconButton(
@@ -200,48 +212,53 @@ class _InputPageState extends State<InputPage> {
                         color: AppColors.bodyTextColor,
                       ),
                     ),
-                  if (model.inputType == InputTypeEnum.phoneNumber)
-                    TextField(
-                      keyboardType: TextInputType.phone,
-                      focusNode: _focusNodes[index],
-                      controller: TextEditingController(
-                          text:
-                              model.value?.toString().startsWith('+1') ?? false
-                                  ? model.value.toString()
-                                  : '+1${model.value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? ''}',
-                        )
-                        ..selection = TextSelection.collapsed(
-                          offset: (model.value?.toString().length ?? 2),
-                        ),
-                      onChanged: (v) {
-                        // Remove all non-digit characters except the leading '+1'
-                        String digits = v.replaceAll(RegExp(r'[^0-9]'), '');
-                        // Remove the leading '1' if present (since we always add it)
-                        if (digits.startsWith('1')) {
-                          digits = digits.substring(1);
-                        }
-                        setState(() => model.value = '+1 $digits');
-                      },
-                      style: AppTypography.body(
-                        weight: AppTypographyWeight.regular,
-                        color: AppColors.bodyTextColor,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '+1 (000) 000 - 0000',
-                        hintStyle: AppTypography.body(
-                          weight: AppTypographyWeight.regular,
-                          color: AppColors.hintTextColor,
-                        ),
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    ),
+                  // if (model.inputType == InputTypeEnum.phoneNumber)
+                  //   TextField(
+                  //     readOnly: true,
+                  //     keyboardType: TextInputType.phone,
+
+                  //     focusNode: _focusNodes[index],
+                  //     // controller: TextEditingController(
+                  //     //   text: model.value?.toString() ?? '',
+                  //     // ),
+                  //     // controller: TextEditingController(
+                  //     //     text:
+                  //     //         model.value?.toString().startsWith('+1') ?? false
+                  //     //             ? model.value.toString()
+                  //     //             : '+1${model.value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? ''}',
+                  //     //   )
+                  //     //   ..selection = TextSelection.collapsed(
+                  //     //     offset: (model.value?.toString().length ?? 2),
+                  //     //   ),
+                  //     onChanged: (v) {
+                  // String digits = v.replaceAll(RegExp(r'[^0-9]'), '');
+
+                  // if (digits.startsWith('1')) {
+                  //   digits = digits.substring(1);
+                  // }
+                  // setState(() => model.value = '+1 $digits');
+                  //     },
+                  //     style: AppTypography.body(
+                  //       weight: AppTypographyWeight.regular,
+                  //       color: AppColors.bodyTextColor,
+                  //     ),
+                  //     decoration: InputDecoration(
+                  //       border: InputBorder.none,
+                  //       hintText: _getHint(model.name),
+                  //       hintStyle: AppTypography.body(
+                  //         weight: AppTypographyWeight.regular,
+                  //         color: AppColors.hintTextColor,
+                  //       ),
+                  //       isDense: true,
+                  //       contentPadding: EdgeInsets.zero,
+                  //     ),
+                  //   ),
                 ],
               ),
             ),
           ),
 
+        // Height and Weight
         if (model.inputType == InputTypeEnum.height)
           HeightInput(
             value: model.value?.toString() ?? '',

@@ -6,6 +6,7 @@ import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/utils.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
+import 'package:ausa/features/profile/page/family_page.dart';
 import 'package:ausa/features/profile/page/input_model.dart';
 import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:ausa/features/profile/widget/add_family_dialouge.dart';
@@ -24,21 +25,49 @@ class FamilyViewPage extends StatefulWidget {
 
 class _FamilyViewPageState extends State<FamilyViewPage> {
   int selectedTab = 0;
-  final List<String> tabItems =
-      Get.find<ProfileController>().familyMembers
-          .map((e) => e.shortName)
-          .toList();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            tabItems.length > 1
-                ? Expanded(
-                  child: HorizontalTabBar(
+    final ProfileController controller = Get.find<ProfileController>();
+    return Obx(() {
+      final tabItems =
+          controller.familyMembers.map((e) => e.shortName).toList();
+
+      // Ensure selectedTab is within valid range
+      if (tabItems.isNotEmpty && selectedTab >= tabItems.length) {
+        selectedTab = tabItems.length - 1;
+      } else if (tabItems.isEmpty) {
+        selectedTab = 0;
+      }
+
+      // If list is empty, show FamilyPage
+      if (tabItems.isEmpty) {
+        return FamilyPage();
+      }
+
+      // Additional safety check to ensure we have a valid member to display
+      if (selectedTab < 0 || selectedTab >= controller.familyMembers.length) {
+        selectedTab = 0;
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              tabItems.length > 1
+                  ? Expanded(
+                    child: HorizontalTabBar(
+                      items: tabItems,
+                      selectedIndex: selectedTab,
+                      onSelected: (index) {
+                        setState(() {
+                          selectedTab = index;
+                        });
+                      },
+                    ),
+                  )
+                  : HorizontalTabBar(
                     items: tabItems,
                     selectedIndex: selectedTab,
                     onSelected: (index) {
@@ -47,76 +76,57 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                       });
                     },
                   ),
-                )
-                : HorizontalTabBar(
-                  items: tabItems,
-                  selectedIndex: selectedTab,
-                  onSelected: (index) {
-                    setState(() {
-                      selectedTab = index;
-                    });
-                  },
+              Spacer(),
+              AusaButton(
+                variant: ButtonVariant.secondary,
+                borderColor: Color(0xff1570EF).withValues(alpha: 0.1),
+                textColor: AppColors.primary400,
+                backgroundColor: Colors.white,
+                leadingIcon: SvgPicture.asset(
+                  AusaIcons.userPlus01,
+                  height: DesignScaleManager.scaleValue(48),
+                  width: DesignScaleManager.scaleValue(48),
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary400,
+                    BlendMode.srcIn,
+                  ),
                 ),
-
-            Spacer(),
-            AusaButton(
-              variant: ButtonVariant.secondary,
-              borderColor: Color(0xff1570EF).withValues(alpha: 0.1),
-              textColor: AppColors.primary400,
-              backgroundColor: Colors.white,
-              leadingIcon: SvgPicture.asset(
-                AusaIcons.userPlus01,
-                height: DesignScaleManager.scaleValue(48),
-                width: DesignScaleManager.scaleValue(48),
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary400,
-                  BlendMode.srcIn,
-                ),
+                text: 'Add Member',
+                onPressed: () {
+                  Utils.showBlurredDialog(context, AddFamilyDialouge());
+                },
               ),
-              text: 'Add Member',
-              onPressed: () {
-                Utils.showBlurredDialog(context, AddFamilyDialouge());
-              },
-            ),
-          ],
-        ),
-
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.only(top: AppSpacing.lg),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppRadius.xl3),
-                    child: Image.asset(
-                      'assets/images/profile.png',
-                      fit: BoxFit.fill,
-                      height: DesignScaleManager.scaleValue(640),
+            ],
+          ),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: AppSpacing.lg),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(AppRadius.xl3),
+                      child: Image.asset(
+                        'assets/images/profile.png',
+                        fit: BoxFit.fill,
+                        height: DesignScaleManager.scaleValue(640),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(width: AppSpacing.lg),
-
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: EdgeInsets.only(top: AppSpacing.xl),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Stack(
+                SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: AppSpacing.xl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
                           children: [
                             Container(
-                              // padding: EdgeInsets.only(
-                              //   left: AppSpacing.xl4,
-                              //   right: AppSpacing.xl4,
-                              //   top: AppSpacing.xl4,
-                              // ),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(
@@ -133,12 +143,16 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MemberSummaryCardWidget(
-                                    isFamily: true,
-                                    member:
-                                        Get.find<ProfileController>()
-                                            .familyMembers[selectedTab],
-                                  ),
+                                  // Safety check before accessing the member
+                                  if (controller.familyMembers.isNotEmpty &&
+                                      selectedTab >= 0 &&
+                                      selectedTab <
+                                          controller.familyMembers.length)
+                                    MemberSummaryCardWidget(
+                                      isFamily: true,
+                                      member:
+                                          controller.familyMembers[selectedTab],
+                                    ),
                                 ],
                               ),
                             ),
@@ -172,21 +186,20 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                                     BlendMode.srcIn,
                                   ),
                                 ),
-
                                 text: 'Edit',
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }

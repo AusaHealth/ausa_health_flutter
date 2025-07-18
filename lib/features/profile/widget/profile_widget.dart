@@ -146,7 +146,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               InputModel(
                                 name: 'phone',
                                 label: 'Phone',
-                                inputType: InputTypeEnum.phoneNumber,
+                                inputType: InputTypeEnum.number,
                                 value: profileController.user.phone,
                               ),
                               InputModel(
@@ -202,12 +202,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 }
 
 // Tab Button
-class _ProfileTabButton extends StatelessWidget {
+class ProfileTabButton extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
-  const _ProfileTabButton({
+  const ProfileTabButton({
+    super.key,
     required this.label,
     required this.selected,
     required this.onTap,
@@ -320,6 +321,7 @@ class _ContactDetails extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.xl),
               _ProfileDetail(
+                isAddress: true,
                 label: 'Address',
                 value: profileController.user.address,
               ),
@@ -327,7 +329,12 @@ class _ContactDetails extends StatelessWidget {
           ),
         ),
 
-        _ProfileDetail(label: 'Email', value: profileController.user.email),
+        Expanded(
+          child: _ProfileDetail(
+            label: 'Email',
+            value: profileController.user.email,
+          ),
+        ),
       ],
     );
   }
@@ -338,11 +345,13 @@ class _ProfileDetail extends StatelessWidget {
   final String label;
   final String value;
   final bool isLast;
+  final bool isAddress;
 
   const _ProfileDetail({
     required this.label,
     required this.value,
     this.isLast = false,
+    this.isAddress = false,
   });
 
   @override
@@ -355,9 +364,12 @@ class _ProfileDetail extends StatelessWidget {
           style: AppTypography.callout(weight: AppTypographyWeight.regular),
         ),
         SizedBox(height: AppSpacing.mdLarge),
-        Text(
-          value,
-          style: AppTypography.body(weight: AppTypographyWeight.semibold),
+        SizedBox(
+          width: isAddress ? 160 : null,
+          child: Text(
+            value,
+            style: AppTypography.body(weight: AppTypographyWeight.semibold),
+          ),
         ),
         if (!isLast) SizedBox(height: AppSpacing.xl2),
       ],

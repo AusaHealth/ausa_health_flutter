@@ -1,11 +1,9 @@
-import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class CarePage extends StatelessWidget {
   const CarePage({super.key});

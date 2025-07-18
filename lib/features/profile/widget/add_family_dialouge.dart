@@ -5,6 +5,7 @@ import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/page/add_new_member.dart';
 import 'package:ausa/features/profile/page/email_invite_page.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class AddFamilyDialouge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -36,6 +38,7 @@ class AddFamilyDialouge extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
+                    profileController.showSummary.value = false;
                     Get.to(() => AddNewMember());
                   },
                   child: Container(

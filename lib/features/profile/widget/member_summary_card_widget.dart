@@ -3,11 +3,12 @@ import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/model/family_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:ausa/features/profile/controller/profile_controller.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class MemberSummaryCardWidget extends StatelessWidget {
   final bool isFamily;
@@ -20,7 +21,7 @@ class MemberSummaryCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController controller = Get.find<ProfileController>();
+    final profileController = Get.find<ProfileController>();
     return Column(
       children: [
         Padding(
@@ -72,7 +73,7 @@ class MemberSummaryCardWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(
               right: AppSpacing.xl,
-              // bottom: AppSpacing.xl,
+              bottom: AppSpacing.xl,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -81,6 +82,7 @@ class MemberSummaryCardWidget extends StatelessWidget {
                   buttonText: 'Delete Member',
                   icon: AusaIcons.trash01,
                   onPressed: () {
+                    profileController.removeFamilyMember(member);
                     // Call your delete logic here
                     // For example: controller.deleteMember(member);
                   },
