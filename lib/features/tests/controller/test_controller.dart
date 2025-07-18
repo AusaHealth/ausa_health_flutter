@@ -9,7 +9,6 @@ import 'package:ausa/features/tests/model/test_prerequisites.dart';
 import 'package:ausa/features/tests/page/test_selection_page.dart';
 import 'package:ausa/features/tests/page/test_execution_page.dart';
 import 'package:ausa/features/tests/page/test_results_page.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 import 'dart:async';
@@ -402,9 +401,21 @@ class TestController extends GetxController {
 
     _currentTestStatus.value = TestStatus.started;
 
-    // For demo mode, simulate test execution
-    if (demoMode) {
-      await _simulateTestExecution();
+    // Check if this is a multi-select test (body sounds, ENT) or individual body sound/ENT test
+    final bool isMultiSelectTest =
+        TestGroupFactory.isMultiSelectGroup(currentTest!.group) ||
+        _isBodySoundOrEntTest(currentTest!.type);
+
+    if (isMultiSelectTest) {
+      // For multi-select tests, immediately complete without timer
+      // since user can press Next anytime
+      final result = _generateMockResult(currentTest!);
+      _completeCurrentTest(result);
+    } else {
+      // For demo mode, simulate test execution with timer
+      if (demoMode) {
+        await _simulateTestExecution();
+      }
     }
   }
 
@@ -455,50 +466,57 @@ class TestController extends GetxController {
 
     _currentTestStatus.value = TestStatus.completed;
 
-    // Show completion dialog and ask for next test
-    Future.delayed(Duration(seconds: 2), () {
+    // For multi-select tests (body sounds, ENT), immediately set awaiting state
+    // since there's no timer - user can press Next anytime
+    final completedGroup = _currentTest.value?.group;
+    final bool isMultiSelectGroup =
+        TestGroupFactory.isMultiSelectGroup(completedGroup ?? '') ||
+        _isBodySoundOrEntTest(_currentTest.value!.type);
+
+    if (isMultiSelectGroup) {
+      // For multi-select groups, immediately set awaiting state without delay
       if (currentSession!.hasMoreTests) {
         final nextTest = currentSession!.nextTest;
-        // Determine if we are still within the same multi-select group and that
-        // group supports the inline flow. If so, *skip* the continue dialog and
-        // wait for the user to tap the inline "Next" button instead.
-        // Use the group of the test that just finished. This is more reliable
-        // than looking it up in `TestDefinitions` because some of the mock
-        // `TestResultFactory` helpers use generic enum values (e.g.
-        // `TestType.bodySound`, `TestType.ent`) that do **not** exist in the
-        // static `allTests` map. Relying on the currently executing `_currentTest`
-        // guarantees we always have the concrete group name.
-        final completedGroup = _currentTest.value?.group;
-
-        // If the next test belongs to the *same* group as the one we just
-        // completed, we skip the standard next-test dialog. For multi-select
-        // groups (Body Sounds, ENT) we rely on the inline stepper flow; for
-        // all other groups we simply continue automatically to the next test.
-
         final bool isSameGroup =
             completedGroup != null &&
             nextTest != null &&
             nextTest.group == completedGroup;
 
         if (isSameGroup) {
-          if (TestGroupFactory.isMultiSelectGroup(completedGroup)) {
-            // Inline flow: wait for the user to tap the inline "Next" button.
-            _awaitingNextInGroup.value = true;
-            _nextTestInGroup = nextTest;
-          } else {
-            // Non-multi-select group – advance automatically.
-            _moveToNextTest(skipDialogs: true);
-          }
-          return; // Never show the dialog for same-group transitions.
+          // Inline flow: wait for the user to tap the inline "Next" button.
+          _awaitingNextInGroup.value = true;
+          _nextTestInGroup = nextTest;
+        } else {
+          // Different group – wait for user to tap Next Test button.
+          _awaitingNextSingle.value = true;
+          _nextTestSingle = nextTest;
         }
-
-        // Different group – wait for user to tap Next Test button.
-        _awaitingNextSingle.value = true;
-        _nextTestSingle = nextTest;
       } else {
         _completeSession();
       }
-    });
+    } else {
+      // For non-multi-select tests, use the original timer-based logic
+      Future.delayed(Duration(seconds: 2), () {
+        if (currentSession!.hasMoreTests) {
+          final nextTest = currentSession!.nextTest;
+          final bool isSameGroup =
+              completedGroup != null &&
+              nextTest != null &&
+              nextTest.group == completedGroup;
+
+          if (isSameGroup) {
+            // Non-multi-select group – advance automatically.
+            _moveToNextTest(skipDialogs: true);
+          } else {
+            // Different group – wait for user to tap Next Test button.
+            _awaitingNextSingle.value = true;
+            _nextTestSingle = nextTest;
+          }
+        } else {
+          _completeSession();
+        }
+      });
+    }
   }
 
   /// Called from the execution UI when the user taps the inline
@@ -933,7 +951,18 @@ class TestController extends GetxController {
     _sessionCompleted.value = false;
   }
 
-  /// Reset entire flow including session state and selections.
+  // Helper method to check if a test is a body sound or ENT test
+  bool _isBodySoundOrEntTest(TestType testType) {
+    return testType == TestType.bodySoundHeart ||
+        testType == TestType.bodySoundLungs ||
+        testType == TestType.bodySoundStomach ||
+        testType == TestType.bodySoundBowel ||
+        testType == TestType.entEar ||
+        testType == TestType.entNose ||
+        testType == TestType.entThroat;
+  }
+
+  // Reset entire flow including session state and selections.
   void resetFlow() {
     _clearSession();
     resetSelections();

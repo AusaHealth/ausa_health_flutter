@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:ausa/features/appointments/model/time_slot.dart';
 import 'package:ausa/features/appointments/controller/appointments_controller.dart';
@@ -16,6 +17,7 @@ class AppointmentSchedulingController extends GetxController {
   final RxBool _showSuccessPopup = false.obs;
   final RxMap<String, List<TimeSlot>> _timeSlotsCache =
       <String, List<TimeSlot>>{}.obs;
+  Timer? _autoNavigateTimer;
 
   // Public getters
   bool get isMonthView => _isMonthView.value;
@@ -33,6 +35,12 @@ class AppointmentSchedulingController extends GetxController {
   void onInit() {
     super.onInit();
     _loadTimeSlots();
+  }
+
+  @override
+  void onClose() {
+    _cancelAutoNavigateTimer();
+    super.onClose();
   }
 
   // Private update methods
@@ -132,6 +140,9 @@ class AppointmentSchedulingController extends GetxController {
 
       _updateShowSuccessPopup(true);
       _resetForm();
+
+      // Start auto-navigation timer
+      _startAutoNavigateTimer();
     } catch (e) {
       Get.snackbar(
         'Error',
@@ -144,11 +155,27 @@ class AppointmentSchedulingController extends GetxController {
   }
 
   void closeSuccessPopup() {
+    _cancelAutoNavigateTimer();
     _updateShowSuccessPopup(false);
+    navigateToScheduledAppointments();
   }
 
   void navigateToScheduledAppointments() {
     Get.toNamed('/appointments/scheduled');
+  }
+
+  void _startAutoNavigateTimer() {
+    _cancelAutoNavigateTimer(); // Cancel any existing timer
+    _autoNavigateTimer = Timer(const Duration(seconds: 10), () {
+      if (showSuccessPopup) {
+        closeSuccessPopup();
+      }
+    });
+  }
+
+  void _cancelAutoNavigateTimer() {
+    _autoNavigateTimer?.cancel();
+    _autoNavigateTimer = null;
   }
 
   // Check if a date has available time slots (for calendar border feature)

@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.initialRoute,
       getPages: AppPages.pages,
       unknownRoute: AppPages.unknownRoute,
+      defaultTransition: Transition.noTransition,
     );
   }
 }

@@ -13,8 +13,10 @@ class PrerequisiteCheckDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      clipBehavior: Clip.none,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
+        clipBehavior: Clip.none,
         constraints: BoxConstraints(maxWidth: 640, maxHeight: 400),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -25,14 +27,15 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                 children: [
                   // Left side - Image with orange background
                   Container(
+                    clipBehavior: Clip.none,
                     width: 240,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.orange.shade400,
-                          Colors.orange.shade600,
+                          Color(0xffFF8C00),
+                          Color(0xffFFDD00),
                         ],
                       ),
                       borderRadius: BorderRadius.only(
@@ -40,16 +43,20 @@ class PrerequisiteCheckDialog extends StatelessWidget {
                         bottomLeft: Radius.circular(20),
                       ),
                     ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Image.asset(
-                          prerequisiteCheck.imagePath,
-                          width: 300,
-                          height: 300,
-                          fit: BoxFit.contain,
+                    child: Stack(
+                      clipBehavior: Clip.none, // Allow overflow to be visible
+                      children: [
+                        Positioned(
+                          left: -53,
+                          top: 27,
+                          child: Image.asset(
+                            prerequisiteCheck.imagePath,
+                            width: 295,
+                            height: 360,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
 

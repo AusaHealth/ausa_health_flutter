@@ -33,7 +33,7 @@ class TestPrerequisitesFactory {
         return TestPrerequisiteCheck(
           testType: TestType.bloodGlucose,
           testName: 'Blood Glucose',
-          imagePath: 'assets/pre/bread.png',
+          imagePath: 'assets/images/dialog/bg.png',
           title: 'Blood Glucose',
           question:
               'Have you had anything to eat or drink (other than water) in the past few hours?',
@@ -48,7 +48,7 @@ class TestPrerequisitesFactory {
         return TestPrerequisiteCheck(
           testType: TestType.bloodOxygen,
           testName: 'Blood Oxygen',
-          imagePath: 'assets/pre/nail.png',
+          imagePath: 'assets/images/dialog/bo_pre.png',
           title: 'Blood Oxygen',
           question:
               'Make sure that you don\'t have dark nail polish on the finger being tested.',
@@ -63,7 +63,7 @@ class TestPrerequisitesFactory {
         return TestPrerequisiteCheck(
           testType: TestType.bloodPressure,
           testName: 'Blood Pressure',
-          imagePath: 'assets/pre/coffee.png',
+          imagePath: 'assets/images/dialog/bp_pre.png',
           title: 'Blood Pressure',
           question:
               'Have you had caffeine, nicotine, or exercised in the past 30 minutes?',

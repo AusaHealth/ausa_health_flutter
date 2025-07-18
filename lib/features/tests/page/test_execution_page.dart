@@ -4,6 +4,8 @@ import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:ausa/features/tests/widget/animated_test_timer.dart';
+import 'package:ausa/features/tests/widget/ecg_timer_widgets.dart';
+import 'package:ausa/features/tests/widget/test_image_display.dart';
 import 'package:ausa/common/enums/test_status.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/buttons.dart';
@@ -347,10 +349,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
             // Back button - only show when test is not started
             if (!isTestStarted) ...[
               GestureDetector(
-                onTap: () => {
-                  controller.resetSelections(),
-                  Get.back()
-                },
+                onTap: () => {controller.resetSelections(), Get.back()},
                 child: Container(
                   width: 40,
                   height: 40,
@@ -453,7 +452,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
                   variant: ButtonVariant.secondary,
                   borderColor: AppColors.primary700,
                   textColor: AppColors.primary700,
-                  backgroundColor: Colors.transparent,
+                  size: ButtonSize.lg,
                 ),
                 const SizedBox(width: 16),
                 AusaButton(
@@ -515,8 +514,7 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
           AusaButton(
             text: 'Cancel',
             size: ButtonSize.lg,
-            isEnabled: false,
-            onPressed: null,
+            onPressed: () => _handleCancel(),
             variant: ButtonVariant.secondary,
             borderColor: AppColors.primary700,
             textColor: AppColors.primary700,
@@ -595,25 +593,27 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
       );
     }
 
-    final bool isMulti = controller.isCurrentGroupMultiSelect;
+    final bool isMulti =
+        controller.isCurrentGroupMultiSelect ||
+        (controller.currentTest != null
+            ? _isBodySoundOrEntTest(controller.currentTest!.type)
+            : false);
 
     if (isMulti) {
       // Determine label
       final bool waitingGroup = controller.awaitingNextInGroup;
-      final bool waitingSingle = controller.awaitingNextSingle;
 
       final String? nextSame = controller.nextTestSameGroup?.name;
       // Always show the concrete upcoming test name (if available) so users
-      // know what is coming next, even while the button is disabled during
-      // the current test run.
+      // know what is coming next.
       final String nextLabel =
           (nextSame != null && nextSame.isNotEmpty)
               ? 'Next: $nextSame'
               : 'Next Test';
 
-      final bool nextEnabled =
-          (waitingGroup || waitingSingle) &&
-          controller.currentTestStatus == TestStatus.completed;
+      // For body sounds and ENT tests, always enable the Next button
+      // since there's no timer - user can press Next anytime
+      final bool nextEnabled = true;
 
       return Row(
         children: [
@@ -628,16 +628,13 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
           const SizedBox(width: 16),
           AusaButton(
             text: nextLabel,
-            onPressed:
-                nextEnabled
-                    ? () {
-                      if (waitingGroup) {
-                        controller.continueToNextInGroup();
-                      } else {
-                        controller.continueToNextSingle();
-                      }
-                    }
-                    : null,
+            onPressed: () {
+              if (waitingGroup) {
+                controller.continueToNextInGroup();
+              } else {
+                controller.continueToNextSingle();
+              }
+            },
             variant: ButtonVariant.primary,
             size: ButtonSize.lg,
             isEnabled: nextEnabled,
@@ -688,24 +685,70 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
         test.arUsage == ARUsageType.duringTestOnly ||
         test.arUsage == ARUsageType.both;
 
+    // Check if this is a body sounds or ENT test (either as individual or multi-select)
+    final bool isMultiSelectTest =
+        controller.isCurrentGroupMultiSelect ||
+        _isBodySoundOrEntTest(test.type);
+
     // Helper to build the animated timer with ECG stepper awareness
-    AnimatedTestTimerWidget _buildTimerWidget() {
-      return AnimatedTestTimerWidget(
-        key: ValueKey('${controller.currentTest?.type}_$_ecgStepIndex'),
-        duration: 2,
-        centerWidget: Image.asset(test.image),
-        completedWidget: const Icon(Icons.check, color: Colors.green),
-        onCompleted: () {
-          if (test.type == TestType.ecg6Lead && _ecgStepIndex < 2) {
-            // Mark current step finished – wait for user to press "Next Step"
-            setState(() {
-              _ecgStepCompleted = true;
-            });
-          } else {
-            // Regular completion flow
+    Widget buildTimerWidget() {
+      // Use specialized ECG timers for ECG tests
+      if (test.type == TestType.ecg2Lead) {
+        return Ecg2LeadTimerWidget(
+          key: ValueKey('${controller.currentTest?.type}_$_ecgStepIndex'),
+          duration: 5,
+          completedWidget: const Icon(Icons.check, color: Colors.green),
+          onCompleted: () {
             controller.completeCurrentTestWithMockResult();
-          }
-        },
+          },
+        );
+      } else if (test.type == TestType.ecg6Lead) {
+        return Ecg6LeadTimerWidget(
+          key: ValueKey('${controller.currentTest?.type}_$_ecgStepIndex'),
+          duration: 5,
+          currentStep: _ecgStepIndex,
+          completedWidget: const Icon(Icons.check, color: Colors.green),
+          onCompleted: () {
+            if (_ecgStepIndex < 2) {
+              // Mark current step finished – wait for user to press "Next Step"
+              setState(() {
+                _ecgStepCompleted = true;
+              });
+            } else {
+              // Regular completion flow
+              controller.completeCurrentTestWithMockResult();
+            }
+          },
+        );
+      } else {
+        // Use default timer for other tests
+        return AnimatedTestTimerWidget(
+          key: ValueKey('${controller.currentTest?.type}_$_ecgStepIndex'),
+          duration: 2,
+          centerWidget: Image.asset(test.image),
+          completedWidget: const Icon(Icons.check, color: Colors.green),
+          onCompleted: () {
+            if (test.type == TestType.ecg6Lead && _ecgStepIndex < 2) {
+              // Mark current step finished – wait for user to press "Next Step"
+              setState(() {
+                _ecgStepCompleted = true;
+              });
+            } else {
+              // Regular completion flow
+              controller.completeCurrentTestWithMockResult();
+            }
+          },
+        );
+      }
+    }
+
+    // Helper to build the image display widget for body sounds and ENT tests
+    Widget buildImageDisplayWidget() {
+      return TestImageDisplayWidget(
+        key: ValueKey('${controller.currentTest?.type}_$_ecgStepIndex'),
+        imagePath: test.image,
+        width: 200,
+        height: 200,
       );
     }
 
@@ -715,11 +758,17 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
         children: [
           // (Stepper removed – now part of header)
 
-          // Timer (top-right)
+          // Timer or Image Display (top-right)
           Positioned(
             top: 16,
             right: 27,
-            child: SizedBox(width: 160, child: _buildTimerWidget()),
+            child: SizedBox(
+              width: test.type == TestType.ecg6Lead ? 160 : 300,
+              child:
+                  isMultiSelectTest
+                      ? buildImageDisplayWidget()
+                      : buildTimerWidget(),
+            ),
           ),
 
           // Bottom controls (Cancel / Next or Stop)
@@ -739,7 +788,14 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
       color: AppColors.gray50,
       child: Column(
         children: [
-          Expanded(child: Center(child: _buildTimerWidget())),
+          Expanded(
+            child: Center(
+              child:
+                  isMultiSelectTest
+                      ? buildImageDisplayWidget()
+                      : buildTimerWidget(),
+            ),
+          ),
 
           // Unified bottom controls for non-AR layout
           Padding(
@@ -749,6 +805,17 @@ class _TestExecutionPageState extends State<TestExecutionPage> {
         ],
       ),
     );
+  }
+
+  // Helper method to check if a test is a body sound or ENT test
+  bool _isBodySoundOrEntTest(TestType testType) {
+    return testType == TestType.bodySoundHeart ||
+        testType == TestType.bodySoundLungs ||
+        testType == TestType.bodySoundStomach ||
+        testType == TestType.bodySoundBowel ||
+        testType == TestType.entEar ||
+        testType == TestType.entNose ||
+        testType == TestType.entThroat;
   }
 
   @override

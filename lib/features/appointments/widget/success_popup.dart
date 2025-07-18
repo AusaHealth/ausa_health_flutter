@@ -1,13 +1,46 @@
-import 'package:ausa/constants/color.dart';
+import 'dart:async';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SuccessPopup extends StatelessWidget {
+class SuccessPopup extends StatefulWidget {
   final VoidCallback onClose;
 
   const SuccessPopup({super.key, required this.onClose});
+
+  @override
+  State<SuccessPopup> createState() => _SuccessPopupState();
+}
+
+class _SuccessPopupState extends State<SuccessPopup> {
+  int _countdown = 10;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startCountdown() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          _countdown--;
+        });
+        if (_countdown <= 0) {
+          timer.cancel();
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +73,13 @@ class SuccessPopup extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                  onTap: onClose,
+                  onTap: widget.onClose,
                   child: Container(
                     padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: const Icon(
                       Icons.close,
                       color: Colors.white,
@@ -71,9 +108,12 @@ class SuccessPopup extends StatelessWidget {
                   ],
                 ),
                 child: SvgPicture.asset(
-                              AusaIcons.check,
-                              colorFilter: ColorFilter.mode(Color(0xFF2B5CE6), BlendMode.srcIn),
-                            ),
+                  AusaIcons.check,
+                  colorFilter: ColorFilter.mode(
+                    Color(0xFF2B5CE6),
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
 
               const SizedBox(height: 32),
@@ -101,6 +141,25 @@ class SuccessPopup extends StatelessWidget {
               ),
 
               const SizedBox(height: 8),
+
+              // Countdown indicator
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Auto-navigate in $_countdown seconds',
+                  style: AppTypography.callout(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

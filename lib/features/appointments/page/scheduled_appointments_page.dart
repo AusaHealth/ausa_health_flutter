@@ -29,7 +29,7 @@ class ScheduledAppointmentsPage extends StatelessWidget {
               title: 'Scheduled appointments',
               actionButtons: [
                 AusaButton(
-                  text: 'New Appointment',
+                  text: 'Schedule an Appointment',
                   onPressed: controller.navigateToScheduleAppointment,
                   variant: ButtonVariant.secondary,
                   borderColor: AppColors.white,

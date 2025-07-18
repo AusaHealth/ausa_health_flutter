@@ -3,6 +3,7 @@ import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
+import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
@@ -163,7 +164,7 @@ class TestResultsPage extends StatelessWidget {
           ),
 
           // Action buttons fixed at bottom of container
-          const SizedBox(height: 32),
+          // const SizedBox(height: 32),
           _buildActionButtonsContent(),
         ],
       ),
@@ -196,7 +197,7 @@ class TestResultsPage extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary700.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppRadius.full),
                     border: Border.all(
                       color: AppColors.primary700.withValues(alpha: 0.3),
                     ),

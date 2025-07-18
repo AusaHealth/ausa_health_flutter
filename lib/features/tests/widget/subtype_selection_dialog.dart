@@ -2,6 +2,7 @@ import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class SubTypeSelectionDialog extends StatefulWidget {
@@ -25,6 +26,45 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
     _selectedIds = widget.test.selectedSubTypeIds.toSet();
   }
 
+  /// Returns custom image path for the left-hand side based on test type
+  String _getCustomImageForTestType(TestType testType) {
+    switch (testType) {
+      case TestType.bloodGlucoseFasting:
+      case TestType.bloodGlucosePostMeal:
+        return 'assets/images/dialog/x.png';
+      case TestType.ecg2Lead:
+      case TestType.ecg6Lead:
+        return 'assets/images/dialog/x.png';
+      case TestType.bodySoundHeart:
+      case TestType.bodySoundLungs:
+      case TestType.bodySoundStomach:
+      case TestType.bodySoundBowel:
+        return 'assets/images/dialog/x.png'; // Using blood image for body sounds
+      case TestType.entEar:
+      case TestType.entNose:
+      case TestType.entThroat:
+        return 'assets/images/dialog/x.png'; // Using doctor icon for ENT tests
+      default:
+        return widget.test.image;
+    }
+  }
+
+  /// Builds the custom image widget based on file extension
+  Widget _buildCustomImage() {
+    final imagePath = _getCustomImageForTestType(widget.test.type);
+
+    if (imagePath.endsWith('.svg')) {
+      return SvgPicture.asset(
+        imagePath,
+        width: 295,
+        height: 360,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.asset(imagePath, width: 295, height: 360, fit: BoxFit.cover);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!widget.test.hasSubTypes) return const SizedBox.shrink();
@@ -32,6 +72,7 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
+        clipBehavior: Clip.none,
         constraints: BoxConstraints(maxWidth: 640, maxHeight: 400),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -42,31 +83,28 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                 children: [
                   // Left side - Image with orange background
                   Container(
+                    clipBehavior: Clip.none,
                     width: 240,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          Colors.orange.shade400,
-                          Colors.orange.shade600,
-                        ],
+                        colors: [Color(0xffFF8C00), Color(0xffFFDD00)],
                       ),
-                      borderRadius: const BorderRadius.only(
+                      borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         bottomLeft: Radius.circular(20),
                       ),
                     ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Image.asset(
-                          widget.test.image,
-                          width: 300,
-                          height: 300,
-                          fit: BoxFit.cover,
+                    child: Stack(
+                      clipBehavior: Clip.none, // Allow overflow to be visible
+                      children: [
+                        Positioned(
+                          left: -23,
+                          bottom: 0,
+                          child: _buildCustomImage(),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   // Right side content
@@ -130,7 +168,7 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                                         color:
                                             isSelected
                                                 ? AppColors.primary700
-                                                    .withOpacity(0.1)
+                                                    .withValues(alpha: 0.1)
                                                 : Colors.white,
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
@@ -148,7 +186,7 @@ class _SubTypeSelectionDialogState extends State<SubTypeSelectionDialog> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            subType.icon ?? '📋',
+                                            subType.icon ?? '🔵',
                                             style: const TextStyle(
                                               fontSize: 20,
                                             ),
