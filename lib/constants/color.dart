@@ -15,11 +15,17 @@ class AppColors {
   static const Color primary900 = Color(0xFF1A4AB8);
 
   static const Color bodyTextColor = Color(0xff4F4F4F);
+
+  static const Color hintTextColor = Color(0xff090C13);
   static const Color textColor = Color(0xff171136);
   static const Color textlightColor = Color(0xff828282);
   static const Color greyTextColor = Color(0xff717680);
 
   static const Color bodyTextLightColor = Color(0xff021633);
+  static const Color blackColor = Color(0xff040A18);
+  static const Color blackColor2 = Color(0xff4A5574);
+
+  static const Color textColor2 = Color(0xff102163);
 
   // Gray colors
   static const Color gray25 = Color(0xFFFCFCFD);
@@ -54,7 +60,24 @@ class AppColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
+  static const Color valueColor = Color(0xff415981);
+
   // Legacy colors (keeping for backward compatibility)
   static const Color primaryDarkColor = primary800;
   static const Color primaryLightColor = primary500;
+
+  //Toast colors
+  static const Color toastSuccessColor = Color(0xFF21C373);
+  static const Color toastErrorColor = Color(0xFfE15959);
+  static const Color toastWarningColor = Color(0xFFFFA100);
+
+  //
+
+  static const Color toastSuccessIconColor = Color(0xFf75D4A5);
+  static const Color toastErrorIconColor = Color(0xFfE15959);
+  static const Color toastWarningIconColor = Color(0xFfF09800);
+
+  static const Color lightGreen = Color(0xFF00FF2F);
+
+  static const Color lightRed = Color(0xFFF04438);
 }

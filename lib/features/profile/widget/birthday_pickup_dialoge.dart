@@ -1,275 +1,341 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
+import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class BirthdayPickerDialog extends StatefulWidget {
+class BirthdayPickerDialouge extends StatefulWidget {
   final DateTime? initialDate;
   final void Function(DateTime) onDone;
 
-  const BirthdayPickerDialog({
+  const BirthdayPickerDialouge({
     super.key,
     this.initialDate,
     required this.onDone,
   });
 
   @override
-  State<BirthdayPickerDialog> createState() => _BirthdayPickerDialogState();
+  State<BirthdayPickerDialouge> createState() => _BirthdayPickerDialougeState();
 }
 
-class _BirthdayPickerDialogState extends State<BirthdayPickerDialog> {
-  int step = 0; // 0: Month, 1: Day, 2: Year
+class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
+  int step = 0; // 0: Year, 1: Month, 2: Day
   int? selectedMonth;
   int? selectedDay;
   int? selectedYear;
+  int? selectedRangeStart;
+  int? selectedRangeEnd;
+  final int minYear = 1901;
+  final int maxYear = DateTime.now().year;
+  late DateTime currentMonth;
+
+  // Validation message
+  String? validationMessage;
 
   @override
   void initState() {
     super.initState();
     if (widget.initialDate != null) {
+      selectedYear = widget.initialDate!.year;
       selectedMonth = widget.initialDate!.month;
       selectedDay = widget.initialDate!.day;
-      selectedYear = widget.initialDate!.year;
+      currentMonth = DateTime(selectedYear!, selectedMonth!, 1);
       step = 0;
+    } else {
+      selectedYear = null;
+      selectedMonth = null;
+      selectedDay = null;
+      // Do not set _currentMonth, keep it uninitialized until a year/month is picked
     }
   }
 
-  void goToStep(int s) => setState(() => step = s);
+  void goToStep(int s) {
+    setState(() {
+      if (s == 1 && selectedYear == null) {
+        validationMessage = 'Please select Year first';
+        return;
+      }
+      if (s == 2 && selectedMonth == null) {
+        validationMessage = 'Please select month first';
+        return;
+      }
+      validationMessage = null;
+      step = s;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.xl3),
+      ),
       backgroundColor: Colors.white,
       child: Container(
-        width: 500,
-        padding: const EdgeInsets.all(32),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Select Date',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+        height: DesignScaleManager.scaleValue(1084),
+        width: DesignScaleManager.scaleValue(1136),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl6,
+          vertical: AppSpacing.xl4,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Select Date',
+                  style: AppTypography.body(
+                    weight: AppTypographyWeight.regular,
+                    color: AppColors.blackColor,
                   ),
-                  if (selectedDateString != null)
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.cake, color: Colors.blue),
-                      label: Text(
-                        selectedDateString!,
-                        style: TextStyle(color: Colors.blue),
-                      ),
+                ),
+                Spacer(),
+                AusaButton(
+                  leadingIcon: SvgPicture.asset(
+                    height: DesignScaleManager.scaleValue(24),
+                    width: DesignScaleManager.scaleValue(24),
+                    AusaIcons.gift01,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.primary500,
+                      BlendMode.srcIn,
                     ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              // Stepper
+                  ),
+                  size: ButtonSize.s,
+                  variant: ButtonVariant.tertiary,
+                  text: selectedDateString ?? 'Birthday',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+
+            SizedBox(height: AppSpacing.xl2),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _stepButtonTab(
+                  selectedYear != null ? '${selectedYear}' : 'Select Year',
+                  selectedYear != null
+                      ? AusaIcons.chevronDown
+                      : AusaIcons.chevronUp,
+
+                  step == 0,
+                  () => goToStep(0),
+                ),
+                SizedBox(width: AppSpacing.xl),
+                _stepButtonTab(
+                  selectedMonth != null
+                      ? '${fullMonthNames[selectedMonth! - 1]}'
+                      : 'Select Month',
+                  selectedMonth != null
+                      ? AusaIcons.chevronDown
+                      : AusaIcons.chevronUp,
+
+                  step == 1,
+                  () => goToStep(1),
+                ),
+                SizedBox(width: AppSpacing.xl),
+                _stepButtonTab(
+                  selectedDay != null ? '${selectedDay}' : 'Select Date',
+                  selectedDay != null
+                      ? AusaIcons.chevronDown
+                      : AusaIcons.chevronUp,
+
+                  step == 2,
+                  () => goToStep(2),
+                ),
+              ],
+            ),
+
+            if (selectedRangeStart != null) ...[
+              SizedBox(height: AppSpacing.xl),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _stepButton('Select Month', step == 0, () => goToStep(0)),
-                  const SizedBox(width: 8),
-                  _stepButton('Select Date', step == 1, () => goToStep(1)),
-                  const SizedBox(width: 8),
-                  _stepButton(
-                    'Select Year',
-                    step == 2 || step == 3,
-                    () => goToStep(2),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              // Step content
-              if (step == 0) _monthGrid(),
-              if (step == 1) _calendarView(),
-              if (step == 2) _yearRangeGrid(),
-              if (step == 3) _yearGridInRange(),
-              const SizedBox(height: 32),
-              // Action buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AusaButton(
-                    size: ButtonSize.lg,
-                    borderColor: AppColors.primary500,
-                    variant: ButtonVariant.secondary,
-                    text: 'Cancel',
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                  Container(
+                    width: DesignScaleManager.scaleValue(84),
+                    height: DesignScaleManager.scaleValue(84),
+                    decoration: BoxDecoration(
+                      color: Color(0xffFAFAFA),
+                      borderRadius: BorderRadius.circular(AppRadius.xl3),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        goToStep(0);
+                        setState(() {
+                          selectedRangeStart = null;
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(AppSpacing.md),
+                        child: SvgPicture.asset(
+                          AusaIcons.chevronLeft,
+                          height: DesignScaleManager.scaleValue(32),
+                          width: DesignScaleManager.scaleValue(32),
+                          colorFilter: ColorFilter.mode(
+                            AppColors.blackColor,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(width: AppSpacing.md),
-                  AusaButton(
-                    size: ButtonSize.lg,
-                    text: 'Done',
-                    onPressed:
-                        (selectedMonth != null &&
-                                selectedDay != null &&
-                                selectedYear != null)
-                            ? () {
-                              widget.onDone(
-                                DateTime(
-                                  selectedYear!,
-                                  selectedMonth!,
-                                  selectedDay!,
-                                ),
-                              );
-                              Navigator.of(context).pop();
-                            }
-                            : null,
+                  Container(
+                    height: DesignScaleManager.scaleValue(84),
+                    decoration: BoxDecoration(
+                      color: Color(0xffFAFAFA),
+                      borderRadius: BorderRadius.circular(AppRadius.xl3),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        goToStep(0);
+                        setState(() {
+                          selectedRangeStart = null;
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xl,
+                          vertical: AppSpacing.md,
+                        ),
+                        child: Text(
+                          selectedRangeStart != null
+                              ? '${selectedRangeStart} - ${selectedRangeEnd}'
+                              : '1901 - 1910',
+                          style: AppTypography.callout(
+                            weight: AppTypographyWeight.medium,
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ],
-          ),
+
+            // Step content
+            SizedBox(height: AppSpacing.xl),
+            if (validationMessage != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: Text(
+                  validationMessage!,
+                  style: AppTypography.body(
+                    color: Colors.red,
+                    weight: AppTypographyWeight.medium,
+                  ),
+                ),
+              ),
+            if (step == 0)
+              selectedRangeStart == null
+                  ? _yearRangeGrid()
+                  : _yearGridInRange(),
+            if (step == 1) _monthGrid(),
+            if (step == 2)
+              Column(
+                children: [
+                  if (selectedYear != null && selectedMonth != null)
+                    DayGridSelector(
+                      year: selectedYear!,
+                      month: selectedMonth!,
+                      selectedDay: selectedDay,
+                      onDaySelected: (day) {
+                        setState(() {
+                          selectedDay = day;
+                        });
+                      },
+                    ),
+                ],
+              ),
+            // Action buttons
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AusaButton(
+                  size: ButtonSize.lg,
+                  borderColor: AppColors.primary500,
+                  variant: ButtonVariant.secondary,
+                  text: 'Cancel',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                SizedBox(width: AppSpacing.md),
+                AusaButton(
+                  size: ButtonSize.lg,
+                  text: 'Done',
+                  onPressed:
+                      (selectedMonth != null &&
+                              selectedDay != null &&
+                              selectedYear != null)
+                          ? () {
+                            widget.onDone(
+                              DateTime(
+                                selectedYear!,
+                                selectedMonth!,
+                                selectedDay!,
+                              ),
+                            );
+                            Navigator.of(context).pop();
+                          }
+                          : null,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _stepButton(String label, bool selected, VoidCallback onTap) {
+  Widget _stepButtonTab(
+    String label,
+    String icon,
+    bool selected,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? Colors.black : Colors.grey[200],
+          color: selected ? Colors.black : Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: selected ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
+        child: Row(
+          children: [
+            Text(
+              label,
+              style: AppTypography.body(
+                weight: AppTypographyWeight.regular,
+                color: selected ? Colors.white : AppColors.blackColor,
+              ),
+            ),
+            SizedBox(width: AppSpacing.mdLarge),
+            SvgPicture.asset(
+              icon,
+              height: DesignScaleManager.scaleValue(24),
+              width: DesignScaleManager.scaleValue(24),
+              colorFilter: ColorFilter.mode(
+                selected ? Colors.white : AppColors.blackColor,
+                BlendMode.srcIn,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  Widget _monthGrid() {
-    final months = [
-      'JAN',
-      'FEB',
-      'MAR',
-      'APR',
-      'MAY',
-      'JUN',
-      'JUL',
-      'AUG',
-      'SEP',
-      'OCT',
-      'NOV',
-      'DEC',
-    ];
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      children: List.generate(12, (i) {
-        final isSelected = selectedMonth == i + 1;
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedMonth = i + 1;
-              // If year is already selected, go to calendar, else go to year range
-              if (selectedYear != null) {
-                step = 1; // Go to calendar
-              } else {
-                step = 2; // Go to year range
-              }
-            });
-          },
-          child: Container(
-            width: 64,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.blue : Colors.blue.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              months[i],
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.blue,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _calendarView() {
-    if (selectedMonth == null || selectedYear == null) {
-      return Center(child: Text('Please select month and year'));
-    }
-    final daysInMonth = DateUtils.getDaysInMonth(selectedYear!, selectedMonth!);
-    final firstDay = DateTime(selectedYear!, selectedMonth!, 1).weekday;
-    final List<Widget> dayWidgets = [];
-    for (int i = 1; i < firstDay; i++) {
-      dayWidgets.add(Container(width: 40, height: 40));
-    }
-    for (int d = 1; d <= daysInMonth; d++) {
-      final isSelected = selectedDay == d;
-      dayWidgets.add(
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedDay = d;
-              // Optionally, go to year step here
-            });
-          },
-          child: Container(
-            width: 40,
-            height: 40,
-            margin: const EdgeInsets.all(4),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.blue : Colors.blue.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              d.toString(),
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.blue,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            7,
-            (i) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                ['S', 'M', 'T', 'W', 'T', 'F', 'S'][i],
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Wrap(spacing: 0, runSpacing: 0, children: dayWidgets),
-      ],
-    );
-  }
-
-  int? selectedRangeStart;
-  final int minYear = 1901;
-  final int maxYear =
-      DateTime.now().year + 3; // or whatever upper bound you want
 
   List<List<int>> get yearRanges {
     List<List<int>> ranges = [];
@@ -291,23 +357,23 @@ class _BirthdayPickerDialogState extends State<BirthdayPickerDialog> {
               onTap: () {
                 setState(() {
                   selectedRangeStart = range[0];
-                  step = 3; // Go to year selection in range
+                  selectedRangeEnd = range[1];
+                  // Do not change step here
                 });
               },
               child: Container(
-                width: 160,
-                height: 40,
+                width: DesignScaleManager.scaleValue(294),
+                height: DesignScaleManager.scaleValue(84),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color:
-                      isSelected ? Colors.blue : Colors.blue.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(20),
+                  color: isSelected ? Colors.black : Color(0xffF0F9FF),
+                  borderRadius: BorderRadius.circular(AppRadius.xl3),
                 ),
                 child: Text(
                   '${range[0]} - ${range[1]}',
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.blue,
-                    fontWeight: FontWeight.w600,
+                  style: AppTypography.callout(
+                    weight: AppTypographyWeight.regular,
+                    color: isSelected ? Colors.white : AppColors.primary600,
                   ),
                 ),
               ),
@@ -330,32 +396,96 @@ class _BirthdayPickerDialogState extends State<BirthdayPickerDialog> {
           onTap: () {
             setState(() {
               selectedYear = y;
-              // If month is already selected, go to calendar, else go to month selection
-              if (selectedMonth != null) {
-                step = 1; // Go to calendar
-              } else {
-                step = 0; // Go to month selection
-              }
+              step = 1;
+              selectedRangeStart = null;
+              validationMessage = null; // Clear validation after year selection
             });
           },
           child: Container(
-            width: 80,
-            height: 40,
+            width: DesignScaleManager.scaleValue(294),
+            height: DesignScaleManager.scaleValue(84),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isSelected ? Colors.black : Colors.blue.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(20),
+              color: isSelected ? Colors.black : Color(0xffF0F9FF),
+              borderRadius: BorderRadius.circular(AppRadius.xl3),
             ),
             child: Text(
               y.toString(),
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.blue,
-                fontWeight: FontWeight.w600,
+              style: AppTypography.callout(
+                weight: AppTypographyWeight.regular,
+                color: isSelected ? Colors.white : AppColors.primary600,
               ),
             ),
           ),
         );
       }),
+    );
+  }
+
+  Widget _monthGrid() {
+    final months = [
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
+    ];
+    // 5 columns: 5 * 132 + 4 * spacing
+    final double itemWidth = DesignScaleManager.scaleValue(132);
+    final double spacing = AppSpacing.xl2;
+    final int columns = 5;
+    final double totalWidth = columns * itemWidth + (columns - 1) * spacing;
+
+    return Center(
+      child: SizedBox(
+        width: totalWidth,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: spacing,
+          runSpacing: AppSpacing.lg,
+          children: List.generate(12, (i) {
+            final isSelected = selectedMonth == i + 1;
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedMonth = i + 1;
+                  step = 2;
+                  currentMonth = DateTime(
+                    selectedYear ?? DateTime.now().year,
+                    i + 1,
+                    1,
+                  );
+                  validationMessage =
+                      null; // Clear validation after month selection
+                });
+              },
+              child: Container(
+                width: itemWidth,
+                height: DesignScaleManager.scaleValue(84),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isSelected ? Colors.black : Color(0xffF0F9FF),
+                  borderRadius: BorderRadius.circular(AppRadius.xl3),
+                ),
+                child: Text(
+                  months[i],
+                  style: AppTypography.callout(
+                    weight: AppTypographyWeight.regular,
+                    color: isSelected ? Colors.white : Color(0xff155EEF),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
     );
   }
 
@@ -379,5 +509,120 @@ class _BirthdayPickerDialogState extends State<BirthdayPickerDialog> {
       return '${months[selectedMonth! - 1]} $selectedDay$yearStr';
     }
     return null;
+  }
+
+  final List<String> fullMonthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  String? get selectedFullMonthName {
+    if (selectedMonth != null) {
+      return fullMonthNames[selectedMonth! - 1];
+    }
+    return null;
+  }
+}
+
+class DayGridSelector extends StatelessWidget {
+  final int year;
+  final int month;
+  final int? selectedDay;
+  final void Function(int day) onDaySelected;
+
+  const DayGridSelector({
+    super.key,
+    required this.year,
+    required this.month,
+    this.selectedDay,
+    required this.onDaySelected,
+  });
+
+  int _daysInMonth(int year, int month) {
+    if (month == 12) {
+      return DateTime(year + 1, 1, 0).day;
+    }
+    return DateTime(year, month + 1, 0).day;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final int daysCount = _daysInMonth(year, month);
+    final int firstWeekday =
+        DateTime(year, month, 1).weekday; // 1 (Mon) - 7 (Sun)
+    final int totalGridCount = daysCount + (firstWeekday - 1);
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ...['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
+              (d) => Expanded(
+                child: Center(
+                  child: Text(
+                    d,
+                    style: AppTypography.callout(
+                      weight: AppTypographyWeight.regular,
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: AppSpacing.xl2),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 7,
+            mainAxisSpacing: 14,
+            crossAxisSpacing: 6,
+            childAspectRatio: 1.9,
+          ),
+          itemCount: totalGridCount,
+          itemBuilder: (context, index) {
+            if (index < firstWeekday - 1) {
+              return const SizedBox.shrink();
+            }
+            final day = index - (firstWeekday - 2);
+            final isSelected = day == selectedDay;
+            return GestureDetector(
+              onTap: () => onDaySelected(day),
+              child: Container(
+                height: DesignScaleManager.scaleValue(70),
+                width: DesignScaleManager.scaleValue(70),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? Colors.black : Colors.white,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  day.toString(),
+                  style: AppTypography.callout(
+                    weight:
+                        isSelected
+                            ? AppTypographyWeight.medium
+                            : AppTypographyWeight.regular,
+                    color: isSelected ? Colors.white : AppColors.blackColor,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
   }
 }

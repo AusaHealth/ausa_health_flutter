@@ -1,7 +1,7 @@
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/icons.dart';
-import 'package:ausa/constants/color.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -24,28 +24,19 @@ class CustomHeader extends StatelessWidget {
             SvgPicture.asset(
               AusaIcons.bluetoothOn,
               height: DesignScaleManager.scaleValue(40),
-              colorFilter: ColorFilter.mode(
-                Color(0xff59739E),
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(Color(0xff59739E), BlendMode.srcIn),
             ),
             SizedBox(width: AppSpacing.xl2),
             SvgPicture.asset(
               AusaIcons.rss01,
               height: DesignScaleManager.scaleValue(40),
-              colorFilter: ColorFilter.mode(
-                Color(0xff59739E),
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(Color(0xff59739E), BlendMode.srcIn),
             ),
             SizedBox(width: AppSpacing.xl2),
             SvgPicture.asset(
               AusaIcons.batteryFull,
               height: DesignScaleManager.scaleValue(40),
-              colorFilter: ColorFilter.mode(
-                Color(0xff59739E),
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(Color(0xff59739E), BlendMode.srcIn),
             ),
           ],
         ),

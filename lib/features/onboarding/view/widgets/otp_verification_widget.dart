@@ -1,15 +1,18 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/helpers.dart';
+import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
-import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/features/onboarding/view/otp_verification_view.dart';
 import 'package:ausa/features/onboarding/view/phone_input_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:ausa/common/widget/otp_input_widget.dart';
 
 class OtpVerificationWidget extends StatefulWidget {
   const OtpVerificationWidget({super.key});
@@ -24,18 +27,28 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
     final controller = Get.find<OnboardingController>();
 
     final defaultPinTheme = PinTheme(
-      width: 64,
-      height: 64,
-      textStyle: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+      width: DesignScaleManager.scaleValue(132),
+      height: DesignScaleManager.scaleValue(132),
+      textStyle: AppTypography.headline(
+        weight: AppTypographyWeight.medium,
+        color: AppColors.bodyTextColor,
+      ),
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: Offset(0, 10),
+          ),
+        ],
         color: Colors.white,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(AppRadius.xl3),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border.all(color: Colors.blue),
-      borderRadius: BorderRadius.circular(32),
+      borderRadius: BorderRadius.circular(AppRadius.xl3),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
@@ -85,7 +98,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
             children: [
               Obx(() {
                 return Text(
-                  'Enter code sent to ${controller.phoneController.value.text}',
+                  'Enter code sent to ${Helpers.formatPhoneNumber(controller.phoneNumber.value)}',
                   style: AppTypography.callout(
                     weight: AppTypographyWeight.medium,
                     color: AppColors.bodyTextColor,
@@ -93,58 +106,43 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                 );
               }),
 
-              const SizedBox(height: 32),
+              SizedBox(height: AppSpacing.xl2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Obx(() {
-                      return Pinput(
-                        onTap: () {
-                          Get.to(() => OtpVerificationView());
-                        },
+                      return OtpInputWidget(
                         controller: controller.otpController,
                         focusNode: controller.otpFocusNode,
-                        length: 6,
                         obscureText: controller.obscureOtp.value,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
                         defaultPinTheme: defaultPinTheme,
                         focusedPinTheme: focusedPinTheme,
                         submittedPinTheme: submittedPinTheme,
+                        preFilledWidget: Text(
+                          'x',
+                          style: AppTypography.headline(
+                            weight: AppTypographyWeight.medium,
+                            color: AppColors.greyTextColor,
+                          ),
+                        ),
+                        onTap: () {
+                          Get.to(() => OtpVerificationView());
+                        },
                         onChanged: (value) {
                           controller.handleOtpInputChange(value);
                         },
-                        onCompleted: (pin) {
-                          // Handle completion if needed
-                        },
+                        onCompleted: (pin) {},
+                        showVisibilityToggle: true,
+                        onToggleVisibility: controller.toggleOtpVisibility,
+                        isObscured: controller.obscureOtp.value,
+                        visibilityIconColor: AppColors.primary500,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        length: 6,
                       );
                     }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: InkWell(
-                      onTap: () => controller.toggleOtpVisibility(),
-                      borderRadius: BorderRadius.circular(32),
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.5),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Obx(() {
-                          return Icon(
-                            controller.obscureOtp.value
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: AppColors.primary500,
-                            size: 28,
-                          );
-                        }),
-                      ),
-                    ),
                   ),
                 ],
               ),

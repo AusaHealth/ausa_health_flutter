@@ -31,7 +31,7 @@ class AppMainContainer extends StatelessWidget {
               left: AppSpacing.xl3,
               right: AppSpacing.xl3,
               top: 0,
-              bottom: AppSpacing.xl2,
+              bottom: AppSpacing.xl,
             ),
         padding: padding ?? EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(

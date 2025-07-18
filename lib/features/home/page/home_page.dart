@@ -1,8 +1,11 @@
+import 'package:ausa/common/widget/custom_loader.dart';
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/utils.dart';
 // import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -105,19 +108,36 @@ class HomePage extends StatelessWidget {
                       color: Colors.deepPurple,
                       onTap: () => Get.toNamed(AppRoutes.profile),
                     ),
-                    // _buildNavigationCard(
-                    //   title: 'Teleconsultation',
-                    //   subtitle: 'Video Call',
-                    //   iconPath: AusaIcons.phoneCall01,
-                    //   color: Colors.pink,
-                    //   onTap: () => Get.toNamed(AppRoutes.teleconsultation),
-                    // ),
+
                     _buildNavigationCard(
                       title: 'Onboarding',
                       subtitle: 'Page',
                       iconPath: AusaIcons.arrowRight,
                       color: Colors.cyan,
-                      onTap: () => Get.toNamed(AppRoutes.onboarding),
+                      onTap: () {
+                        Get.toNamed(AppRoutes.onboarding);
+                        // Show a success toast
+                        // CustomToast.show(
+                        //   message: 'Profile updated successfully!',
+                        //   type: ToastType.success,
+                        // );
+
+                        // Show an error toast
+                        // CustomToast.show(
+                        //   message: 'Something went wrong!',
+                        //   type: ToastType.error,
+                        // );
+
+                        // Show a warning toast
+                        // CustomToast.show(
+                        //   message: 'Please check your input.',
+                        //   type: ToastType.warning,
+                        // );
+                        // CustomToast.show(
+                        //   message: 'Coming Soon',
+                        //   type: ToastType.error,
+                        // );
+                      },
                     ),
                   ],
                 ),

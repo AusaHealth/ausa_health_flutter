@@ -1,10 +1,18 @@
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
+
+import 'package:syncfusion_flutter_core/theme.dart';
+
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class DisplaySettingPage extends StatefulWidget {
   const DisplaySettingPage({super.key});
@@ -36,18 +44,20 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: AppSpacing.xl7),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Obx(
                     () => _CustomSlider(
+                      minValue: 0.0,
+                      maxValue: 1.0,
                       value: settingController.brightness.value,
                       onChanged: (v) => settingController.setBrightness(v),
-                      icon: Icons.wb_sunny_rounded,
+                      image: AusaIcons.sun,
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: AppSpacing.xl7),
                 Text(
                   'Brightness',
                   style: AppTypography.body(weight: AppTypographyWeight.medium),
@@ -55,7 +65,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
               ],
             ),
           ),
-          const SizedBox(width: 32),
+          SizedBox(width: AppSpacing.lg),
           // Text Size Card
           _DisplayCard(
             child: Column(
@@ -67,7 +77,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Colors.blue,
+                        color: Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
                       ).copyWith(fontSize: 24),
                     ),
@@ -75,7 +85,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Colors.blue,
+                        color: Color(0xff0F54C7),
                         fontWeight: FontWeight.w400,
                       ).copyWith(fontSize: 32),
                     ),
@@ -83,22 +93,24 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Colors.blue,
+                        color: Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
                       ).copyWith(fontSize: 38),
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: AppSpacing.xl7),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: _CustomSlider(
+                    minValue: 0.0,
+                    maxValue: 1.0,
+                    image: AusaIcons.type01,
                     value: textSize,
                     onChanged: (v) => setState(() => textSize = v),
-                    icon: Icons.text_fields_rounded,
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: AppSpacing.xl7),
                 Text(
                   'Text Size',
                   style: AppTypography.body(weight: AppTypographyWeight.medium),
@@ -118,21 +130,21 @@ class _DisplayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 400,
-      height: 350,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(32),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
-          ),
-        ],
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.xl3),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }
@@ -140,12 +152,16 @@ class _DisplayCard extends StatelessWidget {
 class _CustomSlider extends StatelessWidget {
   final double value;
   final ValueChanged<double> onChanged;
-  final IconData icon;
+  final String image;
+  final double minValue;
+  final double maxValue;
 
   const _CustomSlider({
     required this.value,
     required this.onChanged,
-    required this.icon,
+    required this.image,
+    this.minValue = 0.0,
+    this.maxValue = 8.0,
   });
 
   @override
@@ -153,28 +169,65 @@ class _CustomSlider extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            trackHeight: 2,
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0),
-            overlayShape: SliderComponentShape.noOverlay,
-            activeTrackColor: const Color(0xFF1673FF),
-            inactiveTrackColor: const Color(0xFFE0E0E0),
-          ),
-          child: Slider(value: value, onChanged: onChanged, min: 0, max: 1),
-        ),
-        Positioned(
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(
-              color: Color(0xFF1673FF),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: Colors.white, size: 28),
-          ),
+        CustomSlider(
+          image: image,
+          value: value,
+          onChanged: onChanged,
+          minValue: minValue,
+          maxValue: maxValue,
+          activeTrackColor: AppColors.primary500,
         ),
       ],
+    );
+  }
+}
+
+class CustomSlider extends StatelessWidget {
+  const CustomSlider({
+    required this.image,
+    super.key,
+    required this.value,
+    required this.onChanged,
+    this.minValue = 0.0,
+    this.maxValue = 8.0,
+    this.activeTrackColor,
+  });
+
+  final double value;
+  final ValueChanged<double> onChanged;
+  final double minValue;
+  final double maxValue;
+  final Color? activeTrackColor;
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return SfSliderTheme(
+      data: SfSliderThemeData(
+        thumbColor: Colors.white,
+        thumbRadius: DesignScaleManager.scaleValue(42),
+        thumbStrokeColor: AppColors.primary500,
+      ),
+      child: SfSlider(
+        thumbIcon: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SvgPicture.asset(
+            image,
+            width: DesignScaleManager.scaleValue(20),
+            height: DesignScaleManager.scaleValue(20),
+            colorFilter: ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+          ),
+        ),
+        inactiveColor: AppColors.gray200,
+        activeColor: AppColors.primary500,
+        thumbShape: SfThumbShape(),
+
+        value: value,
+
+        onChanged: (dynamic value) {
+          onChanged(value);
+        },
+      ),
     );
   }
 }

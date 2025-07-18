@@ -1,6 +1,5 @@
 import 'package:ausa/common/widget/custom_header.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/spacing.dart';
 import 'package:flutter/material.dart';
 
 class BaseScaffold extends StatelessWidget {

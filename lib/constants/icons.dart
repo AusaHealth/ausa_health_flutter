@@ -6,7 +6,14 @@ class AusaIcons {
   // Base path for all untitled UI icons
   static const String _basePath = 'assets/icons/untitled_ui';
 
+  // Notification Icons =========
+  static const String bell01 = '$_basePath/Alerts & feedback/bell-01.svg';
+  static const String bell02 = '$_basePath/Alerts & feedback/bell-02.svg';
+  static const String bell03 = '$_basePath/Alerts & feedback/bell-03.svg';
+  static const String bell04 = '$_basePath/Alerts & feedback/bell-04.svg';
+
   // ========== COMMUNICATION ICONS ==========
+
   static const String annotationAlert =
       '$_basePath/Communication/annotation-alert.svg';
   static const String annotationCheck =
@@ -100,6 +107,7 @@ class AusaIcons {
       '$_basePath/Communication/phone-outgoing-01.svg';
   static const String phoneOutgoing02 =
       '$_basePath/Communication/phone-outgoing-02.svg';
+
   static const String phonePause = '$_basePath/Communication/phone-pause.svg';
   static const String phonePlus = '$_basePath/Communication/phone-plus.svg';
   static const String phoneX = '$_basePath/Communication/phone-x.svg';

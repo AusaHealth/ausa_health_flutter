@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -13,7 +14,16 @@ void main() {
     overlays: [],
   );
 
-  runApp(MyApp());
+  runApp(
+    Container(
+      alignment: Alignment.center,
+      color: Colors.grey[200],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 1108, maxHeight: 692),
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

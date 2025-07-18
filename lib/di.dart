@@ -6,7 +6,6 @@ import 'package:ausa/features/health_schedule/controller/health_schedule_control
 import 'package:ausa/features/health_schedule/controller/meal_times_controller.dart';
 import 'package:ausa/features/home/controller/home_controller.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
-import 'package:ausa/features/profile/controller/family_controller.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:ausa/features/settings/controller/wifi_controller.dart';
@@ -30,7 +29,7 @@ class AppBinding extends Bindings {
     Get.put(OnboardingController());
     Get.put(SettingController());
     Get.put(ProfileController());
-    Get.put(FamilyController());
+
     Get.put(AppointmentSchedulingController());
     Get.put(HealthScheduleController());
     Get.put(MealTimesController());

@@ -1,120 +1,158 @@
+import 'dart:developer' show log;
+
+import 'package:ausa/common/widget/toast.dart';
+import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/helpers.dart';
+import 'package:ausa/constants/radius.dart';
+import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
+import 'package:ausa/features/profile/page/input_model.dart';
+import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class CustomTextField extends StatelessWidget {
-  final String? label;
-  final String? hint;
-  final String? errorText;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final bool multiline;
-  final bool isValid;
-  final bool isFocused;
-  final FocusNode? focusNode;
-  final void Function(String)? onChanged;
-  final void Function(String)? onFieldSubmitted;
-  final double? height;
+class ProfileCustomTextField extends StatelessWidget {
+  final String label;
+  final String placeholder;
+  final int maxLines;
+  final String? focusFieldName; // Add this parameter
 
-  const CustomTextField({
+  const ProfileCustomTextField({
     super.key,
-    this.label,
-    this.hint,
-    this.errorText,
-    required this.controller,
-    this.keyboardType = TextInputType.text,
-    this.multiline = false,
-    this.isValid = false,
-    this.isFocused = false,
-    this.focusNode,
-    this.onChanged,
-    this.onFieldSubmitted,
-    this.height,
+    required this.label,
+    required this.placeholder,
+    this.maxLines = 1,
+    this.focusFieldName, // Add this parameter
   });
 
   @override
   Widget build(BuildContext context) {
-    final borderColor =
-        errorText != null
-            ? Colors.deepOrange
-            : isFocused
-            ? Colors.deepOrange
-            : Colors.transparent;
-
+    final ProfileController controller = Get.find<ProfileController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null && label!.isNotEmpty)
-          Text(
-            label ?? '',
-
-            style: AppTypography.body(
-              color: errorText != null ? Colors.deepOrange : Colors.white,
-            ).copyWith(
-              decoration:
-                  errorText == null && isFocused
-                      ? TextDecoration.underline
-                      : null,
-              decorationColor: Colors.deepPurple,
-              decorationThickness: 2,
-            ),
-          ),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: () {
-            // Ensure focus and keyboard show when tapping anywhere on the field
-            if (focusNode != null) {
-              focusNode!.requestFocus();
-            }
-            // Move cursor to end of text
-            controller.selection = TextSelection.fromPosition(
-              TextPosition(offset: controller.text.length),
-            );
-          },
-          child: Container(
-            height: height,
-            decoration: BoxDecoration(
-              color: const Color(0xFFF7F7FA),
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: borderColor, width: 2),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            child: TextField(
-              controller: controller,
-              focusNode: focusNode,
-              keyboardType: keyboardType,
-              maxLines: multiline ? null : 1,
-              minLines: multiline ? 4 : 1,
-              style: const TextStyle(color: Colors.black, fontSize: 18),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: const TextStyle(color: Colors.grey, fontSize: 18),
-                border: InputBorder.none,
-                isCollapsed: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              onChanged: onChanged,
-              onSubmitted: onFieldSubmitted,
-              onTap: () {
-                // Ensure keyboard shows when tapped
-                if (focusNode != null) {
-                  focusNode!.requestFocus();
-                }
-                // Move cursor to end of text
-                controller.selection = TextSelection.fromPosition(
-                  TextPosition(offset: controller.text.length),
-                );
-              },
+        Padding(
+          padding: EdgeInsets.only(left: AppSpacing.sm),
+          child: Text(
+            label,
+            style: AppTypography.callout(
+              color: AppColors.textColor,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        if (errorText != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 4, left: 4),
-            child: Text(
-              errorText!,
-              style: const TextStyle(color: Colors.deepOrange, fontSize: 14),
-            ),
+        SizedBox(height: AppSpacing.smMedium),
+        Container(
+          decoration: BoxDecoration(
+            color: Color(0xff1570EF).withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(AppRadius.xl2),
           ),
+          child: TextFormField(
+            onTap: () async {
+              final inputs = [
+                InputModel(
+                  name: 'shortName',
+                  label: 'Short Name',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'fullName',
+                  label: 'Full Name',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'relationship',
+                  label: 'Relationship',
+                  inputType: InputTypeEnum.selector,
+                  value: '',
+                  inputSource: Helpers.relationshipOptions,
+                ),
+                InputModel(
+                  name: 'phone',
+                  label: 'Phone Number',
+                  inputType: InputTypeEnum.number,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'email',
+                  label: 'Email',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'address',
+                  label: 'Address',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+              ];
+
+              final result = await Get.to(
+                () => InputPage(
+                  inputs: inputs,
+                  initialFocusFieldName:
+                      focusFieldName, // Pass the focus field name
+                ),
+              );
+
+              log('result: $result');
+              log('result is List<InputModel>: ${result is List<InputModel>}');
+              log('result is not null: ${result != null}');
+
+              if (result != null &&
+                  result is List<InputModel> &&
+                  result.isNotEmpty) {
+                final normalizedResult =
+                    result
+                        .map(
+                          (input) => input.copyWith(
+                            value: Helpers.emptyToNull(input.value),
+                          ),
+                        )
+                        .toList();
+                for (final input in normalizedResult) {
+                  print(
+                    'Normalized Input: ${input.name}, Value: ${input.value}',
+                  );
+                }
+                final hasAnyValue = normalizedResult.any(
+                  (input) =>
+                      input.value != null &&
+                      input.value.toString().trim().isNotEmpty,
+                );
+
+                if (hasAnyValue) {
+                  CustomToast.show(
+                    message: 'Profile added',
+                    type: ToastType.success,
+                  );
+                  controller.member.updateFromInputs(normalizedResult);
+                  controller.showSummary.value = true;
+                  controller.familyMembers.add(controller.member);
+                } else {
+                  CustomToast.show(
+                    message: 'Please fill at least one field to add a profile.',
+                    type: ToastType.warning,
+                  );
+                }
+              }
+            },
+            maxLines: maxLines,
+            decoration: InputDecoration(
+              hintText: placeholder,
+              hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              border: InputBorder.none,
+            ),
+            style: TextStyle(fontSize: 14, color: Colors.black87),
+          ),
+        ),
       ],
     );
   }

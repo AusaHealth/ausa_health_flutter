@@ -94,7 +94,7 @@ class OnboardingTermsWidget extends StatelessWidget {
         2. Purpose of the Device
         
         This Device is designed to collect and monitor vital signs and provide digital access to health resources and analytics for facilitating...''',
-                  style: AppTypography.body(
+                  style: AppTypography.callout(
                     weight: AppTypographyWeight.regular,
                   ),
                 ),
@@ -102,30 +102,35 @@ class OnboardingTermsWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: AppSpacing.xl),
+        const Spacer(),
+
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.xl3,
-          ).copyWith(bottom: AppSpacing.xl4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              AusaButton(
-                size: ButtonSize.lg,
-                text: 'Decline',
-                variant: ButtonVariant.secondary,
-                onPressed: () {},
-              ),
+            vertical: AppSpacing.xl4,
+          ),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AusaButton(
+                  size: ButtonSize.lg,
+                  text: 'Decline',
+                  variant: ButtonVariant.secondary,
+                  onPressed: () {},
+                ),
 
-              SizedBox(width: AppSpacing.lg),
-              AusaButton(
-                size: ButtonSize.lg,
-                onPressed: () {
-                  Get.offAll(() => HomePage());
-                },
-                text: 'Accept',
-              ),
-            ],
+                SizedBox(width: AppSpacing.lg),
+                AusaButton(
+                  size: ButtonSize.lg,
+                  onPressed: () {
+                    Get.offAll(() => HomePage());
+                  },
+                  text: 'Accept',
+                ),
+              ],
+            ),
           ),
         ),
       ],

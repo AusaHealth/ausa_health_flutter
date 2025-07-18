@@ -1,6 +1,7 @@
 import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/common/widget/custom_tab_button.dart';
 import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/icons.dart';
 
 import 'package:flutter/material.dart';
 
@@ -13,31 +14,11 @@ class SettingsTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      {
-        'selectedImagePath': AppImages.swifiSelected,
-        'unselectedImagePath': AppImages.wifi,
-        'label': 'Wifi',
-      },
-      {
-        'selectedImagePath': AppImages.displaySelected,
-        'unselectedImagePath': AppImages.display,
-        'label': 'Display',
-      },
-      {
-        'selectedImagePath': AppImages.bluetoothSelected,
-        'unselectedImagePath': AppImages.bluetooth,
-        'label': 'Bluetooth',
-      },
-      {
-        'selectedImagePath': AppImages.notificationSelected,
-        'unselectedImagePath': AppImages.notification,
-        'label': 'Notifications',
-      },
-      {
-        'selectedImagePath': AppImages.callSettingSelected,
-        'unselectedImagePath': AppImages.callSetting,
-        'label': 'Call Settings',
-      },
+      {'icon': AusaIcons.wifi, 'label': 'Wifi'},
+      {'icon': AusaIcons.tv01, 'label': 'Display'},
+      {'icon': AusaIcons.bluetoothOn, 'label': 'Bluetooth'},
+      {'icon': AusaIcons.bell02, 'label': 'Notifications'},
+      {'icon': AusaIcons.phoneCall02, 'label': 'Call Settings'},
     ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -49,8 +30,7 @@ class SettingsTabs extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.only(right: i < tabs.length - 1 ? 16 : 0),
             child: CustomTabButton(
-              selectedImagePath: tab['selectedImagePath'] as String,
-              unselectedImagePath: tab['unselectedImagePath'] as String,
+              icon: tab['icon'] as String,
               label: tab['label'] as String,
               selected: isSelected,
               onTap: () => onTabSelected?.call(i),

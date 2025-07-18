@@ -22,12 +22,8 @@ import 'package:ausa/features/onboarding/view/terms_condtion_page.dart';
 
 // Profile imports
 import 'package:ausa/features/profile/page/profile_page.dart';
-import 'package:ausa/features/profile/page/edit_personal_page.dart';
-import 'package:ausa/features/profile/page/edit_contact_page.dart';
-import 'package:ausa/features/profile/page/add_photo_page.dart';
 import 'package:ausa/features/profile/page/family_page.dart';
 import 'package:ausa/features/profile/page/add_new_member.dart';
-import 'package:ausa/features/profile/page/family_input_page.dart';
 import 'package:ausa/features/profile/page/email_invite_page.dart';
 import 'package:ausa/features/profile/page/care_page.dart';
 import 'package:ausa/features/profile/page/condition_page.dart';
@@ -146,22 +142,6 @@ abstract class AppPages {
       // OnboardingController is registered globally in AppBinding
     ),
 
-    // Profile routes
-    GetPage(
-      name: AppRoutes.editPersonal,
-      page: () => const EditPersonalPage(),
-      // ProfileController is registered globally in AppBinding
-    ),
-    GetPage(
-      name: AppRoutes.editContact,
-      page: () => const EditContactPage(),
-      // ProfileController is registered globally in AppBinding
-    ),
-    GetPage(
-      name: AppRoutes.addPhoto,
-      page: () => const AddPhotoPage(),
-      // ProfileController is registered globally in AppBinding
-    ),
     GetPage(
       name: AppRoutes.family,
       page: () => const FamilyPage(),
@@ -172,11 +152,7 @@ abstract class AppPages {
       page: () => const AddNewMember(),
       // FamilyController is registered globally in AppBinding
     ),
-    GetPage(
-      name: AppRoutes.familyInput,
-      page: () => const FamilyInputPage(),
-      // FamilyController is registered globally in AppBinding
-    ),
+
     GetPage(
       name: AppRoutes.emailInvite,
       page: () => const EmailInvitePage(),

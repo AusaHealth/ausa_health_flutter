@@ -1,11 +1,15 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/constants.dart';
-import 'package:ausa/features/profile/page/edit_contact_page.dart';
-import 'package:ausa/features/profile/page/edit_personal_page.dart';
+import 'package:ausa/constants/icons.dart';
+import 'package:ausa/constants/utils.dart';
+import 'package:ausa/features/profile/controller/profile_controller.dart';
+import 'package:ausa/features/profile/page/input_model.dart';
+import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
@@ -19,6 +23,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,46 +93,102 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       right: AppSpacing.xl,
                       top: 14,
                       child: AusaButton(
-                        height: DesignScaleManager.scaleValue(100),
-                        onPressed: () {
+                        height: DesignScaleManager.scaleValue(80),
+                        onPressed: () async {
                           if (showPersonal) {
-                            Get.to(() => EditPersonalPage());
+                            List<InputModel> inputs = [
+                              InputModel(
+                                name: 'name',
+                                label: 'Name',
+                                inputType: InputTypeEnum.text,
+                                value: profileController.user.name,
+                              ),
+                              InputModel(
+                                name: 'birthday',
+                                label: 'Birthday',
+                                inputType: InputTypeEnum.date,
+                                // value: profileController.user.dateOfBirth,
+                              ),
+                              InputModel(
+                                name: 'gender',
+                                label: 'Gender',
+                                inputType: InputTypeEnum.selector,
+                                value: profileController.user.gender,
+                                inputSource: ['Male', 'Female', 'Other'],
+                              ),
+                              InputModel(
+                                name: 'height',
+                                label: 'Height',
+                                inputType: InputTypeEnum.height,
+                                value: profileController.user.height,
+                              ),
+                              InputModel(
+                                name: 'weight',
+                                label: 'Weight',
+                                inputType: InputTypeEnum.weight,
+                                value: profileController.user.weight,
+                              ),
+                            ];
+                            final result = await Get.to(
+                              () => InputPage(inputs: inputs),
+                            );
+
+                            if (result != null && result is List<InputModel>) {
+                              profileController.user.updateFromInputs(result);
+                              CustomToast.show(
+                                message: 'Profile updated',
+                                type: ToastType.success,
+                              );
+                              setState(() {});
+                            }
                           } else {
-                            Get.to(() => EditContactPage());
+                            List<InputModel> inputs = [
+                              InputModel(
+                                name: 'phone',
+                                label: 'Phone',
+                                inputType: InputTypeEnum.number,
+                                value: profileController.user.phone,
+                              ),
+                              InputModel(
+                                name: 'email',
+                                label: 'Email',
+                                inputType: InputTypeEnum.text,
+                                value: profileController.user.email,
+                              ),
+                              InputModel(
+                                name: 'address',
+                                label: 'Address',
+                                inputType: InputTypeEnum.text,
+                                value: profileController.user.address,
+                              ),
+                            ];
+                            final result = await Get.to(
+                              () => InputPage(inputs: inputs),
+                            );
+
+                            if (result != null && result is List<InputModel>) {
+                              profileController.user.updateFromInputs(result);
+                              CustomToast.show(
+                                message: 'Profile updated',
+                                type: ToastType.success,
+                              );
+                              setState(() {});
+                            }
                           }
                         },
                         variant: ButtonVariant.tertiary,
-                        leadingIcon: Icon(
-                          Icons.edit,
-                          size: 16,
-                          color: AppColors.primary500,
+                        leadingIcon: SvgPicture.asset(
+                          height: DesignScaleManager.scaleValue(24),
+                          width: DesignScaleManager.scaleValue(24),
+                          AusaIcons.edit01,
+                          colorFilter: ColorFilter.mode(
+                            AppColors.primary500,
+                            BlendMode.srcIn,
+                          ),
                         ),
 
                         text: 'Edit',
                       ),
-
-                      // InkWell(
-                      //   onTap: () {
-                      //
-                      //   },
-                      //   child: Row(
-                      //     children: [
-                      //       Icon(
-                      //         Icons.edit,
-                      //         color: Colors.blue,
-                      //         size: AppSpacing.xl,
-                      //       ),
-                      //       SizedBox(width: AppSpacing.sm),
-                      //       Text(
-                      //         'Edit',
-                      //         style: AppTypography.callout(
-                      //           color: Colors.blue,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ),
                   ],
                 ),
@@ -141,12 +202,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 }
 
 // Tab Button
-class _ProfileTabButton extends StatelessWidget {
+class ProfileTabButton extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
-  const _ProfileTabButton({
+  const ProfileTabButton({
+    super.key,
     required this.label,
     required this.selected,
     required this.onTap,
@@ -178,6 +240,7 @@ class _ProfileTabButton extends StatelessWidget {
 
 // Personal Details Card
 class _PersonalDetails extends StatelessWidget {
+  final ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -187,13 +250,30 @@ class _PersonalDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _ProfileDetail(label: 'Name', value: 'Lucy O.'),
+              _ProfileDetail(label: 'Name', value: profileController.user.name),
 
-              _ProfileDetail(label: 'Age', value: '67'),
+              _ProfileDetail(
+                label: 'Age',
+                value:
+                    Utils.calculateAge(
+                      profileController.user.dateOfBirth,
+                    ).toString(),
+              ),
 
-              _ProfileDetail(label: 'Height', value: '5\'8\"'),
+              _ProfileDetail(
+                label: 'Height',
+                value: profileController.user.height,
+              ),
 
-              _ProfileDetail(label: 'BMI', value: '26.8', isLast: true),
+              _ProfileDetail(
+                label: 'BMI',
+                value: Utils.calculateBMI(
+                  weightKg: double.parse(profileController.user.weight),
+                  heightCm: Utils.inchesToCm(
+                    double.parse(profileController.user.height),
+                  ),
+                ).toStringAsFixed(1),
+              ),
             ],
           ),
         ),
@@ -201,10 +281,20 @@ class _PersonalDetails extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              _ProfileDetail(label: 'Birthday', value: 'July 23, 1980'),
-              _ProfileDetail(label: 'Gender', value: 'F'),
-              _ProfileDetail(label: 'Weight', value: '176 lbs', isLast: true),
+            children: [
+              _ProfileDetail(
+                label: 'Birthday',
+                value: Utils.formatDate(profileController.user.dateOfBirth),
+              ),
+              _ProfileDetail(
+                label: 'Gender',
+                value: profileController.user.gender,
+              ),
+              _ProfileDetail(
+                label: 'Weight',
+                value: '${profileController.user.weight} lbs',
+                isLast: true,
+              ),
             ],
           ),
         ),
@@ -217,6 +307,7 @@ class _PersonalDetails extends StatelessWidget {
 class _ContactDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.find();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -224,22 +315,24 @@ class _ContactDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _ProfileDetail(label: 'Phone', value: '+1 555-123-4567'),
+              _ProfileDetail(
+                label: 'Phone',
+                value: profileController.user.phone,
+              ),
               SizedBox(height: AppSpacing.xl),
-              const _ProfileDetail(
+              _ProfileDetail(
+                isAddress: true,
                 label: 'Address',
-                value: '123 Maplewood Lane\nSpringfield, IL 62704',
+                value: profileController.user.address,
               ),
             ],
           ),
         ),
 
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              _ProfileDetail(label: 'Email', value: 'olucy@gmail.com'),
-            ],
+          child: _ProfileDetail(
+            label: 'Email',
+            value: profileController.user.email,
           ),
         ),
       ],
@@ -252,11 +345,13 @@ class _ProfileDetail extends StatelessWidget {
   final String label;
   final String value;
   final bool isLast;
+  final bool isAddress;
 
   const _ProfileDetail({
     required this.label,
     required this.value,
     this.isLast = false,
+    this.isAddress = false,
   });
 
   @override
@@ -269,9 +364,12 @@ class _ProfileDetail extends StatelessWidget {
           style: AppTypography.callout(weight: AppTypographyWeight.regular),
         ),
         SizedBox(height: AppSpacing.mdLarge),
-        Text(
-          value,
-          style: AppTypography.body(weight: AppTypographyWeight.semibold),
+        SizedBox(
+          width: isAddress ? 160 : null,
+          child: Text(
+            value,
+            style: AppTypography.body(weight: AppTypographyWeight.semibold),
+          ),
         ),
         if (!isLast) SizedBox(height: AppSpacing.xl2),
       ],
