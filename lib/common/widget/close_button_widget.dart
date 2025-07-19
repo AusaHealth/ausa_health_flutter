@@ -15,7 +15,9 @@ class CloseButtonWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(AppSpacing.xl),
       child: GestureDetector(
-        onTap: () => onPressed ?? Get.back(),
+        onTap: () {
+          Get.back();
+        },
         child: SvgPicture.asset(
           AusaIcons.xClose,
           width: DesignScaleManager.scaleValue(40),

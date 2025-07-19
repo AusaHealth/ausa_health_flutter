@@ -29,7 +29,9 @@ class SwitchTabWidget extends StatelessWidget {
             height: 1.4,
             decoration: BoxDecoration(
               color: Color(0xFFE0E0E0),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(
+                DesignScaleManager.scaleValue(100),
+              ),
             ),
           ),
         ),
@@ -43,11 +45,13 @@ class SwitchTabWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
             decoration: BoxDecoration(
               color: value ? AppColors.primary500 : Color(0xFFE9E9E9),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: value ? AppColors.primary500 : Color(0xFFE0E0E0),
-                width: 1.2,
+              borderRadius: BorderRadius.circular(
+                DesignScaleManager.scaleValue(100),
               ),
+              // border: Border.all(
+              //   color: value ? AppColors.primary500 : Color(0xFFE0E0E0),
+              //   width: 1.2,
+              // ),
             ),
             child: Align(
               alignment: value ? Alignment.centerRight : Alignment.centerLeft,

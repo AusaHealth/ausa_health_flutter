@@ -1,11 +1,15 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/helpers.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
+import 'package:ausa/features/profile/page/input_model.dart';
+import 'package:ausa/features/profile/page/input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -177,8 +181,78 @@ class ObPersonalDetailWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.xl2),
           ),
           child: TextFormField(
-            onTap: () {
-              // Get.to(() => FamilyInputPage());
+            onTap: () async {
+              final inputs = [
+                InputModel(
+                  name: 'firstName',
+                  label: 'First Name',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'lastName',
+                  label: 'Last Name',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'nickName',
+                  label: 'Nickname',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'email',
+                  label: 'Email',
+                  inputType: InputTypeEnum.text,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'birthDate',
+                  label: 'Birthday',
+                  inputType: InputTypeEnum.date,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'age',
+                  label: 'Age',
+                  inputType: InputTypeEnum.number,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'height',
+                  label: 'Height',
+                  inputType: InputTypeEnum.height,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'weight',
+                  label: 'Weight',
+                  inputType: InputTypeEnum.weight,
+                  value: '',
+                ),
+                InputModel(
+                  name: 'gender',
+                  label: 'Gender',
+                  inputType: InputTypeEnum.selector,
+                  value: '',
+                  inputSource: Helpers.genderOptions,
+                ),
+              ];
+
+              final result = await Get.to(
+                () => InputPage(
+                  inputs: inputs,
+                  initialFocusFieldName:
+                      'firstName', // Pass the focus field name
+                ),
+              );
+              if (result != null) {
+                CustomToast.show(
+                  message: 'Personal details updated',
+                  type: ToastType.success,
+                );
+              }
             },
             controller: controller,
             maxLines: maxLines,

@@ -1,6 +1,7 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/constants/constants.dart';
+import 'package:ausa/constants/helpers.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/utils.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
@@ -114,7 +115,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 label: 'Gender',
                                 inputType: InputTypeEnum.selector,
                                 value: profileController.user.gender,
-                                inputSource: ['Male', 'Female', 'Other'],
+                                inputSource: Helpers.genderOptions,
                               ),
                               InputModel(
                                 name: 'height',
@@ -268,10 +269,8 @@ class _PersonalDetails extends StatelessWidget {
               _ProfileDetail(
                 label: 'BMI',
                 value: Utils.calculateBMI(
-                  weightKg: double.parse(profileController.user.weight),
-                  heightCm: Utils.inchesToCm(
-                    double.parse(profileController.user.height),
-                  ),
+                  weightLbs: double.parse(profileController.user.weight),
+                  heightFeetInches: profileController.user.height,
                 ).toStringAsFixed(1),
               ),
             ],
@@ -317,7 +316,7 @@ class _ContactDetails extends StatelessWidget {
             children: [
               _ProfileDetail(
                 label: 'Phone',
-                value: profileController.user.phone,
+                value: '+1 ${profileController.user.phone}',
               ),
               SizedBox(height: AppSpacing.xl),
               _ProfileDetail(

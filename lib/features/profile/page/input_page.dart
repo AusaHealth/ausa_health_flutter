@@ -38,6 +38,10 @@ class _InputPageState extends State<InputPage> {
 
   final List<FocusNode> _focusNodes = [];
   final List<TextEditingController> _controllers = [];
+  final _heightKey = GlobalKey<HeightInputState>();
+  final _weightKey = GlobalKey<WeightInputState>();
+  final _heightController = HeightInputController();
+  final _weightController = WeightInputController();
 
   bool isEmailValid = false;
   bool isEmailDirty = false;
@@ -103,7 +107,9 @@ class _InputPageState extends State<InputPage> {
     final isKeyboardField =
         model.inputType == InputTypeEnum.text ||
         model.inputType == InputTypeEnum.number ||
-        model.inputType == InputTypeEnum.password;
+        model.inputType == InputTypeEnum.password ||
+        model.inputType == InputTypeEnum.height ||
+        model.inputType == InputTypeEnum.weight;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +152,6 @@ class _InputPageState extends State<InputPage> {
                     _controllers[index].text = selected.toString();
                   });
                 }
-                setState(() => focusedIndex = index);
               }
 
               if (model.inputType == InputTypeEnum.date) {
@@ -161,7 +166,7 @@ class _InputPageState extends State<InputPage> {
                     },
                   ),
                 );
-                setState(() => focusedIndex = index);
+                // setState(() => focusedIndex = index);
               }
             },
             child: AnimatedContainer(
@@ -192,22 +197,34 @@ class _InputPageState extends State<InputPage> {
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        setState(() => focusedIndex = index);
                         FocusScope.of(context).requestFocus(_focusNodes[index]);
                       },
                       child: TextField(
+                        maxLines: 2,
                         controller: _controllers[index],
                         focusNode: _focusNodes[index],
-                        keyboardType:
-                            model.inputType == InputTypeEnum.number
-                                ? TextInputType.number
-                                : TextInputType.text,
+                        keyboardType: TextInputType.number,
                         obscureText:
                             model.inputType == InputTypeEnum.password
                                 ? _obscureText
                                 : false,
                         onChanged: (v) {
-                          model.value = v;
+                          if (model.inputType == InputTypeEnum.number) {
+                            // Only allow digits
+                            final digitsOnly = v.replaceAll(RegExp(r'\D'), '');
+                            if (digitsOnly.length <= 10) {
+                              final formatted = _formatPhoneNumber(digitsOnly);
+                              _controllers[index].value = TextEditingValue(
+                                text: formatted,
+                                selection: TextSelection.collapsed(
+                                  offset: formatted.length,
+                                ),
+                              );
+                              model.value = formatted;
+                            }
+                          } else {
+                            model.value = v;
+                          }
                         },
                         style: AppTypography.body(
                           weight: AppTypographyWeight.regular,
@@ -272,8 +289,15 @@ class _InputPageState extends State<InputPage> {
           ),
         if (model.inputType == InputTypeEnum.height)
           HeightInput(
+            key: _heightKey,
             value: model.value?.toString() ?? '',
             label: model.label,
+            isFocused: isFocused,
+            onTap: () {
+              setState(() {
+                focusedIndex = index;
+              });
+            },
             onChanged: (value) {
               setState(() {
                 model.value = value;
@@ -282,8 +306,15 @@ class _InputPageState extends State<InputPage> {
           ),
         if (model.inputType == InputTypeEnum.weight)
           WeightInput(
+            key: _weightKey,
             value: model.value?.toString() ?? '',
             label: model.label,
+            isFocused: isFocused,
+            onTap: () {
+              setState(() {
+                focusedIndex = index;
+              });
+            },
             onChanged: (value) {
               setState(() {
                 model.value = value;
@@ -323,13 +354,38 @@ class _InputPageState extends State<InputPage> {
     return "${date.year.toString().padLeft(4, '0')}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}";
   }
 
+  String _formatPhoneNumber(String value) {
+    if (value.isEmpty) return '';
+
+    // Remove all non-digit characters
+    value = value.replaceAll(RegExp(r'\D'), '');
+
+    // Limit to 10 digits
+    if (value.length > 10) {
+      value = value.substring(0, 10);
+    }
+
+    // Format the number
+    if (value.length >= 7) {
+      return '(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}';
+    } else if (value.length >= 4) {
+      return '(${value.substring(0, 3)}) ${value.substring(3)}';
+    } else if (value.length >= 1) {
+      return '(${value}';
+    }
+
+    return value;
+  }
+
   @override
   Widget build(BuildContext context) {
     final showKeyboard =
         focusedIndex != null &&
         (_inputs[focusedIndex!].inputType == InputTypeEnum.text ||
             _inputs[focusedIndex!].inputType == InputTypeEnum.number ||
-            _inputs[focusedIndex!].inputType == InputTypeEnum.password);
+            _inputs[focusedIndex!].inputType == InputTypeEnum.password ||
+            _inputs[focusedIndex!].inputType == InputTypeEnum.height ||
+            _inputs[focusedIndex!].inputType == InputTypeEnum.weight);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -424,32 +480,101 @@ class _InputPageState extends State<InputPage> {
                         textColor: Colors.black,
                         keyboardType:
                             _inputs[focusedIndex!].inputType ==
-                                    InputTypeEnum.number
+                                        InputTypeEnum.number ||
+                                    _inputs[focusedIndex!].inputType ==
+                                        InputTypeEnum.height ||
+                                    _inputs[focusedIndex!].inputType ==
+                                        InputTypeEnum.weight
                                 ? CustomKeyboardType.numeric
                                 : CustomKeyboardType.alphanumeric,
                         onKeyPressed: (v) {
-                          final controller = _controllers[focusedIndex!];
-                          controller.text += v;
-                          controller.selection = TextSelection.collapsed(
-                            offset: controller.text.length,
-                          );
-                          _inputs[focusedIndex!].value = controller.text;
-                        },
-                        onBackspacePressed: () {
-                          final index = focusedIndex!;
-                          final controller = _controllers[index];
-                          if (controller.text.isNotEmpty) {
-                            controller.text = controller.text.substring(
-                              0,
-                              controller.text.length - 1,
+                          final model = _inputs[focusedIndex!];
+                          if (model.inputType == InputTypeEnum.height) {
+                            _heightKey.currentState?.handleKeyPress(v);
+                          } else if (model.inputType == InputTypeEnum.weight) {
+                            _weightKey.currentState?.handleKeyPress(v);
+                          } else if (model.inputType == InputTypeEnum.number) {
+                            final controller = _controllers[focusedIndex!];
+                            // Get current value without formatting
+                            final currentValue = controller.text.replaceAll(
+                              RegExp(r'\D'),
+                              '',
                             );
+
+                            // Only proceed if we haven't reached 10 digits
+                            if (currentValue.length < 10) {
+                              final newValue = currentValue + v;
+                              final formatted = _formatPhoneNumber(newValue);
+                              controller.value = TextEditingValue(
+                                text: formatted,
+                                selection: TextSelection.collapsed(
+                                  offset: formatted.length,
+                                ),
+                              );
+                              _inputs[focusedIndex!].value = formatted;
+                            }
+                          } else {
+                            final controller = _controllers[focusedIndex!];
+                            controller.text += v;
                             controller.selection = TextSelection.collapsed(
                               offset: controller.text.length,
                             );
-                            _inputs[index].value = controller.text;
+                            _inputs[focusedIndex!].value = controller.text;
                           }
                         },
-                        initialNumericVisible: false,
+                        onBackspacePressed: () {
+                          final model = _inputs[focusedIndex!];
+                          if (model.inputType == InputTypeEnum.height) {
+                            _heightKey.currentState?.handleBackspace();
+                          } else if (model.inputType == InputTypeEnum.weight) {
+                            _weightKey.currentState?.handleBackspace();
+                          } else if (model.inputType == InputTypeEnum.number) {
+                            final controller = _controllers[focusedIndex!];
+                            if (controller.text.isNotEmpty) {
+                              // Get current value without formatting
+                              var currentValue = controller.text.replaceAll(
+                                RegExp(r'\D'),
+                                '',
+                              );
+                              if (currentValue.isNotEmpty) {
+                                currentValue = currentValue.substring(
+                                  0,
+                                  currentValue.length - 1,
+                                );
+                                final formatted = _formatPhoneNumber(
+                                  currentValue,
+                                );
+                                controller.value = TextEditingValue(
+                                  text: formatted,
+                                  selection: TextSelection.collapsed(
+                                    offset: formatted.length,
+                                  ),
+                                );
+                                _inputs[focusedIndex!].value = formatted;
+                              }
+                            }
+                          } else {
+                            final index = focusedIndex!;
+                            final controller = _controllers[index];
+                            if (controller.text.isNotEmpty) {
+                              controller.text = controller.text.substring(
+                                0,
+                                controller.text.length - 1,
+                              );
+                              controller.selection = TextSelection.collapsed(
+                                offset: controller.text.length,
+                              );
+                              _inputs[index].value = controller.text;
+                            }
+                          }
+                        },
+                        initialNumericVisible:
+                            _inputs[focusedIndex!].inputType ==
+                                InputTypeEnum.number ||
+                            _inputs[focusedIndex!].inputType ==
+                                InputTypeEnum.height ||
+                            _inputs[focusedIndex!].inputType ==
+                                InputTypeEnum.weight,
                       ),
                     ),
                   ),
@@ -469,7 +594,14 @@ class InputPageCloseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: AppSpacing.xl3, right: AppSpacing.xl3),
-      child: Align(alignment: Alignment.topRight, child: CloseButtonWidget()),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: CloseButtonWidget(
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ),
     );
   }
 }

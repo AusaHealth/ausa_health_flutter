@@ -1,8 +1,10 @@
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 enum CustomKeyboardType { numeric, alphanumeric }
 
@@ -47,9 +49,30 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   @override
   void initState() {
     super.initState();
-    isNumericVisible = widget.initialNumericVisible;
+    _resetKeyboardState();
     _initializeKeyLayout();
     _initializeSpecialCharLayout();
+  }
+
+  @override
+  void didUpdateWidget(CustomKeyboard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reset state when keyboard type changes
+    if (oldWidget.keyboardType != widget.keyboardType) {
+      _resetKeyboardState();
+      _initializeKeyLayout();
+    }
+  }
+
+  void _resetKeyboardState() {
+    // Reset all state when keyboard type changes
+    if (widget.keyboardType == CustomKeyboardType.numeric) {
+      isNumericVisible = false; // Always false for numeric keyboard
+      isCapitalized = false;
+    } else {
+      isNumericVisible = widget.initialNumericVisible;
+      isCapitalized = false;
+    }
   }
 
   void _initializeSpecialCharLayout() {
@@ -67,7 +90,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         ['1', '2', '3'],
         ['4', '5', '6'],
         ['7', '8', '9'],
-        ['+', '0', '*'],
+        // ['+', '0', '*'],
       ];
     } else {
       _keyLayout = [
@@ -151,6 +174,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
   @override
   Widget build(BuildContext context) {
+    // For numeric keyboard, always show the simple numeric layout
     if (widget.keyboardType == CustomKeyboardType.numeric) {
       return Container(
         height: widget.height,
@@ -184,7 +208,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                   child: Center(
                                     child: Text(
                                       key,
-                                      style: AppTypography.callout(
+                                      style: AppTypography.title2(
                                         color: widget.textColor,
                                         weight: AppTypographyWeight.medium,
                                       ),
@@ -211,42 +235,53 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                   SizedBox(width: DesignScaleManager.scaleValue(540)), // For
                   Expanded(
                     child: Container(
+                      color: Colors.grey[200],
                       margin: EdgeInsets.all(8),
-                      child: Material(
-                        color: widget.keyColor,
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(AppRadius.xl3),
-                        child: InkWell(
-                          onTap: widget.onBackspacePressed,
-                          borderRadius: BorderRadius.circular(AppRadius.xl3),
-                          child: Center(
-                            child: Icon(
-                              Icons.backspace_outlined,
-                              color: widget.textColor,
-                              size: widget.fontSize,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.all(8),
                       child: Material(
-                        color: widget.enterColor,
+                        color: widget.keyColor,
                         elevation: 2,
                         borderRadius: BorderRadius.circular(AppRadius.xl3),
                         child: InkWell(
-                          onTap: widget.onEnterPressed,
+                          onTap: () => widget.onKeyPressed('0'),
                           borderRadius: BorderRadius.circular(AppRadius.xl3),
                           child: Center(
                             child: Text(
-                              widget.enterText!,
-                              style: AppTypography.callout(
-                                color: Colors.white,
+                              '0',
+                              style: AppTypography.title2(
+                                color: widget.textColor,
                                 weight: AppTypographyWeight.medium,
                               ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      child: Material(
+                        color: Colors.grey[200],
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(AppRadius.xl3),
+                        child: InkWell(
+                          onTap: widget.onBackspacePressed,
+                          borderRadius: BorderRadius.circular(AppRadius.xl3),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              colorFilter: ColorFilter.mode(
+                                AppColors.accent,
+                                BlendMode.srcIn,
+                              ),
+                              AusaIcons.delete,
+                              width: DesignScaleManager.scaleValue(40),
+                              height: DesignScaleManager.scaleValue(40),
                             ),
                           ),
                         ),
@@ -262,7 +297,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       );
     }
 
-    // Return existing alphanumeric keyboard layout
+    // For alphanumeric keyboard, show the full QWERTY layout
     final currentLayout = isNumericVisible ? _specialCharLayout : _keyLayout;
     return Container(
       height: widget.height,

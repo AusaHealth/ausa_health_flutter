@@ -70,230 +70,228 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.xl3),
       ),
-      backgroundColor: Colors.white,
-      child: Container(
-        height: DesignScaleManager.scaleValue(1084),
-        width: DesignScaleManager.scaleValue(1136),
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.xl6,
-          vertical: AppSpacing.xl4,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Select Date',
-                  style: AppTypography.body(
-                    weight: AppTypographyWeight.regular,
-                    color: AppColors.blackColor,
+      height: DesignScaleManager.scaleValue(1084),
+      width: DesignScaleManager.scaleValue(1136),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl6,
+        vertical: AppSpacing.xl4,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Select Date',
+                style: AppTypography.body(
+                  weight: AppTypographyWeight.regular,
+                  color: AppColors.blackColor,
+                ),
+              ),
+              Spacer(),
+              AusaButton(
+                leadingIcon: SvgPicture.asset(
+                  height: DesignScaleManager.scaleValue(24),
+                  width: DesignScaleManager.scaleValue(24),
+                  AusaIcons.gift01,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.primary500,
+                    BlendMode.srcIn,
                   ),
                 ),
-                Spacer(),
-                AusaButton(
-                  leadingIcon: SvgPicture.asset(
-                    height: DesignScaleManager.scaleValue(24),
-                    width: DesignScaleManager.scaleValue(24),
-                    AusaIcons.gift01,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.primary500,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  size: ButtonSize.s,
-                  variant: ButtonVariant.tertiary,
-                  text: selectedDateString ?? 'Birthday',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-
-            SizedBox(height: AppSpacing.xl2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _stepButtonTab(
-                  selectedYear != null ? '${selectedYear}' : 'Select Year',
-                  selectedYear != null
-                      ? AusaIcons.chevronDown
-                      : AusaIcons.chevronUp,
-
-                  step == 0,
-                  () => goToStep(0),
-                ),
-                SizedBox(width: AppSpacing.xl),
-                _stepButtonTab(
-                  selectedMonth != null
-                      ? '${fullMonthNames[selectedMonth! - 1]}'
-                      : 'Select Month',
-                  selectedMonth != null
-                      ? AusaIcons.chevronDown
-                      : AusaIcons.chevronUp,
-
-                  step == 1,
-                  () => goToStep(1),
-                ),
-                SizedBox(width: AppSpacing.xl),
-                _stepButtonTab(
-                  selectedDay != null ? '${selectedDay}' : 'Select Date',
-                  selectedDay != null
-                      ? AusaIcons.chevronDown
-                      : AusaIcons.chevronUp,
-
-                  step == 2,
-                  () => goToStep(2),
-                ),
-              ],
-            ),
-
-            if (selectedRangeStart != null) ...[
-              SizedBox(height: AppSpacing.xl),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: DesignScaleManager.scaleValue(84),
-                    height: DesignScaleManager.scaleValue(84),
-                    decoration: BoxDecoration(
-                      color: Color(0xffFAFAFA),
-                      borderRadius: BorderRadius.circular(AppRadius.xl3),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        goToStep(0);
-                        setState(() {
-                          selectedRangeStart = null;
-                        });
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(AppSpacing.md),
-                        child: SvgPicture.asset(
-                          AusaIcons.chevronLeft,
-                          height: DesignScaleManager.scaleValue(32),
-                          width: DesignScaleManager.scaleValue(32),
-                          colorFilter: ColorFilter.mode(
-                            AppColors.blackColor,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: AppSpacing.md),
-                  Container(
-                    height: DesignScaleManager.scaleValue(84),
-                    decoration: BoxDecoration(
-                      color: Color(0xffFAFAFA),
-                      borderRadius: BorderRadius.circular(AppRadius.xl3),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        goToStep(0);
-                        setState(() {
-                          selectedRangeStart = null;
-                        });
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xl,
-                          vertical: AppSpacing.md,
-                        ),
-                        child: Text(
-                          selectedRangeStart != null
-                              ? '${selectedRangeStart} - ${selectedRangeEnd}'
-                              : '1901 - 1910',
-                          style: AppTypography.callout(
-                            weight: AppTypographyWeight.medium,
-                            color: AppColors.blackColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                size: ButtonSize.s,
+                variant: ButtonVariant.tertiary,
+                text: selectedDateString ?? 'Birthday',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
+          ),
 
-            // Step content
+          SizedBox(height: AppSpacing.xl2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _stepButtonTab(
+                selectedYear != null ? '${selectedYear}' : 'Select Year',
+                selectedYear != null
+                    ? AusaIcons.chevronDown
+                    : AusaIcons.chevronUp,
+
+                step == 0,
+                () => goToStep(0),
+              ),
+              SizedBox(width: AppSpacing.xl),
+              _stepButtonTab(
+                selectedMonth != null
+                    ? '${fullMonthNames[selectedMonth! - 1]}'
+                    : 'Select Month',
+                selectedMonth != null
+                    ? AusaIcons.chevronDown
+                    : AusaIcons.chevronUp,
+
+                step == 1,
+                () => goToStep(1),
+              ),
+              SizedBox(width: AppSpacing.xl),
+              _stepButtonTab(
+                selectedDay != null ? '${selectedDay}' : 'Select Date',
+                selectedDay != null
+                    ? AusaIcons.chevronDown
+                    : AusaIcons.chevronUp,
+
+                step == 2,
+                () => goToStep(2),
+              ),
+            ],
+          ),
+
+          if (selectedRangeStart != null) ...[
             SizedBox(height: AppSpacing.xl),
-            if (validationMessage != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Text(
-                  validationMessage!,
-                  style: AppTypography.body(
-                    color: Colors.red,
-                    weight: AppTypographyWeight.medium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: DesignScaleManager.scaleValue(84),
+                  height: DesignScaleManager.scaleValue(84),
+                  decoration: BoxDecoration(
+                    color: Color(0xffFAFAFA),
+                    borderRadius: BorderRadius.circular(AppRadius.xl3),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      goToStep(0);
+                      setState(() {
+                        selectedRangeStart = null;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.md),
+                      child: SvgPicture.asset(
+                        AusaIcons.chevronLeft,
+                        height: DesignScaleManager.scaleValue(32),
+                        width: DesignScaleManager.scaleValue(32),
+                        colorFilter: ColorFilter.mode(
+                          AppColors.blackColor,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (step == 0)
-              selectedRangeStart == null
-                  ? _yearRangeGrid()
-                  : _yearGridInRange(),
-            if (step == 1) _monthGrid(),
-            if (step == 2)
-              Column(
-                children: [
-                  if (selectedYear != null && selectedMonth != null)
-                    DayGridSelector(
-                      year: selectedYear!,
-                      month: selectedMonth!,
-                      selectedDay: selectedDay,
-                      onDaySelected: (day) {
-                        setState(() {
-                          selectedDay = day;
-                        });
-                      },
-                    ),
-                ],
-              ),
-            // Action buttons
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                AusaButton(
-                  size: ButtonSize.lg,
-                  borderColor: AppColors.primary500,
-                  variant: ButtonVariant.secondary,
-                  text: 'Cancel',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
                 SizedBox(width: AppSpacing.md),
-                AusaButton(
-                  size: ButtonSize.lg,
-                  text: 'Done',
-                  onPressed:
-                      (selectedMonth != null &&
-                              selectedDay != null &&
-                              selectedYear != null)
-                          ? () {
-                            widget.onDone(
-                              DateTime(
-                                selectedYear!,
-                                selectedMonth!,
-                                selectedDay!,
-                              ),
-                            );
-                            Navigator.of(context).pop();
-                          }
-                          : null,
+                Container(
+                  height: DesignScaleManager.scaleValue(84),
+                  decoration: BoxDecoration(
+                    color: Color(0xffFAFAFA),
+                    borderRadius: BorderRadius.circular(AppRadius.xl3),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      goToStep(0);
+                      setState(() {
+                        selectedRangeStart = null;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.md,
+                      ),
+                      child: Text(
+                        selectedRangeStart != null
+                            ? '${selectedRangeStart} - ${selectedRangeEnd}'
+                            : '1901 - 1910',
+                        style: AppTypography.callout(
+                          weight: AppTypographyWeight.medium,
+                          color: AppColors.blackColor,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ],
-        ),
+
+          // Step content
+          SizedBox(height: AppSpacing.xl),
+          if (validationMessage != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Text(
+                validationMessage!,
+                style: AppTypography.body(
+                  color: Colors.red,
+                  weight: AppTypographyWeight.medium,
+                ),
+              ),
+            ),
+          if (step == 0)
+            selectedRangeStart == null ? _yearRangeGrid() : _yearGridInRange(),
+          if (step == 1) _monthGrid(),
+          if (step == 2)
+            Column(
+              children: [
+                if (selectedYear != null && selectedMonth != null)
+                  DayGridSelector(
+                    year: selectedYear!,
+                    month: selectedMonth!,
+                    selectedDay: selectedDay,
+                    onDaySelected: (day) {
+                      setState(() {
+                        selectedDay = day;
+                      });
+                    },
+                  ),
+              ],
+            ),
+
+          // Action buttons
+          // Spacer(),
+          Expanded(child: SizedBox()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              AusaButton(
+                size: ButtonSize.lg,
+                borderColor: AppColors.primary500,
+                variant: ButtonVariant.secondary,
+                text: 'Cancel',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              SizedBox(width: AppSpacing.md),
+              AusaButton(
+                size: ButtonSize.lg,
+                text: 'Done',
+                onPressed:
+                    (selectedMonth != null &&
+                            selectedDay != null &&
+                            selectedYear != null)
+                        ? () {
+                          widget.onDone(
+                            DateTime(
+                              selectedYear!,
+                              selectedMonth!,
+                              selectedDay!,
+                            ),
+                          );
+                          Navigator.of(context).pop();
+                        }
+                        : null,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -589,7 +587,9 @@ class DayGridSelector extends StatelessWidget {
             crossAxisCount: 7,
             mainAxisSpacing: 14,
             crossAxisSpacing: 6,
+
             childAspectRatio: 1.9,
+            // mainAxisExtent: 30,
           ),
           itemCount: totalGridCount,
           itemBuilder: (context, index) {

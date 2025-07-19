@@ -50,13 +50,45 @@ class Utils {
     return DateFormat('MMM d, yyyy').format(date);
   }
 
+  // static double calculateBMI({
+  //   required double weightKg,
+  //   required double heightCm,
+  // }) {
+  //   final heightM = heightCm / 100;
+  //   if (heightM == 0) return double.nan;
+  //   return weightKg / (heightM * heightM);
+  // }
+
   static double calculateBMI({
-    required double weightKg,
-    required double heightCm,
+    required String heightFeetInches, // e.g. "5'11"
+    required double weightLbs,
   }) {
-    final heightM = heightCm / 100;
-    if (heightM == 0) return double.nan;
-    return weightKg / (heightM * heightM);
+    try {
+      // Extract feet and inches from the string
+      final parts = heightFeetInches.split("'");
+      if (parts.length != 2) return double.nan;
+
+      final feet = int.tryParse(parts[0].trim());
+      final inches = int.tryParse(
+        parts[1].replaceAll(RegExp(r'[^0-9]'), '').trim(),
+      );
+
+      if (feet == null || inches == null) return double.nan;
+
+      // Convert height to meters
+      final totalInches = (feet * 12) + inches;
+      final heightM = totalInches * 0.0254;
+
+      // Convert weight to kg
+      final weightKg = weightLbs * 0.453592;
+
+      if (heightM == 0) return double.nan;
+
+      // Calculate BMI
+      return weightKg / (heightM * heightM);
+    } catch (e) {
+      return double.nan;
+    }
   }
 
   static double inchesToCm(double inches) {

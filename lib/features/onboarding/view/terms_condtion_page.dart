@@ -19,7 +19,6 @@ class TermsConditionPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Align(alignment: Alignment.topRight, child: CloseButtonWidget()),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [CloseButtonWidget()],
