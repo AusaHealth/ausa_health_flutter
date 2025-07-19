@@ -7,14 +7,7 @@ class Helpers {
     'Friend',
     'Other',
   ];
-  static List<String> genderOptions = [
-    'Male',
-    'Female',
-    'Other',
-    'Parent',
-    'Friend',
-    'Other',
-  ];
+  static List<String> genderOptions = ['Male', 'Female', 'Other'];
   static bool isPhoneNumberValid(String phone) {
     final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
     return digits.length == 10;
