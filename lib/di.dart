@@ -10,6 +10,7 @@ import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:ausa/features/settings/controller/wifi_controller.dart';
 import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
+import 'package:ausa/features/mqtt_test/controller/mqtt_test_controller.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:ausa/features/vitals_history/controller/media_test_history_controller.dart';
 import 'package:ausa/features/vitals_history/controller/vitals_history_controller.dart';
@@ -36,6 +37,7 @@ class AppBinding extends Bindings {
     Get.put(VitalsHistoryController());
     Get.put(MediaTestHistoryController());
     Get.put(WifiController());
+    Get.put(MqttTestController());
 
     // Note: AppointmentEditController is created on-demand with parameters in the page
     // Other specialized controllers are created when their respective pages are accessed

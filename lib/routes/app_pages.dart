@@ -36,11 +36,14 @@ import 'package:ausa/features/settings/page/call_settings_page.dart';
 import 'package:ausa/features/settings/page/display_setting_page.dart';
 import 'package:ausa/features/settings/page/notification_settings_page.dart';
 
+// MQTT Test import
+import 'package:ausa/features/mqtt_test/page/mqtt_test_page.dart';
+
 import 'package:ausa/routes/app_routes.dart';
 import 'package:get/get.dart';
 
 abstract class AppPages {
-  static const String initialRoute = AppRoutes.home;
+  static const String initialRoute = AppRoutes.mqttTest;
 
   static final List<GetPage> pages = [
     GetPage(name: AppRoutes.onboarding, page: () => OnboardingWrapper()),
@@ -194,6 +197,13 @@ abstract class AppPages {
       name: AppRoutes.notificationSettings,
       page: () => const NotificationSettingsPage(),
       // SettingController is registered globally in AppBinding
+    ),
+
+    // MQTT Test route
+    GetPage(
+      name: AppRoutes.mqttTest,
+      page: () => const MqttTestPage(),
+      // MqttTestController is registered globally in AppBinding
     ),
   ];
 

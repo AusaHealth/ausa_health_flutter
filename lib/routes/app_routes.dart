@@ -41,6 +41,9 @@ abstract class AppRoutes {
   static const String displaySettings = '/settings/display';
   static const String notificationSettings = '/settings/notifications';
 
+  // MQTT Test route
+  static const String mqttTest = '/mqtt-test';
+
   static const String notFound = '/not-found';
   static const String onboarding = '/onboarding';
 }
