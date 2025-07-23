@@ -10,6 +10,8 @@ class VitalsHistoryController extends GetxController {
   // Current selected tab
   final RxInt currentTabIndex = 0.obs;
 
+  final RxInt topVisibleIndex = 0.obs;
+
   // Loading state
   final RxBool isLoading = false.obs;
 
@@ -33,7 +35,7 @@ class VitalsHistoryController extends GetxController {
   // Tab configuration
   final List<Map<String, dynamic>> tabs = [
     {'title': 'Blood Pressure', 'type': VitalType.bloodPressure},
-    {'title': 'Blood Oxygen', 'type': VitalType.spO2HeartRate},
+    {'title': 'Blood Saturation', 'type': VitalType.spO2HeartRate},
     {'title': 'Blood Glucose', 'type': VitalType.bloodGlucose},
     {'title': 'Body Temperature', 'type': VitalType.bodyTemperature},
     {'title': 'ECG', 'type': VitalType.ecg},
@@ -80,30 +82,20 @@ class VitalsHistoryController extends GetxController {
   }
 
   // Get readings for chart based on selected reading
-  List<VitalReading> get chartReadings {
-    final allReadings = currentReadings;
-    if (allReadings.isEmpty) return [];
+List<VitalReading> get chartReadings {
+  final allReadings = currentReadings;
+  if (allReadings.isEmpty) return [];
 
-    // If no reading is selected, use the latest 5 readings
-    if (selectedReading.value == null) {
-      return allReadings.take(5).toList();
-    }
-
-    // Find the index of selected reading
-    final selectedIndex = allReadings.indexOf(selectedReading.value!);
-    if (selectedIndex == -1) {
-      return allReadings.take(5).toList();
-    }
-
-    // Get 5 readings starting from selected reading (selected + 4 previous)
-    final endIndex = selectedIndex + 5;
-    final readings = allReadings.sublist(
-      selectedIndex,
-      endIndex > allReadings.length ? allReadings.length : endIndex,
-    );
-
-    return readings;
+  // ── No selection → return every reading (newest first)
+  if (selectedReading.value == null) {
+    return allReadings;
   }
+
+  // ── A reading is selected → still return the full list
+  //     (the chart widget will pan/zoom so no need to slice)
+  return allReadings;
+}
+
 
   // Check if current readings are empty
   bool get hasNoReadings => currentReadings.isEmpty;
@@ -621,8 +613,4 @@ class VitalsHistoryController extends GetxController {
     // Get.to(() => VitalMeasurementPage(vitalType: currentVitalType));
   }
 
-  // Update selected reading based on scroll position without altering the selected parameter
-  void updateReadingFromScroll(VitalReading reading) {
-    selectedReading.value = reading;
-  }
 }

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../constants/constants.dart';
 import '../controller/vitals_history_controller.dart';
-import '../widget/vitals_chart_widget.dart';
+import '../widget/graph/vitals_chart_widget.dart';
 import '../widget/reading_card_widget.dart';
 import '../model/vital_reading.dart';
 
@@ -26,6 +26,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
 
   // Generic parameter selection storage
   final RxMap<String, String> selectedParameters = <String, String>{}.obs;
+  final TransformationController _chartXform = TransformationController();
 
   // Scrollbar state
   final RxDouble scrollPosition = 0.0.obs;
@@ -37,6 +38,22 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
     super.initState();
     controller = Get.find<VitalsHistoryController>();
     _itemPositionsListener.itemPositions.addListener(_handleScroll);
+
+    ever(controller.topVisibleIndex, _scrollChart);
+  }
+
+
+  void _scrollChart(int listIndex) {
+    // The list is newest‑first, chart X‑axis is oldest‑first.
+    final int chartIndex = controller.currentReadings.length - 1 - listIndex;
+
+    // Bring that point to roughly 80 % from the right edge
+    const double scale = 5.0; // same as you use in chart
+    final double translateX = -(chartIndex - 1.0); // tweak if needed
+    _chartXform.value =
+        Matrix4.identity()
+          ..translate(translateX)
+          ..scale(scale, 1.0);
   }
 
   void _handleScroll() {
@@ -48,44 +65,13 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
         .where((pos) => pos.itemTrailingEdge > 0)
         .reduce((a, b) => a.index < b.index ? a : b);
 
-    final reading = _getReadingAtIndex(topMost.index);
-    if (reading != null) {
-      controller.updateReadingFromScroll(reading);
-    }
-
+    controller.topVisibleIndex.value = topMost.index;
     // Update scrollbar position
     if (!_isDragging) {
       final progress =
           topMost.index / (totalItems.value - 1).clamp(1, double.infinity);
       scrollPosition.value = progress.clamp(0.0, 1.0);
     }
-  }
-
-  VitalReading? _getReadingAtIndex(int targetIndex) {
-    final readings = controller.currentReadings;
-    String prevDateKey = '';
-    int currentIndex = 0;
-
-    for (final reading in readings) {
-      final dateKey = _getDateKey(reading.timestamp);
-
-      // Date header counts as an item
-      if (dateKey != prevDateKey) {
-        if (currentIndex == targetIndex) {
-          return null; // It is a header, not a reading
-        }
-        currentIndex++;
-        prevDateKey = dateKey;
-      }
-
-      // Reading item
-      if (currentIndex == targetIndex) {
-        return reading;
-      }
-      currentIndex++;
-    }
-
-    return null;
   }
 
   @override
@@ -127,6 +113,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
                           // Chart
                           Expanded(
                             child: VitalsChartWidget(
+                              externalController: _chartXform,
                               readings: controller.chartReadings,
                               vitalType: controller.currentVitalType,
                               selectedParameter:
