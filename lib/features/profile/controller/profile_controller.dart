@@ -39,8 +39,8 @@ class ProfileController extends GetxController {
     dateOfBirth: DateTime(1980, 6, 15),
     gender: 'Male',
     height: '180',
-    weight: "176",
-    phone: '+1555-123-4567',
+    weight: '176',
+    phone: '555-123-4567',
   );
 
   final RxList<FamilyModel> familyMembers =

@@ -1,6 +1,6 @@
+import 'package:ausa/constants/design_scale.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'design_scale.dart';
 
 /// Typography class containing text styles for the application
 /// Based on the defined text styles:
@@ -186,6 +186,4 @@ class AppTypography {
       decoration: decoration,
     );
   }
-
-
 }

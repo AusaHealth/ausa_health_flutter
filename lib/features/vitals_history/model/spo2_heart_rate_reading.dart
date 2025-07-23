@@ -1,4 +1,4 @@
-import 'vital_reading.dart';
+import 'package:ausa/features/vitals_history/model/vital_reading.dart';
 
 class SpO2HeartRateReading extends VitalReading {
   final double oxygenSaturation; // SpO2 percentage

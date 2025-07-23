@@ -52,6 +52,7 @@ dependencies:
   intl: ^0.20.2
   syncfusion_flutter_sliders: ^30.1.40
   top_snackbar_flutter: ^3.3.0
+  mqtt_client: ^10.8.0
 
 
 dev_dependencies:

@@ -1,17 +1,17 @@
+import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
+import 'package:ausa/common/widget/app_tab_buttons.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
+import 'package:ausa/features/health_schedule/controller/health_schedule_controller.dart';
+import 'package:ausa/features/health_schedule/widget/medication_card_widget.dart';
+import 'package:ausa/features/health_schedule/widget/medication_filter_sidebar.dart';
+import 'package:ausa/features/health_schedule/widget/time_filter_sidebar.dart';
+import 'package:ausa/features/health_schedule/widget/time_slot_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../constants/constants.dart';
-import '../../../common/widget/app_back_header.dart';
-import '../../../common/widget/app_tab_buttons.dart';
-import '../../../common/widget/app_main_container.dart';
-import '../controller/health_schedule_controller.dart';
-import '../widget/time_filter_sidebar.dart';
-import '../widget/medication_filter_sidebar.dart';
-import '../widget/medication_card_widget.dart';
-import '../widget/time_slot_widget.dart';
 
 class HealthSchedulePage extends StatelessWidget {
   const HealthSchedulePage({super.key});
@@ -210,7 +210,7 @@ class HealthSchedulePage extends StatelessWidget {
             left: 20,
             top: 2,
             bottom: 0,
-            child: Container(
+            child: SizedBox(
               width: 2,
               child: LayoutBuilder(
                 builder: (context, constraints) {

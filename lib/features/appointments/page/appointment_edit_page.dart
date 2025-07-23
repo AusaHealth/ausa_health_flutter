@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_stepper_widget.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
@@ -15,7 +14,6 @@ import 'package:ausa/features/appointments/widget/cancel_appointment_dialog.dart
 import 'package:ausa/features/appointments/widget/discard_changes_dialog.dart';
 import 'package:ausa/features/appointments/widget/time_slots_grid.dart';
 import 'package:ausa/features/appointments/widget/voice_input_widget.dart';
-import 'package:ausa/common/widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';

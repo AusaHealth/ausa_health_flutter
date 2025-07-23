@@ -1,5 +1,5 @@
+import 'package:ausa/constants/constants.dart';
 import 'package:flutter/material.dart';
-import '../../constants/constants.dart';
 
 /// A reusable stepper widget that displays step indicators
 /// Used with AppBackHeader to show progress through multi-step processes

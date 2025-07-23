@@ -1,16 +1,15 @@
 import 'package:ausa/common/controller/snackbar_controller.dart';
+import 'package:ausa/common/model/test.dart';
+import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/common/widget/auto_hide_container.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/trapezium_clippers.dart';
 import 'package:ausa/constants/gradients.dart';
-import 'package:ausa/common/model/test.dart';
-import 'package:ausa/common/widget/app_icons.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/teleconsultation/controller/teleconsultation_controller.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../controller/teleconsultation_controller.dart';
 
 class ActionBar extends StatelessWidget {
   final TeleconsultationController controller;
@@ -100,7 +99,7 @@ class IncompleteTests extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    for (var test in testController.selectedTests)
+                    for (final test in testController.selectedTests)
                       TestItem(test: test),
                   ],
                 ),
@@ -283,7 +282,7 @@ class _ActionIcon extends StatelessWidget {
         selected
             ? (selectedColor ?? Colors.black.withValues(alpha: 0.08))
             : Colors.white;
-    return Container(
+    return SizedBox(
       width: 48,
       height: 48,
       child: Material(

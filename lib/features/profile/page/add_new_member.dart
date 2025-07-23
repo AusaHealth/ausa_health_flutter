@@ -1,15 +1,16 @@
-import 'package:ausa/common/widget/custom_text_field.dart';
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/custom_text_field.dart';
+import 'package:ausa/constants/app_images.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/utils.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/widget/add_photo_popup_widget.dart';
 import 'package:ausa/features/profile/widget/member_summary_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:ausa/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
@@ -60,19 +61,23 @@ class _AddNewMemberState extends State<AddNewMember> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Utils.showBlurredDialog(
-                                context,
-                                AddPhotoPopupWidget(),
-                              );
+                              Utils.showBlurredDialog(AddPhotoPopupWidget());
                             },
                             child: Container(
                               padding: EdgeInsets.all(AppSpacing.smMedium),
                               decoration: BoxDecoration(
-                                color: Color(0xffC2EFFF).withOpacity(0.5),
+                                image: DecorationImage(
+                                  image: AssetImage(AppImages.innerShadow),
+                                  fit: BoxFit.cover,
+                                ),
+                                //   color: Color(0xffC2EFFF).withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(
                                   AppRadius.xl3,
                                 ),
                               ),
+                              //  BoxDecoration(
+
+                              // ),
                               child: Center(
                                 child: SvgPicture.asset(
                                   AusaIcons.userPlus01,

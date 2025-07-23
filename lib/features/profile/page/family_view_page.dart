@@ -95,7 +95,7 @@ class _FamilyViewPageState extends State<FamilyViewPage> {
                 ),
                 text: 'Add Member',
                 onPressed: () {
-                  Utils.showBlurredDialog(context, AddFamilyDialouge());
+                  Utils.showBlurredDialog(AddFamilyDialouge());
                 },
               ),
             ],

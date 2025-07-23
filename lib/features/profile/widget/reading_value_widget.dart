@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
+import 'package:flutter/material.dart';
 
 class ReadingValueWidget extends StatelessWidget {
   final String label;
@@ -12,14 +12,14 @@ class ReadingValueWidget extends StatelessWidget {
   final bool isBloodSugar;
 
   const ReadingValueWidget({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.unit,
     this.labelFontSize,
     this.valueFontSize,
     this.isBloodSugar = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

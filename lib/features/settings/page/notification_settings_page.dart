@@ -3,12 +3,12 @@ import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
-import 'package:ausa/features/settings/page/know_more_page.dart';
-import 'package:flutter/material.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:get/get.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
+import 'package:ausa/features/settings/page/know_more_page.dart';
 import 'package:ausa/features/settings/widget/switch_tab_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NotificationSettingsPage extends StatefulWidget {
   const NotificationSettingsPage({super.key});

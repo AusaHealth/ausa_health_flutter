@@ -4,9 +4,9 @@ import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:ausa/features/onboarding/controller/onboarding_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/onboarding_controller.dart';
 
 class OnboardingLanguagePage extends StatelessWidget {
   const OnboardingLanguagePage({super.key});

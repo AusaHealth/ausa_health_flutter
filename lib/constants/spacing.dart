@@ -1,4 +1,4 @@
-import 'design_scale.dart';
+import 'package:ausa/constants/design_scale.dart';
 
 /// Spacing constants for the application
 /// All values are scalable based on the current design scale

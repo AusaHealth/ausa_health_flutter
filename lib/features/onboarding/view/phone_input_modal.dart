@@ -4,7 +4,7 @@ import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/close_button_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
-import 'package:ausa/constants/helpers.dart';
+
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
@@ -40,8 +40,8 @@ class _PhoneNumberInputModalState extends State<PhoneNumberInputModal> {
       return '(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}';
     } else if (value.length >= 4) {
       return '(${value.substring(0, 3)}) ${value.substring(3)}';
-    } else if (value.length >= 1) {
-      return '(${value}';
+    } else if (value.isNotEmpty) {
+      return '($value';
     }
 
     return value;

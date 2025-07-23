@@ -125,7 +125,7 @@ class _VoiceInputWidgetState extends State<VoiceInputWidget>
   }
 
   Widget _buildWaveform() {
-    return Container(
+    return SizedBox(
       height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

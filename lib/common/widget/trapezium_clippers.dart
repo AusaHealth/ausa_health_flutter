@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:ausa/constants/gradients.dart';
+import 'package:flutter/material.dart';
 
 class TrapeziumBackground extends StatelessWidget {
   final Widget? child;

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

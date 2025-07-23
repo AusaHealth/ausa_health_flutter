@@ -1,10 +1,10 @@
-import 'package:ausa/constants/icons.dart';
-import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/constants/icons.dart';
+import 'package:ausa/features/vitals_history/model/media_test_reading.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
-import '../../../constants/constants.dart';
-import '../model/media_test_reading.dart';
 
 class MediaTestCardWidget extends StatefulWidget {
   final MediaTestReading reading;
@@ -565,7 +565,7 @@ class _MediaTestCardWidgetState extends State<MediaTestCardWidget> {
         iconColor = AppColors.primary700;
     }
 
-    return Container(
+    return SizedBox(
       width: 32,
       height: 32,
 

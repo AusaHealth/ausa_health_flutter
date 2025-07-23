@@ -1,7 +1,7 @@
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/features/health_schedule/controller/health_schedule_controller.dart';
+import 'package:ausa/features/health_schedule/model/health_activity.dart';
 import 'package:flutter/material.dart';
-import '../../../constants/constants.dart';
-import '../model/health_activity.dart';
-import '../controller/health_schedule_controller.dart';
 
 class MedicationCardWidget extends StatelessWidget {
   final HealthActivity medication;

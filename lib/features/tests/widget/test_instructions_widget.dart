@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:async';
+
 import 'package:ausa/common/model/test.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/typography.dart';
-import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/icons.dart';
-import 'dart:async';
+import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TestInstructionsWidget extends StatefulWidget {
   final Test test;
@@ -358,10 +359,9 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                 SizedBox(height: AppSpacing.md),
 
                 // Instruction title
-                if (currentInstruction.title != null &&
-                    currentInstruction.title!.isNotEmpty) ...[
+                if (currentInstruction.title.isNotEmpty) ...[
                   Text(
-                    currentInstruction.title!,
+                    currentInstruction.title,
                     style: AppTypography.callout(
                       fontWeight: FontWeight.w600,
                       color: Colors.grey[800],
@@ -373,9 +373,8 @@ class _TestInstructionsWidgetState extends State<TestInstructionsWidget>
                 // Instruction content
                 Expanded(
                   child: Text(
-                    currentInstruction.content != null &&
-                            currentInstruction.content!.isNotEmpty
-                        ? currentInstruction.content!
+                    currentInstruction.content.isNotEmpty
+                        ? currentInstruction.content
                         : 'No instruction content available.',
                     style: AppTypography.body(
                       color: Colors.grey[700],

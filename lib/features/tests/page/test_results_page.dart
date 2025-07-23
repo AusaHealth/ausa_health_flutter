@@ -1,18 +1,18 @@
+import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/radius.dart';
-import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
 import 'package:ausa/features/tests/model/test_result.dart';
-import 'package:ausa/common/model/test.dart';
+import 'package:ausa/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:ausa/routes/app_routes.dart';
 
 class TestResultsPage extends StatelessWidget {
   TestResultsPage({super.key});

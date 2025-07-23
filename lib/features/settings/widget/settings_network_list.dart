@@ -1,12 +1,10 @@
-import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/settings/model/network_info_model.dart';
+import 'package:ausa/features/settings/widget/settings_network_tile.dart';
 import 'package:flutter/material.dart';
-import 'settings_network_tile.dart';
 
 class SettingsNetworkList extends StatelessWidget {
   final List<NetworkInfo> networks;

@@ -1,22 +1,22 @@
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ausa/constants/icons.dart';
+import 'package:ausa/common/enums/test_status.dart';
+import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/icons.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/tests/controller/test_controller.dart';
+import 'package:ausa/features/tests/model/test_prerequisites.dart';
+import 'package:ausa/features/tests/page/test_interrupted_page.dart';
 import 'package:ausa/features/tests/widget/animated_test_timer.dart';
 import 'package:ausa/features/tests/widget/ecg_timer_widgets.dart';
-import 'package:ausa/features/tests/widget/test_image_display.dart';
-import 'package:ausa/common/enums/test_status.dart';
-import 'package:ausa/constants/typography.dart';
-import 'package:ausa/common/widget/buttons.dart';
-import 'package:ausa/common/model/test.dart';
-import 'package:ausa/features/tests/widget/subtype_selection_dialog.dart';
 import 'package:ausa/features/tests/widget/prerequisite_check_dialog.dart';
+import 'package:ausa/features/tests/widget/subtype_selection_dialog.dart';
+import 'package:ausa/features/tests/widget/test_image_display.dart';
 import 'package:ausa/features/tests/widget/test_instructions_widget.dart';
-import 'package:ausa/features/tests/model/test_prerequisites.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:ausa/features/tests/page/test_interrupted_page.dart';
 
 /// Visual progress indicator for multi-select groups (Body Sounds, ENT).
 class _GroupStepper extends StatelessWidget {

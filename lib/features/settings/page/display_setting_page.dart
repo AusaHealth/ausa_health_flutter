@@ -6,12 +6,9 @@ import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
-
-import 'package:syncfusion_flutter_core/theme.dart';
-
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class DisplaySettingPage extends StatefulWidget {
@@ -24,9 +21,28 @@ class DisplaySettingPage extends StatefulWidget {
 class _DisplaySettingPageState extends State<DisplaySettingPage> {
   double textSize = 1.0;
 
+  // Get the font size multiplier based on the selected step
+  double getFontSizeMultiplier() {
+    if (textSize <= 0.33) return 0.8; // Small
+    if (textSize <= 0.66) return 1.0; // Medium
+    return 1.2; // Large
+  }
+
+  // Get the preview text sizes based on the current step
+  List<double> getPreviewSizes() {
+    final multiplier = getFontSizeMultiplier();
+    return [
+      24 * multiplier, // Small A
+      32 * multiplier, // Medium A
+      38 * multiplier, // Large A
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final settingController = Get.find<SettingController>();
+    final previewSizes = getPreviewSizes();
+
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +64,7 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Obx(
-                    () => _CustomSlider(
+                    () => CustomSliderBrightness(
                       minValue: 0.0,
                       maxValue: 1.0,
                       value: settingController.brightness.value,
@@ -66,7 +82,6 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
             ),
           ),
           SizedBox(width: AppSpacing.lg),
-          // Text Size Card
           _DisplayCard(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -77,37 +92,56 @@ class _DisplaySettingPageState extends State<DisplaySettingPage> {
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Color(0xffCFDDFD),
+                        color:
+                            textSize <= 0.33
+                                ? AppColors.primary500
+                                : Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
-                      ).copyWith(fontSize: 24),
+                      ).copyWith(fontSize: previewSizes[0]),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Color(0xff0F54C7),
+                        color:
+                            textSize > 0.33 && textSize <= 0.66
+                                ? AppColors.primary500
+                                : Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
-                      ).copyWith(fontSize: 32),
+                      ).copyWith(fontSize: previewSizes[1]),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'A',
                       style: AppTypography.title1(
-                        color: Color(0xffCFDDFD),
+                        color:
+                            textSize > 0.66
+                                ? AppColors.primary500
+                                : Color(0xffCFDDFD),
                         fontWeight: FontWeight.w400,
-                      ).copyWith(fontSize: 38),
+                      ).copyWith(fontSize: previewSizes[2]),
                     ),
                   ],
                 ),
                 SizedBox(height: AppSpacing.xl7),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: _CustomSlider(
+                  child: CustomSlider(
                     minValue: 0.0,
                     maxValue: 1.0,
                     image: AusaIcons.type01,
                     value: textSize,
-                    onChanged: (v) => setState(() => textSize = v),
+                    onChanged: (v) {
+                      // Snap to nearest third
+                      double snappedValue;
+                      if (v <= 0.33) {
+                        snappedValue = 0.0;
+                      } else if (v <= 0.66)
+                        snappedValue = 0.5;
+                      else
+                        snappedValue = 1.0;
+                      setState(() => textSize = snappedValue);
+                    },
                   ),
                 ),
                 SizedBox(height: AppSpacing.xl7),
@@ -149,41 +183,65 @@ class _DisplayCard extends StatelessWidget {
   }
 }
 
-class _CustomSlider extends StatelessWidget {
-  final double value;
-  final ValueChanged<double> onChanged;
-  final String image;
-  final double minValue;
-  final double maxValue;
-
-  const _CustomSlider({
+class CustomSlider extends StatelessWidget {
+  const CustomSlider({
+    required this.image,
+    super.key,
     required this.value,
     required this.onChanged,
-    required this.image,
     this.minValue = 0.0,
     this.maxValue = 8.0,
+    this.activeTrackColor,
   });
+
+  final double value;
+  final ValueChanged<double> onChanged;
+  final double minValue;
+  final double maxValue;
+  final Color? activeTrackColor;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CustomSlider(
-          image: image,
-          value: value,
-          onChanged: onChanged,
-          minValue: minValue,
-          maxValue: maxValue,
-          activeTrackColor: AppColors.primary500,
+    return SfSliderTheme(
+      data: SfSliderThemeData(
+        thumbColor: Colors.white,
+        thumbRadius: DesignScaleManager.scaleValue(42),
+        thumbStrokeColor: AppColors.primary500,
+        activeTrackHeight: 4,
+        inactiveTrackHeight: 4,
+        overlayRadius: 0,
+        tickSize: Size(3, 12),
+        tickOffset: Offset(0, 8),
+        activeTickColor: AppColors.primary500,
+        inactiveTickColor: AppColors.gray200,
+      ),
+      child: SfSlider(
+        thumbIcon: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SvgPicture.asset(
+            image,
+            width: DesignScaleManager.scaleValue(20),
+            height: DesignScaleManager.scaleValue(20),
+            colorFilter: ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+          ),
         ),
-      ],
+        inactiveColor: AppColors.gray200,
+        activeColor: AppColors.primary500,
+        thumbShape: SfThumbShape(),
+        value: value,
+        onChanged: (dynamic value) => onChanged(value as double),
+        interval: 0.5,
+        showTicks: true,
+        minorTicksPerInterval: 0,
+        stepSize: 0.5,
+      ),
     );
   }
 }
 
-class CustomSlider extends StatelessWidget {
-  const CustomSlider({
+class CustomSliderBrightness extends StatelessWidget {
+  const CustomSliderBrightness({
     required this.image,
     super.key,
     required this.value,

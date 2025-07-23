@@ -4,9 +4,9 @@ import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/profile/controller/profile_controller.dart';
 import 'package:ausa/features/profile/widget/horizontal_tab_bar.dart';
+import 'package:ausa/features/profile/widget/reading_value_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ausa/features/profile/widget/reading_value_widget.dart';
 
 class ConditionPage extends StatefulWidget {
   const ConditionPage({super.key});

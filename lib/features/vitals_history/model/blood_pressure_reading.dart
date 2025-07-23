@@ -1,4 +1,4 @@
-import 'vital_reading.dart';
+import 'package:ausa/features/vitals_history/model/vital_reading.dart';
 
 class BloodPressureReading extends VitalReading {
   final int systolic;

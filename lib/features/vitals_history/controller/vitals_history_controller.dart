@@ -1,10 +1,10 @@
+import 'package:ausa/features/vitals_history/model/blood_glucose_reading.dart';
+import 'package:ausa/features/vitals_history/model/blood_pressure_reading.dart';
+import 'package:ausa/features/vitals_history/model/body_temperature_reading.dart';
+import 'package:ausa/features/vitals_history/model/ecg_reading.dart';
+import 'package:ausa/features/vitals_history/model/spo2_heart_rate_reading.dart';
+import 'package:ausa/features/vitals_history/model/vital_reading.dart';
 import 'package:get/get.dart';
-import '../model/vital_reading.dart';
-import '../model/blood_pressure_reading.dart';
-import '../model/spo2_heart_rate_reading.dart';
-import '../model/blood_glucose_reading.dart';
-import '../model/body_temperature_reading.dart';
-import '../model/ecg_reading.dart';
 
 class VitalsHistoryController extends GetxController {
   // Current selected tab

@@ -7,14 +7,12 @@ import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class SmartPromptDialog extends StatelessWidget {
   final VoidCallback? onClose;
   final VoidCallback? onTurnOff;
 
-  const SmartPromptDialog({Key? key, this.onClose, this.onTurnOff})
-    : super(key: key);
+  const SmartPromptDialog({super.key, this.onClose, this.onTurnOff});
 
   @override
   Widget build(BuildContext context) {

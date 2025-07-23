@@ -15,21 +15,6 @@ class HomeController extends GetxController {
     _selectedIndex.value = index;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Initialize any home-specific data
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-    // Called after the widget is rendered
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-    // Cleanup when controller is disposed
-  }
 }

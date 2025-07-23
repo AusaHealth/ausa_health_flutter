@@ -1,12 +1,10 @@
 import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
-
 import 'package:ausa/main.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 enum ToastType { error, warning, success }
 

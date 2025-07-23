@@ -8,7 +8,6 @@ import 'package:ausa/features/profile/model/family_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class MemberSummaryCardWidget extends StatelessWidget {
   final bool isFamily;
@@ -39,10 +38,10 @@ class MemberSummaryCardWidget extends StatelessWidget {
               LabelValueRow(
                 items: [
                   LabelValueColumn(
-                    label: "Short name",
+                    label: 'Short name',
                     value: member.shortName,
                   ),
-                  LabelValueColumn(label: "Full name", value: member.fullName),
+                  LabelValueColumn(label: 'Full name', value: member.fullName),
                   const SizedBox.shrink(),
                 ],
                 spacing: AppSpacing.xl,
@@ -50,10 +49,10 @@ class MemberSummaryCardWidget extends StatelessWidget {
               SizedBox(height: AppSpacing.xl2),
               LabelValueRow(
                 items: [
-                  LabelValueColumn(label: "Phone", value: member.phone),
-                  LabelValueColumn(label: "Email", value: member.email),
+                  LabelValueColumn(label: 'Phone', value: member.phone),
+                  LabelValueColumn(label: 'Email', value: member.email),
                   LabelValueColumn(
-                    label: "Relation",
+                    label: 'Relation',
                     value: member.relationship,
                   ),
                 ],
@@ -61,7 +60,7 @@ class MemberSummaryCardWidget extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.xl2),
               LabelValueColumn(
-                label: "Address",
+                label: 'Address',
                 value: member.address,
                 isAddress: true,
               ),

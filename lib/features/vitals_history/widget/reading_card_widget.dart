@@ -1,11 +1,11 @@
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/features/vitals_history/model/blood_glucose_reading.dart';
+import 'package:ausa/features/vitals_history/model/blood_pressure_reading.dart';
+import 'package:ausa/features/vitals_history/model/body_temperature_reading.dart';
+import 'package:ausa/features/vitals_history/model/ecg_reading.dart';
+import 'package:ausa/features/vitals_history/model/spo2_heart_rate_reading.dart';
+import 'package:ausa/features/vitals_history/model/vital_reading.dart';
 import 'package:flutter/material.dart';
-import '../../../constants/constants.dart';
-import '../model/vital_reading.dart';
-import '../model/blood_pressure_reading.dart';
-import '../model/spo2_heart_rate_reading.dart';
-import '../model/blood_glucose_reading.dart';
-import '../model/body_temperature_reading.dart';
-import '../model/ecg_reading.dart';
 import 'package:get/get.dart';
 
 class ReadingCardWidget extends StatelessWidget {
@@ -260,7 +260,7 @@ class ReadingCardWidget extends StatelessWidget {
             ),
             child: _buildDataPoint(
               'SpO₂',
-              '${spO2Reading.oxygenSaturation.toStringAsFixed(1)}',
+              spO2Reading.oxygenSaturation.toStringAsFixed(1),
               '%',
               isHighlighted: isParameterSelected?.call('SpO2') == true,
             ),

@@ -1,6 +1,5 @@
-import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/controller/appointment_scheduling_controller.dart';
-
+import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/auth/controller/auth_controller.dart';
 import 'package:ausa/features/health_schedule/controller/health_schedule_controller.dart';
 import 'package:ausa/features/health_schedule/controller/meal_times_controller.dart';

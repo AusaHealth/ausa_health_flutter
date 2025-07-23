@@ -1,7 +1,6 @@
 import 'package:ausa/common/animations/connecting_animation_with_container.dart';
 import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
@@ -117,7 +116,7 @@ class DeviceStatusCard extends StatelessWidget {
                         )
                         : ConnectingAnimationWithContainer(
                           isAnimation: false,
-                          text: "Not found.",
+                          text: 'Not found.',
                           containerColor: Color(0xff7A879C),
                           dotColor: Colors.white,
                           textStyle: AppTypography.callout(
@@ -235,7 +234,7 @@ class _ConnectingAnimationState extends State<ConnectingAnimation>
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          _showConnected ? "Connected" : "Connecting",
+          _showConnected ? 'Connected' : 'Connecting',
           style:
               widget.textStyle ??
               const TextStyle(

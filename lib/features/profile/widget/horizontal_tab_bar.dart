@@ -1,9 +1,10 @@
+import 'dart:ui';
+
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 class HorizontalTabBar extends StatelessWidget {
   final List<String> items;

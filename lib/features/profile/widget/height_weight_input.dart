@@ -59,7 +59,7 @@ class HeightInputState extends State<HeightInput> {
     int i = int.tryParse(inchesController.text) ?? 0;
     double c = f * 30.48 + i * 2.54;
     cmController.text = c.toStringAsFixed(1);
-    widget.onChanged('$f\' $i\"');
+    widget.onChanged('$f\' $i"');
   }
 
   void updateFromCm() {

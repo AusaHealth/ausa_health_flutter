@@ -1,5 +1,4 @@
 import 'package:ausa/constants/constants.dart';
-import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

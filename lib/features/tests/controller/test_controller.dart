@@ -1,20 +1,21 @@
+import 'dart:async';
+import 'dart:math' as math;
+
+import 'package:ausa/common/enums/test_error_type.dart';
 import 'package:ausa/common/enums/test_status.dart';
 import 'package:ausa/common/model/test.dart';
 import 'package:ausa/common/model/test_error.dart';
-import 'package:ausa/common/enums/test_error_type.dart';
 import 'package:ausa/constants/test_definitions.dart';
-import 'package:ausa/features/tests/model/test_session.dart';
-import 'package:ausa/features/tests/model/test_result.dart';
+import 'package:ausa/features/tests/model/test_group.dart';
 import 'package:ausa/features/tests/model/test_prerequisites.dart';
-import 'package:ausa/features/tests/page/test_selection_page.dart';
+import 'package:ausa/features/tests/model/test_result.dart';
+import 'package:ausa/features/tests/model/test_session.dart';
 import 'package:ausa/features/tests/page/test_execution_page.dart';
 import 'package:ausa/features/tests/page/test_results_page.dart';
-import 'package:get/get.dart';
-import 'dart:math' as math;
-import 'dart:async';
-import 'package:ausa/features/tests/model/test_group.dart';
-import 'package:ausa/features/tests/widget/subtype_selection_dialog.dart';
+import 'package:ausa/features/tests/page/test_selection_page.dart';
 import 'package:ausa/features/tests/widget/prerequisite_check_dialog.dart';
+import 'package:ausa/features/tests/widget/subtype_selection_dialog.dart';
+import 'package:get/get.dart';
 
 class TestController extends GetxController {
   // Test Selection State

@@ -1,4 +1,5 @@
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/common/widget/otp_input_widget.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/helpers.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:ausa/common/widget/otp_input_widget.dart';
 
 class OtpVerificationWidget extends StatefulWidget {
   const OtpVerificationWidget({super.key});

@@ -1,8 +1,8 @@
-import 'package:get/get.dart';
+import 'package:ausa/features/health_schedule/model/health_activity.dart';
+import 'package:ausa/features/health_schedule/model/health_time_slot.dart';
+import 'package:ausa/features/health_schedule/page/meal_times_page.dart';
 import 'package:flutter/material.dart' hide TimeOfDay;
-import '../model/health_activity.dart';
-import '../model/health_time_slot.dart';
-import '../page/meal_times_page.dart';
+import 'package:get/get.dart';
 
 class HealthScheduleController extends GetxController {
   // Private observable state

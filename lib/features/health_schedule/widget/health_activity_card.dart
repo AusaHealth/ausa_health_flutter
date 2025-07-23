@@ -1,7 +1,7 @@
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/features/health_schedule/model/health_activity.dart';
+import 'package:ausa/features/health_schedule/widget/condition_tag_widget.dart';
 import 'package:flutter/material.dart';
-import '../../../constants/constants.dart';
-import '../model/health_activity.dart';
-import 'condition_tag_widget.dart';
 
 class HealthActivityCard extends StatelessWidget {
   final HealthActivity activity;

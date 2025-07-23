@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -20,7 +21,7 @@ class WifiPasswordModal extends StatefulWidget {
 class _WifiPasswordModalState extends State<WifiPasswordModal> {
   final TextEditingController _controller = TextEditingController();
   bool _obscure = true;
-  FocusNode _focus = FocusNode();
+  final FocusNode _focus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +29,10 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
     final double borderRadius = 48;
     return KeyboardVisibilityBuilder(
       builder: (context, isKeyboardVisible) {
-        _focus.addListener((){
-          if(_focus.hasFocus){
+        _focus.addListener(() {
+          if (_focus.hasFocus) {
             isKeyboardVisible = true;
-          }else{
+          } else {
             isKeyboardVisible = false;
           }
         });
@@ -53,13 +54,8 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
               child: Material(
                 color: Colors.transparent,
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 36,
-                    vertical: 36,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 36, vertical: 36),
+                  decoration: BoxDecoration(color: Colors.transparent),
                   child: Stack(
                     children: [
                       Column(
@@ -69,7 +65,11 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Icon(Icons.wifi, color: Colors.white, size: 32),
+                              const Icon(
+                                Icons.wifi,
+                                color: Colors.white,
+                                size: 32,
+                              ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
@@ -120,15 +120,26 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
                                         fontSize: 20,
                                       ),
                                       border: InputBorder.none,
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 32, vertical: 0),
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 32,
+                                        vertical: 0,
+                                      ),
                                     ),
                                     onChanged: (_) => setState(() {}),
                                   ),
                                 ),
                                 if (hasText)
                                   IconButton(
-                                    icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility, color: const Color(0xFF717680)),
-                                    onPressed: () => setState(() => _obscure = !_obscure),
+                                    icon: Icon(
+                                      _obscure
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: const Color(0xFF717680),
+                                    ),
+                                    onPressed:
+                                        () => setState(
+                                          () => _obscure = !_obscure,
+                                        ),
                                   ),
                                 const SizedBox(width: 8),
                               ],
@@ -140,14 +151,22 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
                             height: 56,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: hasText ? const Color(0xFF00267E) : const Color(0xFFB3C6E0),
+                                backgroundColor:
+                                    hasText
+                                        ? const Color(0xFF00267E)
+                                        : const Color(0xFFB3C6E0),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(borderRadius),
+                                  borderRadius: BorderRadius.circular(
+                                    borderRadius,
+                                  ),
                                 ),
                                 elevation: 0,
                                 padding: EdgeInsets.zero,
                               ),
-                              onPressed: hasText ? () => widget.onSubmit(_controller.text) : null,
+                              onPressed:
+                                  hasText
+                                      ? () => widget.onSubmit(_controller.text)
+                                      : null,
                               child: Text(
                                 'Submit',
                                 style: TextStyle(
@@ -165,7 +184,11 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
                         top: 0,
                         right: 0,
                         child: IconButton(
-                          icon: const Icon(Icons.close, color: Colors.white, size: 32),
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 32,
+                          ),
                           onPressed: widget.onClose,
                         ),
                       ),
@@ -179,4 +202,4 @@ class _WifiPasswordModalState extends State<WifiPasswordModal> {
       },
     );
   }
-} 
+}

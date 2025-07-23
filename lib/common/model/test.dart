@@ -1,4 +1,5 @@
 /// Enums -----------------------------------------------------------------------------------------
+library;
 
 /// More granular control of when / how Augmented-Reality assets are shown
 enum ARUsageType { none, instructionsOnly, duringTestOnly, both }

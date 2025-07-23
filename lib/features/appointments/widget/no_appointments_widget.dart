@@ -1,5 +1,5 @@
-import 'package:ausa/constants/typography.dart';
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 
 class NoAppointmentsWidget extends StatelessWidget {

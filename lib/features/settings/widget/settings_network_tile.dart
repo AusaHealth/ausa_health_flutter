@@ -1,4 +1,3 @@
-import 'package:ausa/constants/app_images.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/icons.dart';

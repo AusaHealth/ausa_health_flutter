@@ -1,5 +1,5 @@
+import 'package:ausa/constants/constants.dart';
 import 'package:flutter/material.dart';
-import '../../constants/constants.dart';
 
 class AppMainContainer extends StatelessWidget {
   final Widget child;

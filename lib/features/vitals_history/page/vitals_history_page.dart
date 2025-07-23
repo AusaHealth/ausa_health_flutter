@@ -2,14 +2,14 @@ import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/app_tab_buttons.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/features/vitals_history/controller/vitals_history_controller.dart';
+import 'package:ausa/features/vitals_history/model/vital_reading.dart';
+import 'package:ausa/features/vitals_history/widget/reading_card_widget.dart';
+import 'package:ausa/features/vitals_history/widget/vitals_chart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import '../../../constants/constants.dart';
-import '../controller/vitals_history_controller.dart';
-import '../widget/vitals_chart_widget.dart';
-import '../widget/reading_card_widget.dart';
-import '../model/vital_reading.dart';
 
 class VitalsHistoryPage extends StatefulWidget {
   const VitalsHistoryPage({super.key});
@@ -257,7 +257,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
       right: 0,
       top: 20,
       bottom: 20,
-      child: Container(
+      child: SizedBox(
         width: 6,
         child: Obx(() {
           final progress = scrollPosition.value;
@@ -434,7 +434,7 @@ class _VitalsHistoryPageState extends State<VitalsHistoryPage> {
       child: Row(
         children: [
           Expanded(
-            child: Container(
+            child: SizedBox(
               height: 1,
               child: CustomPaint(
                 painter: DottedLinePainter(

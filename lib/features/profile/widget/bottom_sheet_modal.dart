@@ -27,7 +27,7 @@ Future<String?> showBottomSheetModal(
     ),
     isScrollControlled: false,
     builder: (context) {
-      return Container(
+      return SizedBox(
         // padding: const EdgeInsets.fromLTRB(32, 32, 32, 32),
         width: Get.width,
         child: Padding(

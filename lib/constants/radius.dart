@@ -1,5 +1,5 @@
+import 'package:ausa/constants/design_scale.dart';
 import 'package:flutter/material.dart';
-import 'design_scale.dart';
 
 /// Radius constants for the application
 /// All values are scalable based on the current design scale

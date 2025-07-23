@@ -1,7 +1,6 @@
-import 'package:ausa/constants/constants.dart';
-import 'package:ausa/constants/typography.dart';
-import 'package:ausa/features/appointments/model/time_slot.dart';
 import 'package:ausa/common/widget/buttons.dart';
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/features/appointments/model/time_slot.dart';
 import 'package:flutter/material.dart';
 
 class TimeSlotsGrid extends StatelessWidget {

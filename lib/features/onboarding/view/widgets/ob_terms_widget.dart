@@ -78,7 +78,9 @@ class OnboardingTermsWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              constraints: BoxConstraints(maxHeight: 280),
+              constraints: BoxConstraints(
+                maxHeight: DesignScaleManager.scaleValue(800),
+              ),
               child: SingleChildScrollView(
                 child: Text(
                   '''WAIVER OF LIABILITY AND AGREEMENT OF USE

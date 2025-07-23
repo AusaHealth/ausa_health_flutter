@@ -1,8 +1,8 @@
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../constants/constants.dart';
 
 class AppBackHeader extends StatelessWidget {
   final String title;

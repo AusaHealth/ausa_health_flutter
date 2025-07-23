@@ -1,41 +1,37 @@
-import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
 import 'package:ausa/features/appointments/page/appointment_edit_page.dart';
+import 'package:ausa/features/appointments/page/appointment_scheduling_page.dart';
 import 'package:ausa/features/appointments/page/scheduled_appointments_page.dart';
 import 'package:ausa/features/demo/page/demo_page.dart';
 import 'package:ausa/features/health_schedule/page/health_schedule_page.dart';
 import 'package:ausa/features/health_schedule/page/meal_times_page.dart';
-import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
-import 'package:ausa/features/vitals_history/page/media_test_history_page.dart';
-import 'package:ausa/features/teleconsultation/page/base_teleconsultation_page.dart';
-import 'package:ausa/features/tests/page/test_selection_page.dart';
-import 'package:ausa/features/tests/page/test_execution_page.dart';
-import 'package:ausa/features/tests/page/test_results_page.dart';
 import 'package:ausa/features/home/page/home_page.dart';
-
+import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
+import 'package:ausa/features/onboarding/view/otp_verification_view.dart';
+import 'package:ausa/features/onboarding/view/phone_input_modal.dart';
 // Onboarding imports
 import 'package:ausa/features/onboarding/view/splash_page.dart';
-import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
-import 'package:ausa/features/onboarding/view/phone_input_modal.dart';
-import 'package:ausa/features/onboarding/view/otp_verification_view.dart';
 // import 'package:ausa/features/onboarding/view/personal_detail_input_page.dart'; // File is commented out
 import 'package:ausa/features/onboarding/view/terms_condtion_page.dart';
-
-// Profile imports
-import 'package:ausa/features/profile/page/profile_page.dart';
-import 'package:ausa/features/profile/page/family_page.dart';
 import 'package:ausa/features/profile/page/add_new_member.dart';
-import 'package:ausa/features/profile/page/email_invite_page.dart';
+import 'package:ausa/features/profile/page/ausa_connect.dart';
 import 'package:ausa/features/profile/page/care_page.dart';
 import 'package:ausa/features/profile/page/condition_page.dart';
-import 'package:ausa/features/profile/page/ausa_connect.dart';
-
-// Settings imports
-import 'package:ausa/features/settings/page/setting_page.dart';
+import 'package:ausa/features/profile/page/email_invite_page.dart';
+import 'package:ausa/features/profile/page/family_page.dart';
+// Profile imports
+import 'package:ausa/features/profile/page/profile_page.dart';
 import 'package:ausa/features/settings/page/bluetooth_page.dart';
 import 'package:ausa/features/settings/page/call_settings_page.dart';
 import 'package:ausa/features/settings/page/display_setting_page.dart';
 import 'package:ausa/features/settings/page/notification_settings_page.dart';
-
+// Settings imports
+import 'package:ausa/features/settings/page/setting_page.dart';
+import 'package:ausa/features/teleconsultation/page/base_teleconsultation_page.dart';
+import 'package:ausa/features/tests/page/test_execution_page.dart';
+import 'package:ausa/features/tests/page/test_results_page.dart';
+import 'package:ausa/features/tests/page/test_selection_page.dart';
+import 'package:ausa/features/vitals_history/page/media_test_history_page.dart';
+import 'package:ausa/features/vitals_history/page/vitals_history_page.dart';
 import 'package:ausa/routes/app_routes.dart';
 import 'package:get/get.dart';
 

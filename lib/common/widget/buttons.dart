@@ -1,6 +1,6 @@
+import 'package:ausa/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../constants/constants.dart';
 
 enum ButtonVariant { primary, secondary, tertiary }
 

@@ -1,7 +1,7 @@
+import 'package:ausa/constants/constants.dart';
+import 'package:ausa/features/health_schedule/controller/health_schedule_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/constants.dart';
-import '../controller/health_schedule_controller.dart';
 
 class MedicationFilterSidebar extends StatelessWidget {
   final HealthScheduleController controller;
@@ -10,7 +10,7 @@ class MedicationFilterSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 220,
       child: Obx(() {
         final filters = controller.dynamicMedicationFilters;

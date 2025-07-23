@@ -71,7 +71,7 @@ class DiscardChangesDialog extends StatelessWidget {
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFE5C340).withOpacity(.1),
+                    color: const Color(0xffffe5c340).withOpacity(.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(

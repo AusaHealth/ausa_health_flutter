@@ -1,5 +1,6 @@
 /// Design scale configuration for consistent scaling across typography, spacing, and radius
 /// Provides different scale options: default, 1.25x, 1.50x, 1.75x
+library;
 
 /// Common ratio applied to all design tokens (typography, spacing, radius)
 /// This scales down all Figma values by 50% by default

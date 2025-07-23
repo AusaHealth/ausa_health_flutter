@@ -1,12 +1,12 @@
+import 'package:ausa/common/widget/app_back_header.dart';
+import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
+import 'package:ausa/constants/constants.dart';
 import 'package:ausa/constants/icons.dart';
+import 'package:ausa/features/health_schedule/controller/meal_times_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../constants/constants.dart';
-import '../../../common/widget/app_back_header.dart';
-import '../../../common/widget/app_main_container.dart';
-import '../controller/meal_times_controller.dart';
 
 class MealTimesPage extends StatelessWidget {
   const MealTimesPage({super.key});
@@ -283,7 +283,7 @@ class MealTimesPage extends StatelessWidget {
   Widget _buildTimePicker(MealTimesController controller) {
     return Obx(
       () => Center(
-        child: Container(
+        child: SizedBox(
           height: 500,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -389,7 +389,7 @@ class MealTimesPage extends StatelessWidget {
     bool isInteractive = true,
     FixedExtentScrollController? scrollController,
   }) {
-    return Container(
+    return SizedBox(
       width: width,
       height: 500,
       child: Stack(

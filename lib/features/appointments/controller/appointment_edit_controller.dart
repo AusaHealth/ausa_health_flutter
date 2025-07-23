@@ -147,7 +147,7 @@ class AppointmentEditController extends GetxController {
     // Simulate recording
     Future.delayed(const Duration(seconds: 2), () {
       _updateIsRecording(false);
-      _updateSymptomsText("Updated symptoms from voice input.");
+      _updateSymptomsText('Updated symptoms from voice input.');
     });
   }
 

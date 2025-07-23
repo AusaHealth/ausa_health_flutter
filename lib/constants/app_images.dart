@@ -1,4 +1,5 @@
 class AppImages {
+  static const String innerShadow = 'assets/images/inner_shadow.png';
   static const String familyPerson = 'assets/images/family.png';
   static const String appBarBluetooth = 'assets/icons/bluetooth.png';
   static const String appBarWifi = 'assets/icons/wifi.png';

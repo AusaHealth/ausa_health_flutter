@@ -1,12 +1,11 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/close_button_widget.dart';
+import 'package:ausa/common/widget/scroller_widget.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/home/page/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:ausa/constants/typography.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ausa/common/widget/scroller_widget.dart';
 
 class TermsConditionPage extends StatelessWidget {
   const TermsConditionPage({super.key});

@@ -123,8 +123,8 @@ class _ConnectingAnimationState extends State<ConnectingAnimationWithContainer>
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: widget.dotColor.withOpacity(
-                            0.2 + (_dotAnimations[index].value * 0.8),
+                          color: widget.dotColor.withValues(
+                            alpha: 0.2 + (_dotAnimations[index].value * 0.8),
                           ),
                         ),
                       );
@@ -146,7 +146,7 @@ class _ConnectingAnimationState extends State<ConnectingAnimationWithContainer>
                 ),
               SizedBox(width: AppSpacing.md),
               Text(
-                _showConnected ? "Connected" : "Connecting",
+                _showConnected ? 'Connected' : 'Connecting',
                 style:
                     widget.textStyle ??
                     AppTypography.callout(
@@ -171,7 +171,7 @@ class _ConnectingAnimationState extends State<ConnectingAnimationWithContainer>
                   ),
                   SizedBox(width: AppSpacing.smMedium),
                   Text(
-                    widget.text ?? "Connected",
+                    widget.text ?? 'Connected',
                     style:
                         widget.textStyle ??
                         AppTypography.callout(

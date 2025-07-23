@@ -1,7 +1,8 @@
 import 'dart:async';
+
+import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:ausa/features/appointments/model/appointment.dart';
 import 'package:ausa/features/appointments/model/time_slot.dart';
-import 'package:ausa/features/appointments/controller/appointments_controller.dart';
 import 'package:get/get.dart';
 
 class AppointmentSchedulingController extends GetxController {
@@ -105,7 +106,7 @@ class AppointmentSchedulingController extends GetxController {
     // Simulate recording
     Future.delayed(const Duration(seconds: 2), () {
       _updateIsRecording(false);
-      _updateSymptomsText("Severe headache and fatigue since last 2 days.");
+      _updateSymptomsText('Severe headache and fatigue since last 2 days.');
     });
   }
 

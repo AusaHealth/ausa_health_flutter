@@ -1,12 +1,8 @@
-import 'package:ausa/common/widget/custom_loader.dart';
-import 'package:ausa/common/widget/toast.dart';
+import 'package:ausa/common/widget/base_scaffold.dart';
 import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/icons.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:ausa/common/widget/base_scaffold.dart';
-import 'package:ausa/constants/utils.dart';
-import 'package:ausa/features/profile/widget/birthday_pickup_dialoge.dart';
 // import 'package:ausa/features/onboarding/view/onboarding_wrapper.dart';
 import 'package:ausa/routes/routes.dart';
 import 'package:flutter/material.dart';

@@ -1,8 +1,8 @@
-import 'package:get/get.dart';
-import 'package:ausa/features/tests/model/test_result.dart';
-import 'package:ausa/common/model/test.dart';
-import '../model/media_test_reading.dart';
 import 'dart:math' as math;
+
+import 'package:ausa/features/tests/model/test_result.dart';
+import 'package:ausa/features/vitals_history/model/media_test_reading.dart';
+import 'package:get/get.dart';
 
 class MediaTestHistoryController extends GetxController {
   // Current selected tab (Body Sounds vs ENT)

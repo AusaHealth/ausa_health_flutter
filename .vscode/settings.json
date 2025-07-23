@@ -1,0 +1,21 @@
+{
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [80],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off",
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+        }
+    },
+    "dart.previewFlutterUiGuides": true,
+    "dart.openDevTools": "flutter",
+    "dart.debugExternalPackageLibraries": true,
+    "dart.debugSdkLibraries": false,
+    "dart.lineLength": 80
+} 

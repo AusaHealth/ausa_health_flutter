@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:ausa/common/custom_keyboard.dart';
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/common/widget/close_button_widget.dart';
@@ -9,13 +10,13 @@ import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/constants/utils.dart';
+import 'package:ausa/features/profile/page/input_model.dart';
 import 'package:ausa/features/profile/widget/birthday_pickup_dialoge.dart';
 import 'package:ausa/features/profile/widget/bottom_sheet_modal.dart';
 import 'package:ausa/features/profile/widget/height_weight_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'input_model.dart';
 
 class InputPage extends StatefulWidget {
   final bool isOtherWifiNetwork;
@@ -40,8 +41,6 @@ class _InputPageState extends State<InputPage> {
   final List<TextEditingController> _controllers = [];
   final _heightKey = GlobalKey<HeightInputState>();
   final _weightKey = GlobalKey<WeightInputState>();
-  final _heightController = HeightInputController();
-  final _weightController = WeightInputController();
 
   bool isEmailValid = false;
   bool isEmailDirty = false;
@@ -156,7 +155,6 @@ class _InputPageState extends State<InputPage> {
 
               if (model.inputType == InputTypeEnum.date) {
                 Utils.showBlurredDialog(
-                  context,
                   BirthdayPickerDialouge(
                     initialDate: model.value is DateTime ? model.value : null,
                     onDone: (date) {
@@ -327,26 +325,26 @@ class _InputPageState extends State<InputPage> {
 
   String _getHint(String name) {
     switch (name) {
-      case "phone":
-        return "+1 (000) 000 - 0000";
-      case "email":
-        return "johndoe@email.com";
-      case "address":
-        return "1234 Maplewood Lane,\n Springfield, IL 62704";
-      case "name":
-        return "Type your name";
-      case "shortName":
-        return "John";
-      case "fullName":
-        return "John Doe";
-      case "networkName":
-        return "Network Name";
-      case "Password":
-        return "Password...";
-      case "security":
-        return "Security";
+      case 'phone':
+        return '+1 (000) 000 - 0000';
+      case 'email':
+        return 'johndoe@email.com';
+      case 'address':
+        return '1234 Maplewood Lane,\n Springfield, IL 62704';
+      case 'name':
+        return 'Type your name';
+      case 'shortName':
+        return 'John';
+      case 'fullName':
+        return 'John Doe';
+      case 'networkName':
+        return 'Network Name';
+      case 'Password':
+        return 'Password...';
+      case 'security':
+        return 'Security';
       default:
-        return "";
+        return '';
     }
   }
 
@@ -370,8 +368,8 @@ class _InputPageState extends State<InputPage> {
       return '(${value.substring(0, 3)}) ${value.substring(3, 6)}-${value.substring(6)}';
     } else if (value.length >= 4) {
       return '(${value.substring(0, 3)}) ${value.substring(3)}';
-    } else if (value.length >= 1) {
-      return '(${value}';
+    } else if (value.isNotEmpty) {
+      return '($value';
     }
 
     return value;

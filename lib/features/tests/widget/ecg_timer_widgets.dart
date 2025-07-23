@@ -1,8 +1,9 @@
 import 'dart:math' as math;
+
+import 'package:ausa/constants/color.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:ausa/constants/color.dart';
 
 /// Simple timer for 2-lead ECG with grey background container
 class Ecg2LeadTimerWidget extends StatefulWidget {

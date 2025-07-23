@@ -1,8 +1,8 @@
 import 'package:ausa/common/model/user.dart';
-import 'package:ausa/common/widget/containers.dart';
 import 'package:ausa/common/widget/app_icons.dart';
-import 'package:flutter/material.dart';
+import 'package:ausa/common/widget/containers.dart';
 import 'package:ausa/constants/typography.dart';
+import 'package:flutter/material.dart';
 
 class DoctorInfo extends StatelessWidget {
   final User doctor;

@@ -120,7 +120,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _stepButtonTab(
-                selectedYear != null ? '${selectedYear}' : 'Select Year',
+                selectedYear != null ? '$selectedYear' : 'Select Year',
                 selectedYear != null
                     ? AusaIcons.chevronDown
                     : AusaIcons.chevronUp,
@@ -131,7 +131,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
               SizedBox(width: AppSpacing.xl),
               _stepButtonTab(
                 selectedMonth != null
-                    ? '${fullMonthNames[selectedMonth! - 1]}'
+                    ? fullMonthNames[selectedMonth! - 1]
                     : 'Select Month',
                 selectedMonth != null
                     ? AusaIcons.chevronDown
@@ -142,7 +142,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
               ),
               SizedBox(width: AppSpacing.xl),
               _stepButtonTab(
-                selectedDay != null ? '${selectedDay}' : 'Select Date',
+                selectedDay != null ? '$selectedDay' : 'Select Date',
                 selectedDay != null
                     ? AusaIcons.chevronDown
                     : AusaIcons.chevronUp,
@@ -207,7 +207,7 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
                       ),
                       child: Text(
                         selectedRangeStart != null
-                            ? '${selectedRangeStart} - ${selectedRangeEnd}'
+                            ? '$selectedRangeStart - $selectedRangeEnd'
                             : '1901 - 1910',
                         style: AppTypography.callout(
                           weight: AppTypographyWeight.medium,
@@ -422,86 +422,75 @@ class _BirthdayPickerDialougeState extends State<BirthdayPickerDialouge> {
 
   Widget _monthGrid() {
     final months = [
-      'JAN',
-      'FEB',
-      'MAR',
-      'APR',
-      'MAY',
-      'JUN',
-      'JUL',
-      'AUG',
-      'SEP',
-      'OCT',
-      'NOV',
-      'DEC',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
-    // 5 columns: 5 * 132 + 4 * spacing
-    final double itemWidth = DesignScaleManager.scaleValue(132);
-    final double spacing = AppSpacing.xl2;
-    final int columns = 5;
-    final double totalWidth = columns * itemWidth + (columns - 1) * spacing;
 
-    return Center(
-      child: SizedBox(
-        width: totalWidth,
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          spacing: spacing,
-          runSpacing: AppSpacing.lg,
-          children: List.generate(12, (i) {
-            final isSelected = selectedMonth == i + 1;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedMonth = i + 1;
-                  step = 2;
-                  currentMonth = DateTime(
-                    selectedYear ?? DateTime.now().year,
-                    i + 1,
-                    1,
-                  );
-                  validationMessage =
-                      null; // Clear validation after month selection
-                });
-              },
-              child: Container(
-                width: itemWidth,
-                height: DesignScaleManager.scaleValue(84),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: isSelected ? Colors.black : Color(0xffF0F9FF),
-                  borderRadius: BorderRadius.circular(AppRadius.xl3),
-                ),
-                child: Text(
-                  months[i],
-                  style: AppTypography.callout(
-                    weight: AppTypographyWeight.regular,
-                    color: isSelected ? Colors.white : Color(0xff155EEF),
-                  ),
-                ),
+    return Wrap(
+      spacing: AppSpacing.xl2,
+      runSpacing: AppSpacing.lg,
+      children: List.generate(12, (i) {
+        final isSelected = selectedMonth == i + 1;
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              selectedMonth = i + 1;
+              step = 2;
+              currentMonth = DateTime(
+                selectedYear ?? DateTime.now().year,
+                i + 1,
+                1,
+              );
+              validationMessage =
+                  null; // Clear validation after month selection
+            });
+          },
+          child: Container(
+            width: DesignScaleManager.scaleValue(294),
+            height: DesignScaleManager.scaleValue(84),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.black : Color(0xffF0F9FF),
+              borderRadius: BorderRadius.circular(AppRadius.xl3),
+            ),
+            child: Text(
+              months[i],
+              style: AppTypography.callout(
+                weight: AppTypographyWeight.regular,
+                color: isSelected ? Colors.white : AppColors.primary600,
               ),
-            );
-          }),
-        ),
-      ),
+            ),
+          ),
+        );
+      }),
     );
   }
 
   String? get selectedDateString {
     if (selectedMonth != null && selectedDay != null) {
       final months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
+        'January',
+        'February',
+        'March',
+        'April',
         'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
       ];
       String yearStr = selectedYear != null ? ', $selectedYear' : '';
       return '${months[selectedMonth! - 1]} $selectedDay$yearStr';
@@ -588,7 +577,7 @@ class DayGridSelector extends StatelessWidget {
             mainAxisSpacing: 14,
             crossAxisSpacing: 6,
 
-            childAspectRatio: 1.9,
+            childAspectRatio: 2.5,
             // mainAxisExtent: 30,
           ),
           itemCount: totalGridCount,

@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
-  static void showBlurredDialog(BuildContext context, Widget child) {
+  static void showBlurredDialog(Widget child) {
     showDialog(
-      context: context,
+      context: Get.context!,
       builder: (context) {
         return Stack(
           children: [

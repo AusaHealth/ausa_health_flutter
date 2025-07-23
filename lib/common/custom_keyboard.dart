@@ -21,7 +21,7 @@ class CustomKeyboard extends StatefulWidget {
   final double height;
   final bool initialNumericVisible;
 
-  CustomKeyboard({
+  const CustomKeyboard({
     super.key,
     required this.keyboardType,
     required this.onKeyPressed,
@@ -31,7 +31,7 @@ class CustomKeyboard extends StatefulWidget {
     this.keyColor = Colors.white,
     this.enterColor = Colors.blue,
     this.textColor = Colors.black,
-    this.enterText = "Submit",
+    this.enterText = 'Submit',
     this.height = 300,
     this.initialNumericVisible = false,
   });
@@ -219,7 +219,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                             ),
                           ),
                         )
-                        .toList(),
+                        ,
                     SizedBox(
                       width: DesignScaleManager.scaleValue(540),
                     ), // For centering

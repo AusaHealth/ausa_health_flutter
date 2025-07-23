@@ -1,20 +1,17 @@
 import 'package:ausa/common/widget/app_back_header.dart';
 import 'package:ausa/common/widget/app_main_container.dart';
 import 'package:ausa/common/widget/base_scaffold.dart';
-import 'package:ausa/constants/app_images.dart';
-import 'package:ausa/constants/design_scale.dart';
 import 'package:ausa/constants/spacing.dart';
+import 'package:ausa/features/settings/controller/wifi_controller.dart';
 import 'package:ausa/features/settings/model/network_info_model.dart';
 import 'package:ausa/features/settings/page/bluetooth_page.dart';
 import 'package:ausa/features/settings/page/call_settings_page.dart';
 import 'package:ausa/features/settings/page/display_setting_page.dart';
 import 'package:ausa/features/settings/page/notification_settings_page.dart';
+import 'package:ausa/features/settings/widget/settings_network_list.dart';
+import 'package:ausa/features/settings/widget/settings_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/wifi_controller.dart';
-import '../../../common/widget/custom_header.dart';
-import '../widget/settings_tabs.dart';
-import '../widget/settings_network_list.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

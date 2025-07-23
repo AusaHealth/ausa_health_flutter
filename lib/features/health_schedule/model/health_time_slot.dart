@@ -1,4 +1,4 @@
-import 'health_activity.dart';
+import 'package:ausa/features/health_schedule/model/health_activity.dart';
 
 class HealthTimeSlot {
   final String id;

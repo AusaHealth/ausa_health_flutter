@@ -316,7 +316,7 @@ class _ContactDetails extends StatelessWidget {
             children: [
               _ProfileDetail(
                 label: 'Phone',
-                value: '+1 ${profileController.user.phone}',
+                value: Helpers.formatPhoneNumber(profileController.user.phone),
               ),
               SizedBox(height: AppSpacing.xl),
               _ProfileDetail(

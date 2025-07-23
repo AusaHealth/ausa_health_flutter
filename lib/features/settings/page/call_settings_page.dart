@@ -1,12 +1,11 @@
 import 'package:ausa/common/widget/app_sub_parent_container.dart';
 import 'package:ausa/constants/color.dart';
-import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/spacing.dart';
-import 'package:flutter/material.dart';
 import 'package:ausa/constants/typography.dart';
-import 'package:get/get.dart';
 import 'package:ausa/features/settings/controller/setting_controller.dart';
 import 'package:ausa/features/settings/widget/switch_tab_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CallSettingsPage extends StatefulWidget {
   const CallSettingsPage({super.key});

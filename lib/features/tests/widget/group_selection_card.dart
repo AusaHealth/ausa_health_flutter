@@ -1,8 +1,8 @@
-import 'package:ausa/constants/radius.dart';
-import 'package:flutter/material.dart';
 import 'package:ausa/constants/color.dart';
+import 'package:ausa/constants/radius.dart';
 import 'package:ausa/constants/typography.dart';
 import 'package:ausa/features/tests/model/test_group.dart';
+import 'package:flutter/material.dart';
 
 class GroupSelectionCard extends StatelessWidget {
   final TestGroup group;

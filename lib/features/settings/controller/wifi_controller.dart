@@ -2,10 +2,10 @@ import 'package:ausa/common/widget/custom_loader.dart';
 import 'package:ausa/common/widget/toast.dart';
 import 'package:ausa/features/profile/page/input_model.dart';
 import 'package:ausa/features/profile/page/input_page.dart';
+import 'package:ausa/features/settings/model/network_info_model.dart';
 import 'package:ausa/features/settings/page/wifi_connected_page.dart';
 import 'package:ausa/features/settings/widget/wifi_input_password_widget.dart';
 import 'package:get/get.dart';
-import '../model/network_info_model.dart';
 
 class WifiController extends GetxController {
   var networks = <NetworkInfo>[].obs;
@@ -105,7 +105,7 @@ class WifiController extends GetxController {
     final net = networks[idx];
 
     // Show connecting toast immediately
-    CustomLoader.show(message: "Connecting to ${net.name}");
+    CustomLoader.show(message: 'Connecting to ${net.name}');
     Future.delayed(const Duration(seconds: 2), () {
       CustomLoader.hide();
     });

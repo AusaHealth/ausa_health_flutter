@@ -1,9 +1,9 @@
 import 'package:ausa/common/widget/buttons.dart';
 import 'package:ausa/constants/constants.dart';
+import 'package:ausa/constants/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../constants/icons.dart';
 
 class MealTimesController extends GetxController {
   // Private observable state
